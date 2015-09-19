@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
  * @author liangxia@live.com
  */
 @Repository
-public interface UserMapper {
+public interface AccountMapper {
 	
-	boolean verifyUser(String userName, String hashPassword);
+	boolean verify(String loginName, String hashPassword);
 
 }
