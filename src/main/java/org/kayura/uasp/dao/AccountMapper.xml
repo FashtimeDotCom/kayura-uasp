@@ -1,7 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.kayura.uasp.dao">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.3//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kayura.uasp.dao.AccountMapper">
 
-
+	<resultMap type="org.kayura.uasp.po.Account" id="accountMap">
+		<id property="id" column="Account_Id" />
+		<result property="loginName" column="LoginName" />
+		<result property="displayName" column="DisplayName" />
+		<result property="email" column="Email" />
+		<result property="mobileNo" column="MobileNo" />
+		<result property="keyword" column="Keyword" />
+		<result property="accountType" column="AccountType" />
+		<result property="status" column="Status" />
+	</resultMap>
+	
+	<select id="findAccountsByMap" parameterType="map" resultMap="accountMap">
+		SELECT 
+			t.Account_Id,
+			t.LoginName,
+			t.DisplayName,
+			t.Email,
+			t.MobileNo,
+			t.Keyword,
+			t.AccountType,
+			t.Status
+		FROM UASP_Accounts t
+		<where>
+			<if test="keyword != null">
+				AND ( t.Keyword LIKE #{keyword} )
+			</if>
+			<if test="accountType != null">
+				AND ( t.AccountType = #{accountType} )
+			</if>
+			<if test="status != null">
+				AND ( t.Status IN ( ${status} ) )
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertAccount" parameterType="org.kayura.uasp.po.Account">
+		INSERT INTO uasp_accounts (
+			Account_Id,
+			LoginName,
+			DisplayName,
+			Email,
+			MobileNo,
+			Keyword,
+			AccountType,
+			Status
+		) VALUES (
+			#{id},
+			#{loginName},
+			#{displayName},
+			#{email},
+			#{mobileNo},
+			#{keyword},
+			#{accountType},
+			#{status}
+		)
+	</insert>
+	
+	<update id="updateAccount" parameterType="org.kayura.uasp.po.Account">
+		UPDATE uasp_accounts
+		SET LoginName = #{loginName},
+			DisplayName = #{displayName},
+			Email = #{email},
+			MobileNo = #{mobileNo},
+			Keyword = #{keyword},
+			AccountType = #{accountType},
+			Status = #{status}
+		WHERE Account_Id = #{id}
+	</update>
+	
+	<delete id="deleteAccount" parameterType="string">
+		DELETE uasp_accounts
+		WHERE Account_Id = #{value}
+	</delete>
 
 </mapper>

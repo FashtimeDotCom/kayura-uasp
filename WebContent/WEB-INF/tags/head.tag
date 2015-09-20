@@ -8,8 +8,10 @@
 	<link rel="stylesheet" type="text/css" href="${siteUrl}/res/easyui/themes/icon.css" />
 	<script type="text/javascript" src="${siteUrl}/res/js/jquery.min.js"></script>
 	<script type="text/javascript" src="${siteUrl}/res/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${siteUrl}/res/easyui/locale/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="${siteUrl}/res/js/juasp-core.js"></script>
 	<script type="text/javascript">
-		window.siteUrl = "${siteUrl}";
+		juasp.siteUrl = "${siteUrl}";
+		juasp.loginName = "${loginName}";
 	</script>
 	<jsp:doBody></jsp:doBody></head>

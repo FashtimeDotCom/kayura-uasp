@@ -4,6 +4,11 @@
  */
 package org.kayura.uasp.dao;
 
+import java.util.Map;
+
+import org.kayura.mybatis.type.PageBounds;
+import org.kayura.type.PageList;
+import org.kayura.uasp.po.Account;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,6 +17,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountMapper {
 	
+	PageList<Account> findAccountsByMap(Map<String, Object> args, PageBounds pageBounds);
+	
 	boolean verify(String loginName, String hashPassword);
 
+	void insertAccount(Account account);
+	
+	void updateAccount(Account account);
+
+	void deleteAccount(String accountId);
 }

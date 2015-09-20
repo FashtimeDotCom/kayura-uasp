@@ -19,25 +19,32 @@ public class HomeController extends BaseController {
 	private AccountService accountService;
 	
 	public HomeController() {
-		this.setViewRootPath("home");
+		this.setViewRootPath("home/");
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
 
-		return "home/index";
+		return viewResult("index");
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
 
-		return "home/login";
+		return viewResult("login");
 	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout() {
+
+		return viewResult("logout");
+	}
+	
 
 	@RequestMapping(value = "/portal", method = RequestMethod.GET)
 	public String portal(){
-		
-		return "home/portal";
+
+		return viewResult("portal");
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)

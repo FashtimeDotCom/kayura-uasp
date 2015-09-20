@@ -1,8 +1,11 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="u" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="u" tagdir="/WEB-INF/tags"%>
 <%
+	if (request.getUserPrincipal() != null) {
+		session.setAttribute("loginName", request.getUserPrincipal().getName());
+	}
 	session.setAttribute("siteUrl", request.getContextPath());
 	Cookie[] cookies = request.getCookies();
 	boolean themeReady = false;

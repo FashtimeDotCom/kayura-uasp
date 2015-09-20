@@ -6,7 +6,8 @@
  */
 
 juasp = {
-	version : "0.1.150202"
+	version : "0.1.150202",
+	siteUrl :  "/"
 };
 
 (function($, win) {

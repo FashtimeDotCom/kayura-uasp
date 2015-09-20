@@ -69,6 +69,17 @@
 }
 
 
+.icon-home{
+	background:url('icons/home.png') no-repeat center center;
+}
+.icon-group{
+	background:url('icons/group.png') no-repeat center center;
+}
+.icon-design{
+	background:url('icons/design.png') no-repeat center center;
+}
+
+
 .icon-mini-add{
 	background:url('icons/mini_add.png') no-repeat center center;
 }
