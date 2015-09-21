@@ -2,10 +2,11 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.uasp.controller;
+package org.kayura.uasp.web.controller;
 
-import org.kayura.spring.webmvc.BaseController;
-import org.kayura.uasp.services.AccountService;
+import org.kayura.uasp.auth.service.UserService;
+import org.kayura.web.BaseController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author liangxia@live.com
  */
 @Controller
-@RequestMapping("/account")
-public class AccountController extends BaseController {
+@RequestMapping("/admin")
+public class AdminController extends BaseController {
 
-	private AccountService accountService;
+	@Autowired
+	private UserService userService;
 
-	public AccountController() {
+	public AdminController() {
 		this.setViewRootPath("admin/account/");
 	}
 

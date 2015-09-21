@@ -2,36 +2,36 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.uasp.po;
+package org.kayura.uasp.auth.po;
 
 /**
  * @author liangxia@live.com
  */
-public class Account {
+public class User {
 
-	private String id;
-	private String loginName;
+	private String userId;
+	private String userName;
 	private String displayName;
 	private String email;
 	private String mobileNo;
 	private String keyword;
-	private Integer accountType;
+	private Integer userType;
 	private Integer status;
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public String getLoginName() {
-		return loginName;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getDisplayName() {
@@ -66,12 +66,12 @@ public class Account {
 		this.keyword = keyword;
 	}
 
-	public Integer getAccountType() {
-		return accountType;
+	public Integer getUserType() {
+		return userType;
 	}
 
-	public void setAccountType(Integer accountType) {
-		this.accountType = accountType;
+	public void setUserType(Integer userType) {
+		this.userType = userType;
 	}
 
 	public Integer getStatus() {

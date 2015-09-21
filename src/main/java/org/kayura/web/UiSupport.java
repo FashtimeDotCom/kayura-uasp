@@ -15,7 +15,7 @@ import org.springframework.ui.Model;
 /**
  * @author liangxia@live.com
  */
-public interface UISupport {
+public interface UiSupport {
 
 	/**
 	 * 用于从提供请求信息中获取分页信息.

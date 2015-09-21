@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
 	<!-- 扫描指定包内继承自BaseDao的接口，并创建SpringBean对象. -->
-	<mybatis-spring:scan base-package="org.kayura.*.dao.*Mapper" factory-ref="sqlSessionFactory" />
+	<mybatis-spring:scan base-package="org.kayura.uasp.auth.dao" factory-ref="sqlSessionFactory" />
 
 	<!-- 引用外部属性定义文件. -->
 	<bean id="propertyConfigurer"
@@ -68,7 +68,7 @@
 	<!-- 定义事务通知的切入点. -->
 	<aop:config>
 		<aop:advisor advice-ref="txAdvice"
-			pointcut="execution(* org.kayura.uasp.service.impl.*Impl.*(..))" />
+			pointcut="execution(* org.kayura.*.*.service.impl.*Impl.*(..))" />
 	</aop:config>
 
 </beans>

@@ -2,14 +2,13 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.spring.webmvc;
+package org.kayura.web;
 
 import org.kayura.logging.Log;
 import org.kayura.logging.LogFactory;
 import org.kayura.type.PageParams;
 import org.kayura.utils.PathUtils;
 import org.kayura.type.PageList;
-import org.kayura.web.UISupport;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ public class BaseController {
 	private static final Log logger = LogFactory.getLog(BaseController.class);
 
 	private ObjectMapper objectMapper = new ObjectMapper();
-	private UISupport webuiSupport;
+	private UiSupport webuiSupport;
 	private String viewRootPath;
 
 	protected void setViewRootPath(String viewRootPath) {

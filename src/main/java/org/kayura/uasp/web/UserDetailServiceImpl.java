@@ -2,7 +2,7 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.uasp.security;
+package org.kayura.uasp.web;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.kayura.logging.Log;
 import org.kayura.logging.LogFactory;
-import org.kayura.uasp.services.AccountService;
+import org.kayura.uasp.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +27,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	protected static Log logger = LogFactory.getLog(UserDetailServiceImpl.class);
 
 	@Autowired
-	private AccountService accountService;
+	private UserService userService;
 
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException, DataAccessException {
