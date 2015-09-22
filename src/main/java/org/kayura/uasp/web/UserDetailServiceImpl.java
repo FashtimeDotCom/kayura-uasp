@@ -10,7 +10,8 @@ import java.util.List;
 
 import org.kayura.logging.Log;
 import org.kayura.logging.LogFactory;
-import org.kayura.uasp.auth.service.UserService;
+import org.kayura.uasp.service.UserService;
+import org.kayura.uasp.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,10 +37,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 		try {
 
-			// UserVo dbUser = accountService.getUserByName(username);
+			UserVo userVo = userService.getUserByUserName(username);
 
-			user = new User("admin", "123456", true, true, true, true,
-					getAuthorities("ADMIN"));
+			user = new User(username, 
+					userVo.getPassword(), 
+					userVo.getStatus() == 1, true, true, true, getAuthorities("ADMIN"));
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving user");

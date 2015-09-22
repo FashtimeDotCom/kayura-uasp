@@ -12,8 +12,6 @@ import org.kayura.type.PageList;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.ui.Model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -39,20 +37,6 @@ public class BaseController {
 	 */
 	public PageParams getPageBounds(HttpServletRequest req) {
 		return webuiSupport.getPageBounds(req);
-	}
-
-	/***
-	 * 向请求结果集添加数据.
-	 * <p>
-	 * totalCount: 表示总记录数.
-	 * <p>
-	 * data: 表示查询结果集.
-	 * 
-	 * @param model
-	 * @param pageList
-	 */
-	public void putData(Model model, PageList<?> pageList) {
-		webuiSupport.putData(model, pageList);
 	}
 
 	/**

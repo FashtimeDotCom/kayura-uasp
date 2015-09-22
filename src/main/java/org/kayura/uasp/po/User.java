@@ -1,0 +1,137 @@
+/**
+ * Copyright 2015-2015 the original author or authors.
+ * HomePage: http://www.kayura.org
+ */
+package org.kayura.uasp.po;
+
+import java.util.Date;
+
+/**
+ * @author liangxia@live.com
+ */
+public class User {
+
+	private String userId;
+	private String userName;
+	private String displayName;
+	private String password;
+	private String email;
+	private String mobileNo;
+	private String keyword;
+	private Date createTime;
+	private Date expireTime;
+	private String authType;
+	private Boolean isEnabled;
+	private Boolean isLocked;
+
+	private Employee employee;
+
+	public User() {
+		this.setEmployee(new Employee("xialaing"));
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getExpireTime() {
+		return expireTime;
+	}
+
+	public void setExpireTime(Date expireTime) {
+		this.expireTime = expireTime;
+	}
+
+	public String getAuthType() {
+		return authType;
+	}
+
+	public void setAuthType(String authType) {
+		this.authType = authType;
+	}
+
+	public Boolean getIsEnabled() {
+		return isEnabled;
+	}
+
+	public void setIsEnabled(Boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+
+	public Boolean getIsLocked() {
+		return isLocked;
+	}
+
+	public void setIsLocked(Boolean isLocked) {
+		this.isLocked = isLocked;
+	}
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
+}

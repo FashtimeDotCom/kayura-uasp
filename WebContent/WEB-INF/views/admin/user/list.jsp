@@ -7,7 +7,7 @@
 		});
 	</script>
 </u:head>
-<u:body padding="10">
+<u:body padding="5">
 <table class="easyui-datagrid" title="已注册账号列表"
 	   data-options="fit:true,rownumbers:true,pagination:true,border:true,
 				pageSize:10,singleSelect:false,url:'datagrid_data1.json',

@@ -21,7 +21,7 @@
 		<div class="easyui-accordion" data-options="fit:true,border:false">
 			<div title="系统管理" data-options="iconCls:'icon-ok'" style="padding: 0px;">
 				<ul>
-					<li><a href="###" onclick="juasp.openTab('账号管理', '${siteUrl}/account/list')" >账号管理</a></li>
+					<li><a href="###" onclick="juasp.openTab('账号管理', '${siteUrl}/admin/user/list')" >账号管理</a></li>
 				</ul>
 			</div>
 			<div title="组织机构" data-options="iconCls:'icon-ok'" style="padding: 10px;">

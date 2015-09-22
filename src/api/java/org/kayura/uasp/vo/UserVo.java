@@ -2,21 +2,28 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.uasp.auth.po;
+package org.kayura.uasp.vo;
+
+import java.util.Date;
 
 /**
  * @author liangxia@live.com
  */
-public class User {
+public class UserVo {
 
 	private String userId;
 	private String userName;
 	private String displayName;
+	private String password;
 	private String email;
 	private String mobileNo;
 	private String keyword;
-	private Integer userType;
+	private Date createTime;
+	private Date expireTime;
+	private String authType;
 	private Integer status;
+
+	private String employeeId;
 
 	public String getUserId() {
 		return userId;
@@ -40,6 +47,14 @@ public class User {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getEmail() {
@@ -66,12 +81,28 @@ public class User {
 		this.keyword = keyword;
 	}
 
-	public Integer getUserType() {
-		return userType;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setUserType(Integer userType) {
-		this.userType = userType;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getExpireTime() {
+		return expireTime;
+	}
+
+	public void setExpireTime(Date expireTime) {
+		this.expireTime = expireTime;
+	}
+
+	public String getAuthType() {
+		return authType;
+	}
+
+	public void setAuthType(String authType) {
+		this.authType = authType;
 	}
 
 	public Integer getStatus() {
@@ -80,6 +111,14 @@ public class User {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
 	}
 
 }
