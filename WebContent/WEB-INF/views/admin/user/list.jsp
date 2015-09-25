@@ -9,16 +9,24 @@
 </u:head>
 <u:body padding="5">
 <table class="easyui-datagrid" title="已注册账号列表"
-	   data-options="fit:true,rownumbers:true,pagination:true,border:true,
-				pageSize:10,singleSelect:false,url:'datagrid_data1.json',
-				method:'get',toolbar:'#ft,#tb',footer:''">
+	data-options="
+		fit:true,
+		rownumbers:true,
+		pagination:true,
+		border:true,
+		pageSize:10,
+		singleSelect:false,
+		url:'${siteUrl}/admin/user/find',
+		method:'get',
+		toolbar:'#ft,#tb',
+		idField:'userId'
+	">
 		<thead>
 			<tr>
-				<th data-options="field:'itemid',width:80">Item ID</th>
-				<th data-options="field:'productid',width:100">Product</th>
-				<th data-options="field:'listprice',width:80,align:'right'">List Price</th>
-				<th data-options="field:'unitcost',width:80,align:'right'">Unit Cost</th>
-				<th data-options="field:'attr1',width:240">Attribute</th>
+				<th data-options="field:'userName',width:100">Product</th>
+				<th data-options="field:'displayName',width:80,align:'right'">List Price</th>
+				<th data-options="field:'email',width:80,align:'right'">Unit Cost</th>
+				<th data-options="field:'mobileNo',width:240">Attribute</th>
 				<th data-options="field:'status',width:60,align:'center'">Status</th>
 			</tr>
 		</thead>

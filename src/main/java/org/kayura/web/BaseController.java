@@ -4,10 +4,14 @@
  */
 package org.kayura.web;
 
+import org.kayura.core.Action;
+import org.kayura.core.PostResult;
 import org.kayura.logging.Log;
 import org.kayura.logging.LogFactory;
 import org.kayura.type.PageParams;
 import org.kayura.utils.PathUtils;
+import org.kayura.web.ui.UISupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.kayura.type.PageList;
 
 import java.util.Map;
@@ -21,9 +25,11 @@ public class BaseController {
 
 	private static final Log logger = LogFactory.getLog(BaseController.class);
 
-	private ObjectMapper objectMapper = new ObjectMapper();
-	private UiSupport webuiSupport;
-	private String viewRootPath;
+	@Autowired
+	protected UISupport ui;
+	
+	protected ObjectMapper objectMapper = new ObjectMapper();
+	protected String viewRootPath;
 
 	protected void setViewRootPath(String viewRootPath) {
 		this.viewRootPath = viewRootPath;
@@ -36,7 +42,7 @@ public class BaseController {
 	 * @return 分页信息对象.
 	 */
 	public PageParams getPageBounds(HttpServletRequest req) {
-		return webuiSupport.getPageBounds(req);
+		return ui.getPageParams(req);
 	}
 
 	/**
@@ -50,7 +56,7 @@ public class BaseController {
 	 * @param pageList
 	 */
 	public void putData(Map<String, Object> map, PageList<?> pageList) {
-		webuiSupport.putData(map, pageList);
+		ui.putData(map, pageList);
 	}
 
 	/**

@@ -2,7 +2,7 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.web;
+package org.kayura.core;
 
 import java.io.Serializable;
 import java.util.HashMap;

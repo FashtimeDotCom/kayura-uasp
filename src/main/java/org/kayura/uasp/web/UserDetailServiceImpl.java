@@ -39,13 +39,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 			UserVo userVo = userService.getUserByUserName(username);
 
-			user = new User(username, 
-					userVo.getPassword(), 
-					userVo.getStatus() == 1, true, true, true, getAuthorities("ADMIN"));
+			user = new User(username, userVo.getPassword(), userVo.getIsEnabled(), 
+					true, true, true, getAuthorities("ADMIN"));
 
 		} catch (Exception e) {
-			logger.error("Error in retrieving user");
-			throw new UsernameNotFoundException("Error in retrieving user");
+			logger.error("Error in retrieving user", e);
 		}
 
 		return user;

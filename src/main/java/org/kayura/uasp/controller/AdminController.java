@@ -4,7 +4,15 @@
  */
 package org.kayura.uasp.controller;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
 import org.kayura.uasp.service.UserService;
+import org.kayura.uasp.vo.UserVo;
+import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,10 +39,18 @@ public class AdminController extends BaseController {
 		return viewResult("user/list");
 	}
 
-	@RequestMapping(value = "user/loadData")
-	public String loadUserData() {
+	@RequestMapping(value = "user/find")
+	public String loadUserData(HttpServletRequest req, Map<String, Object> map, String keyword,
+			String status) {
 
-		return null;
+		PageParams pageParams = ui.getPageParams(req);
+
+		Integer[] intStatus = StringUtils.toInteger(status);
+		PageList<UserVo> users = userService.findUsers(keyword, intStatus, pageParams);
+
+		ui.putData(map, users);
+
+		return viewResult("user/find");
 	}
 
 }

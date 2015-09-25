@@ -48,7 +48,6 @@ public class UserConvert {
 		ModelMapper mm = toVoMapper();
 
 		List<UserVo> voList = new ArrayList<UserVo>();
-
 		List<User> rows = list.getRows();
 		for (User u : rows) {
 			UserVo to = mm.map(u, UserVo.class);

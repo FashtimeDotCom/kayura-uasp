@@ -6,11 +6,12 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<!-- 扫描指定包内被标注的对象，并创建SpringBean对象. -->
-	<context:component-scan base-package="org.kayura.uasp" />
+	<context:component-scan base-package="org.kayura" />
 	
 	<import resource="datasource-context.xml" />
 	<import resource="security-context.xml" />
 
+	<bean class="org.kayura.web.ui.EasyUISupport" />
 	<bean class="org.kayura.spring.SpringBeanManager" />
 	
 	<bean

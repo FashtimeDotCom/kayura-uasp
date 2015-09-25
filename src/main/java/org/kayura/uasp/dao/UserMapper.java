@@ -6,16 +6,15 @@ package org.kayura.uasp.dao;
 
 import java.util.Map;
 
+import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
 import org.kayura.uasp.po.User;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author liangxia@live.com
  */
-@Repository
-public interface UserMapper {
+public interface UserMapper extends BaseDao{
 	
 	/**
 	 * 查询出符合条件的用户分页列表.

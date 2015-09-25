@@ -4,9 +4,7 @@
  */
 package org.kayura.uasp.controller;
 
-import org.kayura.uasp.service.UserService;
 import org.kayura.web.BaseController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,13 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController extends BaseController {
 
-	@Autowired
-	private UserService accountService;
-	
 	public HomeController() {
 		this.setViewRootPath("home/");
 	}
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
 
@@ -35,24 +30,16 @@ public class HomeController extends BaseController {
 
 		return viewResult("login");
 	}
-	
+
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout() {
 
 		return viewResult("logout");
 	}
-	
 
 	@RequestMapping(value = "/portal", method = RequestMethod.GET)
-	public String portal(){
+	public String portal() {
 
 		return viewResult("portal");
 	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public boolean verifyUser(String loginName, String password) {
-
-		return accountService.verifyUser(loginName, password);
-	}
-
 }

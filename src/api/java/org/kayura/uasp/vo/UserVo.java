@@ -21,7 +21,8 @@ public class UserVo {
 	private Date createTime;
 	private Date expireTime;
 	private String authType;
-	private Integer status;
+	private Boolean isEnabled;
+	private Boolean isLocked;
 
 	private String employeeId;
 
@@ -105,12 +106,20 @@ public class UserVo {
 		this.authType = authType;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public Boolean getIsEnabled() {
+		return isEnabled;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setIsEnabled(Boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+
+	public Boolean getIsLocked() {
+		return isLocked;
+	}
+
+	public void setIsLocked(Boolean isLocked) {
+		this.isLocked = isLocked;
 	}
 
 	public String getEmployeeId() {
