@@ -7,7 +7,7 @@
 		});
 	</script>
 </u:head>
-<u:body padding="5">
+<u:body padding="10">
 <table class="easyui-datagrid" title="已注册账号列表"
 	data-options="
 		fit:true,
@@ -15,19 +15,21 @@
 		pagination:true,
 		border:true,
 		pageSize:10,
-		singleSelect:false,
-		url:'${siteUrl}/admin/user/find',
+		singleSelect:true,
+		striped:true,
+		url:'${siteUrl}/admin/user/find.json',
 		method:'get',
 		toolbar:'#ft,#tb',
 		idField:'userId'
 	">
 		<thead>
 			<tr>
-				<th data-options="field:'userName',width:100">Product</th>
-				<th data-options="field:'displayName',width:80,align:'right'">List Price</th>
-				<th data-options="field:'email',width:80,align:'right'">Unit Cost</th>
-				<th data-options="field:'mobileNo',width:240">Attribute</th>
-				<th data-options="field:'status',width:60,align:'center'">Status</th>
+				<th data-options="field:'ck',checkbox:true"></th>
+				<th data-options="field:'userName',width:100">用户名</th>
+				<th data-options="field:'displayName',width:180">显示名</th>
+				<th data-options="field:'email',width:280">电子邮件</th>
+				<th data-options="field:'mobileNo',width:340">手机号</th>
+				<th data-options="field:'status',width:60,align:'center'">状态</th>
 			</tr>
 		</thead>
 	</table>

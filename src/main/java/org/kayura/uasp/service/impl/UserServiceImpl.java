@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.kayura.mybatis.type.PageBounds;
+import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.uasp.dao.UserMapper;
@@ -33,7 +34,10 @@ public class UserServiceImpl implements UserService {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("keyword", keyword);
-		args.put("status", StringUtils.join(",", status));
+
+		if (status != null) {
+			args.put("status", StringUtils.join(",", status));
+		}
 
 		PageList<User> list = userMapper.findUsersByMap(args, new PageBounds(pageParams));
 		return UserConvert.toVos(list);
@@ -60,21 +64,39 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void saveOrUpdateUser(UserVo user) {
+	public GeneralResult saveOrUpdateUser(UserVo user) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("userId", user.getUserId());
 
-		User entity = UserConvert.toEntity(user);
-		if (userMapper.isExistsByMap(args)) {
-			userMapper.updateUser(entity);
-		} else {
-			userMapper.insertUser(entity);
+		GeneralResult result = new GeneralResult("保存成功.");
+		try {
+			User entity = UserConvert.toEntity(user);
+			if (userMapper.isExistsByMap(args)) {
+				userMapper.updateUser(entity);
+			} else {
+				userMapper.insertUser(entity);
+			}
+		} catch (Exception e) {
+			result.setCode(-1);
+			result.setMessage("保存失败。原因：" + e.getMessage());
 		}
+
+		return result;
 	}
 
 	@Override
 	public void deleteUser(String userId) {
 		userMapper.deleteUser(userId);
+	}
+
+	@Override
+	public UserVo getUserById(String userId) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("userId", userId);
+
+		User user = userMapper.getUserByMap(args);
+		return UserConvert.toVo(user);
 	}
 }

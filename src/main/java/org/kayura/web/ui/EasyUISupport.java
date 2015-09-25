@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.kayura.type.OrderBy.Direction;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
+import org.kayura.utils.StringUtils;
 
 /**
  * @author liangxia@live.com
@@ -22,14 +23,14 @@ public class EasyUISupport implements UISupport {
 
 		// page=1&rows=10&sort=itemid&order=desc
 
-		int pageIndex = Integer.getInteger(req.getParameter("page"), 0);
-		int pageSize = Integer.getInteger(req.getParameter("rows"), 0);
+		int pageIndex = StringUtils.toInteger(req.getParameter("page"), 0);
+		int pageSize = StringUtils.toInteger(req.getParameter("rows"), 0);
 
 		String sortField = req.getParameter("sort");
 		String sortOrder = req.getParameter("order");
 
 		PageParams pageParams = new PageParams();
-		pageParams.setPage(pageIndex + 1);
+		pageParams.setPage(pageIndex);
 		pageParams.setLimit(pageSize);
 		pageParams.setContainsTotalCount(true);
 
@@ -46,8 +47,8 @@ public class EasyUISupport implements UISupport {
 
 		// {"total":"28","rows":[{}] }
 		
-		map.put("totalCount", pageList.getTotalCount());
-		map.put("data", pageList);
+		map.put("total", pageList.getTotalCount());
+		map.put("rows", pageList);
 	}
 
 }

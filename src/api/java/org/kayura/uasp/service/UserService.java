@@ -4,6 +4,7 @@
  */
 package org.kayura.uasp.service;
 
+import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.uasp.vo.UserVo;
@@ -37,7 +38,7 @@ public interface UserService {
 	 * 
 	 * @param user 用户账号实例对象.
 	 */
-	void saveOrUpdateUser(UserVo user);
+	GeneralResult saveOrUpdateUser(UserVo user);
 
 	/**
 	 * 删除一个用户账号.
@@ -52,4 +53,8 @@ public interface UserService {
 	 */
 	UserVo getUserByUserName(String userName);
 
+	/**
+	 * @param userId
+	 */
+	UserVo getUserById(String userId);
 }
