@@ -2,7 +2,7 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.web.ui;
+package org.kayura.web.easyui;
 
 import java.util.Map;
 
@@ -12,6 +12,7 @@ import org.kayura.type.OrderBy.Direction;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.utils.StringUtils;
+import org.kayura.web.ui.UISupport;
 
 /**
  * @author liangxia@live.com

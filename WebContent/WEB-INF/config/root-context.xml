@@ -11,7 +11,7 @@
 	<import resource="datasource-context.xml" />
 	<import resource="security-context.xml" />
 
-	<bean class="org.kayura.web.ui.EasyUISupport" />
+	<bean class="org.kayura.web.easyui.EasyUISupport" />
 	<bean class="org.kayura.spring.SpringBeanManager" />
 	
 	<bean
