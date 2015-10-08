@@ -7,6 +7,7 @@
 		});
 	</script>
 </u:head>
+
 <u:body padding="10">
 <table class="easyui-datagrid" title="已注册账号列表"
 	data-options="

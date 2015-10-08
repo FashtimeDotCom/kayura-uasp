@@ -21,13 +21,11 @@ public class ResourcesTag extends TagSupport {
 		JspWriter out = this.pageContext.getOut();
 		location = pageContext.getRequest().getServletContext().getContextPath() + "/" + location;
 		try {
-			out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + location + "/themes/" + theme
-					+ "/easyui.css\">");
+			out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + location + "/themes/" + theme + "/easyui.css\">");
 			out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + location + "/themes/icon.css\">");
 			out.write("<script type=\"text/javascript\" src=\"" + location + "/jquery.easyui.min.js\"></script>");
 			out.write("<script type=\"text/javascript\" src=\"" + location + "/jquery.easyui.patch.js\"></script>");
-			out.write(
-					"<script type=\"text/javascript\" src=\"" + location + "/locale/easyui-lang-zh_CN.js\"></script>");
+			out.write("<script type=\"text/javascript\" src=\"" + location + "/locale/easyui-lang-zh_CN.js\"></script>");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
