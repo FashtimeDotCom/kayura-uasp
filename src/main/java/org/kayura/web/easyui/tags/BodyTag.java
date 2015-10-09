@@ -43,8 +43,7 @@ public class BodyTag extends TagRender {
 		try {
 			out.write("<body");
 			if (isFull()) {
-				out.write(" class=\"easyui-" + getEasyuiTag() + " " + (getClassStyle() == null ? "" : getClassStyle())
-						+ "\"");
+				out.write(" class=\"easyui-" + getEasyuiTag() + " " + (getClassStyle() == null ? "" : getClassStyle()) + "\"");
 			} else {
 				out.write(" class=\"" + (getClassStyle() == null ? "" : getClassStyle()) + "\"");
 			}

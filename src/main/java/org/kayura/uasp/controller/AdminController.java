@@ -41,7 +41,7 @@ public class AdminController extends BaseController {
 	@RequestMapping(value = "user/list", method = RequestMethod.GET)
 	public String userList() {
 
-		return viewResult("user/list");
+		return viewResult("user/list2");
 	}
 
 	@RequestMapping(value = "user/find")
