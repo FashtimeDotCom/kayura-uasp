@@ -4,8 +4,6 @@
  */
 package org.kayura.uasp.web;
 
-import org.kayura.cache.Cache;
-import org.kayura.uasp.service.UserService;
 import org.kayura.uasp.vo.UserVo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,8 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class SessionContext {
 
-	private Cache cache;
-	private UserService accountService;
+//	private Cache cache;
+//	private UserService accountService;
 
 	public UserVo getSessionUser() {
 

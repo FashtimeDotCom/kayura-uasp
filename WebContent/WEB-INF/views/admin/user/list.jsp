@@ -18,7 +18,7 @@
 		pageSize:10,
 		singleSelect:true,
 		striped:true,
-		url:'${siteUrl}/admin/user/find.json',
+		url:'${root}/admin/user/find.json',
 		method:'get',
 		toolbar:'#ft,#tb',
 		idField:'userId'

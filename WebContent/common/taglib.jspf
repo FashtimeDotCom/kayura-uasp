@@ -7,7 +7,7 @@
 	if (request.getUserPrincipal() != null) {
 		session.setAttribute("loginName", request.getUserPrincipal().getName());
 	}
-	session.setAttribute("siteUrl", request.getContextPath());
+	session.setAttribute("root", request.getContextPath());
 	Cookie[] cookies = request.getCookies();
 	boolean themeReady = false;
 	if (cookies != null) {
