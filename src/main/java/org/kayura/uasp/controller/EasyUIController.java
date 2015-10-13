@@ -18,4 +18,8 @@ public class EasyUIController extends BaseController {
 		return viewResult("index");
 	}
 
+	@RequestMapping(value = "/datagrid/basic", method = RequestMethod.GET)
+	public String datagridbasic(){
+		return viewResult("datagrid/basic");
+	}
 }

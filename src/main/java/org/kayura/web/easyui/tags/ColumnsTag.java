@@ -49,7 +49,7 @@ public class ColumnsTag extends TagRender {
 					out.write("\"");
 				}
 				out.write(">");
-				out.write("<tr>");
+				out.println("<tr>");
 			} else if (parent instanceof ComboGridTag) {
 				columns = new ArrayList<Column>();
 			}
@@ -68,7 +68,7 @@ public class ColumnsTag extends TagRender {
 					out.write(bodyContent.getString());
 				}
 				out.write("</tr>");
-				out.write("</thead>");
+				out.println("</thead>");
 			} else if (parent instanceof ComboGridTag) {
 				ComboGridTag comboGridTag = (ComboGridTag) parent;
 				comboGridTag.getColumns().clear();

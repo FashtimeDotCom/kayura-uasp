@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <u:head title="统一门户">
-	<script type="text/javascript" src="${siteUrl}/res/easyui/plugins/jquery.portal.js"></script>
+	<script type="text/javascript" src="${root}/res/easyui/plugins/jquery.portal.js"></script>
 	<style type="text/css">
 		.t-list { padding:5px; } 
 	</style>

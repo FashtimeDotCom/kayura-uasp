@@ -352,7 +352,7 @@ public class RenderContext {
 	}
 
 	/**
-	 * 获取父控件的ID TODO 需要优化
+	 * 获取父控件的ID
 	 *
 	 * @param tag
 	 * @return

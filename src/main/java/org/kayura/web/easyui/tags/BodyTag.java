@@ -15,7 +15,7 @@ public class BodyTag extends TagRender {
 	private static final long serialVersionUID = 6560129221527471913L;
 	private boolean full = true;
 	private String var;
-	private boolean animation = true;
+	private boolean animation = false;
 	private String loadingText = "加载中···";
 	private int closeDuration = 500;
 	private String classStyle;
@@ -47,18 +47,18 @@ public class BodyTag extends TagRender {
 			} else {
 				out.write(" class=\"" + (getClassStyle() == null ? "" : getClassStyle()) + "\"");
 			}
-			out.write(">");
-			if (isFull()) {
+			out.write(">\n");
+/*			if (isFull()) {
 				out.write("<div data-options=\"region:'center',border:false\" ");
 				if (getStyle() != null) {
 					out.write(" style=\"" + getStyle() + "\"");
 				}
-				out.write(">");
-			}
+				out.write(">\r");
+			}*/
 			if (isAnimation()) {
 				out.write("<div class='jeasyui-body-mask'><div class='jeasyui-body-mask-text'><span></span>");
 				out.write(getLoadingText());
-				out.write("</div></div>");
+				out.write("</div>\n");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -68,9 +68,9 @@ public class BodyTag extends TagRender {
 	@Override
 	public void renderEnd(JspWriter out) {
 		try {
-			if (isFull()) {
-				out.write("</div>");
-			}
+/*			if (isFull()) {
+				out.write("</div>\n");
+			}*/
 			if (getVar() == null) {
 				setVar("body" + UUID.randomUUID().toString().replace("-", ""));
 			}
@@ -80,7 +80,7 @@ public class BodyTag extends TagRender {
 						.append(getCloseDuration()).append(");};\n");
 			}
 			getRenderContext().write(out, getVar());
-			out.write("</body>");
+			out.write("</body>\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>kayura-uasp</groupId>
+  <groupId>org.kayura</groupId>
   <artifactId>kayura-uasp</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
@@ -56,16 +56,6 @@
   		<version>3.2.8.RELEASE</version>
   	</dependency>
   	<dependency>
-  		<groupId>org.kayura</groupId>
-  		<artifactId>kayura-core</artifactId>
-  		<version>0.0.1</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>kayura-bpm</groupId>
-  		<artifactId>kayura-bpm</artifactId>
-  		<version>0.0.1</version>
-  	</dependency>
-  	<dependency>
   		<groupId>org.aspectj</groupId>
   		<artifactId>aspectjrt</artifactId>
   		<version>1.8.7</version>
@@ -104,6 +94,16 @@
   		<groupId>com.alibaba</groupId>
   		<artifactId>fastjson</artifactId>
   		<version>1.2.7</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.kayura</groupId>
+  		<artifactId>kayura-core</artifactId>
+  		<version>0.0.1</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.kayura</groupId>
+  		<artifactId>kayura-bpm</artifactId>
+  		<version>0.0.1</version>
   	</dependency>
   </dependencies>
 </project>

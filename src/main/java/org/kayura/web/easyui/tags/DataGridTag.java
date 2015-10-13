@@ -20,6 +20,7 @@ public class DataGridTag extends TagRender {
     private Boolean fitColumns;
     private String resizeHandle;
     private Boolean autoRowHeight;
+    private Boolean collapsible;
     private String toolbar;
     private Boolean striped;
     private String method;
@@ -81,6 +82,7 @@ public class DataGridTag extends TagRender {
         options.put("pagePosition", getPagePosition());
         options.put("pageNumber", getPageNumber());
         options.put("pageSize", getPageSize());
+        options.put("collapsible", getCollapsible());
         if(getPageList()!=null){
             Object pl = getPageList();
             if(pl instanceof String){
@@ -108,12 +110,14 @@ public class DataGridTag extends TagRender {
     @Override
     public void renderStart(JspWriter out) {
         try {
-            out.println("<table");
+            out.write("<table ");
             if (getId() != null) {
                 out.write(" id=\"" + getId() + "\"");
             }
             if (getClassStyle() != null) {
-                out.write(" class=\"" + getClassStyle() + "\"");
+                out.write(" class=\"easyui-" + getEasyuiTag() + " " + getClassStyle() + "\"");
+            }else{
+            	out.write(" class=\"easyui-" + getEasyuiTag() + "\"");
             }
             if (getStyle() != null) {
                 out.write(" style=\"" + getStyle() + "\"");
@@ -123,8 +127,7 @@ public class DataGridTag extends TagRender {
             }
             out.write(" data-options=\"");
             out.write(optionsToString());
-            out.write("\"");
-            out.write(">");
+            out.println("\">");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -402,4 +405,12 @@ public class DataGridTag extends TagRender {
     public void setData(Object data) {
         this.data = data;
     }
+
+	public Boolean getCollapsible() {
+		return collapsible;
+	}
+
+	public void setCollapsible(Boolean collapsible) {
+		this.collapsible = collapsible;
+	}
 }

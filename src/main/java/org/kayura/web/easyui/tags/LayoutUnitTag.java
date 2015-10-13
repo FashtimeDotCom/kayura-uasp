@@ -66,8 +66,7 @@ public class LayoutUnitTag extends TagRender {
 			}
 			out.write(" data-options=\"");
 			out.write(optionsToString());
-			out.write("\"");
-			out.write(">");
+			out.write("\">\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -76,7 +75,7 @@ public class LayoutUnitTag extends TagRender {
 	@Override
 	public void renderEnd(JspWriter out) {
 		try {
-			out.write("</div>");
+			out.write("</div>\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

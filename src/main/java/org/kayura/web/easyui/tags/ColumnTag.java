@@ -95,7 +95,7 @@ public class ColumnTag extends TagRender {
 				if (bodyContent != null && bodyContent.getString() != null) {
 					out.write(bodyContent.getString());
 				}
-				out.write("</th>");
+				out.println("</th>");
 			}
 
 		} catch (IOException e) {

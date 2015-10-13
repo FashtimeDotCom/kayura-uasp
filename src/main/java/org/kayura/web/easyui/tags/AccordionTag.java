@@ -53,14 +53,16 @@ public class AccordionTag extends TagRender {
 				out.write(" id=\"" + getId() + "\"");
 			}
 			if (classStyle != null) {
-				out.write(" class=\"" + getClassStyle() + "\"");
+				out.write(" class=\"easyui-" + getEasyuiTag() + " " + getClassStyle() + "\"");
+			} else {
+				out.write(" class=\"easyui-" + getEasyuiTag() + "\"");
 			}
 			if (style != null) {
 				out.write(" style=\"" + style + "\"");
 			}
 			out.write(" data-options=\"" + optionsToString());
 			out.write("\"");
-			out.write(">");
+			out.write(">\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -69,7 +71,7 @@ public class AccordionTag extends TagRender {
 	@Override
 	public void renderEnd(JspWriter out) {
 		try {
-			out.write("</div>");
+			out.write("</div>\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

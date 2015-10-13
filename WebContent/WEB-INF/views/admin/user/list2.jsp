@@ -33,8 +33,7 @@
 		<e:facet name="toolbar">
 		
 			关键字：<e:inputText id="keyword" style="width:150px" />
-			状态： <e:comboBox id="" data=""></e:comboBox>
-			
+			状态： 
 			<select id="status" class="easyui-combobox" panelHeight="auto" style="width: 150px">
 				<option value="">所有</option>
 				<option value="0">申请中</option>
