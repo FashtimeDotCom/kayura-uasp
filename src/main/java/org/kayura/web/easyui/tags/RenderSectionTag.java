@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * Created by 枫 on 2014/8/17.
  */
-public class TemplateBlockTag extends TagRender {
+public class RenderSectionTag extends TagRender {
 
 	private static final long serialVersionUID = -2080574669825913692L;
 	private String name;

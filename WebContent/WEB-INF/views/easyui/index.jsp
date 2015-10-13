@@ -11,7 +11,6 @@
 	</e:layoutUnit>
 	<e:layoutUnit region="south" style="height: 35px"></e:layoutUnit>
 	<e:layoutUnit region="east" split="true" collapsible="true" title="快捷工具" style="width: 180px">
-	
 	</e:layoutUnit>
 	<e:layoutUnit region="west" split="true" title="导航栏" style="width: 200px;">
 		<e:accordion fit="true" border="false">
@@ -29,8 +28,7 @@
 	</e:layoutUnit>
 	<e:layoutUnit region="center">
 		<e:tabs id="mainTabs" fit="true" border="false">
-			<e:tab id="homePage" title="首页" iconCls="icon-home" style="padding: 0px;overflow:hidden;">
-			</e:tab>
+			<e:tab id="homePage" title="首页" iconCls="icon-home" style="padding: 0px;overflow:hidden;"></e:tab>
 		</e:tabs>
 	</e:layoutUnit>
 </e:body>

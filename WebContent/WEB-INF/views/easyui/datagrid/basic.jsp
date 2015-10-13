@@ -1,17 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Basic DataGrid - jQuery EasyUI Demo</title>
-	<e:resources location="res" theme="${theme}" />
-	<link rel="stylesheet" href="${root}/res/highlight/styles/default.css">
-	<script src="${root}/res/highlight/highlight.pack.js"></script>
-	<script>hljs.initHighlightingOnLoad();</script>
-</head>
-<body>
-	<p>The DataGrid is created from markup, no JavaScript code needed.</p>
-	<div style="margin: 20px 0;"></div>
 
+<e:section name="title">Basic DataGrid</e:section>
+
+<e:section name="body">
+	<p style="margin: 20px 0;"> The DataGrid is created from markup, no JavaScript code needed.</p>
 	<e:datagrid title="Basic DataGrid" style="width:700px;height:200px" collapsible="true"
 		singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get">
 		<e:columns>
@@ -23,8 +15,9 @@
 			<e:column field="status" width="60" align="center">Status</e:column>
 		</e:columns>
 	</e:datagrid>
+</e:section>
 
-	<pre><code class="html">&lt;e:datagrid title="Basic DataGrid" style="width:700px;height:200px" collapsible="true"
+<e:section name="code">&lt;e:datagrid title="Basic DataGrid" style="width:700px;height:200px" collapsible="true"
 	singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get"&gt;
 	&lt;e:columns&gt;
 		&lt;e:column field="itemid" width="80"&gt;Item ID&lt;/e:column&gt;
@@ -35,10 +28,6 @@
 		&lt;e:column field="status" width="60" align="center"&gt;Status&lt;/e:column&gt;
 	&lt;/e:columns&gt;
 &lt;/e:datagrid&gt;
-</code></pre>
+</e:section>
 
-	<div style="margin-top: 10px">
-		Source : <%= request.getRequestURI() %>
-	</div>
-</body>
-</html>
+<%@ include file="../shared/_simple.jsp" %>

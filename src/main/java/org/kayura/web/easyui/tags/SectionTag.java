@@ -9,7 +9,7 @@ import javax.servlet.jsp.tagext.BodyContent;
 /**
  * Created by 枫 on 2014/8/17.
  */
-public class TemplateOverrideTag extends TagRender {
+public class SectionTag extends TagRender {
 
 	private static final long serialVersionUID = -4663175293106135442L;
 	private String name;
