@@ -1729,6 +1729,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>footer</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<name>striped</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -2097,7 +2102,7 @@
 	</tag>
 
 	<tag>
-		<name>validateInput</name>
+		<name>validateBox</name>
 		<tag-class>org.kayura.web.easyui.tags.ValidateBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2175,7 +2180,7 @@
 	</tag>
 
 	<tag>
-		<name>inputText</name>
+		<name>textBox</name>
 		<tag-class>org.kayura.web.easyui.tags.TextBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2313,7 +2318,7 @@
 	</tag>
 
 	<tag>
-		<name>inputSearch</name>
+		<name>searchBox</name>
 		<tag-class>org.kayura.web.easyui.tags.SearchBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2451,7 +2456,7 @@
 	</tag>
 
 	<tag>
-		<name>inputFile</name>
+		<name>fileBox</name>
 		<tag-class>org.kayura.web.easyui.tags.FileBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2589,7 +2594,7 @@
 	</tag>
 
 	<tag>
-		<name>inputSpinner</name>
+		<name>spinner</name>
 		<tag-class>org.kayura.web.easyui.tags.SpinnerTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2742,7 +2747,7 @@
 	</tag>
 
 	<tag>
-		<name>inputTimeSpinner</name>
+		<name>timeSpinner</name>
 		<tag-class>org.kayura.web.easyui.tags.TimeSpinnerTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2915,7 +2920,7 @@
 	</tag>
 
 	<tag>
-		<name>inputDateTimeSpinner</name>
+		<name>dateTimeSpinner</name>
 		<tag-class>org.kayura.web.easyui.tags.DateTimeSpinnerTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -3053,7 +3058,7 @@
 	</tag>
 
 	<tag>
-		<name>inputNumberSpinner</name>
+		<name>numberSpinner</name>
 		<tag-class>org.kayura.web.easyui.tags.NumberSpinnerTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -3230,7 +3235,7 @@
 		</attribute>
 	</tag>
 	<tag>
-		<name>inputNumber</name>
+		<name>number</name>
 		<tag-class>org.kayura.web.easyui.tags.NumberBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -4110,7 +4115,7 @@
 	</tag>
 
 	<tag>
-		<name>inputDate</name>
+		<name>dateBox</name>
 		<tag-class>org.kayura.web.easyui.tags.DateBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -4228,12 +4233,12 @@
 	</tag>
 
 	<tag>
-		<name>inputDateTime</name>
+		<name>dateTimeBox</name>
 		<tag-class>org.kayura.web.easyui.tags.DateTimeBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
 			<name>id</name>
-			<required>true</required>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>

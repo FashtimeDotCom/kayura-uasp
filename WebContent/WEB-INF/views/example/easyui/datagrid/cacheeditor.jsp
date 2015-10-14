@@ -3,6 +3,7 @@
 <e:section name="title">Basic DataGrid</e:section>
 
 <e:section name="body">
+	<h2>Cache Editor for DataGrid</h2>
 	<p>This example shows how to cache the editors for datagrid to improve the editing speed.</p>
 	<div style="margin:20px 0;"></div>
 

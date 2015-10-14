@@ -15,7 +15,7 @@
 			<li><a href="###" onclick="juasp.openTab('Html-Convert', '${root}/example/htmlconvert')">Html语义转换</a></li>
 		</ul>
 	</e:layoutUnit>
-	<e:layoutUnit region="west" split="true" title="导航栏" style="width: 200px;">
+	<e:layoutUnit region="west" split="true" title="导航栏" style="width: 160px;">
 		<e:accordion fit="true" border="false">
 			<e:tab iconCls="icon-ok" title="EasyUI">
 				<ul>

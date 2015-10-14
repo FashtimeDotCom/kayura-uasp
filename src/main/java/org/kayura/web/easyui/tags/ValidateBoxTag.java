@@ -67,7 +67,9 @@ public class ValidateBoxTag extends TagRender {
 				out.write(" value='" + getValue() + "'");
 			}
 			if (getClassStyle() != null) {
-				out.write(" class=\"" + getClassStyle() + "\"");
+				out.write(" class=\"easyui-" + getEasyuiTag() + " " + getClassStyle() + "\"");
+			}else{
+				out.write(" class=\"easyui-" + getEasyuiTag() + "\"");
 			}
 			if (getStyle() != null) {
 				out.write(" style=\"" + getStyle() + "\"");

@@ -94,16 +94,16 @@ public class TabTag extends TagRender {
 			out.write(" data-options=\"");
 			out.write(optionsToString());
 			out.write("\"");
-			out.write(">");
+			out.println(">");
 			if (getHref() != null && getIframe() != null && getIframe().booleanValue()) {
-				out.write("<iframe scrolling=\"yes\" frameborder=\"0\"  src=\"" + getHref()
+				out.println("<iframe scrolling=\"yes\" frameborder=\"0\"  src=\"" + getHref()
 						+ "\" style=\"width:100%;height:100%;\"></iframe>");
 			} else {
 				if (bodyContent != null) {
 					out.write(bodyContent.getString());
 				}
 			}
-			out.write("</div>");
+			out.println("</div>");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

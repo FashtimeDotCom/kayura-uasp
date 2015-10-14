@@ -91,7 +91,7 @@ public class TabsTag extends TagRender {
 			out.write(" data-options=\"");
 			out.write(optionsToString());
 			out.write("\"");
-			out.write(">");
+			out.println(">");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -100,7 +100,7 @@ public class TabsTag extends TagRender {
 	@Override
 	public void renderEnd(JspWriter out) {
 		try {
-			out.write("</div>");
+			out.println("</div>");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

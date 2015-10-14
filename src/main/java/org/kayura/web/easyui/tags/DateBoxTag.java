@@ -1,13 +1,11 @@
 package org.kayura.web.easyui.tags;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 /**
  * Created by 枫 on 2014/8/12.
  */
-public class DateBoxTag extends ComboTag {
+public class DateBoxTag extends ValidateBoxTag {
 
 	private static final long serialVersionUID = -3931797810452131160L;
 	public static final String TAG = "datebox";
@@ -30,19 +28,7 @@ public class DateBoxTag extends ComboTag {
         options.put("okText", getOkText());
         return options;
     }
-
-    @Override
-    public Object getValue() {
-        Object obj = super.getValue();
-        if (obj != null) {
-            if (obj instanceof Date) {
-                SimpleDateFormat sdf = new SimpleDateFormat(getFormatter());
-                return sdf.format((Date) obj);
-            }
-        }
-        return super.getValue();
-    }
-
+    
     public String getFormatter() {
         return formatter;
     }
@@ -74,4 +60,5 @@ public class DateBoxTag extends ComboTag {
     public void setOkText(String okText) {
         this.okText = okText;
     }
+
 }

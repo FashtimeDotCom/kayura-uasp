@@ -17,24 +17,51 @@ public class ExampleController extends BaseController {
 	public String index() {
 		return viewResult("index");
 	}
-	
+
 	@RequestMapping(value = "/htmlconvert", method = RequestMethod.GET)
 	public String htmlconvert() {
 		return viewResult("htmlconvert");
 	}
-	
+
 	@RequestMapping(value = "easyui/datagrid", method = RequestMethod.GET)
-	public String datagrid(){
+	public String datagrid() {
 		return viewResult("easyui/datagrid/index");
 	}
-	
+
 	@RequestMapping(value = "easyui/datagridbasic", method = RequestMethod.GET)
-	public String datagridbasic(){
+	public String datagridbasic() {
 		return viewResult("easyui/datagrid/basic");
 	}
-	
+
 	@RequestMapping(value = "easyui/datagridcacheeditor", method = RequestMethod.GET)
-	public String datagridcacheeditor(){
+	public String datagridcacheeditor() {
 		return viewResult("easyui/datagrid/cacheeditor");
-	}	
+	}
+
+	@RequestMapping(value = "easyui/datagridcellediting", method = RequestMethod.GET)
+	public String datagridcellediting() {
+		return viewResult("easyui/datagrid/cellediting");
+	}
+
+	@RequestMapping(value = "easyui/datagridcellstyle", method = RequestMethod.GET)
+	public String datagridcellstyle() {
+		return viewResult("easyui/datagrid/cellstyle");
+	}
+
+	@RequestMapping(value = "easyui/datagridcheckbox", method = RequestMethod.GET)
+	public String datagridcheckbox() {
+		return viewResult("easyui/datagrid/checkbox");
+	}
+
+	@RequestMapping(value = "easyui/datagridcolumngroup", method = RequestMethod.GET)
+	public String datagridcolumngroup() {
+		return viewResult("easyui/datagrid/columngroup");
+	}
+
+	@RequestMapping(value = "easyui/datagridcomplextoolbar", method = RequestMethod.GET)
+	public String datagridcomplextoolbar() {
+		return viewResult("easyui/datagrid/complextoolbar");
+	}
+	
+	
 }

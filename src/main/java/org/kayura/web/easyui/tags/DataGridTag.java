@@ -26,6 +26,7 @@ public class DataGridTag extends TagRender {
 	private Boolean autoRowHeight;
 	private Boolean collapsible;
 	private String toolbar;
+	private String footer;
 	private Boolean striped;
 	private String method;
 	private Boolean nowrap;
@@ -74,6 +75,7 @@ public class DataGridTag extends TagRender {
 
 		options.put("autoRowHeight", getAutoRowHeight());
 		options.put("toolbar", getToolbar());
+		options.put("footer", getFooter());
 		options.put("striped", getStriped());
 		options.put("method", getMethod());
 		options.put("nowrap", getNowrap());
@@ -217,6 +219,14 @@ public class DataGridTag extends TagRender {
 
 	public void setToolbar(String toolbar) {
 		this.toolbar = toolbar;
+	}
+
+	public String getFooter() {
+		return footer;
+	}
+
+	public void setFooter(String footer) {
+		this.footer = footer;
 	}
 
 	public Boolean getStriped() {

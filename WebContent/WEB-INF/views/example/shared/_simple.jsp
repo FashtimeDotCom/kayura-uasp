@@ -6,8 +6,8 @@
 	<e:resources location="res" theme="${theme}" />
 	<e:renderSection name="head" />
 </head>
-<body>
+<e:body style="overflow:hidden;">
 	<!-- Body -->
 	<e:renderSection name="body"></e:renderSection>
-</body>
+</e:body>
 </html>

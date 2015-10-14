@@ -2,19 +2,21 @@
 
 <e:section name="title">EasyUI DataGrid</e:section>
 
-<e:section name="head">
-	<script type="text/javascript">
-	
-	</script>
-</e:section>
-
 <e:section name="body">
-	<e:tabs id="tt" fit="true" border="false" plain="true" tabPosition="left">
-		<e:tab title="Base" style="overflow:hidden;" iframe="true" href="${root}/example/easyui/datagridbasic"></e:tab>
-		<e:tab title="Cache Editor" style="overflow:hidden;" iframe="true" href="${root}/example/easyui/datagridcacheeditor"></e:tab>
-		<e:tab title="Cell Editing"></e:tab>
-		<e:tab title="Cell style"></e:tab>
-	</e:tabs>
+	<e:layoutUnit region="west" split="true" border="false" style="width: 160px;">
+		<ul>
+			<li><a href="${root}/example/easyui/datagridbasic" target="iframe1">Basic</a></li>
+			<li><a href="${root}/example/easyui/datagridcacheeditor" target="iframe1">Cache Editor</a></li>
+			<li><a href="${root}/example/easyui/datagridcellediting" target="iframe1">Cell Editing</a></li>
+			<li><a href="${root}/example/easyui/datagridcellstyle" target="iframe1">Cell style</a></li>
+			<li><a href="${root}/example/easyui/datagridcheckbox" target="iframe1">CheckBox</a></li>
+			<li><a href="${root}/example/easyui/datagridcolumngroup" target="iframe1">Column Group</a></li>
+			<li><a href="${root}/example/easyui/datagridcomplextoolbar" target="iframe1">Complex Toolbar</a></li>
+		</ul>
+	</e:layoutUnit>
+	<e:layoutUnit region="center" border="false" style="overflow:hidden;" >
+		<iframe id="iframe1" name="iframe1" scrolling="yes" frameborder="0" src="" style="width:100%;height:100%;"></iframe>
+	</e:layoutUnit>
 </e:section>
 
 <%@ include file="../../shared/_simple.jsp"%>
