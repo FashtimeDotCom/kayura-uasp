@@ -38,7 +38,7 @@
 		</attribute>
 	</tag>
 	<tag>
-		<name>eventListener</name>
+		<name>eventlistener</name>
 		<tag-class>org.kayura.web.easyui.tags.EventListenerTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -165,7 +165,7 @@
 
 	<!-- LayoutUnit -->
 	<tag>
-		<name>layoutUnit</name>
+		<name>layoutunit</name>
 		<tag-class>org.kayura.web.easyui.tags.LayoutUnitTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -1201,8 +1201,8 @@
 	</tag>
 
 	<tag>
-		<name>button</name>
-		<tag-class>org.kayura.web.easyui.tags.ButtonTag</tag-class>
+		<name>linkbutton</name>
+		<tag-class>org.kayura.web.easyui.tags.LinkButtonTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
 			<name>id</name>
@@ -1292,7 +1292,7 @@
 	</tag>
 
 	<tag>
-		<name>menuButton</name>
+		<name>menubutton</name>
 		<tag-class>org.kayura.web.easyui.tags.MenuButtonTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -1390,7 +1390,7 @@
 	</tag>
 
 	<tag>
-		<name>splitButton</name>
+		<name>splitbutton</name>
 		<tag-class>org.kayura.web.easyui.tags.SplitButtonTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2102,7 +2102,7 @@
 	</tag>
 
 	<tag>
-		<name>validateBox</name>
+		<name>validatebox</name>
 		<tag-class>org.kayura.web.easyui.tags.ValidateBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2180,7 +2180,7 @@
 	</tag>
 
 	<tag>
-		<name>textBox</name>
+		<name>textbox</name>
 		<tag-class>org.kayura.web.easyui.tags.TextBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2318,7 +2318,7 @@
 	</tag>
 
 	<tag>
-		<name>searchBox</name>
+		<name>searchbox</name>
 		<tag-class>org.kayura.web.easyui.tags.SearchBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2456,7 +2456,7 @@
 	</tag>
 
 	<tag>
-		<name>fileBox</name>
+		<name>filebox</name>
 		<tag-class>org.kayura.web.easyui.tags.FileBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2747,7 +2747,7 @@
 	</tag>
 
 	<tag>
-		<name>timeSpinner</name>
+		<name>timespinner</name>
 		<tag-class>org.kayura.web.easyui.tags.TimeSpinnerTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -2920,7 +2920,7 @@
 	</tag>
 
 	<tag>
-		<name>dateTimeSpinner</name>
+		<name>datetimespinner</name>
 		<tag-class>org.kayura.web.easyui.tags.DateTimeSpinnerTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -3058,7 +3058,7 @@
 	</tag>
 
 	<tag>
-		<name>numberSpinner</name>
+		<name>numberspinner</name>
 		<tag-class>org.kayura.web.easyui.tags.NumberSpinnerTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -3408,7 +3408,7 @@
 	</tag>
 
 	<tag>
-		<name>comboTree</name>
+		<name>combotree</name>
 		<tag-class>org.kayura.web.easyui.tags.ComboTreeTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -3657,7 +3657,7 @@
 	</tag>
 
 	<tag>
-		<name>comboBox</name>
+		<name>combobox</name>
 		<tag-class>org.kayura.web.easyui.tags.ComboBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -3670,6 +3670,11 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>onSelect</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
 			<name>style</name>
@@ -3885,7 +3890,7 @@
 	</tag>
 
 	<tag>
-		<name>selectItems</name>
+		<name>selectitems</name>
 		<tag-class>org.kayura.web.easyui.tags.SelectItemsTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
@@ -3896,16 +3901,16 @@
 	</tag>
 
 	<tag>
-		<name>selectItem</name>
+		<name>selectitem</name>
 		<tag-class>org.kayura.web.easyui.tags.SelectItemTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
-			<name>itemValue</name>
+			<name>value</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>itemLabel</name>
+			<name>label</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -4115,7 +4120,7 @@
 	</tag>
 
 	<tag>
-		<name>dateBox</name>
+		<name>datebox</name>
 		<tag-class>org.kayura.web.easyui.tags.DateBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -4233,7 +4238,7 @@
 	</tag>
 
 	<tag>
-		<name>dateTimeBox</name>
+		<name>dateTimebox</name>
 		<tag-class>org.kayura.web.easyui.tags.DateTimeBoxTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -4372,7 +4377,7 @@
 	</tag>
 
 	<tag>
-		<name>comboGrid</name>
+		<name>combogrid</name>
 		<tag-class>org.kayura.web.easyui.tags.ComboGridTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
@@ -4864,7 +4869,7 @@
 	</tag>
 
 	<tag>
-		<name>treeNode</name>
+		<name>treenode</name>
 		<tag-class>org.kayura.web.easyui.tags.TreeNodeTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>

@@ -2,8 +2,15 @@
 
 <e:section name="title">Basic DataGrid</e:section>
 
-<e:section name="body">
+<e:section name="head">
+	<script type="text/javascript">
+		$(document).ready(function() {
+		});
+	</script>
+</e:section>
 
+<e:section name="body">
+	
 	<h2>CheckBox Selection on DataGrid</h2>
 	<p>Click the checkbox on header to select or unselect all selections.</p>
 	<div style="margin:20px 0;"></div>
@@ -22,11 +29,11 @@
 	</e:datagrid>
 	
 	<div style="margin:10px 0;">
-		<span>Selection Mode: </span>
-		<select onchange="$('#dg').datagrid({singleSelect:(this.value==0)})">
-			<option value="0">Single Row</option>
-			<option value="1">Multiple Rows</option>
-		</select><br/>
+		<span>选取模式: </span>
+		<e:combobox id="sm" onSelect="function(t){$('#dg').datagrid({singleSelect:(t.value == 0)})}" >
+			<e:selectitem label="Single Row" value="0"/>
+			<e:selectitem label="Multiple Rows" value="1"/>
+		</e:combobox><br/>
 		SelectOnCheck: <input type="checkbox" checked onchange="$('#dg').datagrid({selectOnCheck:$(this).is(':checked')})"><br/>
 		CheckOnSelect: <input type="checkbox" checked onchange="$('#dg').datagrid({checkOnSelect:$(this).is(':checked')})">
 	</div>

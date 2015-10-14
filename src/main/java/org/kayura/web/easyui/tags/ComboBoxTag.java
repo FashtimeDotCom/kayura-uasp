@@ -1,6 +1,9 @@
 package org.kayura.web.easyui.tags;
 
 import javax.servlet.jsp.JspWriter;
+
+import org.kayura.web.model.RawString;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -19,6 +22,7 @@ public class ComboBoxTag extends ComboTag {
 	private String url;
 	private String method;
 	private Object data;
+	private String onSelect;
 	private Map<String, String> queryParams;
 
 	@Override
@@ -39,6 +43,9 @@ public class ComboBoxTag extends ComboTag {
 		// options.put("value",getValue());
 		options.put("required", getRequired());
 		options.put("queryParams", getQueryParams());
+		if(getOnSelect() != null){
+			options.put("onSelect", new RawString(getOnSelect()));
+		}
 		return options;
 	}
 
@@ -62,7 +69,9 @@ public class ComboBoxTag extends ComboTag {
 				out.write(" value='" + getValue() + "'");
 			}
 			if (getClassStyle() != null) {
-				out.write(" class=\"" + getClassStyle() + "\"");
+				out.write(" class=\"easyui-" + getEasyuiTag() + " " + getClassStyle() + "\"");
+			} else {
+				out.write(" class=\"easyui-" + getEasyuiTag() + "\"");
 			}
 			if (getStyle() != null) {
 				out.write(" style=\"" + getStyle() + "\"");
@@ -156,5 +165,13 @@ public class ComboBoxTag extends ComboTag {
 
 	public void setQueryParams(Map<String, String> queryParams) {
 		this.queryParams = queryParams;
+	}
+
+	public String getOnSelect() {
+		return onSelect;
+	}
+
+	public void setOnSelect(String onSelect) {
+		this.onSelect = onSelect;
 	}
 }

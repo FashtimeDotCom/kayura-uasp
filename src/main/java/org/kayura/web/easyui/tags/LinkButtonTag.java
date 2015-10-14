@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by JiangFeng on 2014/8/7.
  */
-public class ButtonTag extends TagRender {
+public class LinkButtonTag extends TagRender {
 
 	private static final long serialVersionUID = 6677483353163581009L;
 	public final static String TAG = "linkbutton";

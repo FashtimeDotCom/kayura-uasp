@@ -28,9 +28,9 @@
 	</e:datagrid>
 
 	<div id="tb" style="height: auto">
-		<e:button iconCls="icon-save" plain="true" onclick="accept()">Accept</e:button>
-		<e:button iconCls="icon-undo" plain="true" onclick="reject()">Reject</e:button>
-		<e:button iconCls="icon-search" plain="true" onclick="getChanges()">GetChanges</e:button>
+		<e:linkbutton iconCls="icon-save" plain="true" onclick="accept()">Accept</e:linkbutton>
+		<e:linkbutton iconCls="icon-undo" plain="true" onclick="reject()">Reject</e:linkbutton>
+		<e:linkbutton iconCls="icon-search" plain="true" onclick="getChanges()">GetChanges</e:linkbutton>
 	</div>
 
 </e:section>

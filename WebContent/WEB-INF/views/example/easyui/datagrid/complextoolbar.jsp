@@ -23,7 +23,7 @@
 	<div id="tb" style="padding:2px 5px;">
 		Date From: <e:dateBox id="fromDate" style="110px" required="true" tipPosition="top"></e:dateBox>
 		To: <e:dateBox id="toDate" style="110px"></e:dateBox>
-		Language: 
+		Language: <e:comboBox id=""></e:comboBox>
 		<select class="easyui-combobox" panelHeight="auto" style="width:100px">
 			<option value="java">Java</option>
 			<option value="c">C</option>

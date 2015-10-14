@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by JiangFeng on 2014/8/7.
  */
-public class MenuButtonTag extends ButtonTag {
+public class MenuButtonTag extends LinkButtonTag {
 
 	private static final long serialVersionUID = -4039214937912046885L;
 	private Boolean plain = true;

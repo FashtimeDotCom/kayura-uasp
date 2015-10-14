@@ -9,8 +9,8 @@ import java.io.IOException;
 public class SelectItemTag extends TagRender {
 
 	private static final long serialVersionUID = 4026077087904522362L;
-	private String itemLabel;
-	private String itemValue;
+	private String label;
+	private String value;
 	private Boolean selected;
 
 	@Override
@@ -27,11 +27,11 @@ public class SelectItemTag extends TagRender {
 	public void renderStart(JspWriter out) {
 		try {
 			out.write("<option ");
-			out.write(" value='" + itemValue + "'");
+			out.write(" value='" + getValue() + "'");
 			String select = (selected != null && selected.booleanValue()) ? " selected='selected'" : "";
 			out.write(select);
 			out.write(">");
-			out.write(itemLabel);
+			out.write(getLabel());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -46,27 +46,27 @@ public class SelectItemTag extends TagRender {
 		}
 	}
 
-	public String getItemLabel() {
-		return itemLabel;
-	}
-
-	public void setItemLabel(String itemLabel) {
-		this.itemLabel = itemLabel;
-	}
-
-	public String getItemValue() {
-		return itemValue;
-	}
-
-	public void setItemValue(String itemValue) {
-		this.itemValue = itemValue;
-	}
-
 	public Boolean getSelected() {
 		return selected;
 	}
 
 	public void setSelected(Boolean selected) {
 		this.selected = selected;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 }
