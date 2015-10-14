@@ -1,7 +1,7 @@
 package org.kayura.web.easyui.tags;
 
 import org.kayura.web.model.Column;
-import org.kayura.web.model.JsFunction;
+import org.kayura.web.model.RawString;
 
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.Tag;
@@ -15,6 +15,7 @@ import java.util.Map;
 public class ColumnTag extends TagRender {
 
 	private static final long serialVersionUID = -3014918557228534807L;
+
 	private String title;
 	private String field;
 	private String width;
@@ -28,9 +29,11 @@ public class ColumnTag extends TagRender {
 	private Boolean fixed;
 	private Boolean hidden;
 	private Boolean checkbox;
-	private String formatter;
+
 	private String styler;
 	private String sorter;
+	private String formatter;
+	private String editor;
 
 	@Override
 	public String getEasyuiTag() {
@@ -45,6 +48,7 @@ public class ColumnTag extends TagRender {
 	@Override
 	public Map<String, Object> getOptions() {
 		Map<String, Object> options = new HashMap<String, Object>();
+		
 		options.put("field", getField());
 		options.put("align", getAlign());
 		options.put("halign", getHalign());
@@ -54,12 +58,17 @@ public class ColumnTag extends TagRender {
 		options.put("fixed", getFixed());
 		options.put("hidden", getHidden());
 		options.put("checkbox", getCheckbox());
+		
 		if (getFormatter() != null) {
-			options.put("formatter", new JsFunction(getFormatter()));
+			options.put("formatter", new RawString(getFormatter()));
 		}
 		if (getStyler() != null) {
-			options.put("styler", new JsFunction(getStyler()));
+			options.put("styler", new RawString(getStyler()));
 		}
+		if (getEditor() != null) {
+			options.put("editor", new RawString(getEditor()));
+		}
+
 		options.put("sorter", getSorter());
 		options.put("width", getWidth());
 		return options;
@@ -229,5 +238,13 @@ public class ColumnTag extends TagRender {
 
 	public void setSorter(String sorter) {
 		this.sorter = sorter;
+	}
+
+	public String getEditor() {
+		return editor;
+	}
+
+	public void setEditor(String editor) {
+		this.editor = editor;
 	}
 }

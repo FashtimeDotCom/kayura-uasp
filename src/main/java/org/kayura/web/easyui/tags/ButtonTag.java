@@ -66,6 +66,9 @@ public class ButtonTag extends TagRender {
 			}
 			if (getClassStyle() != null) {
 				out.write(" class=\"" + getClassStyle() + "\"");
+			} else {
+				out.write(" class=\"easyui-" + getEasyuiTag() + " " + getClassStyle() + "\"");
+
 			}
 			if (getStyle() != null) {
 				out.write(" style=\"" + getStyle() + "\"");

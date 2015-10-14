@@ -3,7 +3,8 @@
 <e:section name="title">Basic DataGrid</e:section>
 
 <e:section name="body">
-	<p style="margin: 20px 0;"> The DataGrid is created from markup, no JavaScript code needed.</p>
+	<p>The DataGrid is created from markup, no JavaScript code needed.</p>
+	<div style="margin:20px 0;"></div>
 	<e:datagrid title="Basic DataGrid" style="width:700px;height:200px" collapsible="true"
 		singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get">
 		<e:columns>
@@ -30,4 +31,4 @@
 &lt;/e:datagrid&gt;
 </e:section>
 
-<%@ include file="../shared/_simple.jsp" %>
+<%@ include file="../../shared/_content.jsp" %>

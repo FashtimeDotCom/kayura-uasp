@@ -13,6 +13,6 @@
 			value="登录" /> <input type="reset" value="重置">
 	</form>
 	
-	<a href="${root}/easyui/">EasyUI 示例</a>
+	<a href="${root}/example/">EasyUI 示例</a>
 </body>
 </html>

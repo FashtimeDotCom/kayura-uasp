@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.kayura.web.model.JsFunction;
 import org.kayura.web.model.JsonSerializeConfig;
+import org.kayura.web.model.RawString;
 import org.kayura.web.model.RenderContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -129,6 +130,8 @@ public abstract class TagRender extends BodyTagSupport implements Cloneable {
 					if ((Integer) value >= 0) {
 						options += "," + option.getKey() + ":" + value;
 					}
+				} else if (value instanceof RawString) {
+					options += "," + option.getKey() + ":" + value.toString();
 				} else if (value instanceof String) {
 					options += "," + option.getKey() + ":'" + value + "'";
 				} else if (value instanceof Enum) {
@@ -143,10 +146,13 @@ public abstract class TagRender extends BodyTagSupport implements Cloneable {
 				}
 			}
 		}
-		if (options.length() > 0) {
+		if (options.length() > 0)
+
+		{
 			options = options.substring(1);
 		}
 		return options;
+
 	}
 
 	@Override

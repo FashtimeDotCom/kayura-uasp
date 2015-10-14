@@ -1206,7 +1206,7 @@
 		<body-content>JSP</body-content>
 		<attribute>
 			<name>id</name>
-			<required>true</required>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
@@ -1699,6 +1699,11 @@
 			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
+			<name>iconCls</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<name>fit</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -1855,6 +1860,11 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>onClickRow</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 
 	<tag>
@@ -1949,6 +1959,11 @@
 		</attribute>
 		<attribute>
 			<name>sorter</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>editor</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

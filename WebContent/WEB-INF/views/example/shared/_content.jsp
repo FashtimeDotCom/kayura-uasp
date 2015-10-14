@@ -19,5 +19,7 @@
 	<div style="margin-top: 10px">
 		Source : <%= request.getRequestURI() %>
 	</div>
+	
+	<e:renderSection name="footer"></e:renderSection>
 </body>
 </html>

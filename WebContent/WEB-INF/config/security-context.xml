@@ -7,7 +7,7 @@
 	<!-- 定义不需要过滤的请求路径 -->
  	<http pattern="/res/**" security="none" />
 	<http pattern="/login**" security="none" />
-	<http pattern="/easyui/**" security="none" />
+	<http pattern="/example/**" security="none" />
 	
 	<!-- 配置访问限制规则 -->
 	<http auto-config="true" use-expressions="true" >
