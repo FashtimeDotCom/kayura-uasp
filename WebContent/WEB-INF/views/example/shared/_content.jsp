@@ -9,7 +9,7 @@
 	<script>hljs.initHighlightingOnLoad();</script>
 	<e:renderSection name="head" />
 </head>
-<body>
+<body style="margin:10px;">
 	<!-- Body -->
 	<e:renderSection name="body" />
 	
@@ -17,7 +17,7 @@
 	<pre><code class="html"><e:renderSection name="code" />
 	</code></pre>
 	
-	<div style="margin-top: 10px">
+	<div style="margin-top: 10px;">
 		Source : <%= request.getRequestURI() %>
 	</div>
 	

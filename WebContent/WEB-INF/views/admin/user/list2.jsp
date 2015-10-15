@@ -32,7 +32,7 @@
 
 		<e:facet name="toolbar">
 		
-			关键字：<e:inputText id="keyword" style="width:150px" />
+			关键字：<e:textbox id="keyword" style="width:150px" />
 			状态： 
 			<select id="status" class="easyui-combobox" panelHeight="auto" style="width: 150px">
 				<option value="">所有</option>
@@ -42,9 +42,9 @@
 			</select><a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="doSearch()">查询</a>
 			
 			<div style="float: right;">
-				<e:button id="add" iconCls="icon-add" plain="true" text="新增账号" />
-				<e:button id="edit" iconCls="icon-edit" plain="true" text="编辑账号" />
-				<e:button id="cancel" iconCls="icon-cancel" plain="true" text="删除账号" />
+				<e:linkbutton id="add" iconCls="icon-add" plain="true" text="新增账号" />
+				<e:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑账号" />
+				<e:linkbutton id="cancel" iconCls="icon-cancel" plain="true" text="删除账号" />
 			</div>
 			
 		</e:facet>

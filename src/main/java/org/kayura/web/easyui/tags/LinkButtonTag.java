@@ -65,10 +65,9 @@ public class LinkButtonTag extends TagRender {
 				out.write(" id=\"" + getId() + "\"");
 			}
 			if (getClassStyle() != null) {
-				out.write(" class=\"" + getClassStyle() + "\"");
-			} else {
 				out.write(" class=\"easyui-" + getEasyuiTag() + " " + getClassStyle() + "\"");
-
+			} else {
+				out.write(" class=\"easyui-" + getEasyuiTag() + "\"");
 			}
 			if (getStyle() != null) {
 				out.write(" style=\"" + getStyle() + "\"");

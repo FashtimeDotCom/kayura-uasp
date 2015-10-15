@@ -47,6 +47,9 @@ public class BodyTag extends TagRender {
 			} else {
 				out.write(" class=\"" + (getClassStyle() == null ? "" : getClassStyle()) + "\"");
 			}
+			if (getStyle() != null) {
+				out.write(" style=\"" + getStyle() + "\"");
+			}
 			out.write(">\n");
 /*			if (isFull()) {
 				out.write("<div data-options=\"region:'center',border:false\" ");

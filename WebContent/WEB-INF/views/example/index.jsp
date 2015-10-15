@@ -24,6 +24,10 @@
 				</ul>
 			</e:tab>
 			<e:tab iconCls="icon-ok" title="常用示例">
+				<ul>
+					<li><a href="###" onclick="juasp.openTab('List-Basic', '${root}/example/general/basiclist')">基本列表</a></li>
+				</ul>
+			
 			</e:tab>
 		</e:accordion>
 	</e:layoutunit>

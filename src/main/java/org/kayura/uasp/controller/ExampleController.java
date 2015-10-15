@@ -23,6 +23,13 @@ public class ExampleController extends BaseController {
 		return viewResult("htmlconvert");
 	}
 
+	
+	@RequestMapping(value = "general/basiclist", method = RequestMethod.GET)
+	public String generalbasiclist(){
+		return viewResult("general/basiclist");
+	}
+	
+
 	@RequestMapping(value = "easyui/datagrid", method = RequestMethod.GET)
 	public String datagrid() {
 		return viewResult("easyui/datagrid/index");
