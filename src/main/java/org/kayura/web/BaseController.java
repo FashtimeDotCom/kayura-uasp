@@ -11,12 +11,13 @@ import org.kayura.logging.LogFactory;
 import org.kayura.type.PageParams;
 import org.kayura.utils.PathUtils;
 import org.kayura.web.ui.UISupport;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.kayura.type.PageList;
 
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * @author liangxia@live.com
