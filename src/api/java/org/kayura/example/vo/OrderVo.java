@@ -1,0 +1,161 @@
+package org.kayura.example.vo;
+
+import java.util.Date;
+
+public class OrderVo {
+
+	private Integer id;
+	private Integer customerId;
+	private String customerName;
+	private Integer employeeId;
+	private String employeeLastName;
+	private String employeeFirstName;
+	private Date orderDate;
+	private Date requiredDate;
+	private Date shippedDate;
+	private Integer shipViaId;
+	private Double freight;
+	private String shipName;
+	private String shipAddress;
+	private String shipCity;
+	private String shipRegion;
+	private String shipPostalCode;
+	private String shipCountry;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public Integer getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(Integer employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public String getEmployeeLastName() {
+		return employeeLastName;
+	}
+
+	public void setEmployeeLastName(String employeeLastName) {
+		this.employeeLastName = employeeLastName;
+	}
+
+	public String getEmployeeFirstName() {
+		return employeeFirstName;
+	}
+
+	public void setEmployeeFirstName(String employeeFirstName) {
+		this.employeeFirstName = employeeFirstName;
+	}
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public Date getRequiredDate() {
+		return requiredDate;
+	}
+
+	public void setRequiredDate(Date requiredDate) {
+		this.requiredDate = requiredDate;
+	}
+
+	public Date getShippedDate() {
+		return shippedDate;
+	}
+
+	public void setShippedDate(Date shippedDate) {
+		this.shippedDate = shippedDate;
+	}
+
+	public Integer getShipViaId() {
+		return shipViaId;
+	}
+
+	public void setShipViaId(Integer shipViaId) {
+		this.shipViaId = shipViaId;
+	}
+
+	public Double getFreight() {
+		return freight;
+	}
+
+	public void setFreight(Double freight) {
+		this.freight = freight;
+	}
+
+	public String getShipName() {
+		return shipName;
+	}
+
+	public void setShipName(String shipName) {
+		this.shipName = shipName;
+	}
+
+	public String getShipAddress() {
+		return shipAddress;
+	}
+
+	public void setShipAddress(String shipAddress) {
+		this.shipAddress = shipAddress;
+	}
+
+	public String getShipCity() {
+		return shipCity;
+	}
+
+	public void setShipCity(String shipCity) {
+		this.shipCity = shipCity;
+	}
+
+	public String getShipRegion() {
+		return shipRegion;
+	}
+
+	public void setShipRegion(String shipRegion) {
+		this.shipRegion = shipRegion;
+	}
+
+	public String getShipPostalCode() {
+		return shipPostalCode;
+	}
+
+	public void setShipPostalCode(String shipPostalCode) {
+		this.shipPostalCode = shipPostalCode;
+	}
+
+	public String getShipCountry() {
+		return shipCountry;
+	}
+
+	public void setShipCountry(String shipCountry) {
+		this.shipCountry = shipCountry;
+	}
+
+}
