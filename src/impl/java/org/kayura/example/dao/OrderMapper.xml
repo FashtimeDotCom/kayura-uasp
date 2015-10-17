@@ -50,7 +50,7 @@
 		where t.OrderID = #{id}
 	</select>
 	
-	<select id="findByMap" resultMap="BaseResultMap" parameterType="int">
+	<select id="findByMap" resultMap="BaseResultMap" parameterType="map">
 		select
 			<include refid="Base_Column_List" />,
 			e.LastName AS EmployeeLastName,

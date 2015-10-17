@@ -18,13 +18,26 @@
 		t.DetailID, t.OrderID, t.ProductID, t.UnitPrice, t.Quantity, t.Discount
 	</sql>
 	
-	<select id="selectByKey" resultMap="BaseResultMap" parameterType="int">
+	<select id="getById" resultMap="BaseResultMap" parameterType="int">
 		select
 			<include refid="Base_Column_List" />,
 			p.ProductName
 		from example_orderdetails AS t
 			INNER JOIN example_products AS p ON t.ProductID = p.ProductID
 		where t.DetailID = #{id}
+	</select>
+	
+	<select id="findByMap" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />,
+			p.ProductName
+		from example_orderdetails AS t
+			INNER JOIN example_products AS p ON t.ProductID = p.ProductID
+		<where>
+			<if test="id != null">
+				AND t.DetailID = #{id}
+			</if>
+		</where>
 	</select>
 	
 	<delete id="deleteByKey" parameterType="int">
