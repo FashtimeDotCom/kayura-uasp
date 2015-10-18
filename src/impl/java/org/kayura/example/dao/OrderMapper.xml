@@ -6,7 +6,7 @@
 
 	<resultMap id="BaseResultMap" type="org.kayura.example.po.Order">
 		<id column="OrderID" property="id" />
-		<result column="OrderDate" property="orderDate"  />
+		<result column="OrderDate" property="orderDate" />
 		<result column="RequiredDate" property="requiredDate"  />
 		<result column="ShippedDate" property="shippedDate" />
 		<result column="Freight" property="freight" />
@@ -75,9 +75,9 @@
 			</if>
 			<if test="keyword != null">
 				AND (
-					  t.ShipName LIKE #{keyword} OR t.FirstName LIKE #{keyword} OR 
-					  t.ShipCity LIKE #{keyword} OR t.ShipRegion LIKE #{keyword} OR 
-					  t.ShipPostalCode LIKE #{keyword} OR t.ShipCountry LIKE #{keyword} OR 
+					  t.ShipName LIKE #{keyword} OR t.ShipCity LIKE #{keyword} OR 
+					  t.ShipRegion LIKE #{keyword} OR t.ShipPostalCode LIKE #{keyword} OR 
+					  t.ShipCountry LIKE #{keyword} OR 
 					  e.LastName LIKE #{keyword} OR e.FirstName LIKE #{keyword} OR 
 					  c.CompanyName LIKE #{keyword} OR s.CompanyName LIKE #{keyword}
 					)
