@@ -5,7 +5,7 @@ import java.util.Date;
 public class OrderVo {
 
 	private Integer id;
-	private Integer customerId;
+	private String customerId;
 	private String customerName;
 	private Integer employeeId;
 	private String employeeLastName;
@@ -14,6 +14,7 @@ public class OrderVo {
 	private Date requiredDate;
 	private Date shippedDate;
 	private Integer shipViaId;
+	private String shipViaName;
 	private Double freight;
 	private String shipName;
 	private String shipAddress;
@@ -30,11 +31,11 @@ public class OrderVo {
 		this.id = id;
 	}
 
-	public Integer getCustomerId() {
+	public String getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(Integer customerId) {
+	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
 
@@ -100,6 +101,14 @@ public class OrderVo {
 
 	public void setShipViaId(Integer shipViaId) {
 		this.shipViaId = shipViaId;
+	}
+
+	public String getShipViaName() {
+		return shipViaName;
+	}
+
+	public void setShipViaName(String shipViaName) {
+		this.shipViaName = shipViaName;
 	}
 
 	public Double getFreight() {

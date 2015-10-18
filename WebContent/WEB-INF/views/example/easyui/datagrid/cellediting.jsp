@@ -19,7 +19,8 @@
 	</e:datagrid>
 </e:section>
 
-<e:section name="code">&lt;e:datagrid id="dg" title="Cell Editing in DataGrid" style="width:700px;height:200px" collapsible="true"
+<e:section name="code">
+<pre><code class="html">&lt;e:datagrid id="dg" title="Cell Editing in DataGrid" style="width:700px;height:200px" collapsible="true"
 	iconCls="icon-edit" singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get"&gt;
 	&lt;e:columns&gt;
 		&lt;e:column field="itemid" width="80"&gt;Item ID&lt;/e:column&gt;
@@ -91,6 +92,7 @@
 		$('#dg').datagrid().datagrid('enableCellEditing');
 	})
 &lt;/script&gt;
+</code></pre>
 </e:section>
 
 <e:section name="footer">

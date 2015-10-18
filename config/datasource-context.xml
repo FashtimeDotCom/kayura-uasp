@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
 	<!-- 扫描指定包内继承自BaseDao的接口，并创建SpringBean对象. -->
-	<mybatis-spring:scan base-package="org.kayura.uasp" factory-ref="sqlSessionFactory"
+	<mybatis-spring:scan base-package="org.kayura" factory-ref="sqlSessionFactory"
 		marker-interface="org.kayura.core.BaseDao" />
 
 	<!-- 引用外部属性定义文件. -->
@@ -19,7 +19,7 @@
 		<property name="fileEncoding" value="UTF-8" />
 		<property name="locations">
 			<list>
-				<value>/WEB-INF/config/system.properties</value>
+				<value>classpath:system.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -35,7 +35,7 @@
 
 	<!-- 定义 MyBatis数据访问工厂Bean对象 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="/WEB-INF/config/mybatis-config.xml" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="databaseIdProvider" ref="databaseIdProvider" />
 	</bean>

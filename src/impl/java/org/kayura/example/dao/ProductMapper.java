@@ -1,18 +1,25 @@
 package org.kayura.example.dao;
 
+import java.util.Map;
+
+import org.kayura.core.BaseDao;
 import org.kayura.example.po.Product;
+import org.kayura.mybatis.type.PageBounds;
+import org.kayura.type.PageList;
 
-public interface ProductMapper {
-	
-    int deleteByKey(Integer id);
+public interface ProductMapper extends BaseDao {
 
-    int insert(Product record);
+	int deleteByKey(Integer id);
 
-    int insertSelective(Product record);
+	int insert(Product record);
 
-    Product selectByKey(Integer id);
+	int insertSelective(Product record);
 
-    int updateBySelective(Product record);
+	Product selectByKey(Integer id);
 
-    int updateByKey(Product record);
+	PageList<Product> findByMap(Map<String, Object> args, PageBounds pageBounds);
+
+	int updateBySelective(Product record);
+
+	int updateByKey(Product record);
 }

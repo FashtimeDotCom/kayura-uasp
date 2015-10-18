@@ -28,7 +28,7 @@ public class BaseController {
 
 	@Autowired
 	protected UISupport ui;
-	
+
 	protected ObjectMapper objectMapper = new ObjectMapper();
 	protected String viewRootPath;
 
@@ -42,7 +42,7 @@ public class BaseController {
 	 * @param req Http提供请求信息.
 	 * @return 分页信息对象.
 	 */
-	public PageParams getPageBounds(HttpServletRequest req) {
+	public PageParams getPageParams(HttpServletRequest req) {
 		return ui.getPageParams(req);
 	}
 
@@ -56,8 +56,8 @@ public class BaseController {
 	 * @param model
 	 * @param pageList
 	 */
-	public void putData(Map<String, Object> map, PageList<?> pageList) {
-		ui.putData(map, pageList);
+	public void putData(Map<String, Object> model, PageList<?> pageList) {
+		ui.putData(model, pageList);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class BaseController {
 	 * @param map 一个 Key,Value类型的集合,它由SpringMvc创建.
 	 * @param executeAction 代理的执行方法,可以建立它的匿名方法.
 	 */
-	public void execute(Map<String, Object> map, Action executeAction) {
+	public void execute(Map<String, Object> model, Action executeAction) {
 
 		PostResult postResult = new PostResult();
 
@@ -104,10 +104,10 @@ public class BaseController {
 			postResult.setError(e.getMessage());
 		}
 
-		map.clear();
-		map.put("type", postResult.getType());
-		map.put("message", postResult.getMessage());
-		map.put("attr", postResult.getAttr());
+		model.clear();
+		model.put("type", postResult.getType());
+		model.put("message", postResult.getMessage());
+		model.put("attr", postResult.getAttr());
 	}
 
 }

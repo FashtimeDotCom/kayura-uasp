@@ -2,11 +2,12 @@ package org.kayura.example.dao;
 
 import java.util.Map;
 
+import org.kayura.core.BaseDao;
 import org.kayura.example.po.Order;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
 
-public interface OrderMapper {
+public interface OrderMapper extends BaseDao {
 	
     int deleteByKey(Integer id);
 

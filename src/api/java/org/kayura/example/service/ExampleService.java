@@ -10,6 +10,7 @@ import org.kayura.type.Result;
 
 public interface ExampleService {
 
+	
 	PageList<OrderVo> findOrders(Map<String, Object> args, PageParams pageParams);
 
 	OrderVo getOrderById(Integer orderId);
@@ -17,6 +18,7 @@ public interface ExampleService {
 	Result<String> saveOrUpdateOrder(OrderVo order);
 
 	Result<String> deleteOrderById(Integer orderId);
+	
 
 	PageList<OrderDetailVo> findOrderDetails(Map<String, Object> args, PageParams pageParams);
 
@@ -25,5 +27,7 @@ public interface ExampleService {
 	Result<String> saveOrUpdateOrderDetail(OrderDetailVo orderDetail);
 
 	Result<String> deleteOrderDetailById(Integer orderDetailId);
+	
+	
 	
 }

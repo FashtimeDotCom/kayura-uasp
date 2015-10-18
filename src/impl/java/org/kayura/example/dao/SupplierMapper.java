@@ -1,8 +1,9 @@
 package org.kayura.example.dao;
 
+import org.kayura.core.BaseDao;
 import org.kayura.example.po.Supplier;
 
-public interface SupplierMapper {
+public interface SupplierMapper extends BaseDao {
 
 	int deleteByKey(Integer id);
 

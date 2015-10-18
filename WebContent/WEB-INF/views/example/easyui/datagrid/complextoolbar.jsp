@@ -44,7 +44,8 @@
 
 </e:section>
 
-<e:section name="code">&lt;e:datagrid title="DataGrid Complex Toolbar" style="width:700px;height:250px" collapsible="true"
+<e:section name="code">
+<pre><code class="html">&lt;e:datagrid title="DataGrid Complex Toolbar" style="width:700px;height:250px" collapsible="true"
 	singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get"
 	toolbar="#tb" footer="#ft"&gt;
 	&lt;e:columns&gt;
@@ -77,6 +78,7 @@
 	&lt;e:linkbutton iconCls="icon-cut" plain="true"&gt;&lt;/e:linkbutton&gt;
 	&lt;e:linkbutton iconCls="icon-remove" plain="true"&gt;&lt;/e:linkbutton&gt;
 &lt;/div&gt;
+</code></pre>
 </e:section>
 
 <%@ include file="../../shared/_content.jsp" %>

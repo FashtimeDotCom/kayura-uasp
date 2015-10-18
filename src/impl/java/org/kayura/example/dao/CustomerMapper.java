@@ -1,8 +1,9 @@
 package org.kayura.example.dao;
 
+import org.kayura.core.BaseDao;
 import org.kayura.example.po.Customer;
 
-public interface CustomerMapper {
+public interface CustomerMapper extends BaseDao {
 	
     int deleteByKey(String id);
 

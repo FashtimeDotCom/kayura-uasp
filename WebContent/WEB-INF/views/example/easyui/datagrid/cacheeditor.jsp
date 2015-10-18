@@ -35,7 +35,8 @@
 
 </e:section>
 
-<e:section name="code">&lt;e:datagrid id="dg" title="Cache Editor for DataGrid"
+<e:section name="code">
+<pre><code class="html">&lt;e:datagrid id="dg" title="Cache Editor for DataGrid"
 	style="width:700px;height:auto" collapsible="true" singleSelect="true"
 	iconCls="icon-edit"
 	url="${root}/res/easyui/jsondata/datagrid_data1.json"
@@ -152,6 +153,7 @@
 		alert(rows.length+' rows are changed!');
 	}
 &lt;/script&gt;
+</code></pre>
 </e:section>
 
 <e:section name="footer">

@@ -14,8 +14,7 @@
 	<e:renderSection name="body" />
 	
 	<!-- Code -->
-	<pre><code class="html"><e:renderSection name="code" />
-	</code></pre>
+	<e:renderSection name="code" />
 	
 	<div style="margin-top: 10px;">
 		Source : <%= request.getRequestURI() %>

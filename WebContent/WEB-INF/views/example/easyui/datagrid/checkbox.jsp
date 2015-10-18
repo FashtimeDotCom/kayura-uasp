@@ -40,7 +40,8 @@
 	
 </e:section>
 
-<e:section name="code">&lt;e:datagrid id="dg" title="CheckBox Selection on DataGrid" style="width:700px;height:250px"
+<e:section name="code">
+<pre><code class="html">&lt;e:datagrid id="dg" title="CheckBox Selection on DataGrid" style="width:700px;height:250px"
 	rownumbers="true" singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get"&gt;
 	&lt;e:columns&gt;
 		&lt;e:column field="ck" checkbox="true"&gt;&lt;/e:column&gt;
@@ -62,6 +63,7 @@
 	SelectOnCheck: &lt;input type="checkbox" checked onchange="$('#dg').datagrid({selectOnCheck:$(this).is(':checked')})"&gt;&lt;br/&gt;
 	CheckOnSelect: &lt;input type="checkbox" checked onchange="$('#dg').datagrid({checkOnSelect:$(this).is(':checked')})"&gt;
 &lt;/div&gt;
+</code></pre>
 </e:section>
 
 <%@ include file="../../shared/_content.jsp" %>

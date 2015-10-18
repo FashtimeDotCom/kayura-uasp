@@ -8,16 +8,16 @@
 	<div style="margin:20px 0;"></div>
 	
 	<e:datagrid title="管理列表" style="width:100%;height:auto;" collapsible="true" pagination="true" pageSize="10" 
-		singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get" idField="itemid"
-		toolbar="#t1,#q1" >
+		singleSelect="true" url="${root}/example/general/order/find.json" method="get" idField="id"
+		toolbar="#t1,#q1">
 		<e:columns>
 			<e:column field="ck" checkbox="true" />
-			<e:column field="itemid" width="80">Item ID</e:column>
-			<e:column field="productid" width="100">Product</e:column>
-			<e:column field="listprice" width="80" align="right">List Price</e:column>
-			<e:column field="unitcost" width="80" align="right">Unit Cost</e:column>
-			<e:column field="attr1" width="250">Attribute</e:column>
-			<e:column field="status" width="60" align="center">Status</e:column>
+			<e:column field="orderDate" width="80">Order Date</e:column>
+			<e:column field="customerName" width="150">Customer</e:column>
+			<e:column field="shipViaName" width="120" >ShipVia</e:column>
+			<e:column field="shipName" width="200" >Ship Name</e:column>
+			<e:column field="shipAddress" width="200">Ship Address</e:column>
+			<e:column field="shipCity" width="120" >Ship City</e:column>
 		</e:columns>
 	</e:datagrid>
 
@@ -44,17 +44,18 @@
 	
 </e:section>
 
-<e:section name="code">&lt;e:datagrid title="管理列表" style="width:100%;height:auto;" collapsible="true" pagination="true" pageSize="10" 
-	singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get" idField="itemid"
-	toolbar="#t1,#q1" &gt;
+<e:section name="code">
+<pre><code class="html">&lt;e:datagrid title="管理列表" style="width:100%;height:auto;" collapsible="true" pagination="true" pageSize="10" 
+	singleSelect="true" url="${root}/example/general/order/find.json" method="get" idField="id"
+	toolbar="#t1,#q1"&gt;
 	&lt;e:columns&gt;
 		&lt;e:column field="ck" checkbox="true" /&gt;
-		&lt;e:column field="itemid" width="80"&gt;Item ID&lt;/e:column&gt;
-		&lt;e:column field="productid" width="100"&gt;Product&lt;/e:column&gt;
-		&lt;e:column field="listprice" width="80" align="right"&gt;List Price&lt;/e:column&gt;
-		&lt;e:column field="unitcost" width="80" align="right"&gt;Unit Cost&lt;/e:column&gt;
-		&lt;e:column field="attr1" width="250"&gt;Attribute&lt;/e:column&gt;
-		&lt;e:column field="status" width="60" align="center"&gt;Status&lt;/e:column&gt;
+		&lt;e:column field="orderDate" width="80"&gt;Order Date&lt;/e:column&gt;
+		&lt;e:column field="customerName" width="150"&gt;Customer&lt;/e:column&gt;
+		&lt;e:column field="shipViaName" width="120" &gt;ShipVia&lt;/e:column&gt;
+		&lt;e:column field="shipName" width="200" &gt;Ship Name&lt;/e:column&gt;
+		&lt;e:column field="shipAddress" width="200"&gt;Ship Address&lt;/e:column&gt;
+		&lt;e:column field="shipCity" width="120" &gt;Ship City&lt;/e:column&gt;
 	&lt;/e:columns&gt;
 &lt;/e:datagrid&gt;
 
@@ -78,6 +79,7 @@
 	&lt;/e:combobox&gt;
 	&lt;e:linkbutton iconCls="icon-search" style="margin-left:5px"&gt;搜索&lt;/e:linkbutton&gt;
 &lt;/div&gt;
+</code></pre>
 </e:section>
 
 <%@ include file="../shared/_content.jsp" %>

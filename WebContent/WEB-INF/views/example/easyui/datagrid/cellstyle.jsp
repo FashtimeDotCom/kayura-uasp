@@ -20,7 +20,8 @@
 </e:datagrid>
 </e:section>
 
-<e:section name="code">&lt;e:datagrid title="DataGrid Cell Style" style="width:700px;height:auto" collapsible="true"
+<e:section name="code">
+<pre><code class="html">&lt;e:datagrid title="DataGrid Cell Style" style="width:700px;height:auto" collapsible="true"
 	singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get"&gt;
 	&lt;e:columns&gt;
 		&lt;e:column field="itemid" width="80"&gt;Item ID&lt;/e:column&gt;
@@ -39,6 +40,7 @@
 		}
 	}
 &lt;/script&gt;
+</code></pre>
 </e:section>
 
 <e:section name="footer">

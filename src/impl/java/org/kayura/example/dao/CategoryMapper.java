@@ -1,8 +1,9 @@
 package org.kayura.example.dao;
 
+import org.kayura.core.BaseDao;
 import org.kayura.example.po.Category;
 
-public interface CategoryMapper {
+public interface CategoryMapper extends BaseDao {
 
 	int insert(Category record);
 

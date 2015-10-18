@@ -27,7 +27,8 @@
 	</e:datagrid>
 </e:section>
 
-<e:section name="code">&lt;e:datagrid title="Column Group" style="width:700px;height:250px"
+<e:section name="code">
+<pre><code class="html">&lt;e:datagrid title="Column Group" style="width:700px;height:250px"
 	collapsible="true" singleSelect="true" rownumbers="true"
 	url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get"&gt;
 	&lt;thead&gt;
@@ -44,6 +45,7 @@
 		&lt;/tr&gt;
 	&lt;/thead&gt;
 &lt;/e:datagrid&gt;
+</code></pre>
 </e:section>
 
 <%@ include file="../../shared/_content.jsp" %>

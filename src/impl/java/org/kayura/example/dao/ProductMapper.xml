@@ -5,30 +5,55 @@
 	<resultMap id="BaseResultMap" type="org.kayura.example.po.Product">
 		<id column="ProductID" property="id"  />
 		<result column="ProductName" property="name" />
-		<result column="SupplierID" property="supplier" />
-		<result column="CategoryID" property="category" />
 		<result column="QuantityPerUnit" property="quantityPerUnit" />
 		<result column="UnitPrice" property="unitPrice" />
 		<result column="UnitsInStock" property="unitsInStock" />
 		<result column="UnitsOnOrder" property="unitsOnOrder" />
 		<result column="ReorderLevel" property="reorderLevel" />
 		<result column="Discontinued" property="discontinued" />
+		<association property="supplier" javaType="org.kayura.example.po.Supplier">
+			<id column="SupplierID" property="id"/>
+			<result column="SupplierName" property="name"/>
+		</association>
+		<association property="category" javaType="org.kayura.example.po.Category">
+			<id column="CategoryID" property="id"/>
+			<result column="CategoryName" property="name"/>
+		</association>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		ProductID, ProductName, SupplierID, CategoryID,
-		QuantityPerUnit, UnitPrice, UnitsInStock,
-		UnitsOnOrder, ReorderLevel, Discontinued
+		t.ProductID, t.ProductName, t.SupplierID, t.CategoryID,
+		t.QuantityPerUnit, t.UnitPrice, t.UnitsInStock,
+		t.UnitsOnOrder, t.ReorderLevel, t.Discontinued
 	</sql>
 	
 	<select id="selectByKey" resultMap="BaseResultMap" parameterType="int">
 		select
-		<include refid="Base_Column_List" />
-		from example_products
+			<include refid="Base_Column_List" />,
+			s.CompanyName AS SupplierName,
+			c.CategoryName
+		FROM example_products AS t
+			INNER JOIN example_categories AS c ON t.CategoryID = c.CategoryID
+			INNER JOIN example_suppliers AS s ON t.SupplierID = s.SupplierID
 		where ProductID = #{id}
 	</select>
 	
-	<delete id="deleteByKey" parameterType="java.lang.Integer">
+	<select id="findByMap" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />,
+			s.CompanyName AS SupplierName,
+			c.CategoryName
+		FROM example_products AS t
+			INNER JOIN example_categories AS c ON t.CategoryID = c.CategoryID
+			INNER JOIN example_suppliers AS s ON t.SupplierID = s.SupplierID
+		<where>
+			<if test="keyword != null">
+				AND ( t.ProductName LIKE #{keyword} )
+			</if>
+		</where>
+	</select>
+	
+	<delete id="deleteByKey" parameterType="int">
 		delete from example_products
 		where ProductID = #{id}
 	</delete>

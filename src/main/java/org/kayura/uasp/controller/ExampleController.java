@@ -1,6 +1,17 @@
 package org.kayura.uasp.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.kayura.example.service.ExampleService;
+import org.kayura.example.vo.OrderVo;
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
+import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/example")
 public class ExampleController extends BaseController {
+
+	@Autowired
+	private ExampleService exampleService;
 
 	public ExampleController() {
 		this.setViewRootPath("example/");
@@ -18,17 +32,36 @@ public class ExampleController extends BaseController {
 		return viewResult("index");
 	}
 
+	/* Tools */
+
 	@RequestMapping(value = "/htmlconvert", method = RequestMethod.GET)
 	public String htmlconvert() {
 		return viewResult("htmlconvert");
 	}
 
-	
+	/* General Example */
+
+	@RequestMapping(value = "general/order/find.json")
+	public void generalorders(HttpServletRequest req, Map<String, Object> model, String keyword) {
+
+		PageParams pageParams = this.getPageParams(req);
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		if (!StringUtils.isEmpty(keyword)) {
+			args.put("keyword", "%" + keyword + "%");
+		}
+
+		PageList<OrderVo> orders = exampleService.findOrders(args, pageParams);
+
+		this.ui.putData(model, orders);
+	}
+
 	@RequestMapping(value = "general/basiclist", method = RequestMethod.GET)
-	public String generalbasiclist(){
+	public String generalbasiclist() {
 		return viewResult("general/basiclist");
 	}
-	
+
+	/* EasyUI Example */
 
 	@RequestMapping(value = "easyui/datagrid", method = RequestMethod.GET)
 	public String datagrid() {
@@ -69,6 +102,5 @@ public class ExampleController extends BaseController {
 	public String datagridcomplextoolbar() {
 		return viewResult("easyui/datagrid/complextoolbar");
 	}
-	
-	
+
 }

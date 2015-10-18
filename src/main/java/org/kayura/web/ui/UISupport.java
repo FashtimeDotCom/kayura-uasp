@@ -32,5 +32,5 @@ public interface UISupport {
 	 * @param model
 	 * @param pageList
 	 */
-	void putData(Map<String, Object> map, PageList<?> pageList);
+	void putData(Map<String, Object> model, PageList<?> pageList);
 }
