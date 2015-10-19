@@ -6,7 +6,6 @@ public class OrderVo {
 
 	private Integer id;
 	private String customerId;
-	private String customerName;
 	private Integer employeeId;
 	private String employeeLastName;
 	private String employeeFirstName;
@@ -37,14 +36,6 @@ public class OrderVo {
 
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
-	}
-
-	public String getCustomerName() {
-		return customerName;
-	}
-
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
 	}
 
 	public Integer getEmployeeId() {

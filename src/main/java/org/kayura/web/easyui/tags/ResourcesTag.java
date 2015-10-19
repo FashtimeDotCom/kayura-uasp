@@ -28,6 +28,7 @@ public class ResourcesTag extends TagSupport {
 			out.write("<script type=\"text/javascript\" src=\"" + location + "/js/jquery.min.js\"></script>\r");
 			out.write("<script type=\"text/javascript\" src=\"" + location + "/easyui/jquery.easyui.min.js\"></script>\r");
 			out.write("<script type=\"text/javascript\" src=\"" + location + "/easyui/locale/easyui-lang-zh_CN.js\"></script>\r");
+			out.write("<script type=\"text/javascript\" src=\"" + location + "/easyui/jeasyui.utils.js\"></script>\r");
 			out.write("<script type=\"text/javascript\" src=\"" + location + "/js/juasp-core.js\"></script>\r");
 		} catch (IOException e) {
 			e.printStackTrace();

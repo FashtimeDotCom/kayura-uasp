@@ -61,6 +61,11 @@ public class ExampleController extends BaseController {
 		return viewResult("general/basiclist");
 	}
 
+	@RequestMapping(value = "general/basicedit", method = RequestMethod.GET)
+	public String generalbasicedit() {
+		return viewResult("general/basicedit");
+	}
+	
 	/* EasyUI Example */
 
 	@RequestMapping(value = "easyui/datagrid", method = RequestMethod.GET)

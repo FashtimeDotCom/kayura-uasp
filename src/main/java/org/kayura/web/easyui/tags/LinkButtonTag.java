@@ -76,7 +76,7 @@ public class LinkButtonTag extends TagRender {
 				out.write(" onclick=\"" + getOnclick() + "\"");
 			}
 			if (getHref() == null) {
-				out.write(" href='#'");
+				out.write(" href='javascript:void(0)'");
 			} else {
 				out.write(" href='" + getHref() + "' target='" + (getTarget() == null ? "_blank" : getTarget()) + "'");
 			}

@@ -5,58 +5,40 @@
 <e:section name="head">
 	<script type="text/javascript">
 
+		var cmenu;
+	
 		$(function() {
 			$('#dg').datagrid({
 				url : "${root}/example/general/order/find.json",
 				onHeaderContextMenu: function(e, field){
 					e.preventDefault();
 					if (!cmenu){
-						createColumnMenu();
+						cmenu = jeasyui.createColumnMenu('#dg');
 					}
-					cmenu.menu('show', {
-						left:e.pageX,
-						top:e.pageY
-					});
+					cmenu.menu('show', { left:e.pageX, top:e.pageY });
 				}
 			});
 		});
-		
-		var cmenu;
-		function createColumnMenu(){
-			cmenu = $('<div/>').appendTo('body');
-			cmenu.menu({
-				onClick: function(item){
-					if (item.iconCls == 'icon-ok'){
-						$('#dg').datagrid('hideColumn', item.name);
-						cmenu.menu('setIcon', {
-							target: item.target,
-							iconCls: 'icon-empty'
-						});
-					} else {
-						$('#dg').datagrid('showColumn', item.name);
-						cmenu.menu('setIcon', {
-							target: item.target,
-							iconCls: 'icon-ok'
-						});
-					}
-				}
-			});
-			var fields = $('#dg').datagrid('getColumnFields');
-			for(var i=1; i<fields.length; i++){
-				var field = fields[i];
-				var col = $('#dg').datagrid('getColumnOption', field);
-				cmenu.menu('appendItem', {
-					text: col.title,
-					name: field,
-					iconCls: 'icon-ok'
-				});
-			}
-		}
 		
 		function search1() {
 			var qp = $('#dg').datagrid('options').queryParams;
 			qp.keyword = $("#keyword").val();
 			$("#dg").datagrid('reload');  
+		}
+		
+		function addOrder() {
+
+			juasp.openWin({
+				title : "新增表单",
+				url : "${root}/example/general/basicedit",
+				iconCls : 'icon-edit',
+				width : 800,
+				height : 500
+			}, {
+				onclose : function(result) {
+					juasp.hint("关闭啦。返回值为：" + result.value);
+				}
+			});
 		}
 	</script>
 </e:section>
@@ -66,13 +48,12 @@
 	<p>包括一个可分页列表，支持排序/条件查询，操作按钮，列表链接。</p>
 	<div style="margin:20px 0;"></div>
 	
-	<e:datagrid id="dg" title="管理列表" style="width:100%;height:auto;" collapsible="true" pagination="true" pageSize="10" 
-		singleSelect="true" url="" method="get" idField="id" remoteSort="true" striped="true"
-		toolbar="#t1,#q1" fitColumns="true">
+	<e:datagrid id="dg" title="管理列表" style="width:100%;height:auto;" collapsible="true" 
+		pagination="true" pageSize="10"  singleSelect="true" url="" method="get" idField="id" 
+		remoteSort="true" striped="true" toolbar="#t1,#q1" fitColumns="true">
 		<e:columns>
 			<e:column field="ck" checkbox="true" />
 			<e:column field="orderDate" width="120" sortable="true">Order Date</e:column>
-			<e:column field="customerName" width="150" sortable="true">Customer</e:column>
 			<e:column field="shipViaName" width="120" sortable="true">ShipVia</e:column>
 			<e:column field="shipName" width="200" sortable="true">Ship Name</e:column>
 			<e:column field="shipAddress" width="200" sortable="true">Address</e:column>
@@ -84,7 +65,7 @@
 	</e:datagrid>
 
 	<div id="t1" style="padding:2px 5px;">
-		<e:linkbutton iconCls="icon-add" plain="true">创建表单</e:linkbutton>
+		<e:linkbutton iconCls="icon-add" plain="true" onclick="addOrder()">创建表单</e:linkbutton>
 		<e:linkbutton iconCls="icon-edit" plain="true">编辑表单</e:linkbutton>
 		<e:linkbutton iconCls="icon-remove" plain="true">删除表单</e:linkbutton>
 	</div>
@@ -93,7 +74,14 @@
 		关键字：<e:textbox id="keyword" style="width:120px" />
 		<e:linkbutton iconCls="icon-search" style="margin-left:5px" onclick="search1()">搜索</e:linkbutton>
 	</div>
-	
+	<div style="width: 600px; height: 500px"
+		data-options="modal:true,closed:true,iconCls:'icon-edit'" title="新增表单"
+		class="easyui-window" id="bXy8FqadBviOT5lkTSNzBfyN0CY9VwzG">
+		<iframe frameborder="0" style="width: 100%; height: 100%;"
+			src="/kayura-uasp/example/htmlconvert?_frameid=bXy8FqadBviOT5lkTSNzBfyN0CY9VwzG"
+			scrolling="auto"> </iframe>
+	</div>
+
 </e:section>
 
 <e:section name="code">

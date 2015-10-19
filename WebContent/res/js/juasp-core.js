@@ -211,6 +211,60 @@ juasp = {
 		}
 	}
 	
+	juasp.openWin = function(opts, events){
+		
+		var wid = newId();
+
+		var w = $top('<div/>');
+		setCache("wid_" + wid, w);
+		
+		w.window({
+		    title: opts.title,
+		    width: opts.width,
+		    height: opts.height,
+		    shadow: true,
+		    modal: true,
+		    iconCls: opts.iconCls,
+		    closed: true,
+		    minimizable: false,
+		    onClose : function(e){
+				removeCache("wid_" + wid);
+				var result = getCache("win_result_" + wid, null);
+		    	events.onclose(result);
+		    }
+		});
+		
+		var url = addUrlParam(opts.url, '_wid', wid);
+		w.append('<iframe scrolling="auto" frameborder="0" src="' + url + '" ' 
+				+ 'style="width:100%;height:100%;"></iframe>');
+		w.window('open');
+	}
+	
+	juasp.closeWin = function(result) {
+		var wid = getQueryParam("_wid");
+		if (wid != null) {
+			var w = getCache("wid_" + wid, null);
+			setCache("win_result_" + wid, result);
+			if (w != null) {
+				w.window('close');
+			}
+		}
+	}
+	
+	juasp.confirm = function(title, onclose) {
+		$.messager.confirm('确认', title, onclose);  
+	}
+	
+	juasp.hint = function(opts) {
+		
+		win.top.$.messager.show({
+			title: '消息',
+			msg: opts.msg,
+			timeout: 5000,
+			showType: 'slide'
+		});
+	}
+	
 }(jQuery, window));
 
 
