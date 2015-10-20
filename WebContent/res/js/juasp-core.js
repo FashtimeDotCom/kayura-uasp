@@ -211,7 +211,7 @@ juasp = {
 		}
 	}
 	
-	juasp.openWin = function(opts, events){
+	juasp.openWin = function(opts){
 		
 		var wid = newId();
 
@@ -230,7 +230,7 @@ juasp = {
 		    onClose : function(e){
 				removeCache("wid_" + wid);
 				var result = getCache("win_result_" + wid, null);
-		    	events.onclose(result);
+				opts.onClose(result);
 		    }
 		});
 		
@@ -252,14 +252,14 @@ juasp = {
 	}
 	
 	juasp.confirm = function(title, onclose) {
-		$.messager.confirm('确认', title, onclose);  
+		win.top.$.messager.confirm('确认', title, onclose);  
 	}
 	
-	juasp.hint = function(opts) {
-		
+	juasp.info = function(content) {
+
 		win.top.$.messager.show({
-			title: '消息',
-			msg: opts.msg,
+			title: '提示',
+			msg: content,
 			timeout: 5000,
 			showType: 'slide'
 		});

@@ -21,9 +21,8 @@
 		});
 		
 		function search1() {
-			var qp = $('#dg').datagrid('options').queryParams;
-			qp.keyword = $("#keyword").val();
-			$("#dg").datagrid('reload');  
+			var kw = $("#keyword").val();			
+			$("#dg").datagrid('reload', { keyword : kw });
 		}
 		
 		function addOrder() {
@@ -33,13 +32,13 @@
 				url : "${root}/example/general/basicedit",
 				iconCls : 'icon-edit',
 				width : 800,
-				height : 500
-			}, {
-				onclose : function(result) {
-					juasp.hint("关闭啦。返回值为：" + result.value);
+				height : 500,
+				onClose : function(result) {
+					juasp.info("<b>关闭啦。</b>返回值为：" + result.value);
 				}
 			});
 		}
+		
 	</script>
 </e:section>
 
