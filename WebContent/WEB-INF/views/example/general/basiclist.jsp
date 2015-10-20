@@ -73,13 +73,6 @@
 		关键字：<e:textbox id="keyword" style="width:120px" />
 		<e:linkbutton iconCls="icon-search" style="margin-left:5px" onclick="search1()">搜索</e:linkbutton>
 	</div>
-	<div style="width: 600px; height: 500px"
-		data-options="modal:true,closed:true,iconCls:'icon-edit'" title="新增表单"
-		class="easyui-window" id="bXy8FqadBviOT5lkTSNzBfyN0CY9VwzG">
-		<iframe frameborder="0" style="width: 100%; height: 100%;"
-			src="/kayura-uasp/example/htmlconvert?_frameid=bXy8FqadBviOT5lkTSNzBfyN0CY9VwzG"
-			scrolling="auto"> </iframe>
-	</div>
 
 </e:section>
 
