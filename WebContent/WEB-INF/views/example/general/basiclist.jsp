@@ -44,12 +44,19 @@
 
 <e:section name="body">
 
-	<p>包括一个可分页列表，支持排序/条件查询，操作按钮，列表链接。</p>
-	<div style="margin:20px 0;"></div>
+	<div id="t1" style="padding: 2px;">
+		<e:linkbutton iconCls="icon-add" onclick="addOrder()" plain="true">创建表单</e:linkbutton>
+		<e:linkbutton iconCls="icon-edit" plain="true">编辑表单</e:linkbutton>
+		<e:linkbutton iconCls="icon-remove" plain="true">删除表单</e:linkbutton>
+		<div id="q1" style="float: right;">
+		关键字：<e:textbox id="keyword" style="width:220px" prompt="搜索：Order Date,ShipVia,Ship Name" />
+		<e:linkbutton iconCls="icon-search" style="margin-left:5px" plain="true" onclick="search1()">搜索</e:linkbutton>
+		</div>
+	</div>
 	
-	<e:datagrid id="dg" title="管理列表" style="width:100%;height:auto;" collapsible="true" 
+	<e:datagrid id="dg" style="width:100%;height:auto;" collapsible="true" rownumbers="true"
 		pagination="true" pageSize="10"  singleSelect="true" url="" method="get" idField="id" 
-		remoteSort="true" striped="true" toolbar="#t1,#q1" fitColumns="true">
+		remoteSort="true" striped="true" toolbar="#t1" fitColumns="true">
 		<e:columns>
 			<e:column field="ck" checkbox="true" />
 			<e:column field="orderDate" width="120" sortable="true">Order Date</e:column>
@@ -62,17 +69,6 @@
 			<e:column field="shipCountry" width="120" sortable="true">Country</e:column>
 		</e:columns>
 	</e:datagrid>
-
-	<div id="t1" style="padding:2px 5px;">
-		<e:linkbutton iconCls="icon-add" plain="true" onclick="addOrder()">创建表单</e:linkbutton>
-		<e:linkbutton iconCls="icon-edit" plain="true">编辑表单</e:linkbutton>
-		<e:linkbutton iconCls="icon-remove" plain="true">删除表单</e:linkbutton>
-	</div>
-	
-	<div id="q1" style="padding:2px 5px;">
-		关键字：<e:textbox id="keyword" style="width:120px" />
-		<e:linkbutton iconCls="icon-search" style="margin-left:5px" onclick="search1()">搜索</e:linkbutton>
-	</div>
 
 </e:section>
 

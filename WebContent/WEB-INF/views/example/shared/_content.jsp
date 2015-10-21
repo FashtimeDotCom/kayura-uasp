@@ -9,7 +9,7 @@
 	<script>hljs.initHighlightingOnLoad();</script>
 	<e:renderSection name="head" />
 </head>
-<body style="margin:10px;">
+<body style="margin:3px;">
 	<!-- Body -->
 	<e:renderSection name="body" />
 	
