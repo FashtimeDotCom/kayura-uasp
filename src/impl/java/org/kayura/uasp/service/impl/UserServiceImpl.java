@@ -18,8 +18,6 @@ import org.kayura.uasp.vo.UserVo;
 import org.kayura.uasp.vo.convert.UserConvert;
 import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
