@@ -255,13 +255,19 @@ juasp = {
 		win.top.$.messager.confirm('确认', title, onclose);  
 	}
 	
-	juasp.info = function(content) {
+	juasp.info = function(title, content) {
 
 		win.top.$.messager.show({
-			title: '提示',
+			title: title,
 			msg: content,
 			timeout: 5000,
 			showType: 'slide'
+		});
+	}
+	
+	juasp.prompt = function(title, content, onclose){
+		$.messager.prompt(title, content, function(r){
+			onclose(r);
 		});
 	}
 	
