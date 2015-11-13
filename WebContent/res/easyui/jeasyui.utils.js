@@ -9,8 +9,10 @@
 	
 	/**
 	 * 创建 DataGrid 表格的列控制菜单.
+	 * 
+	 * @param {String} tag datagrid表格标签,如: #dg .
 	 */
-	jeasyui.createColumnMenu = function(tag){
+	function createColumnMenu(tag){
 		var cmenu = $('<div/>').appendTo('body');
 		cmenu.menu({
 			onClick: function(item){
@@ -41,6 +43,9 @@
 		}
 		return cmenu;
 	}
+	
+	/** 绑定方法 **/
+	jeasyui.createColumnMenu = createColumnMenu;
 	
 	win.jeasyui = jeasyui;
 	

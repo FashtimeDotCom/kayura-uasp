@@ -165,7 +165,7 @@ juasp = {
 	 * @param {String} returnUrl 可选值：可指定的跳转返回地址.
 	 * @returns void
 	 */
-	juasp.skipUrl = function(targetUrl, mode, returnUrl) {
+	function skipUrl(targetUrl, mode, returnUrl) {
 
 		var skipWin = win;
 
@@ -190,7 +190,7 @@ juasp = {
 	 * @param {String} url 指定打开的链接地址.
 	 * @param {String} icon 选项卡图标(暂不可用).
 	 */
-	juasp.openTab = function(title, url, iconCls) {
+	function openTab(title, url, iconCls) {
 
 		/* 取到选项卡的jquery对象 */
 		var tab = $top("#mainTabs");
@@ -211,7 +211,19 @@ juasp = {
 		}
 	}
 	
-	juasp.openWin = function(opts){
+	/**
+	 * 用于打开一个页面窗口.
+	 * 
+	 * @param {Object} <b>opts 参数选项:</b>
+	 * </br>title 窗口标题, 
+	 * </br>width 宽度, 
+	 * </br>height 高度, 
+	 * </br>iconCls 窗口图标, 
+	 * </br>url 页面地址, 
+	 * </br>onClose 窗口关闭事件.
+	 * 
+	 */
+	function openWin(opts){
 		
 		var wid = newId();
 
@@ -240,7 +252,12 @@ juasp = {
 		w.window('open');
 	}
 	
-	juasp.closeWin = function(result) {
+	/**
+	 * 关闭当前打开的窗口.
+	 * 
+	 * @param {Object} result 返回给调用者的结果对象.
+	 */
+	function closeWin(result) {
 		var wid = getQueryParam("_wid");
 		if (wid != null) {
 			var w = getCache("wid_" + wid, null);
@@ -251,11 +268,23 @@ juasp = {
 		}
 	}
 	
-	juasp.confirm = function(title, onclose) {
-		win.top.$.messager.confirm('确认', title, onclose);  
+	/**
+	 * 显示一个确认对话框.
+	 * 
+	 * @param {String} content 显示的内容.
+	 * @param {Event} onclose(r) 确认 true 或取消 false 响应的事件.
+	 */
+	function confirm(content, onclose) {
+		win.top.$.messager.confirm('确认', content, onclose);  
 	}
 	
-	juasp.info = function(title, content) {
+	/**
+	 * 显示一个信息框.
+	 * 
+	 * @param {String} title 信息框的标题.
+	 * @param {String} content 显示的内容.
+	 */
+	function info(title, content) {
 
 		win.top.$.messager.show({
 			title: title,
@@ -265,11 +294,27 @@ juasp = {
 		});
 	}
 	
-	juasp.prompt = function(title, content, onclose){
-		$.messager.prompt(title, content, function(r){
+	/**
+	 * 显示一个输入框.
+	 * 
+	 * @param {String} title 信息框的标题.
+	 * @param {String} content 显示的内容.
+	 * @param {Event} onclose(r) 返回 r 值与 content 类型长度相同.
+	 */
+	function prompt(title, content, onclose){
+		win.top.$.messager.prompt(title, content, function(r){
 			onclose(r);
 		});
 	}
+	
+	/** 绑定方法 **/
+	juasp.skipUrl = skipUrl;
+	juasp.openTab = openTab;
+	juasp.openWin = openWin;
+	juasp.closeWin = closeWin;
+	juasp.confirm = confirm;
+	juasp.info = info;
+	juasp.prompt = prompt;
 	
 }(jQuery, window));
 
