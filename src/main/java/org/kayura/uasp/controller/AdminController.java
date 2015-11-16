@@ -35,7 +35,7 @@ public class AdminController extends BaseController {
 	private UserService userService;
 
 	public AdminController() {
-		this.setViewRootPath("admin/");
+		this.setViewRootPath("WEB-INF/views/admin/");
 	}
 
 	@RequestMapping(value = "user/list", method = RequestMethod.GET)

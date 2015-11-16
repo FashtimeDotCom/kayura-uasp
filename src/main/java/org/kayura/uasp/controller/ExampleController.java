@@ -24,7 +24,7 @@ public class ExampleController extends BaseController {
 	private ExampleService exampleService;
 
 	public ExampleController() {
-		this.setViewRootPath("example/");
+		this.setViewRootPath("WEB-INF/views/example/");
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)

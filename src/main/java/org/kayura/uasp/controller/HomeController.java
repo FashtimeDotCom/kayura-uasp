@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController extends BaseController {
 
 	public HomeController() {
-		this.setViewRootPath("home/");
+		this.setViewRootPath("WEB-INF/views/home/");
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
