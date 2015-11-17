@@ -19,4 +19,4 @@
 	</e:layoutunit>
 </e:section>
 
-<%@ include file="../../shared/_simple.jsp"%>
+<%@ include file="/views/shared/_simple.jsp"%>

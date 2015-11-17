@@ -110,4 +110,4 @@
 </code></pre>
 </e:section>
 
-<%@ include file="../shared/_content.jsp" %>
+<%@ include file="/views/shared/_content.jsp" %>
