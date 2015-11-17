@@ -57,57 +57,53 @@ html, body {
 	float: left;
 	width: 300px;
 }
-
-.login_window dl dt {
-	margin-top: 20px;
-	margin-left: 20px;
-	line-height: 26px;
-}
-
-.login_mar_left {
-	padding-left: 40px;
-}
 </style>
 
 </e:section>
 
 <e:section name="body">
-
 	<form action="${root}/j_spring_security_check" method="post">
 		<div class="login_negative">
 			<div class="login_header" style="height: 100px; position: relative;">
 				<img src='${root}/res/images/login/logo.png'
 					style="position: absolute; left: -90px; top: 0;" alt="" />
 			</div>
-
 			<div class="login_shadow">
 				<div class="login_imgshow">
 					<img src="${root}/res/images/login/img1.jpg" alt="" />
 				</div>
-
 				<div class="login_window">
 					<img src="${root}/res/images/login/icon1.png" alt="" />
-					<dl>
-						<dt>
-							用 户：<e:textbox id="j_username" style="width:180px"></e:textbox>
-						</dt>
-						<dt>
-							密 码：<e:textbox id="j_password" style="width:180px"></e:textbox>
-						</dt>
-						<dt class="login_mar_left" style="text-align: left;"
-							id="btn_login">
-							<input name="" type="checkbox" value="记住用户名" id="chk_rember" />记住用户名
-							<input type="checkbox" name="chkIsAdmin" id="chkIsAdmin" /> 管理员
-						</dt>
-						<dt class="login_mar_left" style="text-align: left;">
-							<input type="submit" value="登录" /> <input type="reset"
-								value="重置">
-						</dt>
-					</dl>
-					<div id="login-error" style="height: 40px;">${error}</div>
 
-					<a href="${root}/example/">EasyUI 示例</a>
+					<div style="padding: 30px 30px 10px 30px">
+						<div style="margin-bottom: 10px">
+							<e:textbox id="j_username"
+								style="width:100%;height:35px;padding:8px" iconCls="icon-man"
+								iconWidth="30" prompt="用户名/手机号"></e:textbox>
+						</div>
+						<div style="margin-bottom: 10px">
+							<e:textbox id="j_password"
+								style="width:100%;height:35px;padding:8px" iconCls="icon-lock"
+								iconWidth="30" prompt="确认密码"></e:textbox>
+						</div>
+						<div style="margin-bottom: 20px">
+							<label><input name="" type="checkbox" />记住用户名</label>
+						</div>
+						<div style="margin-bottom: 10px">
+							<e:linkbutton text="登录" iconCls="icon-ok"
+								style="width:100%;height:35px;"></e:linkbutton>
+						</div>
+						<div style="margin-bottom: 20px">
+							<a href="javascript:void(0)">忘记登录密码？</a> <a
+								href="javascript:void(0)"
+								style="float: right; margin-right: 5px">自助注册</a>
+						</div>
+						<div id="login-error" style="height: 40px;">${error}</div>
+					</div>
 				</div>
+			</div>
+			<div style="float: right; margin: 15px">
+				<a href="${root}/example/" target="_blank">开发示例库</a>
 			</div>
 		</div>
 	</form>

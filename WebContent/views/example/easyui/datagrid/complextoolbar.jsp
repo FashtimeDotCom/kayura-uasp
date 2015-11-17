@@ -81,4 +81,4 @@
 </code></pre>
 </e:section>
 
-<%@ include file="/views/shared/_content.jsp" %>
+<%@ include file="/views/shared/_example.jsp" %>
