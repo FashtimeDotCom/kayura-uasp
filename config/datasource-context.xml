@@ -10,18 +10,22 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
 	<!-- 扫描指定包内继承自BaseDao的接口，并创建SpringBean对象. -->
-	<mybatis-spring:scan base-package="org.kayura" factory-ref="sqlSessionFactory"
-		marker-interface="org.kayura.core.BaseDao" />
+	<mybatis-spring:scan base-package="org.kayura"
+		factory-ref="sqlSessionFactory" marker-interface="org.kayura.core.BaseDao" />
 
 	<!-- 引用外部属性定义文件. -->
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean id="sysProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="fileEncoding" value="UTF-8" />
 		<property name="locations">
 			<list>
-				<value>classpath:system.properties</value>
+				<value>/WEB-INF/*.properties</value>
 			</list>
 		</property>
+	</bean>
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="sysProperties" />
 	</bean>
 
 	<!-- 定义一个通用数据访问源. -->
@@ -52,20 +56,20 @@
 			</props>
 		</property>
 	</bean>
-	
+
 	<!-- 定义一个事务管理器Bean对象. -->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<!-- 定义事务通知. -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="*" propagation="REQUIRED" />
 		</tx:attributes>
 	</tx:advice>
-	
+
 	<!-- 定义事务通知的切入点. -->
 	<aop:config>
 		<aop:advisor advice-ref="txAdvice"

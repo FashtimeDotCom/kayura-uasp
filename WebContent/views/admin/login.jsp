@@ -8,7 +8,7 @@ html, body {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .login_negative {
@@ -36,6 +36,12 @@ html, body {
 	-moz-box-shadow: 3px 3px 4px #888888;
 	-webkit-box-shadow: 3px 3px 4px #888888;
 	box-shadow: 3px 3px 4px #888888;
+	/* For IE 8 */
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#888888')";
+	/* For IE 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135,
+		Color='#888888');
 }
 
 .login_imgshow {
@@ -49,17 +55,12 @@ html, body {
 	float: left;
 	width: 300px;
 }
-
 </style>
-<script type="text/javascript">
-	function login(){
-		$("#loginForm").submit();	
-	}
-</script>
+
 </e:section>
 
 <e:section name="body">
-	<form id="loginForm" action="${root}/j_spring_security_check" method="post">
+	<form action="${root}/j_spring_security_check" method="post">
 		<div class="login_negative">
 			<div class="login_header" style="height: 100px; position: relative;">
 				<img src='${root}/res/images/login/logo.png'
@@ -88,11 +89,12 @@ html, body {
 						</div>
 						<div style="margin-bottom: 10px">
 							<e:linkbutton text="登录" iconCls="icon-ok"
-								style="width:100%;height:30px;" onclick="login()"></e:linkbutton>
+								style="width:100%;height:30px;"></e:linkbutton>
 						</div>
 						<div style="margin-bottom: 20px">
-							<a href="javascript:void(0)">忘记登录密码？</a>
-							<a href="javascript:void(0)" style="float: right; margin-right: 5px">自助注册</a>
+							<a href="javascript:void(0)">忘记登录密码？</a> <a
+								href="javascript:void(0)"
+								style="float: right; margin-right: 5px">自助注册</a>
 						</div>
 						<div id="login-error" style="height: 35px;">${error}</div>
 					</div>

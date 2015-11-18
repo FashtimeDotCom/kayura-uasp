@@ -103,6 +103,7 @@ public class RenderContext {
 	 * @throws IOException
 	 */
 	public void write(JspWriter out, String var) throws IOException {
+		
 		// 输出Facet的Html代码
 		for (FacetTag facet : facets) {
 			if (facet.getBody() != null) {
@@ -113,7 +114,7 @@ public class RenderContext {
 
 		ScriptWriter sw = new ScriptWriter();
 		if (isIE8() || isIE9()) {
-			sw.ready();
+			//sw.ready();
 		}
 		sw.write(getScriptBeforeWriter().toString());
 		// loop all tags
@@ -130,18 +131,18 @@ public class RenderContext {
 				List<FacetTag> facetTags = getFacets(tag);
 
 				String tagScript = getTagScript(tag, listeners, events, facetTags);
-				sw.write(tagScript);
+				//sw.write(tagScript);
 			} else {
 				List<EventListenerTag> listeners = getEventListeners(tag);
 				// get one tag's event actions
 				List<EventTag> events = getEvents(tag);
 				String tagScript = getJQueryScript(tag, listeners, events);
-				sw.write(tagScript);
+				//sw.write(tagScript);
 			}
 
-			String afterScript = tag.doAfterTagRenderScript();
-			sw.write(afterScript == null ? "" : afterScript);
-			sw.write("\n");
+			//String afterScript = tag.doAfterTagRenderScript();
+			//sw.write(afterScript == null ? "" : afterScript);
+			//sw.write("\n");
 		}
 		if (tags != null) {
 			Map<String, String> tagsJs = new HashMap<String, String>();
@@ -151,9 +152,9 @@ public class RenderContext {
 					tagsJs.put(tagId, tags.get(tagId).getEasyuiTag());
 				}
 			}
-			sw.write("var " + var + " = jeasyui(" + JSON.toJSONString(tagsJs) + ");");
+			//sw.write("var " + var + " = jeasyui(" + JSON.toJSONString(tagsJs) + ");");
 		}
-		out.write(sw.toString());
+		//out.write(sw.toString());
 	}
 
 	private List<FacetTag> getFacets(TagRender tag) {

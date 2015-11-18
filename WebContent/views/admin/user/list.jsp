@@ -1,53 +1,53 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<u:head title="账号管理">
+
+<e:section name="title">账号管理</e:section>
+
+<e:section name="head">
 	<script type="text/javascript">
 		$(document).ready(function() {
 		});
-	</script>
-</u:head>
 
-<u:body padding="10">
-<table class="easyui-datagrid" title="已注册账号列表"
-	data-options="
-		fit:true,
-		rownumbers:true,
-		pagination:true,
-		border:true,
-		pageSize:10,
-		singleSelect:true,
-		striped:true,
-		url:'${root}/admin/user/find.json',
-		method:'get',
-		toolbar:'#ft,#tb',
-		idField:'userId'
-	">
-		<thead>
-			<tr>
-				<th data-options="field:'ck',checkbox:true"></th>
-				<th data-options="field:'userName',width:100">用户名</th>
-				<th data-options="field:'displayName',width:180">显示名</th>
-				<th data-options="field:'email',width:280">电子邮件</th>
-				<th data-options="field:'mobileNo',width:340">手机号</th>
-				<th data-options="field:'status',width:60,align:'center'">状态</th>
-			</tr>
-		</thead>
-	</table>
-	<div id="ft" style="padding:2px 5px;">
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true">新增账号</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true">编辑账号</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-cancel" plain="true">删除账号</a>
+		function doSearch() {
+			$('#tt').datagrid('load', {
+				keyword : $('#keyword').val(),
+				status : $('#status').val()
+			});
+		}
+	</script>
+</e:section>
+
+<e:section name="body">
+	<e:datagrid id="tt" fit="true" title="管理" rownumbers="true" fitColumns="true"
+		pagination="true" pageSize="10" singleSelect="true" striped="true"
+		toolbar="#tb,#tq" url="${root}/admin/user/find.json" method="get"
+		idField="userId">
+		<e:columns>
+			<e:column field="ck" checkbox="true" />
+			<e:column field="userName" width="100" title="用户名" />
+			<e:column field="displayName" width="180" title="显示名" />
+			<e:column field="email" width="280" title="电子邮件" />
+			<e:column field="mobileNo" width="340" title="手机号" />
+			<e:column field="status" width="60" align="center" title="状态" />
+		</e:columns>
+	</e:datagrid>
+	<div id="tb">
+		<e:linkbutton id="add" iconCls="icon-add" plain="true" text="新增账号" />
+		<e:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑账号" />
+		<e:linkbutton id="cancel" iconCls="icon-cancel" plain="true"
+			text="删除账号" />
 	</div>
-	<div id="tb" style="padding:2px 5px;">
-		关键字：<input name="keyword" class="easyui-textbox" style="width:150px;">
-		状态：
-		<select name="status" class="easyui-combobox" panelHeight="auto" style="width:150px">
+	<div id="tq" style="padding-left: 8px">
+		关键字：
+		<e:textbox id="keyword" style="width:150px" />
+		状态： <select id="status" class="easyui-combobox" panelHeight="auto"
+			style="width: 150px">
+			<option value="">所有</option>
 			<option value="0">申请中</option>
 			<option value="1">使用中</option>
 			<option value="2">已停用</option>
-		</select>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		</select> <a href="#" class="easyui-linkbutton" plain="true"
+			iconCls="icon-search" onclick="doSearch()">查询</a>
 	</div>
-</u:body>
-</html>
+</e:section>
+
+<%@ include file="/shared/_list.jsp"%>

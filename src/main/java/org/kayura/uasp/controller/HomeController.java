@@ -4,7 +4,10 @@
  */
 package org.kayura.uasp.controller;
 
+import java.util.Map;
+
 import org.kayura.web.BaseController;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class HomeController extends BaseController {
+
+	@Value("#{sysProperties['runMode']}")
+	private String runMode;
 
 	public HomeController() {
 		this.setViewRootPath("views/home/");
@@ -26,8 +32,9 @@ public class HomeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login() {
-
+	public String login(Map<String, Object> map) {
+		
+		map.put("runMode", runMode);
 		return viewResult("login");
 	}
 
@@ -42,4 +49,5 @@ public class HomeController extends BaseController {
 
 		return viewResult("portal");
 	}
+
 }

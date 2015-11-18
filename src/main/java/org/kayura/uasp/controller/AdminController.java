@@ -38,15 +38,14 @@ public class AdminController extends BaseController {
 		this.setViewRootPath("views/admin/");
 	}
 
-	@RequestMapping(value = "user/list", method = RequestMethod.GET)
+	@RequestMapping(value = { "user/", "user/list" }, method = RequestMethod.GET)
 	public String userList() {
 
-		return viewResult("user/list2");
+		return viewResult("user/list");
 	}
 
 	@RequestMapping(value = "user/find")
-	public String userFind(HttpServletRequest req, Map<String, Object> map, String keyword,
-			String status) {
+	public String userFind(HttpServletRequest req, Map<String, Object> map, String keyword, String status) {
 
 		PageParams pageParams = ui.getPageParams(req);
 
@@ -58,25 +57,25 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/new", method = RequestMethod.GET)
-	public String userNew(HttpServletRequest req, Map<String, Object> map, String id){
-		
+	public String userNew(HttpServletRequest req, Map<String, Object> map, String id) {
+
 		UserVo userVo = new UserVo();
 		userVo.setUserId(KeyUtils.newId());
-		
+
 		map.put("isNew", true);
 		map.put("model", userVo);
-		
+
 		return viewResult("user/edit");
 	}
 
 	@RequestMapping(value = "user/edit/{id}", method = RequestMethod.GET)
 	public String userEdit(HttpServletRequest req, Map<String, Object> map, String id) {
-		
+
 		UserVo userVo = userService.getUserById(id);
 
 		map.put("isNew", false);
 		map.put("model", userVo);
-		
+
 		return viewResult("user/edit");
 	}
 
