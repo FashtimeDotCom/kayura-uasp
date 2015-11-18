@@ -37,7 +37,7 @@
 		<include refid="userColumns"></include>
 		FROM UASP_Users t
 		<where>
-			<if test="keyword != null">
+			<if test="keyword != null and keyword != ''">
 				AND ( t.Keyword LIKE #{keyword} )
 			</if>
 			<if test="authType != null">

@@ -146,13 +146,10 @@ public abstract class TagRender extends BodyTagSupport implements Cloneable {
 				}
 			}
 		}
-		if (options.length() > 0)
-
-		{
+		if (options.length() > 0) {
 			options = options.substring(1);
 		}
 		return options;
-
 	}
 
 	@Override

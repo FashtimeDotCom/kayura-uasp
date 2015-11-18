@@ -1,7 +1,5 @@
 package org.kayura.web.model;
 
-import com.alibaba.fastjson.JSON;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;

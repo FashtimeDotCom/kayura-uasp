@@ -108,11 +108,6 @@
 			<type>boolean</type>
 		</attribute>
 		<attribute>
-			<name>var</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
 			<name>style</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>

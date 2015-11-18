@@ -43,14 +43,14 @@ public class BodyTag extends TagRender {
 		try {
 			out.write("<body");
 			if (isFull()) {
-				out.write(" class=\"easyui-" + getEasyuiTag() + " " + (getClassStyle() == null ? "" : getClassStyle()) + "\"");
+				out.write(" class=\"easyui-" + getEasyuiTag() + (getClassStyle() == null ? "" : " " + getClassStyle()) + "\"");
 			} else if (getClassStyle() == null){
 				out.write(" class=\"" + getClassStyle() + "\"");
 			}
 			if (getStyle() != null) {
 				out.write(" style=\"" + getStyle() + "\"");
 			}
-			out.write(">\n");
+			out.write(">");
 /*			if (isFull()) {
 				out.write("<div data-options=\"region:'center',border:false\" ");
 				if (getStyle() != null) {
@@ -61,7 +61,7 @@ public class BodyTag extends TagRender {
 			if (isAnimation()) {
 				out.write("<div class='jeasyui-body-mask'><div class='jeasyui-body-mask-text'><span></span>");
 				out.write(getLoadingText());
-				out.write("</div>\n");
+				out.write("</div>");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -83,7 +83,7 @@ public class BodyTag extends TagRender {
 						.append(getCloseDuration()).append(");};\n");
 			}
 			getRenderContext().write(out, getVar());
-			out.write("</body>\n");
+			out.write("</body>");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

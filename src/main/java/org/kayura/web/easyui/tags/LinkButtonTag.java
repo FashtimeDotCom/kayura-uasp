@@ -80,8 +80,7 @@ public class LinkButtonTag extends TagRender {
 			} else {
 				out.write(" href='" + getHref() + "' target='" + (getTarget() == null ? "_blank" : getTarget()) + "'");
 			}
-			out.write(" data-options=\"" + optionsToString());
-			out.write("\"");
+			out.write(" data-options=\"" + optionsToString() + "\"");
 			out.write(">");
 			if (getText() != null) {
 				out.write(getText());
@@ -94,7 +93,7 @@ public class LinkButtonTag extends TagRender {
 	@Override
 	public void renderEnd(JspWriter out) {
 		try {
-			out.write("</a>");
+			out.println("</a>");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
