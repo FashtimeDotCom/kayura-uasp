@@ -39,14 +39,14 @@
 	<div id="tq" style="padding-left: 8px">
 		关键字：
 		<e:textbox id="keyword" style="width:150px" />
-		状态： <select id="status" class="easyui-combobox" panelHeight="auto"
-			style="width: 150px">
-			<option value="">所有</option>
-			<option value="0">申请中</option>
-			<option value="1">使用中</option>
-			<option value="2">已停用</option>
-		</select> <a href="#" class="easyui-linkbutton" plain="true"
-			iconCls="icon-search" onclick="doSearch()">查询</a>
+		状态：
+		<e:combobox id="status">
+			<e:selectitem label="所有" value="" />
+			<e:selectitem label="申请中" value="1" />
+			<e:selectitem label="使用中" value="2" />
+			<e:selectitem label="已停用" value="3" />
+		</e:combobox>
+		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="doSearch()">查询</a>
 	</div>
 </e:section>
 

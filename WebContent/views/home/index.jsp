@@ -8,6 +8,9 @@
 <e:body>
 	<e:layoutunit region="north" style="height: 60px">
 		<h2 style="padding-left: 10px; float: left;">统一应用支撑平台</h2>
+		<div style="padding: 15px; float: right;">
+			欢迎：${loginName} <a href="${root}/logout" style="margin-left: 10px;">注销</a>		
+		</div>
 	</e:layoutunit>
 	<e:layoutunit region="south" style="height: 35px"></e:layoutunit>
 	<e:layoutunit region="west" split="true" title="导航栏"

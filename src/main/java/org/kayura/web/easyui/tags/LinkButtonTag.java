@@ -93,7 +93,7 @@ public class LinkButtonTag extends TagRender {
 	@Override
 	public void renderEnd(JspWriter out) {
 		try {
-			out.println("</a>");
+			out.print("</a>");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

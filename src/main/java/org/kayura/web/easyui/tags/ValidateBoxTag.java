@@ -77,10 +77,7 @@ public class ValidateBoxTag extends TagRender {
 			if (getType() != null) {
 				out.write(" type='" + getType() + "'");
 			}
-			out.write(" data-options=\"");
-			out.write(optionsToString());
-			out.write("\"");
-			out.write(">");
+			out.write(" data-options=\"" + optionsToString() + "\" >");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

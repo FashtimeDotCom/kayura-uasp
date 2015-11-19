@@ -5,8 +5,9 @@
 	id="WebApp_ID" version="3.1">
 
 	<display-name>统一开发支撑平台</display-name>
-	
-	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+
+	<!-- The definition of the Root Spring Container shared by all Servlets 
+		and Filters -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -24,7 +25,7 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
+
 	<!-- Processes application requests -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
@@ -39,7 +40,8 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
+
+
 	<jsp-config>
 		<jsp-property-group>
 			<url-pattern>*.jsp</url-pattern>
@@ -48,5 +50,5 @@
 			<trim-directive-whitespaces>true</trim-directive-whitespaces>
 		</jsp-property-group>
 	</jsp-config>
-	
+
 </web-app>

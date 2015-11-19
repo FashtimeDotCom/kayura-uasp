@@ -39,7 +39,11 @@ public class TextBoxTag extends ValidateBoxTag {
 
 	@Override
 	public Map<String, Object> getOptions() {
-		Map<String, Object> options = new HashMap<String, Object>();
+		
+		//Map<String, Object> options = new HashMap<String, Object>();
+		
+		Map<String, Object> options = super.getOptions();
+		
 		options.put("prompt", getPrompt());
 		options.put("multiline", getMultiline());
 		options.put("editable", getEditable());
@@ -52,8 +56,8 @@ public class TextBoxTag extends ValidateBoxTag {
 		options.put("buttonText", getButtonText());
 		options.put("buttonIcon", getButtonIcon());
 		options.put("buttonAlign", getButtonAlign());
-		options.put("required", getRequired());
-		options.put("validType", getValidType());
+		//options.put("required", getRequired());
+		//options.put("validType", getValidType());
 		return options;
 	}
 
