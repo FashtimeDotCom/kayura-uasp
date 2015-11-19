@@ -122,19 +122,19 @@ public class RenderContext {
 
 			if (tag.getEasyuiTag() != null) {
 				// get one tag's event listeners
-				List<EventListenerTag> listeners = getEventListeners(tag);
+				//List<EventListenerTag> listeners = getEventListeners(tag);
 				// get one tag's event actions
-				List<EventTag> events = getEvents(tag);
+				//List<EventTag> events = getEvents(tag);
 				// get one tag's facet
-				List<FacetTag> facetTags = getFacets(tag);
+				//List<FacetTag> facetTags = getFacets(tag);
 
-				String tagScript = getTagScript(tag, listeners, events, facetTags);
+				//String tagScript = getTagScript(tag, listeners, events, facetTags);
 				//sw.write(tagScript);
 			} else {
-				List<EventListenerTag> listeners = getEventListeners(tag);
+				//List<EventListenerTag> listeners = getEventListeners(tag);
 				// get one tag's event actions
-				List<EventTag> events = getEvents(tag);
-				String tagScript = getJQueryScript(tag, listeners, events);
+				//List<EventTag> events = getEvents(tag);
+				//String tagScript = getJQueryScript(tag, listeners, events);
 				//sw.write(tagScript);
 			}
 
@@ -155,7 +155,7 @@ public class RenderContext {
 		//out.write(sw.toString());
 	}
 
-	private List<FacetTag> getFacets(TagRender tag) {
+/*	private List<FacetTag> getFacets(TagRender tag) {
 		List<FacetTag> facetTags = new ArrayList<FacetTag>();
 		for (FacetTag facet : facets) {
 			if (facet.getParentId() != null && facet.getParentId().equals(tag.getId())) {
@@ -163,7 +163,7 @@ public class RenderContext {
 			}
 		}
 		return facetTags;
-	}
+	}*/
 
 	/**
 	 * 获取tag的渲染构建js代码，同时注册相关事件监听
@@ -174,7 +174,7 @@ public class RenderContext {
 	 * @param facetTags
 	 * @return
 	 */
-	private String getTagScript(TagRender tag, List<EventListenerTag> listeners, List<EventTag> events,
+/*	private String getTagScript(TagRender tag, List<EventListenerTag> listeners, List<EventTag> events,
 			List<FacetTag> facetTags) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("$('#").append(tag.getId()).append("').").append(tag.getEasyuiTag()).append("(");
@@ -220,9 +220,9 @@ public class RenderContext {
 			}
 		}
 		return sb.toString();
-	}
+	}*/
 
-	private String getJQueryScript(TagRender tag, List<EventListenerTag> listeners, List<EventTag> events) {
+/*	private String getJQueryScript(TagRender tag, List<EventListenerTag> listeners, List<EventTag> events) {
 		StringBuilder sb = new StringBuilder();
 		Map<String, String> eventBindString = buildEasyEventScript(listeners, events);
 		for (Iterator<String> iterator = eventBindString.keySet().iterator(); iterator.hasNext();) {
@@ -235,7 +235,7 @@ public class RenderContext {
 			sb.append(");");
 		}
 		return sb.toString();
-	}
+	}*/
 
 	/**
 	 * 构建每个事件的所有监听注册以及行为触发
@@ -244,7 +244,7 @@ public class RenderContext {
 	 * @param events
 	 * @return
 	 */
-	private Map<String, String> buildEasyEventScript(List<EventListenerTag> listeners, List<EventTag> events) {
+/*	private Map<String, String> buildEasyEventScript(List<EventListenerTag> listeners, List<EventTag> events) {
 		StringBuilder sb = new StringBuilder("");
 		Map<String, String> eventBinds = new HashMap<String, String>();
 		for (EventTag event : events) {
@@ -305,7 +305,7 @@ public class RenderContext {
 		}
 
 		return eventBinds;
-	}
+	}*/
 
 	/**
 	 * 获取一个控件的所有Event Listener
@@ -313,7 +313,7 @@ public class RenderContext {
 	 * @param tag
 	 * @return
 	 */
-	private List<EventListenerTag> getEventListeners(TagRender tag) {
+/*	private List<EventListenerTag> getEventListeners(TagRender tag) {
 		List<EventListenerTag> listeners = new ArrayList<EventListenerTag>();
 		for (EventListenerTag event : eventListeners) {
 			if (event.getFor() != null) {
@@ -327,7 +327,7 @@ public class RenderContext {
 			}
 		}
 		return listeners;
-	}
+	}*/
 
 	/**
 	 * 获取一个控件所有的event action
@@ -335,7 +335,7 @@ public class RenderContext {
 	 * @param tag
 	 * @return
 	 */
-	private List<EventTag> getEvents(TagRender tag) {
+/*	private List<EventTag> getEvents(TagRender tag) {
 		List<EventTag> eventTags = new ArrayList<EventTag>();
 		for (EventTag event : events) {
 			if (event.getFor() != null && event.getFor().equals(tag.getId())) {
@@ -348,7 +348,7 @@ public class RenderContext {
 			}
 		}
 		return eventTags;
-	}
+	}*/
 
 	/**
 	 * 获取父控件的ID

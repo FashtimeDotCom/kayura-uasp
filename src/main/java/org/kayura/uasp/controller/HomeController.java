@@ -58,14 +58,17 @@ public class HomeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(Integer error, Map<String, Object> map) {
+	public String login(Integer error, Map<String, Object> map, HttpServletRequest req) {
 
 		if (error != null) {
+			
 			if (error == 1) {
-				map.put("message", "用户或密码错误。");
+				map.put("message", "用户名或密码错误，请重新输入。");
 			}
+			
+			HttpSession session = req.getSession(true);
+			session.setAttribute("error", error);
 		}
-
 		map.put("runMode", runMode);
 		return viewResult("login");
 	}

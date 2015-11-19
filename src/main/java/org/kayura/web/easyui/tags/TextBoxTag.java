@@ -1,6 +1,5 @@
 package org.kayura.web.easyui.tags;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**

@@ -11,14 +11,6 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 .login_imgshow { float: left; width: 600px; height: 416px; overflow: hidden; }
 .login_window { float: left; width: 300px; }
 </style>
-<script type="text/javascript">
-function login() {
-	var f = $("#loginForm");
-	if (f.form('enableValidation').form('validate')) {
-		f.submit();
-	}
-}
-</script>
 </e:section>
 
 <e:section name="body">
@@ -26,7 +18,7 @@ function login() {
 		method="post">
 		<div class="login_negative">
 			<div class="login_header" style="height: 100px; position: relative;">
-				<img src='${root}/res/images/login/logo.png' style="position: absolute; left: -90px; top: 0;" alt="" />
+				<img src='${root}/res/images/login/logo.png' style="position: absolute;" alt="" />
 			</div>
 			<div class="login_shadow">
 				<div class="login_imgshow">
@@ -48,17 +40,20 @@ function login() {
 								style="width:100%;height:30px;padding:8px" iconCls="icon-lock"
 								iconWidth="30" prompt="确认密码"></e:textbox>
 						</div>
+						
+						<c:if test="${error == 1}">
 						<div style="margin-bottom: 10px">
 							<e:textbox id="vcode" required="true" novalidate="true" missingMessage="请输入验证码."
-								style="width:140px;height:30px;padding:8px" prompt="验证码"></e:textbox>
-							<img src="${root}/res/vc" style="width:90px;height:30px;float: right;margin-right: 5px"
+								style="width:140px;height:30px;padding:8px" iconCls="icon-ok" iconWidth="30" prompt="验证码"></e:textbox>
+							<img src="${root}/res/vc" style="width:95px;height:30px;float: right;"
 								onclick="this.src='${root}/res/vc?r=' + Math.random();" title="看不清？点击换一张。"/>
 						</div>
+						</c:if>
 						<div style="margin-bottom: 20px">
 							<label><input name="_spring_security_remember_me" type="checkbox" />记住用户名</label>
 						</div>
 						<div style="margin-bottom: 10px">
-							<e:linkbutton text="登录" iconCls="icon-ok" style="width:100%;height:30px;" onclick="login()"></e:linkbutton>
+							<e:linkbutton text="进入系统" style="width:100%;height:30px;" onclick="login()"></e:linkbutton>
 						</div>
 						<div style="margin-bottom: 20px">
 							<a href="javascript:void(0)">忘记登录密码？</a>
@@ -75,6 +70,14 @@ function login() {
 			</div>
 		</div>
 	</form>
+	<script type="text/javascript">
+		function login() {
+			var f = $("#loginForm");
+			if (f.form('enableValidation').form('validate')) {
+				f.submit();
+			}
+		}
+	</script>
 </e:section>
 
 <%@ include file="/shared/_simple.jsp"%>
