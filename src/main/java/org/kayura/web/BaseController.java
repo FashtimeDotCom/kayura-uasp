@@ -6,8 +6,6 @@ package org.kayura.web;
 
 import org.kayura.core.Action;
 import org.kayura.core.PostResult;
-import org.kayura.logging.Log;
-import org.kayura.logging.LogFactory;
 import org.kayura.type.PageParams;
 import org.kayura.utils.PathUtils;
 import org.kayura.web.ui.UISupport;
@@ -16,7 +14,8 @@ import org.kayura.type.PageList;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author liangxia@live.com
@@ -50,7 +51,7 @@ public class HomeController extends BaseController {
 
 		// 存入会话session.
 		HttpSession session = req.getSession(true);
-		session.setAttribute("vcode", verifyCode.toLowerCase());
+		session.setAttribute("j_captcha", verifyCode.toLowerCase());
 
 		// 生成图片.
 		int w = 200, h = 80;
@@ -58,17 +59,30 @@ public class HomeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(Integer error, Map<String, Object> map, HttpServletRequest req) {
+	public String login(@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout, Map<String, Object> map,
+			HttpServletRequest req) {
+
+		HttpSession session = req.getSession(true);
 
 		if (error != null) {
-			
-			if (error == 1) {
+
+			if (error == "1") {
 				map.put("message", "用户名或密码错误，请重新输入。");
 			}
+			session.setAttribute("needvc", true);
 			
-			HttpSession session = req.getSession(true);
-			session.setAttribute("error", error);
+		} else if (logout != null) {
+			
+			map.put("message", "已经成功退出系统。");
+		} else {
+			
+			Object vcerror = session.getAttribute("vcerror");
+			if (vcerror != null) {
+				map.put("message", "输入的验证码错误。");
+			}
 		}
+
 		map.put("runMode", runMode);
 		return viewResult("login");
 	}

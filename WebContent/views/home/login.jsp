@@ -14,7 +14,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 </e:section>
 
 <e:section name="body">
-	<form id="loginForm" action="${root}/j_spring_security_check"
+	<form id="loginForm" action="${root}/userlogin"
 		method="post">
 		<div class="login_negative">
 			<div class="login_header" style="height: 100px; position: relative;">
@@ -28,20 +28,19 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 					<img src="${root}/res/images/login/icon1.png" />
 					<div style="padding: 30px 30px 10px 30px">
 						<div style="margin-bottom: 10px">
-							<e:textbox id="j_username" required="true"
+							<e:textbox id="u" required="true"
 								missingMessage="请输入用户名." novalidate="true" 
 								style="width:100%;height:30px;padding:8px" iconCls="icon-man"
 								iconWidth="30" prompt="用户名/手机号"
 								value="${sessionScope['SPRING_SECURITY_LAST_USERNAME']}"></e:textbox>
 						</div>
 						<div style="margin-bottom: 10px">
-							<e:textbox id="j_password" type="password" required="true"
+							<e:textbox id="p" type="password" required="true"
 								missingMessage="请输入密码." novalidate="true"
 								style="width:100%;height:30px;padding:8px" iconCls="icon-lock"
 								iconWidth="30" prompt="确认密码"></e:textbox>
 						</div>
-						
-						<c:if test="${error == 1}">
+						<c:if test="${needvc == true}">
 						<div style="margin-bottom: 10px">
 							<e:textbox id="vcode" required="true" novalidate="true" missingMessage="请输入验证码."
 								style="width:140px;height:30px;padding:8px" iconCls="icon-ok" iconWidth="30" prompt="验证码"></e:textbox>

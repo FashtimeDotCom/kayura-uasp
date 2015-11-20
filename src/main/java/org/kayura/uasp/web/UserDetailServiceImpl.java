@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.kayura.logging.Log;
-import org.kayura.logging.LogFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kayura.uasp.service.UserService;
 import org.kayura.uasp.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
-	protected static Log logger = LogFactory.getLog(UserDetailServiceImpl.class);
+	private static final Log logger = LogFactory.getLog(UserDetailServiceImpl.class);
 
 	@Autowired
 	private UserService userService;
@@ -36,7 +36,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		UserDetails user = null;
 
 		try {
-
 			UserVo userVo = userService.getUserByUserName(username);
 
 			user = new User(username, userVo.getPassword(), userVo.getIsEnabled(), 
