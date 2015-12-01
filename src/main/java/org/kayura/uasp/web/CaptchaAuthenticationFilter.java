@@ -42,7 +42,7 @@ public class CaptchaAuthenticationFilter extends GenericFilterBean {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 
-		HttpSession session = ((HttpServletRequest) request).getSession();
+		HttpSession session = request.getSession();
 		Object needvc = session.getAttribute("needvc");
 		if (needvc != null && (Boolean) needvc) {
 
