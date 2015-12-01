@@ -67,20 +67,16 @@ public class HomeController extends BaseController {
 
 		if (error != null) {
 
-			if (error == "1") {
+			if (error.equals("1")) {
 				map.put("message", "用户名或密码错误，请重新输入。");
-			}
-			session.setAttribute("needvc", true);
-			
-		} else if (logout != null) {
-			
-			map.put("message", "已经成功退出系统。");
-		} else {
-			
-			Object vcerror = session.getAttribute("vcerror");
-			if (vcerror != null) {
+			} else if (error.equals("2")) {
 				map.put("message", "输入的验证码错误。");
 			}
+			
+			session.setAttribute("needvc", true);
+		} else if (logout != null) {
+
+			map.put("message", "已经成功退出系统。");
 		}
 
 		map.put("runMode", runMode);

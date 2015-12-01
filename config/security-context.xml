@@ -16,7 +16,10 @@
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 
-		<form-login login-processing-url="/userlogin" login-page="/login" password-parameter="p" username-parameter="u" />
+		<form-login login-processing-url="/userlogin" login-page="/login" 
+			authentication-failure-url="/login?error=1" 
+			password-parameter="p" username-parameter="u" />
+		
 		<logout logout-url="/logout" logout-success-url="/login?logout" invalidate-session="true" />
 
 		<session-management session-fixation-protection="none" invalid-session-url="/login?inavlid" />
@@ -27,15 +30,9 @@
 	<!-- 注册验证码过滤器 -->
  	<beans:bean id="loginFilter" class="org.kayura.uasp.web.CaptchaAuthenticationFilter">
 		<beans:property name="captchaFieldName" value="vcode"/>
-		<beans:property name="authenticationManager" ref="authenticationManager"/>
-		<beans:property name="authenticationSuccessHandler">
-			<beans:bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-				<beans:property name="defaultTargetUrl" value="/"/>
-			</beans:bean>
-		</beans:property>
 		<beans:property name="authenticationFailureHandler">
 			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-				<beans:property name="defaultFailureUrl" value="/login?error=1"/>
+				<beans:property name="defaultFailureUrl" value="/login?error=2"/>
 			</beans:bean>
 		</beans:property>
 	</beans:bean>

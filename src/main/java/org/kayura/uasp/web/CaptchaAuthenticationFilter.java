@@ -1,16 +1,31 @@
 package org.kayura.uasp.web;
 
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.util.Assert;
+import org.springframework.web.filter.GenericFilterBean;
 
-public class CaptchaAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+/**
+ * 图形证验码校验过滤器.
+ * 
+ * @author liangxia@live.com
+ */
+public class CaptchaAuthenticationFilter extends GenericFilterBean {
 
 	private String captchaFieldName;
+	private AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
 
 	public String getCaptchaFieldName() {
 		return captchaFieldName;
@@ -21,27 +36,53 @@ public class CaptchaAuthenticationFilter extends UsernamePasswordAuthenticationF
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-			throws AuthenticationException {
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+			throws IOException, ServletException {
 
-		HttpSession session = request.getSession();
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) res;
+
+		HttpSession session = ((HttpServletRequest) request).getSession();
 		Object needvc = session.getAttribute("needvc");
 		if (needvc != null && (Boolean) needvc) {
-			
+
 			String requestCaptcha = request.getParameter(this.getCaptchaFieldName());
 			String genCaptcha = (String) session.getAttribute("j_captcha");
 
 			logger.info("开始校验验证码，生成的验证码为：" + genCaptcha + " ，输入的验证码为：" + requestCaptcha);
 
 			if (!genCaptcha.equals(requestCaptcha)) {
-				session.setAttribute("vcerror", 1);
-				throw new CaptchaException(this.messages
-						.getMessage("AbstractUserDetailsAuthenticationProvider.badCaptcha", null, "Default", null));
-			}
 
+				try {
+					throw new CaptchaException("AbstractUserDetailsAuthenticationProvider.badCaptcha");
+				} catch (AuthenticationException e) {
+					unsuccessfulAuthentication(request, response, e);
+				}
+				return;
+			}
+			
 			session.removeAttribute("needvc");
 		}
-		return super.attemptAuthentication(request, response);
+
+		chain.doFilter(request, response);
 	}
 
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+
+		SecurityContextHolder.clearContext();
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("Authentication request failed: " + failed.toString());
+			logger.debug("Updated SecurityContextHolder to contain null Authentication");
+			logger.debug("Delegating to authentication failure handler " + failureHandler);
+		}
+
+		failureHandler.onAuthenticationFailure(request, response, failed);
+	}
+
+	public void setAuthenticationFailureHandler(AuthenticationFailureHandler failureHandler) {
+		Assert.notNull(failureHandler, "failureHandler cannot be null");
+		this.failureHandler = failureHandler;
+	}
 }

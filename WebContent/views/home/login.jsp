@@ -43,7 +43,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 						<c:if test="${needvc == true}">
 						<div style="margin-bottom: 10px">
 							<e:textbox id="vcode" required="true" novalidate="true" missingMessage="请输入验证码."
-								style="width:140px;height:30px;padding:8px" iconCls="icon-ok" iconWidth="30" prompt="验证码"></e:textbox>
+								style="width:140px;height:30px;padding:8px" prompt="验证码"></e:textbox>
 							<img src="${root}/res/vc" style="width:95px;height:30px;float: right;"
 								onclick="this.src='${root}/res/vc?r=' + Math.random();" title="看不清？点击换一张。"/>
 						</div>
