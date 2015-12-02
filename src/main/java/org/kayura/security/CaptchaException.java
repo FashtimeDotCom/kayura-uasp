@@ -1,4 +1,4 @@
-package org.kayura.uasp.web;
+package org.kayura.security;
 
 import org.springframework.security.core.AuthenticationException;
 

@@ -1,4 +1,4 @@
-package org.kayura.uasp.web;
+package org.kayura.security;
 
 import java.io.IOException;
 
@@ -54,34 +54,38 @@ public class CaptchaAuthenticationFilter extends GenericFilterBean {
 			if (!genCaptcha.equals(requestCaptcha)) {
 
 				try {
-					throw new CaptchaException("AbstractUserDetailsAuthenticationProvider.badCaptcha");
+					throw new CaptchaException(
+							"AbstractUserDetailsAuthenticationProvider.badCaptcha");
 				} catch (AuthenticationException e) {
 					unsuccessfulAuthentication(request, response, e);
 				}
 				return;
 			}
-			
+
 			session.removeAttribute("needvc");
 		}
 
 		chain.doFilter(request, response);
 	}
 
-	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException failed) throws IOException, ServletException {
+	protected void unsuccessfulAuthentication(HttpServletRequest request,
+			HttpServletResponse response, AuthenticationException failed)
+					throws IOException, ServletException {
 
 		SecurityContextHolder.clearContext();
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Authentication request failed: " + failed.toString());
 			logger.debug("Updated SecurityContextHolder to contain null Authentication");
-			logger.debug("Delegating to authentication failure handler " + failureHandler);
+			logger.debug(
+					"Delegating to authentication failure handler " + failureHandler);
 		}
 
 		failureHandler.onAuthenticationFailure(request, response, failed);
 	}
 
-	public void setAuthenticationFailureHandler(AuthenticationFailureHandler failureHandler) {
+	public void setAuthenticationFailureHandler(
+			AuthenticationFailureHandler failureHandler) {
 		Assert.notNull(failureHandler, "failureHandler cannot be null");
 		this.failureHandler = failureHandler;
 	}

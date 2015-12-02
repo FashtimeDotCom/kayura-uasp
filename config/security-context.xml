@@ -28,7 +28,7 @@
 	</http>
 	
 	<!-- 注册验证码过滤器 -->
- 	<beans:bean id="loginFilter" class="org.kayura.uasp.web.CaptchaAuthenticationFilter">
+ 	<beans:bean id="loginFilter" class="org.kayura.security.CaptchaAuthenticationFilter">
 		<beans:property name="captchaFieldName" value="vcode"/>
 		<beans:property name="authenticationFailureHandler">
 			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
@@ -43,5 +43,7 @@
 			<password-encoder hash="plaintext" />
 		</authentication-provider>
 	</authentication-manager>
+	
+	<beans:bean id="userDetailServiceImpl" class="org.kayura.uasp.security.UserDetailServiceImpl" />
 
 </beans:beans>
