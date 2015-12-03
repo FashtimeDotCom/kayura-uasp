@@ -22,7 +22,10 @@
 		
 		<logout logout-url="/logout" logout-success-url="/login?logout" invalidate-session="true" />
 
-		<session-management session-fixation-protection="none" invalid-session-url="/login?inavlid" />
+		<session-management session-fixation-protection="migrateSession" 
+			invalid-session-url="/login?inavlid">
+			<concurrency-control max-sessions="1" expired-url="/login?supplant"/>
+		</session-management>
 
 		<custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"/>
 	</http>

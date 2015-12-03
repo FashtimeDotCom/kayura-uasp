@@ -39,7 +39,8 @@ public class HomeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/res/vc", method = RequestMethod.GET)
-	public void AuthImage(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	public void AuthImage(HttpServletRequest req, HttpServletResponse res)
+			throws IOException {
 
 		res.setHeader("Pragma", "No-cache");
 		res.setHeader("Cache-Control", "no-cache");
@@ -60,8 +61,10 @@ public class HomeController extends BaseController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout, Map<String, Object> map,
-			HttpServletRequest req) {
+			@RequestParam(value = "logout", required = false) String logout,
+			@RequestParam(value = "supplant", required = false) String supplant,
+			@RequestParam(value = "inavlid", required = false) String inavlid,
+			Map<String, Object> map, HttpServletRequest req) {
 
 		HttpSession session = req.getSession(true);
 
@@ -72,11 +75,17 @@ public class HomeController extends BaseController {
 			} else if (error.equals("2")) {
 				map.put("message", "输入的验证码错误。");
 			}
-			
+
 			session.setAttribute("needvc", true);
 		} else if (logout != null) {
 
 			map.put("message", "已经成功退出系统。");
+		} else if (supplant != null) {
+
+			map.put("message", "您的账号已在其它地方登录。");
+		} else if (inavlid != null) {
+
+			map.put("message", "因您长时间未使用，需重新登录。");
 		}
 
 		map.put("runMode", runMode);
