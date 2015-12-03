@@ -64,6 +64,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 			</div>
 			<div style="float: right; margin: 15px">
 				<c:if test="${runMode == 'dev'}">
+				<a href="http://git.kayura.org" target="_blank" style="margin-right: 8px">GitHub</a>
 				<a href="${root}/example/" target="_blank">开发示例库</a>
 				</c:if>				
 			</div>

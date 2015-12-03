@@ -25,8 +25,9 @@
 	</e:layoutunit>
 	<e:layoutunit region="center">
 		<e:tabs id="mainTabs" fit="true" border="false">
-			<e:tab id="homePage" title="首页" iconCls="icon-home"
-				style="padding: 0px;overflow:hidden;"></e:tab>
+			<e:tab id="homePage" title="首页" iconCls="icon-home" style="padding: 0px;overflow:hidden;">
+				<iframe frameborder="0" style="width:100%;height:100%;" src="${root}/portal" scrolling="auto" name="contentframe"></iframe>
+			</e:tab>
 		</e:tabs>
 	</e:layoutunit>
 </e:body>
