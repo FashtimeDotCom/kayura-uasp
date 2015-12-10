@@ -5,6 +5,8 @@
 package org.kayura.uasp.controller;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +15,13 @@ import javax.servlet.http.HttpSession;
 
 import org.kayura.web.BaseController;
 import org.kayura.web.util.VerifyCodeUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +35,9 @@ public class HomeController extends BaseController {
 	@Value("#{sysProperties['runMode']}")
 	private String runMode;
 
+	@Autowired
+	private SessionRegistry sessionRegistry;
+
 	public HomeController() {
 		this.setViewRootPath("views/home/");
 	}
@@ -39,8 +49,7 @@ public class HomeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/res/vc", method = RequestMethod.GET)
-	public void AuthImage(HttpServletRequest req, HttpServletResponse res)
-			throws IOException {
+	public void AuthImage(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
 		res.setHeader("Pragma", "No-cache");
 		res.setHeader("Cache-Control", "no-cache");
@@ -62,9 +71,9 @@ public class HomeController extends BaseController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(@RequestParam(value = "error", required = false) String error,
 			@RequestParam(value = "logout", required = false) String logout,
-			@RequestParam(value = "supplant", required = false) String supplant,
-			@RequestParam(value = "inavlid", required = false) String inavlid,
-			Map<String, Object> map, HttpServletRequest req) {
+			@RequestParam(value = "expired", required = false) String expired,
+			@RequestParam(value = "inavlid", required = false) String inavlid, Map<String, Object> map,
+			HttpServletRequest req) {
 
 		HttpSession session = req.getSession(true);
 
@@ -80,9 +89,9 @@ public class HomeController extends BaseController {
 		} else if (logout != null) {
 
 			map.put("message", "已经成功退出系统。");
-		} else if (supplant != null) {
+		} else if (expired != null) {
 
-			map.put("message", "您的账号已在其它地方登录。");
+			map.put("message", "您当前的登录已经失效。");
 		} else if (inavlid != null) {
 
 			map.put("message", "因您长时间未使用，需重新登录。");
@@ -90,6 +99,34 @@ public class HomeController extends BaseController {
 
 		map.put("runMode", runMode);
 		return viewResult("login");
+	}
+
+	@ModelAttribute("numUsers")
+	public int getNumberOfUsers() {
+		return sessionRegistry.getAllPrincipals().size();
+	}
+
+	@ModelAttribute("activeUsers")
+	public Map<Object, Date> listActiveUsers(Model model) {
+
+		Map<Object, Date> lastActivityDates = new HashMap<Object, Date>();
+
+		for (Object principal : sessionRegistry.getAllPrincipals()) {
+			for (SessionInformation session : sessionRegistry.getAllSessions(principal, false)) {
+
+				if (lastActivityDates.get(principal) == null) {
+					lastActivityDates.put(principal, session.getLastRequest());
+				} else {
+					Date prevLastRequest = lastActivityDates.get(principal);
+
+					if (session.getLastRequest().after(prevLastRequest)) {
+						lastActivityDates.put(principal, session.getLastRequest());
+					}
+				}
+			}
+		}
+
+		return lastActivityDates;
 	}
 
 	@RequestMapping(value = "/portal", method = RequestMethod.GET)

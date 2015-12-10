@@ -24,7 +24,7 @@
 
 		<session-management session-fixation-protection="migrateSession" 
 			invalid-session-url="/login?inavlid">
-			<concurrency-control max-sessions="1" expired-url="/login?supplant"/>
+			<concurrency-control max-sessions="1" expired-url="/login?expired"/>
 		</session-management>
 
 		<custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"/>
