@@ -27,11 +27,11 @@
 			<concurrency-control max-sessions="1" expired-url="/login?expired"/>
 		</session-management>
 
-		<custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"/>
+		<custom-filter ref="captchaAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
 	</http>
 	
 	<!-- 注册验证码过滤器 -->
- 	<beans:bean id="loginFilter" class="org.kayura.security.CaptchaAuthenticationFilter">
+ 	<beans:bean id="captchaAuthenticationFilter" class="org.kayura.security.CaptchaAuthenticationFilter">
 		<beans:property name="captchaFieldName" value="vcode"/>
 		<beans:property name="authenticationFailureHandler">
 			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
