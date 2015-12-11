@@ -49,7 +49,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 						</div>
 						</c:if>
 						<div style="margin-bottom: 20px">
-							<label><input name="_spring_security_remember_me" type="checkbox" />记住用户名</label>
+							<label><input name="rme" type="checkbox" />下次自动登录</label>
 						</div>
 						<div style="margin-bottom: 10px">
 							<e:linkbutton text="进入系统" style="width:100%;height:30px;" onclick="login()"></e:linkbutton>

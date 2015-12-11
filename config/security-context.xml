@@ -20,6 +20,8 @@
 			authentication-failure-url="/login?error=1" 
 			password-parameter="p" username-parameter="u" />
 		
+		<remember-me key="jKylRME" remember-me-parameter="rme" services-ref="rememberMeServices"/>
+		
 		<logout logout-url="/logout" logout-success-url="/login?logout" invalidate-session="true" />
 
 		<session-management session-fixation-protection="migrateSession" 
@@ -29,6 +31,12 @@
 
 		<custom-filter ref="captchaAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
 	</http>
+	
+	<!-- 自动登录服务 RememberMe -->
+	<beans:bean id="rememberMeServices" 
+		class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
+		<beans:constructor-arg></beans:constructor-arg>
+	</beans:bean>
 	
 	<!-- 注册验证码过滤器 -->
  	<beans:bean id="captchaAuthenticationFilter" class="org.kayura.security.CaptchaAuthenticationFilter">
