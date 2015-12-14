@@ -20,7 +20,7 @@
 			authentication-failure-url="/login?error=1" 
 			password-parameter="p" username-parameter="u" />
 		
-		<remember-me key="jKylRME" remember-me-parameter="rme" services-ref="rememberMeServices"/>
+		<remember-me key="uanVG!6!UNT8Z5g3#uU^H#2x09^twFq7" services-ref="rememberMeServices" />
 		
 		<logout logout-url="/logout" logout-success-url="/login?logout" invalidate-session="true" />
 
@@ -33,9 +33,12 @@
 	</http>
 	
 	<!-- 自动登录服务 RememberMe -->
-	<beans:bean id="rememberMeServices" 
-		class="org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices">
-		<beans:constructor-arg></beans:constructor-arg>
+ 	<beans:bean id="rememberMeServices" 
+ 		class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+ 		<beans:constructor-arg name="key" value="uanVG!6!UNT8Z5g3#uU^H#2x09^twFq7" />
+ 		<beans:constructor-arg name="userDetailsService" ref="userDetailServiceImpl" />
+ 		<beans:property name="parameter" value="rme" />
+		<beans:property name="cookieName" value="KAYURAID" />
 	</beans:bean>
 	
 	<!-- 注册验证码过滤器 -->

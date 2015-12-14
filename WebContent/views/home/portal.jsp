@@ -18,7 +18,7 @@
 			border : false,
 			fit : true
 		});
-		add();
+		//add();
 	});
 	function add() {
 		for (var i = 0; i < 5; i++) {
@@ -50,9 +50,9 @@
 			<div style="width: 65%;">
 				<div id="pgrid" title="DataGrid" closable="true"
 					style="height: 200px;">
-					<table class="easyui-datagrid" style="width: 650px; height: auto"
-						fit="true" border="false" singleSelect="true" idField="itemid"
-						url="${root}/res/jsondata/datagrid_data.json">
+					<table class="easyui-datagrid" style="width: 650px; height: auto" method="GET"
+						fit="true" border="false" singleSelect="true" idField="itemid" fitColumns="true"
+						url="${root}/res/easyui/jsondata/datagrid_data.json">
 						<thead>
 							<tr>
 								<th field="itemid" width="60">Item ID</th>

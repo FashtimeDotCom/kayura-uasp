@@ -74,6 +74,7 @@ public class IPTokenBasedRememberMeServices extends TokenBasedRememberMeServices
 
 	@Override
 	protected String makeTokenSignature(long tokenExpiryTime, String username, String password) {
+		
 		return DigestUtils.md5DigestAsHex((username + ":" + tokenExpiryTime + ":" + password + ":" + getKey() + ":"
 				+ getUserIPAddress(getContext())).getBytes());
 	}
