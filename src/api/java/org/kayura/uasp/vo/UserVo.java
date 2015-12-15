@@ -24,8 +24,6 @@ public class UserVo {
 	private Boolean isEnabled;
 	private Boolean isLocked;
 
-	private String employeeId;
-
 	public String getUserId() {
 		return userId;
 	}
@@ -120,14 +118,6 @@ public class UserVo {
 
 	public void setIsLocked(Boolean isLocked) {
 		this.isLocked = isLocked;
-	}
-
-	public String getEmployeeId() {
-		return employeeId;
-	}
-
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
 	}
 
 }

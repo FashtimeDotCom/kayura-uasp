@@ -19,6 +19,7 @@
 
 	<sql id="userColumns">
 		t.User_Id,
+		t.Tenant_Id,
 		t.UserName,
 		t.DisplayName,
 		t.Password,
@@ -35,7 +36,7 @@
 	<select id="findUsersByMap" parameterType="map" resultMap="userMap">
 		SELECT
 		<include refid="userColumns"></include>
-		FROM UASP_Users t
+		FROM Authz_Users t
 		<where>
 			<if test="keyword != null and keyword != ''">
 				AND ( t.Keyword LIKE #{keyword} )
@@ -55,7 +56,7 @@
 	<sql id="selectOneWhere">
 		<where>
 			<if test="userId != null">
-				AND t.User_Id = #{userId}
+				AND ( t.User_Id = #{userId} )
 			</if>
 			<if test="userName != null">
 				AND ( t.UserName = #{userName} )
@@ -81,7 +82,7 @@
 	<select id="getUserByMap" parameterType="map" resultMap="userMap">
 		SELECT
 		<include refid="userColumns" />
-		FROM uasp_users t
+		FROM Authz_Users t
 		<include refid="selectOneWhere" />
 		ORDER BY t.CreateTime
 		LIMIT 1
@@ -89,13 +90,14 @@
 
 	<select id="isExistsByMap" parameterType="map" resultType="boolean">
 		SELECT COUNT(1) > 0 
-		FROM uasp_users t
+		FROM Authz_Users t
 		<include refid="selectOneWhere" />
 	</select>
 
 	<insert id="insertUser" parameterType="org.kayura.uasp.po.User">
-		INSERT INTO uasp_users (
+		INSERT INTO Authz_Users (
 			User_Id,
+			Tenant_Id,
 			UserName,
 			DisplayName,
 			Password,
@@ -108,6 +110,7 @@
 			Status
 		) VALUES (
 			#{id},
+			#{tenantId},
 			#{userName},
 			#{displayName},
 			#{password},
@@ -122,7 +125,7 @@
 	</insert>
 
 	<update id="updateUser" parameterType="org.kayura.uasp.po.User">
-		UPDATE uasp_users
+		UPDATE Authz_Users
 		SET UserName = #{userName},
 			DisplayName = #{displayName},
 			Password = #{password},
@@ -137,7 +140,7 @@
 	</update>
 
 	<delete id="deleteUser" parameterType="string">
-		DELETE uasp_users
+		DELETE Authz_Users
 		WHERE User_Id = #{value}
 	</delete>
 

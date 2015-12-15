@@ -10,6 +10,8 @@ import org.kayura.type.PageParams;
 import org.kayura.uasp.vo.UserVo;
 
 /**
+ * UserService
+ * 
  * @author liangxia@live.com
  */
 public interface UserService {

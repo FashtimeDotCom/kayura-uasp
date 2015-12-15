@@ -12,6 +12,7 @@ import java.util.Date;
 public class User {
 
 	private String userId;
+	private String tenantId;
 	private String userName;
 	private String displayName;
 	private String password;
@@ -24,10 +25,8 @@ public class User {
 	private Boolean isEnabled;
 	private Boolean isLocked;
 
-	private Employee employee;
-
 	public User() {
-		this.setEmployee(new Employee("xialaing"));
+
 	}
 
 	public String getUserId() {
@@ -36,6 +35,14 @@ public class User {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	public String getUserName() {
@@ -124,14 +131,6 @@ public class User {
 
 	public void setIsLocked(Boolean isLocked) {
 		this.isLocked = isLocked;
-	}
-
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
 	}
 
 }

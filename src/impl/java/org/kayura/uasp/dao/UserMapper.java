@@ -12,9 +12,11 @@ import org.kayura.type.PageList;
 import org.kayura.uasp.po.User;
 
 /**
+ * 用户账号的数据库访问接口.
+ * 
  * @author liangxia@live.com
  */
-public interface UserMapper extends BaseDao{
+public interface UserMapper extends BaseDao {
 	
 	/**
 	 * 查询出符合条件的用户分页列表.
