@@ -21,10 +21,8 @@ import org.springframework.stereotype.Service;
  * 
  * @author liangxia@live.com
  */
-@Service
 public class RememberMeServiceImpl implements RememberMeService {
 
-	@Autowired
 	private RememberMeMapper rememberMeMapper;
 
 	@Override

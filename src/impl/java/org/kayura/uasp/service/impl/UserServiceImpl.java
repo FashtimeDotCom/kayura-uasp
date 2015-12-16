@@ -44,10 +44,24 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVo getUserByUserName(String userName) {
+	public UserVo getUserByUserName(String loginName) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("userName", userName);
+
+		boolean isTenant = loginName.contains("#");
+		if (isTenant) {
+			
+			String[] values = loginName.split("#");
+			
+			String tenantId = values[0];
+			String userName = values[1];
+
+			args.put("tenantId", tenantId);
+			args.put("userName", userName);
+		} else {
+			
+			args.put("userName", loginName);
+		}
 
 		User user = userMapper.getUserByMap(args);
 		return UserConvert.toVo(user);

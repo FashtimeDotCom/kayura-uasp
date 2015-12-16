@@ -50,10 +50,10 @@ public interface UserService {
 	void deleteUser(String userId);
 
 	/**
-	 * @param userName
+	 * @param loginName 该登录用户名为：{租户Id}#{用户名}.
 	 * @return
 	 */
-	UserVo getUserByUserName(String userName);
+	UserVo getUserByUserName(String loginName);
 
 	/**
 	 * @param userId

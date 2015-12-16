@@ -17,17 +17,16 @@ public class LoginUser extends User {
 	private static final long serialVersionUID = 4002208269317073182L;
 
 	private String userId;
-	private String tenantId;	
+	private String tenantId;
 	
-	/**
-	 * @param username
-	 * @param password
-	 * @param enabled
-	 * @param accountNonExpired
-	 * @param credentialsNonExpired
-	 * @param accountNonLocked
-	 * @param authorities
-	 */
+	public LoginUser(String userId, String tenantId, String username, String password, 
+			boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, 
+			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+		this(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+		this.userId = userId;
+		this.tenantId = tenantId;
+	}
+
 	public LoginUser(String username, String password, boolean enabled, boolean accountNonExpired,
 			boolean credentialsNonExpired, boolean accountNonLocked,
 			Collection<? extends GrantedAuthority> authorities) {

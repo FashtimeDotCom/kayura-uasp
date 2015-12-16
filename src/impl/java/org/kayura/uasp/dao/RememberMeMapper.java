@@ -9,7 +9,7 @@ import java.util.Map;
 import org.kayura.core.BaseDao;
 import org.kayura.uasp.po.RememberMe;
 
-public interface RememberMeMapper extends BaseDao {
+public interface RememberMeMapper extends BaseDao  {
 
 	public void createNewToken(RememberMe rememberMe);
 

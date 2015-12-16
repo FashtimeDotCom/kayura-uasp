@@ -38,6 +38,9 @@
 		<include refid="userColumns"></include>
 		FROM Authz_Users t
 		<where>
+			<if test="tenantId != null">
+				AND ( t.Tenant_Id = #{tenantId} )
+			</if>
 			<if test="keyword != null and keyword != ''">
 				AND ( t.Keyword LIKE #{keyword} )
 			</if>
@@ -55,6 +58,9 @@
 
 	<sql id="selectOneWhere">
 		<where>
+			<if test="tenantId != null">
+				AND ( t.Tenant_Id = #{tenantId} )
+			</if>
 			<if test="userId != null">
 				AND ( t.User_Id = #{userId} )
 			</if>
