@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.3//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kayura.uasp.dao.UserMapper">
 
-	<resultMap type="org.kayura.uasp.po.User" id="userMap">
+	<!-- resultMap -->
+
+	<resultMap id="userMap" type="org.kayura.uasp.po.User">
 		<id property="userId" column="User_Id" />
 		<result property="userName" column="UserName" />
 		<result property="displayName" column="DisplayName" />
@@ -17,6 +19,15 @@
 		<result property="isLocked" column="IsLocked" />
 	</resultMap>
 
+	<resultMap id="autoLoginMap" type="org.kayura.uasp.po.AutoLogin">
+		<result property="seriesId" column="Series_Id" />
+		<result property="userId" column="User_Id" />
+		<result property="token" column="Token" />
+		<result property="lastUsed" column="LastUsed" />
+	</resultMap>
+	
+	<!-- Users -->
+	
 	<sql id="userColumns">
 		t.User_Id,
 		t.Tenant_Id,
@@ -32,7 +43,7 @@
 		t.IsEnabled,
 		t.IsLocked
 	</sql>
-
+	
 	<select id="findUsersByMap" parameterType="map" resultMap="userMap">
 		SELECT
 		<include refid="userColumns"></include>
@@ -150,4 +161,39 @@
 		WHERE User_Id = #{value}
 	</delete>
 
+	<!-- AutoLogin -->
+
+	<insert id="createLoginToken" parameterType="org.kayura.uasp.po.AutoLogin">
+		INSERT INTO Authz_AutoLogin (
+			Series_Id,
+			User_Id,
+			Token,
+			LastUsed
+		) VALUES (
+			#{seriesId},
+			#{userId},
+			#{token},
+			#{lastUsed}
+		)
+	</insert>
+
+	<!-- String seriesId, String token, Date lastUsed -->
+	<update id="updateLoginToken" parameterType="map">
+		UPDATE Authz_AutoLogin
+		SET Token = #{token},
+			LastUsed = #{lastUsed}
+		WHERE Series_Id = #{seriesId}
+	</update>
+	
+	<select id="getLoginTokenById" parameterType="string" resultMap="autoLoginMap">
+		SELECT Series_Id, User_Id, Token, LastUsed
+		FROM Authz_AutoLogin
+		WHERE Series_Id = #{seriesId}
+	</select>
+	
+	<delete id="removeLoginTokensByUser" parameterType="string">
+		DELETE Authz_AutoLogin
+		WHERE User_Id = #{userId}
+	</delete>
+	
 </mapper>

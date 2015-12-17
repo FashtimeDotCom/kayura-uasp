@@ -26,9 +26,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 	private static final Log logger = LogFactory.getLog(UserDetailServiceImpl.class);
 
-	@Autowired
 	private UserService userService;
-
+	
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+	
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 
 		UserDetails user = null;

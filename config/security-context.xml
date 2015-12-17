@@ -67,6 +67,8 @@
 		</authentication-provider>
 	</authentication-manager>
 	
-	<beans:bean id="userDetailServiceImpl" class="org.kayura.uasp.security.UserDetailServiceImpl" />
+	<beans:bean id="userDetailServiceImpl" class="org.kayura.uasp.security.UserDetailServiceImpl">
+		<beans:property name="userService" ref="userServiceImpl" />
+	</beans:bean>
 
 </beans:beans>

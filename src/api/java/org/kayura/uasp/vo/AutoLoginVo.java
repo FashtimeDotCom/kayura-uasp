@@ -6,7 +6,7 @@ package org.kayura.uasp.vo;
 
 import java.util.Date;
 
-public class RememberMeVo {
+public class AutoLoginVo {
 
 	private String seriesId;
 	private String userId;

@@ -6,7 +6,7 @@ package org.kayura.uasp.po;
 
 import java.util.Date;
 
-public class RememberMe {
+public class AutoLogin {
 
 	private String seriesId;
 	private String userId;

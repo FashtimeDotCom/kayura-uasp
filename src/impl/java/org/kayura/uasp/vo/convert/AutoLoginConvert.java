@@ -4,8 +4,8 @@
  */
 package org.kayura.uasp.vo.convert;
 
-import org.kayura.uasp.po.RememberMe;
-import org.kayura.uasp.vo.RememberMeVo;
+import org.kayura.uasp.po.AutoLogin;
+import org.kayura.uasp.vo.AutoLoginVo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
@@ -13,14 +13,14 @@ import org.modelmapper.PropertyMap;
  * 
  * @author liangxia@live.com
  */
-public final class RememberMeConvert {
+public final class AutoLoginConvert {
 
 	private static ModelMapper tv = new ModelMapper();
 	private static ModelMapper te = new ModelMapper();
 
 	static {
 		
-		tv.addMappings(new PropertyMap<RememberMe, RememberMeVo>() {
+		tv.addMappings(new PropertyMap<AutoLogin, AutoLoginVo>() {
 			@Override
 			protected void configure() {
 				
@@ -28,7 +28,7 @@ public final class RememberMeConvert {
 			}
 		});
 
-		te.addMappings(new PropertyMap<RememberMeVo, RememberMe>() {
+		te.addMappings(new PropertyMap<AutoLoginVo, AutoLogin>() {
 			@Override
 			protected void configure() {
 				
@@ -37,15 +37,15 @@ public final class RememberMeConvert {
 		});
 	}
 
-	public static RememberMeVo toVo(RememberMe entity) {
+	public static AutoLoginVo toVo(AutoLogin entity) {
 
-		RememberMeVo vo = tv.map(entity, RememberMeVo.class);
+		AutoLoginVo vo = tv.map(entity, AutoLoginVo.class);
 		return vo;
 	}
 
-	public static RememberMe toEntity(RememberMeVo vo) {
+	public static AutoLogin toEntity(AutoLoginVo vo) {
 
-		RememberMe entity = te.map(vo, RememberMe.class);
+		AutoLogin entity = te.map(vo, AutoLogin.class);
 		return entity;
 	}
 }

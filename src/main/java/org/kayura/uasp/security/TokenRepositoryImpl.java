@@ -6,41 +6,41 @@ package org.kayura.uasp.security;
 
 import java.util.Date;
 
-import org.kayura.uasp.service.RememberMeService;
-import org.kayura.uasp.vo.RememberMeVo;
+import org.kayura.uasp.service.UserService;
+import org.kayura.uasp.vo.AutoLoginVo;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 public class TokenRepositoryImpl implements PersistentTokenRepository {
 
-	private RememberMeService rememberMeService;
+	private UserService userService;
 
-	public void setRememberMeService(RememberMeService rememberMeService) {
-		this.rememberMeService = rememberMeService;
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
 	@Override
 	public void createNewToken(PersistentRememberMeToken token) {
 		
-		RememberMeVo vo = new RememberMeVo();
+		AutoLoginVo vo = new AutoLoginVo();
 		vo.setToken(token.getTokenValue());
 		vo.setSeriesId(token.getSeries());
 		vo.setLastUsed(token.getDate());
 		vo.setUserId(token.getUsername());
 		
-		rememberMeService.createNewToken(vo);		
+		userService.createLoginToken(vo);		
 	}
 
 	@Override
 	public void updateToken(String series, String tokenValue, Date lastUsed) {
 		
-		rememberMeService.updateToken(series, tokenValue, lastUsed);
+		userService.updateLoginToken(series, tokenValue, lastUsed);
 	}
 
 	@Override
 	public PersistentRememberMeToken getTokenForSeries(String seriesId) {
 
-		RememberMeVo vo = rememberMeService.getTokenForSeries(seriesId);
+		AutoLoginVo vo = userService.getLoginTokenById(seriesId);
 		
 		PersistentRememberMeToken token = new PersistentRememberMeToken(
 				vo.getUserId(), vo.getSeriesId(), vo.getToken(), vo.getLastUsed());
@@ -51,7 +51,7 @@ public class TokenRepositoryImpl implements PersistentTokenRepository {
 	@Override
 	public void removeUserTokens(String username) {
 
-		rememberMeService.removeUserTokens(username);
+		userService.removeLoginTokensByUser(username);
 	}
 
 }

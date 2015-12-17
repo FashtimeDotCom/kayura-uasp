@@ -4,6 +4,7 @@
  */
 package org.kayura.uasp.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,9 +13,12 @@ import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.uasp.dao.UserMapper;
+import org.kayura.uasp.po.AutoLogin;
 import org.kayura.uasp.po.User;
 import org.kayura.uasp.service.UserService;
+import org.kayura.uasp.vo.AutoLoginVo;
 import org.kayura.uasp.vo.UserVo;
+import org.kayura.uasp.vo.convert.AutoLoginConvert;
 import org.kayura.uasp.vo.convert.UserConvert;
 import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,5 +116,36 @@ public class UserServiceImpl implements UserService {
 
 		User user = userMapper.getUserByMap(args);
 		return UserConvert.toVo(user);
+	}
+
+	@Override
+	public void createLoginToken(AutoLoginVo vo) {
+		
+		AutoLogin entity = AutoLoginConvert.toEntity(vo);
+		userMapper.createLoginToken(entity);
+	}
+
+	@Override
+	public void updateLoginToken(String seriesId, String token, Date lastUsed) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("seriesId", seriesId);
+		args.put("token", token);
+		args.put("lastUsed", lastUsed);
+		
+		userMapper.updateLoginToken(args);		
+	}
+
+	@Override
+	public AutoLoginVo getLoginTokenById(String seriesId) {
+
+		AutoLogin entity = userMapper.getLoginTokenById(seriesId);
+		return AutoLoginConvert.toVo(entity);
+	}
+
+	@Override
+	public void removeLoginTokensByUser(String userId) {
+
+		userMapper.removeLoginTokensByUser(userId);
 	}
 }

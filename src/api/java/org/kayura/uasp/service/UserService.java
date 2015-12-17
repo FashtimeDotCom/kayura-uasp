@@ -4,9 +4,12 @@
  */
 package org.kayura.uasp.service;
 
+import java.util.Date;
+
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
+import org.kayura.uasp.vo.AutoLoginVo;
 import org.kayura.uasp.vo.UserVo;
 
 /**
@@ -50,7 +53,9 @@ public interface UserService {
 	void deleteUser(String userId);
 
 	/**
-	 * @param loginName 该登录用户名为：{租户Id}#{用户名}.
+	 * @param loginName 有2种值类型：
+	 * 		{租户Id}#{用户名}，如： YFS43TF#user1
+	 * 		{用户名}，如：user1
 	 * @return
 	 */
 	UserVo getUserByUserName(String loginName);
@@ -59,4 +64,35 @@ public interface UserService {
 	 * @param userId
 	 */
 	UserVo getUserById(String userId);
+	
+	/**
+	 * 创建一个登录 Token 记录.
+	 * 
+	 * @param rememberMe
+	 */
+	void createLoginToken(AutoLoginVo rememberMe);
+
+	
+	/**
+	 * 更新一个登录 Token 与 lastUsed 值.
+	 * @param seriesId
+	 * @param token
+	 * @param lastUsed
+	 */
+	void updateLoginToken(String seriesId, String token, Date lastUsed);
+	
+	/**
+	 * 获取登录 Token 数据.
+	 * 
+	 * @param seriesId
+	 * @return
+	 */
+	AutoLoginVo getLoginTokenById(String seriesId);
+	
+	/**
+	 * 删除指定用户下的所有登录信息.
+	 * 
+	 * @param userId 用户Id.
+	 */
+	void removeLoginTokensByUser(String userId);
 }

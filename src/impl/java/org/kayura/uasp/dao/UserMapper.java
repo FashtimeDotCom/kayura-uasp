@@ -9,6 +9,7 @@ import java.util.Map;
 import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
+import org.kayura.uasp.po.AutoLogin;
 import org.kayura.uasp.po.User;
 
 /**
@@ -76,4 +77,33 @@ public interface UserMapper extends BaseDao {
 	 * @return 如果存在返回 true 否则返回 false.
 	 */
 	User getUserByMap(Map<String, Object> args);
+	
+	/**
+	 * 创建一个登录 Token 记录.
+	 * 
+	 * @param entity
+	 */
+	void createLoginToken(AutoLogin entity);
+
+	/**
+	 * 更新一个登录 Token 与 lastUsed 值.
+	 *
+	 * @param args String seriesId, String token, Date lastUsed
+	 */
+	void updateLoginToken(Map<String, Object> args);
+
+	/**
+	 * 获取登录 Token 数据.
+	 * 
+	 * @param seriesId
+	 * @return
+	 */
+	AutoLogin getLoginTokenById(String seriesId);
+
+	/**
+	 * 删除指定用户下的所有登录信息.
+	 * 
+	 * @param userId 用户Id.
+	 */
+	void removeLoginTokensByUser(String userId);
 }
