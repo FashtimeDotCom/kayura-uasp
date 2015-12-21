@@ -40,7 +40,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			UserVo userVo = userService.getUserByUserName(username);
 
 			user = new User(username, userVo.getPassword(), userVo.getIsEnabled(), true, true, true,
-					getAuthorities(userVo.getAuthType()));
+					getAuthorities(userVo.getUserType()));
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving user", e);

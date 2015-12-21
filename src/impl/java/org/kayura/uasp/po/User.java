@@ -21,7 +21,7 @@ public class User {
 	private String keyword;
 	private Date createTime;
 	private Date expireTime;
-	private String authType;
+	private String userType;
 	private Boolean isEnabled;
 	private Boolean isLocked;
 
@@ -109,12 +109,12 @@ public class User {
 		this.expireTime = expireTime;
 	}
 
-	public String getAuthType() {
-		return authType;
+	public String getUserType() {
+		return userType;
 	}
 
-	public void setAuthType(String authType) {
-		this.authType = authType;
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 	public Boolean getIsEnabled() {

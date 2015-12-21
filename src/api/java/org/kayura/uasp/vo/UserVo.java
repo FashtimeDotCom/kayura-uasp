@@ -12,6 +12,7 @@ import java.util.Date;
 public class UserVo {
 
 	private String userId;
+	private String tenantId;
 	private String userName;
 	private String displayName;
 	private String password;
@@ -20,7 +21,7 @@ public class UserVo {
 	private String keyword;
 	private Date createTime;
 	private Date expireTime;
-	private String authType;
+	private String userType;
 	private Boolean isEnabled;
 	private Boolean isLocked;
 
@@ -30,6 +31,14 @@ public class UserVo {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	public String getUserName() {
@@ -96,12 +105,12 @@ public class UserVo {
 		this.expireTime = expireTime;
 	}
 
-	public String getAuthType() {
-		return authType;
+	public String getUserType() {
+		return userType;
 	}
 
-	public void setAuthType(String authType) {
-		this.authType = authType;
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 	public Boolean getIsEnabled() {
