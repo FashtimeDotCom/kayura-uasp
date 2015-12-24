@@ -25,7 +25,7 @@ CREATE TABLE `example_categories` (
   `Description` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`CategoryID`),
   KEY `CategoryName` (`CategoryName`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of example_categories
@@ -60,7 +60,7 @@ CREATE TABLE `example_customers` (
   KEY `CompanyName` (`CompanyName`),
   KEY `PostalCode` (`PostalCode`),
   KEY `Region` (`Region`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of example_customers
@@ -184,7 +184,7 @@ CREATE TABLE `example_employees` (
   KEY `PostalCode` (`PostalCode`),
   KEY `FK_Example_Employees_Employees` (`ReportsTo`),
   CONSTRAINT `FK_Example_Employees_Employees` FOREIGN KEY (`ReportsTo`) REFERENCES `example_employees` (`EmployeeID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of example_employees
@@ -215,7 +215,7 @@ CREATE TABLE `example_orderdetails` (
   KEY `ProductsOrder_Details` (`ProductID`),
   CONSTRAINT `FK_Example_OrderDetails_Orders` FOREIGN KEY (`OrderID`) REFERENCES `example_orders` (`OrderID`) ON DELETE CASCADE,
   CONSTRAINT `FK_Example_OrderDetails_Products` FOREIGN KEY (`ProductID`) REFERENCES `example_products` (`ProductID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2156 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2156 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of example_orderdetails
@@ -2405,7 +2405,7 @@ CREATE TABLE `example_orders` (
   CONSTRAINT `FK_Example_Orders_Customers` FOREIGN KEY (`CustomerID`) REFERENCES `example_customers` (`CustomerID`),
   CONSTRAINT `FK_Example_Orders_Employees` FOREIGN KEY (`EmployeeID`) REFERENCES `example_employees` (`EmployeeID`),
   CONSTRAINT `FK_Example_Orders_Shippers` FOREIGN KEY (`ShipVia`) REFERENCES `example_shippers` (`ShipperID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11078 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=11078 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of example_orders
@@ -3262,7 +3262,7 @@ CREATE TABLE `example_products` (
   KEY `SuppliersProducts` (`SupplierID`),
   CONSTRAINT `FK_Example_Products_Categories` FOREIGN KEY (`CategoryID`) REFERENCES `example_categories` (`CategoryID`),
   CONSTRAINT `FK_Example_Products_Suppliers` FOREIGN KEY (`SupplierID`) REFERENCES `example_suppliers` (`SupplierID`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of example_products
@@ -3354,7 +3354,7 @@ CREATE TABLE `example_shippers` (
   `CompanyName` varchar(40) NOT NULL,
   `Phone` varchar(24) DEFAULT NULL,
   PRIMARY KEY (`ShipperID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of example_shippers
@@ -3383,7 +3383,7 @@ CREATE TABLE `example_suppliers` (
   PRIMARY KEY (`SupplierID`),
   KEY `CompanyName` (`CompanyName`),
   KEY `PostalCode` (`PostalCode`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of example_suppliers

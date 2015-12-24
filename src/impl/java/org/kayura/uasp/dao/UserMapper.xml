@@ -9,6 +9,7 @@
 		<result property="tenantId" column="Tenant_Id" />
 		<result property="userName" column="UserName" />
 		<result property="displayName" column="DisplayName" />
+		<result property="salt" column="Salt" />
 		<result property="password" column="Password" />
 		<result property="email" column="Email" />
 		<result property="mobileNo" column="MobileNo" />
@@ -35,6 +36,7 @@
 		t.Tenant_Id,
 		t.UserName,
 		t.DisplayName,
+		t.Salt,
 		t.Password,
 		t.Email,
 		t.MobileNo,
@@ -119,6 +121,7 @@
 			Tenant_Id,
 			UserName,
 			DisplayName,
+			Salt,
 			Password,
 			Email,
 			MobileNo,
@@ -132,6 +135,7 @@
 			#{tenantId},
 			#{userName},
 			#{displayName},
+			#{salt},
 			#{password},
 			#{email},
 			#{mobileNo},
@@ -145,13 +149,9 @@
 
 	<update id="updateUser" parameterType="org.kayura.uasp.po.User">
 		UPDATE UASP_Users
-		SET UserName = #{userName},
-			DisplayName = #{displayName},
-			Password = #{password},
+		SET DisplayName = #{displayName},
 			Email = #{email},
 			MobileNo = #{mobileNo},
-			Keyword = #{keyword},
-			CreateTime = #{createTime},
 			ExpireTime = #{expireTime},
 			UserType = #{userType},
 			Status = #{status}

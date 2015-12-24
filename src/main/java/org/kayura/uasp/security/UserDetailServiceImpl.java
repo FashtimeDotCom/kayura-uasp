@@ -24,9 +24,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class UserDetailServiceImpl implements UserDetailsService {
 
 	private static final Log logger = LogFactory.getLog(UserDetailServiceImpl.class);
-
+	
 	private UserService userService;
-
+	
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
@@ -41,6 +41,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			user = new LoginUser(username, userVo.getPassword(), userVo.getIsEnabled(), true, true, true,
 					getAuthorities(userVo.getUserType()));
 
+			user.setSalt(userVo.getSalt());
 			user.setUserId(userVo.getUserId());
 			user.setTenantId(userVo.getTenantId());
 			user.setDisplayName(userVo.getDisplayName());

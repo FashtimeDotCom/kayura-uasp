@@ -15,6 +15,7 @@ public class User {
 	private String tenantId;
 	private String userName;
 	private String displayName;
+	private String salt;
 	private String password;
 	private String email;
 	private String mobileNo;
@@ -59,6 +60,14 @@ public class User {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 	public String getPassword() {

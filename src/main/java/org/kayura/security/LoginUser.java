@@ -18,6 +18,7 @@ public class LoginUser extends User {
 
 	private String userId;
 	private String tenantId;
+	private String salt;
 	private String displayName;
 
 	public LoginUser(String username, String password, boolean enabled, boolean accountNonExpired,
@@ -40,6 +41,14 @@ public class LoginUser extends User {
 
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 	public String getDisplayName() {
