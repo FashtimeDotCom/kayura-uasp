@@ -16,39 +16,49 @@
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 
+		<!-- 用户登录配置 -->
 		<form-login login-processing-url="/userlogin" login-page="/login" 
 			authentication-failure-url="/login?error=1" 
 			password-parameter="p" username-parameter="u" />
-		
-		<!-- 使用浏览器 Cookie 记录登录用户信息（用户名，时间戳，密码，密钥）MD5 加密. -->
+
+		<!-- 自动登录配置 -->
 		<remember-me key="${rememberme.key}" services-ref="rememberMeServices" />
 		
-		<!-- 使用数据库记录登录 Cookie 信息，随机产生密钥. -->
-		<!-- <remember-me key="${rememberme.key}" remember-me-parameter="rme" token-repository-ref="tokenRepositoryImpl"/> -->
-		
+		<!-- 用户登出配置 -->
 		<logout logout-url="/logout" logout-success-url="/login?logout" invalidate-session="true" />
 
+		<!-- 用户会话配置 -->
 		<session-management session-fixation-protection="migrateSession" 
 			invalid-session-url="/login?inavlid">
 			<concurrency-control max-sessions="1" expired-url="/login?expired"/>
 		</session-management>
 
+		<!-- 自定义过滤器: 验证码安全过滤器. -->
 		<custom-filter ref="captchaAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
 	</http>
 	
-	<!-- 自动登录：数据库持久化. -->
-<!-- 	<beans:bean id="tokenRepositoryImpl" class="org.kayura.uasp.security.TokenRepositoryImpl">
-		<beans:property name="rememberMeService" ref="rememberMeServiceImpl" />
-	</beans:bean> -->
+	<!-- 使用数据库记录登录 Cookie 信息，随机产生密钥. -->
+  	<beans:bean id="rememberMeServices" class="org.kayura.security.PersistentRememberMeServices">
+ 		<beans:constructor-arg name="key" value="${rememberme.key}" />
+ 		<beans:constructor-arg name="userDetailsService" ref="userDetailServiceImpl" />
+ 		<beans:constructor-arg name="tokenRepository" ref="tokenRepositoryImpl" />
+ 		<beans:property name="parameter" value="rme" />
+		<beans:property name="cookieName" value="KAYURAID" />
+		<beans:property name="seriesLength" value="16" />
+		<beans:property name="tokenLength" value="32" />		
+	</beans:bean>
+ 	<beans:bean id="tokenRepositoryImpl" class="org.kayura.uasp.security.RememberMeTokenRepositoryImpl">
+		<beans:property name="userService" ref="userServiceImpl" />
+	</beans:bean>
 	
-	<!-- 自动登录：Cookies记录. -->
-  	<beans:bean id="rememberMeServices" 
+	<!-- 使用浏览器 Cookie 记录登录用户信息（用户名，时间戳，密码，密钥）MD5 加密. -->
+<!--   	<beans:bean id="rememberMeServices" 
  		class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
  		<beans:constructor-arg name="key" value="${rememberme.key}" />
  		<beans:constructor-arg name="userDetailsService" ref="userDetailServiceImpl" />
  		<beans:property name="parameter" value="rme" />
 		<beans:property name="cookieName" value="KAYURAID" />
-	</beans:bean>
+	</beans:bean> -->
 	
 	<!-- 注册验证码过滤器 -->
  	<beans:bean id="captchaAuthenticationFilter" class="org.kayura.security.CaptchaAuthenticationFilter">

@@ -18,14 +18,7 @@ public class LoginUser extends User {
 
 	private String userId;
 	private String tenantId;
-	
-	public LoginUser(String userId, String tenantId, String username, String password, 
-			boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, 
-			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-		this(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-		this.userId = userId;
-		this.tenantId = tenantId;
-	}
+	private String displayName;
 
 	public LoginUser(String username, String password, boolean enabled, boolean accountNonExpired,
 			boolean credentialsNonExpired, boolean accountNonLocked,
@@ -33,32 +26,28 @@ public class LoginUser extends User {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 	}
 
-	/**
-	 * @return the userId
-	 */
 	public String getUserId() {
 		return userId;
 	}
 
-	/**
-	 * @param userId the userId to set
-	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	/**
-	 * @return the tenantId
-	 */
 	public String getTenantId() {
 		return tenantId;
 	}
 
-	/**
-	 * @param tenantId the tenantId to set
-	 */
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 }

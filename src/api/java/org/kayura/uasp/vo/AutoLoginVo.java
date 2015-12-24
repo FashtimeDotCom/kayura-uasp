@@ -10,6 +10,7 @@ public class AutoLoginVo {
 
 	private String seriesId;
 	private String userId;
+	private String userName;
 	private String token;
 	private Date lastUsed;
 
@@ -27,6 +28,21 @@ public class AutoLoginVo {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	/**
+	 * @return the userName
+	 */
+	public String getUserName() {
+		return userName;
+	}
+
+	/**
+	 * @param userName
+	 *            the userName to set
+	 */
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getToken() {

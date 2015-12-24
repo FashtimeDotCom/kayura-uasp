@@ -23,6 +23,7 @@
 	<resultMap id="autoLoginMap" type="org.kayura.uasp.po.AutoLogin">
 		<result property="seriesId" column="Series_Id" />
 		<result property="userId" column="User_Id" />
+		<result property="userName" column="UserName" />
 		<result property="token" column="Token" />
 		<result property="lastUsed" column="LastUsed" />
 	</resultMap>
@@ -165,7 +166,7 @@
 	<!-- AutoLogin -->
 
 	<insert id="createLoginToken" parameterType="org.kayura.uasp.po.AutoLogin">
-		INSERT INTO UASP_AutoLogin (
+		INSERT INTO UASP_AutoLogins (
 			Series_Id,
 			User_Id,
 			Token,
@@ -180,20 +181,20 @@
 
 	<!-- String seriesId, String token, Date lastUsed -->
 	<update id="updateLoginToken" parameterType="map">
-		UPDATE UASP_AutoLogin
+		UPDATE UASP_AutoLogins
 		SET Token = #{token},
 			LastUsed = #{lastUsed}
 		WHERE Series_Id = #{seriesId}
 	</update>
 	
 	<select id="getLoginTokenById" parameterType="string" resultMap="autoLoginMap">
-		SELECT Series_Id, User_Id, Token, LastUsed
-		FROM UASP_AutoLogin
-		WHERE Series_Id = #{seriesId}
+		SELECT t.Series_Id, t.User_Id, u.UserName, t.Token, t.LastUsed
+		FROM UASP_AutoLogins t join UASP_Users u ON t.User_Id = u.User_Id
+		WHERE t.Series_Id = #{seriesId}
 	</select>
 	
 	<delete id="removeLoginTokensByUser" parameterType="string">
-		DELETE UASP_AutoLogin
+		DELETE FROM UASP_AutoLogins
 		WHERE User_Id = #{userId}
 	</delete>
 	

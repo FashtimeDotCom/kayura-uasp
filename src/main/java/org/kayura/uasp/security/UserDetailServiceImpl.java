@@ -4,6 +4,7 @@
  */
 package org.kayura.uasp.security;
 
+import org.kayura.security.LoginUser;
 import org.kayura.uasp.service.UserService;
 import org.kayura.uasp.vo.UserVo;
 
@@ -13,11 +14,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,20 +26,24 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	private static final Log logger = LogFactory.getLog(UserDetailServiceImpl.class);
 
 	private UserService userService;
-	
+
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 
-		UserDetails user = null;
+		LoginUser user = null;
 
 		try {
 			UserVo userVo = userService.getUserByUserName(username);
 
-			user = new User(username, userVo.getPassword(), userVo.getIsEnabled(), true, true, true,
+			user = new LoginUser(username, userVo.getPassword(), userVo.getIsEnabled(), true, true, true,
 					getAuthorities(userVo.getUserType()));
+
+			user.setUserId(userVo.getUserId());
+			user.setTenantId(userVo.getTenantId());
+			user.setDisplayName(userVo.getDisplayName());
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving user", e);

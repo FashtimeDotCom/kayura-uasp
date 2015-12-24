@@ -77,8 +77,7 @@ public class CaptchaAuthenticationFilter extends GenericFilterBean {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Authentication request failed: " + failed.toString());
 			logger.debug("Updated SecurityContextHolder to contain null Authentication");
-			logger.debug(
-					"Delegating to authentication failure handler " + failureHandler);
+			logger.debug("Delegating to authentication failure handler " + failureHandler);
 		}
 
 		failureHandler.onAuthenticationFailure(request, response, failed);

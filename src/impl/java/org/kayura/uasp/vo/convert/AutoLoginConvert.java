@@ -19,19 +19,19 @@ public final class AutoLoginConvert {
 	private static ModelMapper te = new ModelMapper();
 
 	static {
-		
+
 		tv.addMappings(new PropertyMap<AutoLogin, AutoLoginVo>() {
 			@Override
 			protected void configure() {
-				
-				// 此处添加 Entity 到 Vo 的属性映射关系.				
+
+				// 此处添加 Entity 到 Vo 的属性映射关系.
 			}
 		});
 
 		te.addMappings(new PropertyMap<AutoLoginVo, AutoLogin>() {
 			@Override
 			protected void configure() {
-				
+
 				// 此处添加 Vo 到 Entity 的属性映射关系.
 			}
 		});

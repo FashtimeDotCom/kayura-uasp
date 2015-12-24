@@ -54,16 +54,16 @@ public class UserServiceImpl implements UserService {
 
 		boolean isTenant = loginName.contains("#");
 		if (isTenant) {
-			
+
 			String[] values = loginName.split("#");
-			
+
 			String tenantId = values[0];
 			String userName = values[1];
 
 			args.put("tenantId", tenantId);
 			args.put("userName", userName);
 		} else {
-			
+
 			args.put("userName", loginName);
 		}
 
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void createLoginToken(AutoLoginVo vo) {
-		
+
 		AutoLogin entity = AutoLoginConvert.toEntity(vo);
 		userMapper.createLoginToken(entity);
 	}
@@ -132,15 +132,16 @@ public class UserServiceImpl implements UserService {
 		args.put("seriesId", seriesId);
 		args.put("token", token);
 		args.put("lastUsed", lastUsed);
-		
-		userMapper.updateLoginToken(args);		
+
+		userMapper.updateLoginToken(args);
 	}
 
 	@Override
 	public AutoLoginVo getLoginTokenById(String seriesId) {
 
 		AutoLogin entity = userMapper.getLoginTokenById(seriesId);
-		return AutoLoginConvert.toVo(entity);
+
+		return entity != null ? AutoLoginConvert.toVo(entity) : null;
 	}
 
 	@Override

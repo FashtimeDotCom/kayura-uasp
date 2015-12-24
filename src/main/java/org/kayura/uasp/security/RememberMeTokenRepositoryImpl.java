@@ -11,7 +11,7 @@ import org.kayura.uasp.vo.AutoLoginVo;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-public class TokenRepositoryImpl implements PersistentTokenRepository {
+public class RememberMeTokenRepositoryImpl implements PersistentTokenRepository {
 
 	private UserService userService;
 
@@ -42,8 +42,10 @@ public class TokenRepositoryImpl implements PersistentTokenRepository {
 
 		AutoLoginVo vo = userService.getLoginTokenById(seriesId);
 		
+		if(vo == null) return null;
+		
 		PersistentRememberMeToken token = new PersistentRememberMeToken(
-				vo.getUserId(), vo.getSeriesId(), vo.getToken(), vo.getLastUsed());
+				vo.getUserName(), vo.getSeriesId(), vo.getToken(), vo.getLastUsed());
 		
 		return token;
 	}
