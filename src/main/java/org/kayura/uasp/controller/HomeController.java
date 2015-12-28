@@ -87,13 +87,10 @@ public class HomeController extends BaseController {
 
 			session.setAttribute("needvc", true);
 		} else if (logout != null) {
-
 			map.put("message", "已经成功退出系统。");
 		} else if (expired != null) {
-
 			map.put("message", "您当前的登录已经失效。");
 		} else if (inavlid != null) {
-
 			map.put("message", "因您长时间未使用，需重新登录。");
 		}
 

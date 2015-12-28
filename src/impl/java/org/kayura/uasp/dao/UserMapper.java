@@ -6,6 +6,7 @@ package org.kayura.uasp.dao;
 
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
@@ -56,8 +57,14 @@ public interface UserMapper extends BaseDao {
 	 * 
 	 * @param user 用户对象.
 	 */
-	void updateUser(User user);
+	void updateUserInfo(User user);
 
+	/**
+	 * @param userId
+	 * @param newPassword
+	 */
+	void changePassword(@Param("id") String id, @Param("password") String newPassword);
+	
 	/**
 	 * 删除一个用户记录.
 	 * 
@@ -106,4 +113,5 @@ public interface UserMapper extends BaseDao {
 	 * @param userId 用户Id.
 	 */
 	void removeLoginTokensByUser(String userId);
+
 }

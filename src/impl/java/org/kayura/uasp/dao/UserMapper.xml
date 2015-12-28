@@ -147,7 +147,7 @@
 		)
 	</insert>
 
-	<update id="updateUser" parameterType="org.kayura.uasp.po.User">
+	<update id="updateUserInfo" parameterType="org.kayura.uasp.po.User">
 		UPDATE UASP_Users
 		SET DisplayName = #{displayName},
 			Email = #{email},
@@ -155,6 +155,12 @@
 			ExpireTime = #{expireTime},
 			UserType = #{userType},
 			Status = #{status}
+		WHERE User_Id = #{id}
+	</update>
+	
+	<update id="changePassword" parameterType="map">
+		UPDATE UASP_Users
+		SET Password = #{password}
 		WHERE User_Id = #{id}
 	</update>
 

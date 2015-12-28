@@ -16,8 +16,7 @@
 
 	<mvc:annotation-driven>
 		<mvc:message-converters>
-			<beans:bean
-				class="org.springframework.http.converter.StringHttpMessageConverter">
+			<beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<beans:constructor-arg value="UTF-8" />
 			</beans:bean>
 		</mvc:message-converters>
@@ -25,8 +24,7 @@
 
 	<mvc:resources mapping="/res/**" location="/res/" />
 
-	<beans:bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>

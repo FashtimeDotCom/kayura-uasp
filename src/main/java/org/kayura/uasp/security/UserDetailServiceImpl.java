@@ -6,7 +6,7 @@ package org.kayura.uasp.security;
 
 import org.kayura.security.LoginUser;
 import org.kayura.uasp.service.UserService;
-import org.kayura.uasp.vo.UserVo;
+import org.kayura.uasp.po.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,24 +33,24 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 
-		LoginUser user = null;
+		LoginUser loginUser = null;
 
 		try {
-			UserVo userVo = userService.getUserByUserName(username);
+			User user = userService.getUserByUserName(username);
 
-			user = new LoginUser(username, userVo.getPassword(), userVo.getIsEnabled(), true, true, true,
-					getAuthorities(userVo.getUserType()));
+			loginUser = new LoginUser(username, user.getPassword(), user.getIsEnabled(), true, true, true,
+					getAuthorities(user.getUserType()));
 
-			user.setSalt(userVo.getSalt());
-			user.setUserId(userVo.getUserId());
-			user.setTenantId(userVo.getTenantId());
-			user.setDisplayName(userVo.getDisplayName());
+			loginUser.setSalt(user.getSalt());
+			loginUser.setUserId(user.getUserId());
+			loginUser.setTenantId(user.getTenantId());
+			loginUser.setDisplayName(user.getDisplayName());
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving user", e);
 		}
 
-		return user;
+		return loginUser;
 	}
 
 	public Collection<GrantedAuthority> getAuthorities(String roles) {

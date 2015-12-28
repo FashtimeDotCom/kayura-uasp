@@ -2,11 +2,11 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.uasp.vo;
+package org.kayura.uasp.po;
 
 import java.util.Date;
 
-public class AutoLoginVo {
+public class AutoLogin {
 
 	private String seriesId;
 	private String userId;
@@ -30,17 +30,10 @@ public class AutoLoginVo {
 		this.userId = userId;
 	}
 
-	/**
-	 * @return the userName
-	 */
 	public String getUserName() {
 		return userName;
 	}
 
-	/**
-	 * @param userName
-	 *            the userName to set
-	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}

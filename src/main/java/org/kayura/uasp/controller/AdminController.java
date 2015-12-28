@@ -10,7 +10,7 @@ import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.uasp.service.UserService;
-import org.kayura.uasp.vo.UserVo;
+import org.kayura.uasp.po.User;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
@@ -50,7 +50,7 @@ public class AdminController extends BaseController {
 		PageParams pageParams = ui.getPageParams(req);
 
 		Integer[] intStatus = StringUtils.toInteger(status);
-		PageList<UserVo> users = userService.findUsers(keyword, intStatus, pageParams);
+		PageList<User> users = userService.findUsers(keyword, intStatus, pageParams);
 		ui.putData(map, users);
 
 		return viewResult("user/find");
@@ -59,7 +59,7 @@ public class AdminController extends BaseController {
 	@RequestMapping(value = "user/new", method = RequestMethod.GET)
 	public String userNew(HttpServletRequest req, Map<String, Object> map, String id) {
 
-		UserVo userVo = new UserVo();
+		User userVo = new User();
 		userVo.setUserId(KeyUtils.newId());
 
 		map.put("isNew", true);
@@ -71,7 +71,7 @@ public class AdminController extends BaseController {
 	@RequestMapping(value = "user/edit/{id}", method = RequestMethod.GET)
 	public String userEdit(HttpServletRequest req, Map<String, Object> map, String id) {
 
-		UserVo userVo = userService.getUserById(id);
+		User userVo = userService.getUserById(id);
 
 		map.put("isNew", false);
 		map.put("model", userVo);
@@ -80,12 +80,12 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/save", method = RequestMethod.POST)
-	public void userSave(Map<String, Object> map, final UserVo user) {
+	public void userSave(Map<String, Object> map, final User user) {
 
 		execute(map, new Action() {
 			@Override
 			public void invoke(PostResult postResult) {
-				GeneralResult result = userService.saveOrUpdateUser(user);
+				GeneralResult result = userService.createNewUser(user);
 				if (result.getCode() != 0) {
 					postResult.setFailed(result.getMessage());
 				}

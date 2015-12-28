@@ -9,8 +9,8 @@ import java.util.Date;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
-import org.kayura.uasp.vo.AutoLoginVo;
-import org.kayura.uasp.vo.UserVo;
+import org.kayura.uasp.po.AutoLogin;
+import org.kayura.uasp.po.User;
 
 /**
  * UserService
@@ -27,23 +27,32 @@ public interface UserService {
 	 * @param pageParams 分页信息.
 	 * @return 返回已经分页的集合及总记录信息.
 	 */
-	PageList<UserVo> findUsers(String keyword, Integer[] status, PageParams pageParams);
-
+	PageList<User> findUsers(String keyword, Integer[] status, PageParams pageParams);
+	
 	/**
-	 * 验证用户名及密码是否正确.
+	 * 修改用户密码。
 	 * 
-	 * @param userName 登录用户名.
-	 * @param password 用户输入的密码.
-	 * @return 返回是否验证通过.
+	 * @param userId 用户主键ID.
+	 * @param oldPassword 原密码（加密后）.
+	 * @param newPassword 新密码（加密后）.
+	 * @return 返回修改结果.
 	 */
-	boolean verifyUser(String userName, String password);
+	GeneralResult changeUserPassword(String userId, String oldPassword, String newPassword);
 
 	/**
-	 * 保存或者更新一个用户账号.
+	 * 创建一个新用户账号.
 	 * 
 	 * @param user 用户账号实例对象.
 	 */
-	GeneralResult saveOrUpdateUser(UserVo user);
+	GeneralResult createNewUser(User user);
+	
+	/**
+	 * 更新用户基本信息.
+	 * 
+	 * @param user 用户账号实例对象.
+	 * @return
+	 */
+	GeneralResult updateUserInfo(User user);
 
 	/**
 	 * 删除一个用户账号.
@@ -58,19 +67,19 @@ public interface UserService {
 	 * 		{用户名}，如：user1
 	 * @return
 	 */
-	UserVo getUserByUserName(String loginName);
+	User getUserByUserName(String loginName);
 
 	/**
 	 * @param userId
 	 */
-	UserVo getUserById(String userId);
+	User getUserById(String userId);
 	
 	/**
 	 * 创建一个登录 Token 记录.
 	 * 
 	 * @param rememberMe
 	 */
-	void createLoginToken(AutoLoginVo rememberMe);
+	void createLoginToken(AutoLogin autoLogin);
 
 	
 	/**
@@ -87,7 +96,7 @@ public interface UserService {
 	 * @param seriesId
 	 * @return
 	 */
-	AutoLoginVo getLoginTokenById(String seriesId);
+	AutoLogin getLoginTokenById(String seriesId);
 	
 	/**
 	 * 删除指定用户下的所有登录信息.

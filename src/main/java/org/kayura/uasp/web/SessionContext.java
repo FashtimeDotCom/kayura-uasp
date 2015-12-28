@@ -4,7 +4,7 @@
  */
 package org.kayura.uasp.web;
 
-import org.kayura.uasp.vo.UserVo;
+import org.kayura.uasp.po.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -16,9 +16,9 @@ public class SessionContext {
 //	private Cache cache;
 //	private UserService accountService;
 
-	public UserVo getSessionUser() {
+	public User getSessionUser() {
 
-		UserVo user = null;
+		User user = null;
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			auth.getPrincipal();

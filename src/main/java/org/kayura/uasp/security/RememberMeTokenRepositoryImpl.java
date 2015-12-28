@@ -7,7 +7,7 @@ package org.kayura.uasp.security;
 import java.util.Date;
 
 import org.kayura.uasp.service.UserService;
-import org.kayura.uasp.vo.AutoLoginVo;
+import org.kayura.uasp.po.AutoLogin;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -22,7 +22,7 @@ public class RememberMeTokenRepositoryImpl implements PersistentTokenRepository 
 	@Override
 	public void createNewToken(PersistentRememberMeToken token) {
 		
-		AutoLoginVo vo = new AutoLoginVo();
+		AutoLogin vo = new AutoLogin();
 		vo.setToken(token.getTokenValue());
 		vo.setSeriesId(token.getSeries());
 		vo.setLastUsed(token.getDate());
@@ -40,7 +40,7 @@ public class RememberMeTokenRepositoryImpl implements PersistentTokenRepository 
 	@Override
 	public PersistentRememberMeToken getTokenForSeries(String seriesId) {
 
-		AutoLoginVo vo = userService.getLoginTokenById(seriesId);
+		AutoLogin vo = userService.getLoginTokenById(seriesId);
 		
 		if(vo == null) return null;
 		

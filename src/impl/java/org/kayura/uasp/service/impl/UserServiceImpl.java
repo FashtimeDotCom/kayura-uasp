@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kayura.exceptions.KayuraException;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
@@ -16,10 +17,6 @@ import org.kayura.uasp.dao.UserMapper;
 import org.kayura.uasp.po.AutoLogin;
 import org.kayura.uasp.po.User;
 import org.kayura.uasp.service.UserService;
-import org.kayura.uasp.vo.AutoLoginVo;
-import org.kayura.uasp.vo.UserVo;
-import org.kayura.uasp.vo.convert.AutoLoginConvert;
-import org.kayura.uasp.vo.convert.UserConvert;
 import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +31,7 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 
 	@Override
-	public PageList<UserVo> findUsers(String keyword, Integer[] status, PageParams pageParams) {
+	public PageList<User> findUsers(String keyword, Integer[] status, PageParams pageParams) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("keyword", keyword);
@@ -44,11 +41,11 @@ public class UserServiceImpl implements UserService {
 		}
 
 		PageList<User> list = userMapper.findUsersByMap(args, new PageBounds(pageParams));
-		return UserConvert.toVos(list);
+		return list;
 	}
 
 	@Override
-	public UserVo getUserByUserName(String loginName) {
+	public User getUserByUserName(String loginName) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 
@@ -68,39 +65,86 @@ public class UserServiceImpl implements UserService {
 		}
 
 		User user = userMapper.getUserByMap(args);
-		return UserConvert.toVo(user);
+		return user;
 	}
 
 	@Override
-	public boolean verifyUser(String userName, String password) {
+	public GeneralResult createNewUser(User user) {
 
-		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("userName", userName);
-		args.put("password", password);
+		GeneralResult result = new GeneralResult("创建成功.");
+		try {
+			
+			Map<String, Object> args = new HashMap<String, Object>();
 
-		return userMapper.isExistsByMap(args);
+			args.put("userId", user.getUserId());
+			if (userMapper.isExistsByMap(args)) {
+				throw new KayuraException("该用户ID已经存在。");
+			}
+			
+			args.clear();
+			args.put("userName", user.getUserName());
+			if (userMapper.isExistsByMap(args)) {
+				throw new KayuraException("该用户账号已经存在。");
+			}
+
+			userMapper.insertUser(user);
+			
+		} catch (Exception e) {
+			result.setCode(-1);
+			result.setMessage("创建失败。原因：" + e.getMessage());
+		}
+
+		return result;
 	}
 
 	@Override
-	public GeneralResult saveOrUpdateUser(UserVo user) {
+	public GeneralResult updateUserInfo(User user) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("userId", user.getUserId());
 
-		GeneralResult result = new GeneralResult("保存成功.");
+		GeneralResult result = new GeneralResult("更新成功.");
 		try {
-			User entity = UserConvert.toEntity(user);
+			
 			if (userMapper.isExistsByMap(args)) {
-				userMapper.updateUser(entity);
-			} else {
-				userMapper.insertUser(entity);
+				userMapper.updateUserInfo(user);
 			}
 		} catch (Exception e) {
 			result.setCode(-1);
-			result.setMessage("保存失败。原因：" + e.getMessage());
+			result.setMessage("更新失败。原因：" + e.getMessage());
 		}
 
 		return result;
+	}
+
+	@Override
+	public GeneralResult changeUserPassword(String userId, String oldPassword, String newPassword) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("userId", userId);
+
+		GeneralResult result = new GeneralResult("更新成功.");
+		try {
+
+			User user = userMapper.getUserByMap(args);
+			if (user == null) {
+				throw new KayuraException("指定的用户ID不存在。");
+			}
+
+			if (!StringUtils.equals(user.getPassword(), oldPassword)) {
+				throw new KayuraException("原用户名密码错误。");
+			}
+
+			// 修改数据库中的用户密码.
+			userMapper.changePassword(userId, newPassword);
+
+		} catch (Exception e) {
+			result.setCode(-1);
+			result.setMessage("更新失败。原因：" + e.getMessage());
+		}
+
+		return result;
+
 	}
 
 	@Override
@@ -109,20 +153,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVo getUserById(String userId) {
+	public User getUserById(String userId) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("userId", userId);
 
 		User user = userMapper.getUserByMap(args);
-		return UserConvert.toVo(user);
+		return user;
 	}
 
 	@Override
-	public void createLoginToken(AutoLoginVo vo) {
+	public void createLoginToken(AutoLogin autoLogin) {
 
-		AutoLogin entity = AutoLoginConvert.toEntity(vo);
-		userMapper.createLoginToken(entity);
+		userMapper.createLoginToken(autoLogin);
 	}
 
 	@Override
@@ -137,11 +180,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public AutoLoginVo getLoginTokenById(String seriesId) {
+	public AutoLogin getLoginTokenById(String seriesId) {
 
 		AutoLogin entity = userMapper.getLoginTokenById(seriesId);
-
-		return entity != null ? AutoLoginConvert.toVo(entity) : null;
+		return entity;
 	}
 
 	@Override
