@@ -4,6 +4,7 @@
  */
 package org.kayura.uasp.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.kayura.uasp.po.MenuScheme;
 import org.kayura.uasp.po.Module;
 import org.kayura.uasp.po.Role;
 import org.kayura.uasp.service.AuthorityService;
+import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +44,15 @@ public class AuthorityServiceImpl implements AuthorityService {
 	public Result<PageList<MenuScheme>> findMenuSchemes(String tenantId, Map<String, Object> args,
 			PageParams pageParams) {
 
-		PageList<MenuScheme> items = authorityMapper.findMenuSchemes(tenantId, args, pageParams);
+		if (args == null) {
+			args = new HashMap<String, Object>();
+		}
+
+		if (StringUtils.isEmpty(tenantId)) {
+			args.put("tenantId", tenantId);
+		}
+
+		PageList<MenuScheme> items = authorityMapper.findMenuSchemes(args, pageParams);
 		return new Result<PageList<MenuScheme>>(items);
 	}
 
@@ -56,237 +66,306 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public GeneralResult createMenuScheme(MenuScheme menuScheme) {
 
-		try {
-			
-			authorityMapper.createMenuScheme(menuScheme);
-		} catch (Exception e) {
-			return Result.error("创建时发现异常。", e);
-		}
-
-		return Result.succeed("创建完成。");
+		authorityMapper.createMenuScheme(menuScheme);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult updateMenuScheme(MenuScheme menuScheme) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.updateMenuScheme(menuScheme);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteMenuScheme(String menuSchemeId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteMenuScheme(menuSchemeId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteMenuSchemes(List<String> menuSchemeIds) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteMenuSchemes(menuSchemeIds);
+		return Result.succeed();
 	}
 
 	@Override
 	public Result<PageList<MenuItem>> findMenuItems(String tenantId, String parentId, Map<String, Object> args,
 			PageParams pageParams) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (args == null) {
+			args = new HashMap<String, Object>();
+		}
+
+		if (StringUtils.isEmpty(tenantId)) {
+			args.put("tenantId", tenantId);
+		}
+
+		if (StringUtils.isEmpty(parentId)) {
+			args.put("parentId", parentId);
+		}
+
+		PageList<MenuItem> items = authorityMapper.findMenuItems(args, pageParams);
+		return new Result<PageList<MenuItem>>(items);
 	}
 
 	@Override
 	public Result<MenuItem> getMenuItemById(String menuItemId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		MenuItem item = authorityMapper.getMenuItemById(menuItemId);
+		return new Result<MenuItem>(item);
 	}
 
 	@Override
 	public GeneralResult createMenuItem(MenuItem menuItem) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.createMenuItem(menuItem);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult updateMenuItem(MenuItem menuItem) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.updateMenuItem(menuItem);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteMenuItem(String menuItemId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteMenuItem(menuItemId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteMenuItems(List<String> menuItemIds) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteMenuItems(menuItemIds);
+		return Result.succeed();
 	}
 
 	@Override
 	public Result<PageList<Module>> findModules(String parentId, Map<String, Object> args, PageParams pageParams) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (args == null) {
+			args = new HashMap<String, Object>();
+		}
+
+		if (StringUtils.isEmpty(parentId)) {
+			args.put("parentId", parentId);
+		}
+
+		PageList<Module> items = authorityMapper.findModules(args, pageParams);
+		return new Result<PageList<Module>>(items);
 	}
 
 	@Override
 	public Result<Module> getModuleById(String moduleId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Module item = authorityMapper.getModuleById(moduleId);
+		return new Result<Module>(item);
 	}
 
 	@Override
 	public GeneralResult createModule(Module module) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.createModule(module);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult updateModule(Module module) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.updateModule(module);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteModule(String moduleId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteModule(moduleId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteModules(List<String> moduleIds) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteModules(moduleIds);
+		return Result.succeed();
 	}
 
 	@Override
 	public Result<PageList<Role>> findRoles(String tenantId, Map<String, Object> args, PageParams pageParams) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (args == null) {
+			args = new HashMap<String, Object>();
+		}
+
+		if (StringUtils.isEmpty(tenantId)) {
+			args.put("tenantId", tenantId);
+		}
+
+		PageList<Role> items = authorityMapper.findRoles(args, pageParams);
+		return new Result<PageList<Role>>(items);
 	}
 
 	@Override
 	public Result<Role> getRoleById(String roleId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Role item = authorityMapper.getRoleById(roleId);
+		return new Result<Role>(item);
 	}
 
 	@Override
 	public GeneralResult createRole(Role role) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.createRole(role);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult updateRole(Role role) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.updateRole(role);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteRole(String roleId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteRole(roleId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteRoles(List<String> roleIds) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteRoles(roleIds);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult addRoleModule(String roleId, String moduleId, List<String> actions) {
-		// TODO Auto-generated method stub
-		return null;
+
+		String s = StringUtils.join(",", actions.toArray());
+
+		authorityMapper.addRoleModule(roleId, moduleId, s);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult removeRoleModule(String roleId, String moduleId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.removeRoleModule(roleId, moduleId);
+		return Result.succeed();
 	}
 
 	@Override
 	public Result<PageList<Group>> findGroups(String tenantId, Map<String, Object> args, PageParams pageParams) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (args == null) {
+			args = new HashMap<String, Object>();
+		}
+
+		if (StringUtils.isEmpty(tenantId)) {
+			args.put("tenantId", tenantId);
+		}
+
+		PageList<Group> items = authorityMapper.findGroups(args, pageParams);
+		return new Result<PageList<Group>>(items);
 	}
 
 	@Override
 	public Result<Group> getGroupById(String groupId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Group item = authorityMapper.getGroupById(groupId);
+		return new Result<Group>(item);
 	}
 
 	@Override
 	public GeneralResult createGroup(Group group) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.createGroup(group);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult updateGroup(Group group) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.updateGroup(group);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteGroup(String groupId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteGroup(groupId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult deleteGroups(List<String> groupIds) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.deleteGroups(groupIds);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult addGroupRole(String groupId, String roleId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.addGroupRole(groupId, roleId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult removeGroupRole(String groupId, String roleId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.removeGroupRole(groupId, roleId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult addUserGroup(String userId, String groupId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.addUserGroup(userId, groupId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult removeUserGroup(String userId, String groupId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.removeUserGroup(userId, groupId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult addUserRole(String userId, String roleId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.addUserRole(userId, roleId);
+		return Result.succeed();
 	}
 
 	@Override
 	public GeneralResult removeUserRole(String userId, String roleId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		authorityMapper.removeUserRole(userId, roleId);
+		return Result.succeed();
 	}
 
 	@Override
 	public Result<List<Role>> findUserRoles(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Role> items = authorityMapper.findUserRoles(userId);
+		return new Result<List<Role>>(items);
 	}
 
 	@Override
 	public Result<List<Group>> findUserGroups(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Group> items = authorityMapper.findUserGroups(userId);
+		return new Result<List<Group>>(items);
 	}
 
 }

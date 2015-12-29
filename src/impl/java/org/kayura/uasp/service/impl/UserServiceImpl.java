@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kayura.exceptions.KayuraException;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
@@ -72,32 +71,21 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public GeneralResult createNewUser(User user) {
 
-		try {
+		Map<String, Object> args = new HashMap<String, Object>();
 
-			Map<String, Object> args = new HashMap<String, Object>();
-
-			args.put("userId", user.getUserId());
-			if (userMapper.isExistsByMap(args)) {
-				throw new KayuraException("该用户ID已经存在。");
-			}
-
-			args.clear();
-			args.put("userName", user.getUserName());
-			if (userMapper.isExistsByMap(args)) {
-				throw new KayuraException("该用户账号已经存在。");
-			}
-
-			userMapper.insertUser(user);
-
-		} catch (KayuraException e) {
-
-			return Result.falied(e.getMessage());
-		} catch (Exception e) {
-
-			return Result.error("创建时发生异常。", e);
+		args.put("userId", user.getUserId());
+		if (userMapper.isExistsByMap(args)) {
+			return Result.falied("该用户ID已经存在。");
 		}
 
-		return Result.succeed("创建成功。");
+		args.clear();
+		args.put("userName", user.getUserName());
+		if (userMapper.isExistsByMap(args)) {
+			return Result.falied("该用户账号已经存在。");
+		}
+
+		userMapper.insertUser(user);
+		return Result.succeed();
 	}
 
 	@Override
@@ -106,16 +94,11 @@ public class UserServiceImpl implements UserService {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("userId", user.getUserId());
 
-		try {
-
-			if (userMapper.isExistsByMap(args)) {
-				userMapper.updateUserInfo(user);
-			}
-		} catch (Exception e) {
-			return Result.error("创建时发生异常。", e);
+		if (userMapper.isExistsByMap(args)) {
+			userMapper.updateUserInfo(user);
 		}
 
-		return Result.succeed("更新成功。");
+		return Result.succeed();
 	}
 
 	@Override
@@ -124,25 +107,18 @@ public class UserServiceImpl implements UserService {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("userId", userId);
 
-		try {
-
-			User user = userMapper.getUserByMap(args);
-			if (user == null) {
-				return Result.falied("指定的用户ID不存在。");
-			}
-
-			if (!StringUtils.equals(user.getPassword(), oldPassword)) {
-				return Result.falied("原用户名密码错误。");
-			}
-
-			// 修改数据库中的用户密码.
-			userMapper.changePassword(userId, newPassword);
-
-		} catch (Exception e) {
-			return Result.error("创建时发生异常。", e);
+		User user = userMapper.getUserByMap(args);
+		if (user == null) {
+			return Result.falied("指定的用户ID不存在。");
 		}
 
-		return Result.succeed("更新成功。");
+		if (!StringUtils.equals(user.getPassword(), oldPassword)) {
+			return Result.falied("原用户名密码错误。");
+		}
+
+		// 修改数据库中的用户密码.
+		userMapper.changePassword(userId, newPassword);
+		return Result.succeed();
 	}
 
 	@Override
