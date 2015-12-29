@@ -4,13 +4,16 @@
  */
 package org.kayura.uasp.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author liangxia@live.com
  */
-public class User {
+public class User implements Serializable {
 
+	private static final long serialVersionUID = 8694212758154807425L;
+	
 	private String userId;
 	private String tenantId;
 	private String userName;

@@ -2,12 +2,12 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.uasp.service;
+package org.kayura.uasp.dao;
 
 import java.util.List;
 import java.util.Map;
 
-import org.kayura.type.GeneralResult;
+import org.kayura.core.BaseDao;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
@@ -20,7 +20,7 @@ import org.kayura.uasp.po.Role;
 /**
  * @author liangxia@live.com
  */
-public interface AuthorityService {
+public interface AuthorityMapper extends BaseDao {
 
 	// 权限交互接口.
 
@@ -30,7 +30,7 @@ public interface AuthorityService {
 	 * @param userId
 	 * @return
 	 */
-	Result<List<MenuScheme>> getUserMenus(String userId);
+	List<MenuScheme> getUserMenus(String userId);
 
 	// 菜单方案（MenuScheme）.
 
@@ -42,17 +42,17 @@ public interface AuthorityService {
 	 * @param pageParams 分页参数.
 	 * @return 返回分页的菜单方案集合.
 	 */
-	Result<PageList<MenuScheme>> findMenuSchemes(String tenantId, Map<String, Object> args, PageParams pageParams);
+	PageList<MenuScheme> findMenuSchemes(String tenantId, Map<String, Object> args, PageParams pageParams);
 
-	Result<MenuScheme> getMenuSchemeById(String menuSchemeId);
+	MenuScheme getMenuSchemeById(String menuSchemeId);
 
-	GeneralResult createMenuScheme(MenuScheme menuScheme);
+	void createMenuScheme(MenuScheme menuScheme);
 
-	GeneralResult updateMenuScheme(MenuScheme menuScheme);
+	void updateMenuScheme(MenuScheme menuScheme);
 
-	GeneralResult deleteMenuScheme(String menuSchemeId);
+	void deleteMenuScheme(String menuSchemeId);
 
-	GeneralResult deleteMenuSchemes(List<String> menuSchemeIds);
+	void deleteMenuSchemes(List<String> menuSchemeIds);
 
 	// 菜单项（MenuItem）.
 
@@ -61,13 +61,13 @@ public interface AuthorityService {
 
 	Result<MenuItem> getMenuItemById(String menuItemId);
 
-	GeneralResult createMenuItem(MenuItem menuItem);
+	void createMenuItem(MenuItem menuItem);
 
-	GeneralResult updateMenuItem(MenuItem menuItem);
+	void updateMenuItem(MenuItem menuItem);
 
-	GeneralResult deleteMenuItem(String menuItemId);
+	void deleteMenuItem(String menuItemId);
 
-	GeneralResult deleteMenuItems(List<String> menuItemIds);
+	void deleteMenuItems(List<String> menuItemIds);
 
 	// 功能模块（Module）.
 
@@ -75,13 +75,13 @@ public interface AuthorityService {
 
 	Result<Module> getModuleById(String moduleId);
 
-	GeneralResult createModule(Module module);
+	void createModule(Module module);
 
-	GeneralResult updateModule(Module module);
+	void updateModule(Module module);
 
-	GeneralResult deleteModule(String moduleId);
+	void deleteModule(String moduleId);
 
-	GeneralResult deleteModules(List<String> moduleIds);
+	void deleteModules(List<String> moduleIds);
 
 	// 角色（Role）.
 
@@ -89,19 +89,19 @@ public interface AuthorityService {
 
 	Result<Role> getRoleById(String roleId);
 
-	GeneralResult createRole(Role role);
+	void createRole(Role role);
 
-	GeneralResult updateRole(Role role);
+	void updateRole(Role role);
 
-	GeneralResult deleteRole(String roleId);
+	void deleteRole(String roleId);
 
-	GeneralResult deleteRoles(List<String> roleIds);
+	void deleteRoles(List<String> roleIds);
 
 	// 角色模块（RoleModule）.
 
-	GeneralResult addRoleModule(String roleId, String moduleId, List<String> actions);
+	void addRoleModule(String roleId, String moduleId, List<String> actions);
 
-	GeneralResult removeRoleModule(String roleId, String moduleId);
+	void removeRoleModule(String roleId, String moduleId);
 
 	// 组（Group）.
 
@@ -109,36 +109,36 @@ public interface AuthorityService {
 
 	Result<Group> getGroupById(String groupId);
 
-	GeneralResult createGroup(Group group);
+	void createGroup(Group group);
 
-	GeneralResult updateGroup(Group group);
+	void updateGroup(Group group);
 
-	GeneralResult deleteGroup(String groupId);
+	void deleteGroup(String groupId);
 
-	GeneralResult deleteGroups(List<String> groupIds);
+	void deleteGroups(List<String> groupIds);
 
 	// 组角色（GroupRole）.
 
-	GeneralResult addGroupRole(String groupId, String roleId);
+	void addGroupRole(String groupId, String roleId);
 
-	GeneralResult removeGroupRole(String groupId, String roleId);
+	void removeGroupRole(String groupId, String roleId);
 
 	// 用户组（UserGroup）
 
-	GeneralResult addUserGroup(String userId, String groupId);
+	void addUserGroup(String userId, String groupId);
 
-	GeneralResult removeUserGroup(String userId, String groupId);
+	void removeUserGroup(String userId, String groupId);
 
 	// 用户角色（UserRole）
 
-	GeneralResult addUserRole(String userId, String roleId);
+	void addUserRole(String userId, String roleId);
 
-	GeneralResult removeUserRole(String userId, String roleId);
+	void removeUserRole(String userId, String roleId);
 
 	// 其它.
 
 	Result<List<Role>> findUserRoles(String userId);
 
 	Result<List<Group>> findUserGroups(String userId);
-
+	
 }

@@ -4,11 +4,15 @@
  */
 package org.kayura.uasp.po;
 
+import java.io.Serializable;
+
 /**
  * @author liangxia@live.com
  */
-public class Role {
+public class Role implements Serializable {
 
+	private static final long serialVersionUID = -9223330396014265239L;
+	
 	private String roleId;
 	private String tenantId;
 	private String name;

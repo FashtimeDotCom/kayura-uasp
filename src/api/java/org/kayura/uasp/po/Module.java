@@ -4,14 +4,19 @@
  */
 package org.kayura.uasp.po;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.kayura.utils.StringUtils;
 
 /**
  * @author liangxia@live.com
  */
-public class Module {
+public class Module implements Serializable {
 
+	private static final long serialVersionUID = -2471694143851494763L;
+	
 	public static final Integer TYPE_CATEGORY = 1;
 	public static final Integer TYPE_ITEM = 2;
 
@@ -26,7 +31,38 @@ public class Module {
 	private Integer serial;
 	private Boolean enabled;
 
+	private List<Module> subItems;
 	private List<String> actions;
+
+	public static List<Module> convertTree(List<Module> moduleList) {
+
+		List<Module> items = new ArrayList<Module>();
+		for (Module item : moduleList) {
+
+			if (StringUtils.isEmpty(item.getParentId())) {
+
+				makeChildItems(item, moduleList);
+				items.add(item);
+			}
+		}
+		return items;
+	}
+
+	private static void makeChildItems(Module module, List<Module> moduleList) {
+
+		List<Module> items = new ArrayList<Module>();
+		for (Module item : moduleList) {
+
+			if (item.getParentId().equals(module.getModuleId())) {
+				items.add(item);
+				makeChildItems(item, moduleList);
+			}
+		}
+
+		if (!items.isEmpty()) {
+			module.setSubItems(items);
+		}
+	}
 
 	public Module() {
 		this.setActions(new ArrayList<String>());
@@ -110,6 +146,14 @@ public class Module {
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public List<Module> getSubItems() {
+		return subItems;
+	}
+
+	public void setSubItems(List<Module> subItems) {
+		this.subItems = subItems;
 	}
 
 	public List<String> getActions() {

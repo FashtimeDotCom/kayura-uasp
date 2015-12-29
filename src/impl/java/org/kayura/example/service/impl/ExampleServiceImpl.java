@@ -7,10 +7,10 @@ package org.kayura.example.service.impl;
 import java.util.Map;
 
 import org.kayura.mybatis.type.PageBounds;
+import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
-
 import org.kayura.example.service.ExampleService;
 import org.kayura.example.vo.OrderDetailVo;
 import org.kayura.example.vo.OrderVo;
@@ -50,9 +50,7 @@ public class ExampleServiceImpl implements ExampleService {
 	}
 
 	@Override
-	public Result<String> saveOrUpdateOrder(OrderVo order) {
-
-		Result<String> result = new Result<String>("订单保存成功。");
+	public GeneralResult saveOrUpdateOrder(OrderVo order) {
 
 		try {
 			Order entity = OrderConvert.toEntity(order);
@@ -62,22 +60,22 @@ public class ExampleServiceImpl implements ExampleService {
 				orderMapper.updateByKey(entity);
 			}
 		} catch (Exception e) {
-			result.setError("订单保存失败。原因：%s", e.getMessage());
+			Result.error("订单保存失败。", e);
 		}
 
-		return result;
+		return Result.succeed("订单保存成功。");
 	}
 
 	@Override
-	public Result<String> deleteOrderById(Integer orderId) {
+	public GeneralResult deleteOrderById(Integer orderId) {
 
-		Result<String> result = new Result<String>("订单保存成功。");
 		try {
 			orderMapper.deleteByKey(orderId);
 		} catch (Exception e) {
-			result.setError("订单删除失败。原因：%s", e.getMessage());
+			Result.error("订单删除失败。", e);
 		}
-		return result;
+
+		return Result.succeed("订单删除成功。");
 	}
 
 	@Override
@@ -95,9 +93,7 @@ public class ExampleServiceImpl implements ExampleService {
 	}
 
 	@Override
-	public Result<String> saveOrUpdateOrderDetail(OrderDetailVo orderDetail) {
-		
-		Result<String> result = new Result<String>("订单保存成功。");
+	public GeneralResult saveOrUpdateOrderDetail(OrderDetailVo orderDetail) {
 
 		try {
 			OrderDetail entity = OrderDetailConvert.toEntity(orderDetail);
@@ -107,22 +103,21 @@ public class ExampleServiceImpl implements ExampleService {
 				orderDetailMapper.updateByKey(entity);
 			}
 		} catch (Exception e) {
-			result.setError("订单保存失败。原因：%s", e.getMessage());
+			Result.error("订单保存失败。", e);
 		}
 
-		return result;
+		return Result.succeed("订单保存成功。");
 	}
 
 	@Override
-	public Result<String> deleteOrderDetailById(Integer detailId) {
-		
-		Result<String> result = new Result<String>("订单清单项保存成功。");
+	public GeneralResult deleteOrderDetailById(Integer detailId) {
+
 		try {
 			orderDetailMapper.deleteByKey(detailId);
 		} catch (Exception e) {
-			result.setError("订单清单项删除失败。原因：%s", e.getMessage());
+			Result.error("订单清单项删除失败。", e);
 		}
-		return result;
+		return Result.succeed("订单清单项保存成功。");
 	}
 
 }

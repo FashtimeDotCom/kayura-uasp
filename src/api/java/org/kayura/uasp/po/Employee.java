@@ -4,15 +4,18 @@
  */
 package org.kayura.uasp.po;
 
+import java.io.Serializable;
+
 /**
  * @author liangxia@live.com
  */
-public class Employee {
+public class Employee implements Serializable {
+
+	private static final long serialVersionUID = 4536860694915891927L;
 
 	private String id;
 
 	public Employee() {
-
 	}
 
 	public Employee(String id) {

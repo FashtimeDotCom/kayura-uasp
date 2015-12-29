@@ -4,6 +4,7 @@
  */
 package org.kayura.uasp.po;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +13,14 @@ import org.kayura.utils.StringUtils;
 /**
  * @author liangxia@live.com
  */
-public class Menu {
+public class MenuItem implements Serializable {
 
+	private static final long serialVersionUID = -7804502531850037124L;
+	
 	public static final Integer TYPE_CATEGORY = 1;
 	public static final Integer TYPE_ITEM = 2;
 
-	private String menuId;
+	private String menuItemId;
 	private String parentId;
 	private String menuPlanId;
 	private Module module;
@@ -28,18 +31,18 @@ public class Menu {
 	private Integer serial;
 	private Boolean enabled;
 
-	private List<Menu> subItems;
+	private List<MenuItem> subItems;
 
-	public Menu() {
-		setSubItems(new ArrayList<Menu>());
+	public MenuItem() {
+		setSubItems(new ArrayList<MenuItem>());
 	}
 
-	public String getMenuId() {
-		return menuId;
+	public String getMenuItemId() {
+		return menuItemId;
 	}
 
-	public void setMenuId(String menuId) {
-		this.menuId = menuId;
+	public void setMenuItemId(String menuItemId) {
+		this.menuItemId = menuItemId;
 	}
 
 	public String getParentId() {
@@ -75,7 +78,6 @@ public class Menu {
 	}
 
 	public String getDisplayName() {
-
 		return StringUtils.isEmpty(this.displayName) ? this.getModule().getName() : this.displayName;
 	}
 
@@ -84,7 +86,6 @@ public class Menu {
 	}
 
 	public String getDescription() {
-
 		return StringUtils.isEmpty(this.description) ? this.getModule().getDescription() : this.description;
 	}
 
@@ -93,7 +94,6 @@ public class Menu {
 	}
 
 	public String getIcon() {
-
 		return StringUtils.isEmpty(this.icon) ? this.getModule().getIcon() : this.icon;
 	}
 
@@ -110,7 +110,6 @@ public class Menu {
 	}
 
 	public Boolean getEnabled() {
-
 		return enabled && this.getModule().getEnabled();
 	}
 
@@ -118,11 +117,11 @@ public class Menu {
 		this.enabled = enabled;
 	}
 
-	public List<Menu> getSubItems() {
+	public List<MenuItem> getSubItems() {
 		return subItems;
 	}
 
-	public void setSubItems(List<Menu> subItems) {
+	public void setSubItems(List<MenuItem> subItems) {
 		this.subItems = subItems;
 	}
 

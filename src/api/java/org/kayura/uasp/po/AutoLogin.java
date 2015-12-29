@@ -4,10 +4,13 @@
  */
 package org.kayura.uasp.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class AutoLogin {
+public class AutoLogin implements Serializable  {
 
+	private static final long serialVersionUID = 1830325111339907642L;
+	
 	private String seriesId;
 	private String userId;
 	private String userName;
