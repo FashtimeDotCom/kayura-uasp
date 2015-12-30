@@ -3,10 +3,22 @@
 <mapper namespace="org.kayura.uasp.dao.AuthorityMapper">
 
 	<resultMap id="menuSchemeMap" type="org.kayura.uasp.po.MenuScheme">
-		<result property="id" column="MenuScheme_Id" />
+		<id property="id" column="MenuScheme_Id" />
 		<result property="tenantId" column="Tenant_Id" />
 		<result property="code" column="Code" />
 		<result property="name" column="Name" />
+	</resultMap>
+
+	<resultMap type="org.kayura.uasp.po.MenuItem" id="menuItemMap">
+		<id property="menuItemId" column="MenuItem_Id" />
+		<result property="parentId" column="Parent_Id" />
+		<result property="menuSchemeId" column="MenuScheme_Id" />
+		<result property="type" column="Type" />
+		<result property="displayName" column="DisplayName" />
+		<result property="description" column="Description" />
+		<result property="icon" column="Icon" />
+		<result property="serial" column="Serial" />
+		<result property="enabled" column="Enabled" />
 	</resultMap>
 	
 	<!-- SchemeMap -->
