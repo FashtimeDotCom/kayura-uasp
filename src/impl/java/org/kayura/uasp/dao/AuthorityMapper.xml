@@ -2,6 +2,124 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.3//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kayura.uasp.dao.AuthorityMapper">
 
+	<resultMap id="menuSchemeMap" type="org.kayura.uasp.po.MenuScheme">
+		<result property="id" column="MenuScheme_Id" />
+		<result property="tenantId" column="Tenant_Id" />
+		<result property="code" column="Code" />
+		<result property="name" column="Name" />
+	</resultMap>
+	
+	<!-- SchemeMap -->
+	
+	<sql id="menuScheme_Columns">
+		t.MenuScheme_Id, t.Tenant_Id, t.Code, t.Name
+	</sql>
+
+	<select id="findMenuSchemes" parameterType="map" resultMap="menuSchemeMap">
+		SELECT 
+		<include refid="menuScheme_Columns"></include>
+		FROM UASP_MenuSchemes t
+		<where>
+			<if test="keyword != null">
+				and ( ( t.Code like #{keyword} ) OR ( t.Name like #{keyword} ) )
+			</if>
+		</where>
+	</select>
+	
+	<select id="getMenuSchemeByMap" parameterType="string" resultMap="menuSchemeMap">
+		SELECT 
+		<include refid="menuScheme_Columns"></include>
+		FROM UASP_MenuSchemes t
+		<where>
+			<if test="menuSchemeId != null">
+				and ( t.MenuScheme_Id = #{menuSchemeId} )
+			</if>
+			<if test="code != null">
+				and ( t.Code = #{code} )
+			</if>
+		</where>
+	</select>
+	
+	<select id="createMenuScheme" parameterType="org.kayura.uasp.po.MenuScheme">
+		INSERT UASP_MenuSchemes ( 
+			MenuScheme_Id, 
+			Tenant_Id, 
+			Code, 
+			Name 
+		) Values ( 
+			#{id}, 
+			#{tenantId}, 
+			#{code}, 
+			#{name} 
+		) 
+	</select>
+	
+	<select id="updateMenuScheme" parameterType="org.kayura.uasp.po.MenuScheme">
+		UPDATE UASP_MenuSchemes
+		SET	Code = #{code}, 
+			Name = #{name}
+		WHERE MenuScheme_Id = #{id}
+	</select>
+
+	<select id="deleteMenuSchemes" parameterType="list">
+		DELETE FROM UASP_MenuSchemes
+		WHERE MenuScheme_Id IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- MenuItem -->
+	
+	<sql id="menuItem_Columns">
+		t.MenuItem_Id,
+		t.Parent_Id,
+		t.MenuPlan_Id,
+		t.Module_Id,
+		t.Type,
+		t.DisplayName,
+		t.Description,
+		t.Icon,
+		t.Serial,
+		t.Enabled
+	</sql>
+
+	<select id="findMenuItems" parameterType="map" resultMap="menuItemMap">
+		SELECT 
+		<include refid="menuItem_Columns"></include>
+		FROM UASP_MenuItems t
+		<where>
+			<if test="keyword != null">
+				and ( ( t.DisplayName like #{keyword} ) OR ( t.Description like #{keyword} ) )
+			</if>
+			<if test="enabled != null">
+				and ( t.Enabled = #{enabled} )
+			</if>
+			<if test="parentId != null">
+				and ( t.Parent_Id = #{parentId} )
+			</if>
+			<if test="menuPlanId != null">
+				and ( t.MenuPlan_Id != #{menuPlanId} )
+			</if>
+		</where>
+		ORDER BY t.Serial
+	</select>
+
+	<select id="getMenuItemByMap" parameterType="string" resultMap="menuItemMap">
+		SELECT 
+		<include refid="menuItem_Columns"></include>
+		FROM UASP_MenuItems t
+		<where>
+			<if test="menuItemId != null">
+				and ( t.MenuItem_Id = #{menuItemId} )
+			</if>
+			<if test="keyword != null">
+				and ( ( t.DisplayName like #{keyword} ) OR ( t.Description like #{keyword} ) )
+			</if>
+		</where>
+	</select>
+
+
 
 
 </mapper>

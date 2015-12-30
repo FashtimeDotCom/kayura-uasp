@@ -29,13 +29,11 @@ public interface AuthorityMapper extends BaseDao {
 
 	PageList<MenuScheme> findMenuSchemes(Map<String, Object> args, PageParams pageParams);
 
-	MenuScheme getMenuSchemeById(String menuSchemeId);
+	MenuScheme getMenuSchemeByMap(Map<String, Object> args);
 
 	void createMenuScheme(MenuScheme menuScheme);
 
 	void updateMenuScheme(MenuScheme menuScheme);
-
-	void deleteMenuScheme(String menuSchemeId);
 
 	void deleteMenuSchemes(List<String> menuSchemeIds);
 
@@ -43,7 +41,7 @@ public interface AuthorityMapper extends BaseDao {
 
 	PageList<MenuItem> findMenuItems(Map<String, Object> args, PageParams pageParams);
 
-	MenuItem getMenuItemById(String menuItemId);
+	MenuItem getMenuItemByMap(Map<String, Object> args);
 
 	void createMenuItem(MenuItem menuItem);
 

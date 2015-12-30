@@ -59,7 +59,10 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public Result<MenuScheme> getMenuSchemeById(String menuSchemeId) {
 
-		MenuScheme item = authorityMapper.getMenuSchemeById(menuSchemeId);
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("menuSchemeId", menuSchemeId);
+
+		MenuScheme item = authorityMapper.getMenuSchemeByMap(args);
 		return new Result<MenuScheme>(item);
 	}
 
@@ -80,7 +83,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public GeneralResult deleteMenuScheme(String menuSchemeId) {
 
-		authorityMapper.deleteMenuScheme(menuSchemeId);
+		// authorityMapper.deleteMenuScheme(menuSchemeId);
 		return Result.succeed();
 	}
 
@@ -114,7 +117,10 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public Result<MenuItem> getMenuItemById(String menuItemId) {
 
-		MenuItem item = authorityMapper.getMenuItemById(menuItemId);
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("menuItemId", menuItemId);
+
+		MenuItem item = authorityMapper.getMenuItemByMap(args);
 		return new Result<MenuItem>(item);
 	}
 

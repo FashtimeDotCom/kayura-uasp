@@ -16,8 +16,8 @@ import org.kayura.utils.StringUtils;
 public class MenuScheme implements Serializable {
 
 	private static final long serialVersionUID = 817862772732634654L;
-	
-	private String menuSchemeId;
+
+	private String id;
 	private String tenantId;
 	private String code;
 	private String name;
@@ -59,12 +59,12 @@ public class MenuScheme implements Serializable {
 		}
 	}
 
-	public String getMenuSchemeId() {
-		return menuSchemeId;
+	public String getId() {
+		return id;
 	}
 
-	public void setMenuSchemeId(String menuSchemeId) {
-		this.menuSchemeId = menuSchemeId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getTenantId() {
