@@ -22,7 +22,7 @@ public class MenuItem implements Serializable {
 
 	private String menuItemId;
 	private String parentId;
-	private String menuPlanId;
+	private String menuSchemeId;
 	private Module module;
 	private Integer type;
 	private String displayName;
@@ -53,12 +53,12 @@ public class MenuItem implements Serializable {
 		this.parentId = parentId;
 	}
 
-	public String getMenuPlanId() {
-		return menuPlanId;
+	public String getMenuSchemeId() {
+		return menuSchemeId;
 	}
 
-	public void setMenuPlanId(String menuPlanId) {
-		this.menuPlanId = menuPlanId;
+	public void setMenuSchemeId(String menuSchemeId) {
+		this.menuSchemeId = menuSchemeId;
 	}
 
 	public Module getModule() {
