@@ -19,6 +19,7 @@
 			<e:tab iconCls="icon-ok" title="常用模块">
 				<ul>	
 					<li><a href="###" onclick="juasp.openTab('账号管理', '${root}/admin/user/list')" >账号管理</a></li>
+					<li><a href="###" onclick="juasp.openTab('文件上传', '${root}/file/upload')" >文件上传</a></li>
 				</ul>
 			</e:tab>
 		</e:accordion>
