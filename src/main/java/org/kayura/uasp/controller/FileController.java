@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -36,9 +37,16 @@ public class FileController extends BaseController {
 	 * 文件上传请求地址.
 	 */
 	@RequestMapping(value = "/file/upload", method = RequestMethod.POST)
-	public void fileUpload(MultipartFile file, Model model, HttpServletRequest req, HttpServletResponse res) {
+	public String fileUpload(@RequestParam("file") MultipartFile[] files, Model model, HttpServletRequest req,
+			HttpServletResponse res) {
 
-		model.addAttribute("message", "File '" + file.getOriginalFilename() + "' uploaded successfully");
+		String fileNames = "";
+		for (MultipartFile file : files) {
+			fileNames += "File " + file.getOriginalFilename() + "<br>";
+		}
+		model.addAttribute("message", fileNames + " uploaded successfully");
+
+		return this.viewResult("upload");
 	}
 
 	/**
