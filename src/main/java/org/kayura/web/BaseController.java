@@ -106,7 +106,7 @@ public class BaseController {
 		model.clear();
 		model.put("type", postResult.getType());
 		model.put("message", postResult.getMessage());
-		model.put("attr", postResult.getAttr());
+		model.put("data", postResult.getData());
 	}
 
 }

@@ -4,10 +4,12 @@
  */
 package org.kayura.uasp.controller;
 
+import org.kayura.uasp.web.UploadModel;
+import org.kayura.web.BaseController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.kayura.web.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,21 +26,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController extends BaseController {
 
 	public FileController() {
-		this.setViewRootPath("views/file/");
-	}
-
-	@RequestMapping(value = "/file/upload", method = RequestMethod.GET)
-	public String fileUpload() {
-
-		return this.viewResult("upload");
+		this.setViewRootPath("views/");
 	}
 
 	/**
 	 * 文件上传请求地址.
 	 */
 	@RequestMapping(value = "/file/upload", method = RequestMethod.POST)
-	public String fileUpload(@RequestParam("file") MultipartFile[] files, Model model, HttpServletRequest req,
-			HttpServletResponse res) {
+	public String fileUpload(@RequestParam("file") MultipartFile[] files, HttpServletRequest req,
+			HttpServletResponse res, Model model, UploadModel um) {
 
 		String fileNames = "";
 		for (MultipartFile file : files) {
@@ -46,7 +42,7 @@ public class FileController extends BaseController {
 		}
 		model.addAttribute("message", fileNames + " uploaded successfully");
 
-		return this.viewResult("upload");
+		return this.viewResult("file/upload");
 	}
 
 	/**
@@ -57,20 +53,10 @@ public class FileController extends BaseController {
 
 	}
 
-	/**
-	 * 图片上传请求地址.
-	 */
-	@RequestMapping(value = "/img/upload", method = RequestMethod.POST)
-	public void imgUpload(MultipartFile file, Model model, HttpServletRequest req, HttpServletResponse res) {
-
-		model.addAttribute("message", "File '" + file.getOriginalFilename() + "' uploaded successfully");
+	@RequestMapping(value = "/file/list", method = RequestMethod.GET)
+	public String fileList(HttpServletRequest req, HttpServletResponse res) {
+		
+		return this.viewResult("file/list");
 	}
 
-	/**
-	 * 图片下载请求地址.
-	 */
-	@RequestMapping(value = "/img/get", method = RequestMethod.GET)
-	public void getImage(HttpServletRequest req, HttpServletResponse res) {
-
-	}
 }

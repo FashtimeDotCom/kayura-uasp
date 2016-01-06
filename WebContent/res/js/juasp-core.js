@@ -156,6 +156,84 @@ juasp = {
 	juasp.getQueryParam = getQueryParam;
 	juasp.addUrlParam = addUrlParam;
 	juasp.newId = newId;
+
+	/**
+	 * 以 POST 方式请求一个处理.
+	 * 
+	 * @param {object} config  {url 请求处理的地址, data 请求传入的数据} 
+	 * @param {events} events 请求的回调事件. 支持: error, complete, success, failure.
+	 */
+	function post(config, events){
+		
+		var cfg = $.extend({ url: '', data: {}, dataType: 'json' }, config);
+		
+		if('undefined' == typeof events){ events = {}; }
+
+		$.ajax({url: cfg.url,
+	            type: "POST",
+	            data: cfg.data,
+	            dataType : cfg.dataType,
+	            beforeSend : function(){
+	            	// 发消命令前事件.
+	            },
+	            success : function(result, status){
+	            	
+	            	/* 先判断是否存在result返回结果对象. */
+	            	if(!data.result){
+			        	jeos.errorTip("错误的返回结果对象值.");
+			        	return;
+	            	}
+	            	
+		        	/* 先执行完成回调事件,根据返回值决定是否执行后续代码. */
+		        	if(typeof events.complete == 'function'){
+		        		if(!events.complete(result)) return;
+		        	}
+		        	
+		        	/* 系统返回执行异常时的处理,为未预期异常类型. */
+		        	if(result.type == 'error'){
+		        		if(typeof events.error == 'function'){
+		        			if(events.error(result)) return;
+		        		}
+		        		errorTip(result.message);
+		        		return;
+		        	}
+		        			        	
+		        	/* 处理执行成功时的事件,若未指定事件,将显示一个成功消息. */
+		        	if(result.type == 'success'){
+		        		if(typeof events.success == 'function'){
+		        			if(events.success(result)) return;
+		        		}
+		        		succTip(result.message);
+		        		return;
+		        	}
+
+		        	/* 处理执行发生失败时的事件,若未指定事件,将显示一个警告消息. */
+		        	if(result.type == 'failed'){
+		        		if(typeof events.failure == 'function'){
+		        			if(events.failure(result)) return;
+		        		}
+		        		warnTip(result.message);
+		        		return;
+		        	}
+		        	
+		        	/* 处理未知的请求结果事件. */
+		        	if(result.type == 'unknown'){
+		        		if(typeof events.unknown == 'function'){
+		        			if(events.unknown(result)) return;
+		        		}
+		        		
+			        	errorTip("未知的请求结果类型。");
+		        		return;
+		        	}
+		        },
+	            complete: function (xhr, textStatus) {
+	            	// 调用完成事件.
+	            },
+	            error: function (xhr, textStatus, errorThrown) {
+	            	// 调用异常事件.
+	            }
+	   		});
+	}
 	
 	/**
 	 * 用于跳转一个指定的URL地址，并可以指定其跳转模式.
@@ -308,6 +386,7 @@ juasp = {
 	}
 	
 	/** 绑定方法 **/
+	juasp.post = post;
 	juasp.skipUrl = skipUrl;
 	juasp.openTab = openTab;
 	juasp.openWin = openWin;

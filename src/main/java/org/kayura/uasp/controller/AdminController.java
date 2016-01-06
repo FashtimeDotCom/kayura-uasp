@@ -86,9 +86,7 @@ public class AdminController extends BaseController {
 			@Override
 			public void invoke(PostResult postResult) {
 				GeneralResult result = userService.createNewUser(user);
-				if (result.getCode() != 0) {
-					postResult.setFailed(result.getMessage());
-				}
+				postResult.setResult(result);
 			}
 		});
 	}

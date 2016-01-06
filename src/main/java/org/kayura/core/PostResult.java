@@ -4,53 +4,36 @@
  */
 package org.kayura.core;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import org.kayura.type.GeneralResult;
+import org.kayura.type.Result;
 
 /**
  * @author liangxia@live.com
  *
  */
-public class PostResult implements Serializable {
+public class PostResult extends GeneralResult {
 
-	private static final long serialVersionUID = -5947820764143437187L;
-	private String type;
-	private String message;
-	private Map<String, String> attr;
-
-	public PostResult() {
-		attr = new HashMap<String, String>();
-	}
+	private static final long serialVersionUID = 247868975293321852L;
 
 	public String getType() {
-		return type;
+
+		Integer code = this.getCode();
+
+		if (code == Result.SUCCEED) {
+			return "success";
+		} else if (code == Result.FAILED) {
+			return "failed";
+		} else if (code == Result.ERROR) {
+			return "error";
+		}
+
+		return "unknown";
 	}
 
-	public void setError(String message) {
-		this.type = "error";
-		this.message = message;
-	}
-
-	public void setSuccess(String message) {
-		this.type = "success";
-		this.message = message;
-	}
-
-	public void setFailed(String message) {
-		this.type = "failed";
-		this.message = message;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public Map<String, String> getAttr() {
-		return attr;
-	}
-
-	public void addAttr(String key, String value) {
-		attr.put(key, value);
+	public void setResult(GeneralResult result) {
+		this.setCode(result.getCode());
+		this.setMessage(result.getMessage());
+		this.setException(result.getException());
+		this.setData(result.getData());
 	}
 }
