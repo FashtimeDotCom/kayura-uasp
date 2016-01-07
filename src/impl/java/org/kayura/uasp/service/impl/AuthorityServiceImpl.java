@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorityServiceImpl implements AuthorityService {
 
-	@Autowired
+	@Autowired(required = false)
 	private AuthorityMapper authorityMapper;
 
 	@Override

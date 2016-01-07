@@ -19,7 +19,7 @@ import org.kayura.uasp.po.Role;
 /**
  * @author liangxia@live.com
  */
-public interface AuthorityMapper extends BaseDao {
+public interface AuthorityMapper {
 
 	// 权限交互接口.
 

@@ -4,7 +4,7 @@
  */
 package org.kayura.uasp.controller;
 
-import org.kayura.core.Action;
+import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
@@ -82,7 +82,7 @@ public class AdminController extends BaseController {
 	@RequestMapping(value = "user/save", method = RequestMethod.POST)
 	public void userSave(Map<String, Object> map, final User user) {
 
-		execute(map, new Action() {
+		execute(map, new PostAction() {
 			@Override
 			public void invoke(PostResult postResult) {
 				GeneralResult result = userService.createNewUser(user);

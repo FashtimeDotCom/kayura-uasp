@@ -1,3 +1,4 @@
+<%@page import="org.kayura.utils.JsonUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
 <e:section name="title">文件上传</e:section>
@@ -26,7 +27,14 @@
 				</div>
 			</form>
 		</div>
-		<h2>${message}</h2>
+		<c:if test="${type != null}">
+			<h2>Type: ${type}</h2>
+			<h2>Message: ${message}</h2>
+			<h2>Data: <%=JsonUtils.fromObject(request.getAttribute("data"))%></h2>
+		</c:if>
+		<c:if test="${exception != null}">
+			<h2>Exception: ${exception}</h2>
+		</c:if>
 	</e:layoutunit>
 </e:section>
 

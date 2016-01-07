@@ -7,7 +7,7 @@ package org.kayura.core;
 /**
  * 提供执行代理的方法接口.
  */
-public interface Action {
+public interface PostAction {
     
     /**
      * 用于实现的方法执行体.

@@ -4,7 +4,7 @@
  */
 package org.kayura.web;
 
-import org.kayura.core.Action;
+import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.type.PageParams;
 import org.kayura.utils.PathUtils;
@@ -92,7 +92,7 @@ public class BaseController {
 	 * @param map 一个 Key,Value类型的集合,它由SpringMvc创建.
 	 * @param executeAction 代理的执行方法,可以建立它的匿名方法.
 	 */
-	public void execute(Map<String, Object> model, Action executeAction) {
+	public void execute(Map<String, Object> model, PostAction executeAction) {
 
 		PostResult postResult = new PostResult();
 
