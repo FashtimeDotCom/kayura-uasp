@@ -12,7 +12,10 @@ import java.io.Serializable;
 public class UploadModel implements Serializable {
 
 	private static final long serialVersionUID = 5013405337626162388L;
-	
+
+	private String frId;
+	private String fileId;
+	private String fileName;
 	private String bizId;
 	private String category;
 	private Integer serial;
@@ -66,6 +69,30 @@ public class UploadModel implements Serializable {
 
 	public void setTags(String tags) {
 		this.tags = tags;
+	}
+
+	public String getFrId() {
+		return frId;
+	}
+
+	public void setFrId(String frId) {
+		this.frId = frId;
+	}
+
+	public String getFileId() {
+		return fileId;
+	}
+
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 }

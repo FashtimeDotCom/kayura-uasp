@@ -14,6 +14,7 @@ import org.kayura.type.PageList;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -90,14 +91,26 @@ public class BaseController {
 	 * 用于代理执行一个方法，并且返回统一格式的结果值.
 	 * 
 	 * @param map 一个 Key,Value类型的集合,它由SpringMvc创建.
-	 * @param executeAction 代理的执行方法,可以建立它的匿名方法.
+	 * @param postAction 代理的执行方法,可以建立它的匿名方法.
 	 */
-	public void execute(Map<String, Object> model, PostAction executeAction) {
+	public void execute(Model model, PostAction postAction) {
+
+		Map<String, Object> args = model.asMap();
+		execute(args, postAction);
+	}
+
+	/**
+	 * 用于代理执行一个方法，并且返回统一格式的结果值.
+	 * 
+	 * @param map 一个 Key,Value类型的集合,它由SpringMvc创建.
+	 * @param postAction 代理的执行方法,可以建立它的匿名方法.
+	 */
+	public void execute(Map<String, Object> model, PostAction postAction) {
 
 		PostResult postResult = new PostResult();
 
 		try {
-			executeAction.invoke(postResult);
+			postAction.invoke(postResult);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			postResult.setError(e.getMessage());

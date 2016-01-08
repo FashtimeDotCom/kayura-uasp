@@ -4,29 +4,25 @@
  */
 package org.kayura.uasp.controller;
 
-import org.kayura.core.PostAction;
-import org.kayura.core.PostResult;
-import org.kayura.type.GeneralResult;
-import org.kayura.uasp.executor.StorageExecutor;
-import org.kayura.uasp.web.UploadModel;
-import org.kayura.web.BaseController;
-
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kayura.core.PostAction;
+import org.kayura.core.PostResult;
+import org.kayura.type.GeneralResult;
+import org.kayura.uasp.executor.StorageExecutor;
+import org.kayura.uasp.web.UploadModel;
+import org.kayura.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -43,20 +39,6 @@ public class FileController extends BaseController {
 	public FileController() {
 		this.setViewRootPath("views/");
 	}
-
-/*	@ExceptionHandler(MaxUploadSizeExceededException.class)
-	public String maxUploadSizeException(Exception ex, Map<String, Object> map) {
-
-		execute(map, new PostAction() {
-
-			@Override
-			public void invoke(PostResult r) {
-				r.setError("上传的文件超过大小.", ex);
-			}
-		});
-
-		return this.viewResult("file/error");
-	}*/
 
 	@RequestMapping(value = "/file/upload", method = RequestMethod.GET)
 	public String fileUpload() {
@@ -76,31 +58,30 @@ public class FileController extends BaseController {
 			@Override
 			public void invoke(PostResult r) {
 
+				Integer count = 0;
 				List<String> succeedFiles = new ArrayList<String>();
-				List<String> errorFiles = new ArrayList<String>();
+				Map<String, Object> errorFiles = new HashMap<String, Object>();
 
 				for (MultipartFile file : files) {
 
 					if (file.getSize() > 0) {
 
+						count++;
 						String fileName = file.getOriginalFilename();
-						GeneralResult result = null;
+						um.setFileId(fileName);
 
-						try {
-							result = storageExecutor.storage(fileName, file.getBytes());
-							if (result.isSucceed()) {
-								succeedFiles.add(fileName);
-							} else {
-								errorFiles.add(fileName);
-							}
-						} catch (IOException e) {
-							r.setException(e);
-							errorFiles.add(fileName);
+						GeneralResult result = storageExecutor.storage(um, file);
+						if (result.isSucceed()) {
+							succeedFiles.add(fileName);
+						} else {
+							errorFiles.put(fileName, result.getMessage());
 						}
 					}
 				}
 
-				if (errorFiles.size() > 0) {
+				if (errorFiles.size() == count) {
+					r.setError("文件全部上传失败。");
+				} else if (errorFiles.size() > 0) {
 					r.setSuccess("文件部分上传成功。");
 				} else {
 					r.setSuccess("文件全部上传成功。");
@@ -108,6 +89,7 @@ public class FileController extends BaseController {
 
 				r.addAttr("succeedFiles", succeedFiles);
 				r.addAttr("errorFiles", errorFiles);
+
 			}
 		});
 

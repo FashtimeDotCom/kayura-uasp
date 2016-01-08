@@ -14,7 +14,7 @@
 	<bean class="org.kayura.spring.SpringBeanManager" />
 	<bean id="storageExecutor" class="org.kayura.uasp.executor.DiskStorageExecutor">
 		<property name="minSpace" value="512000" />
-		<property name="diskDirs">
+		<property name="uploadPaths">
 			<map>
 				<entry key="#DiskA#" value="E:\\UploadFiles\\"></entry>
 			</map>

@@ -2,12 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Insert title here</title>
+<title>Error</title>
 </head>
 <body>
 	<h2>文件上传失败。</h2>
-	<c:if test="${exception != null}">
-		<h3>Exception: ${exception.message}</h3>
-	</c:if>
+	<h2>Type: ${type}</h2>
+	<h2>Message: ${message}</h2>
 </body>
 </html>
