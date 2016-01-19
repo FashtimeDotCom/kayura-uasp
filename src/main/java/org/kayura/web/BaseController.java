@@ -93,10 +93,10 @@ public class BaseController {
 	 * @param map 一个 Key,Value类型的集合,它由SpringMvc创建.
 	 * @param postAction 代理的执行方法,可以建立它的匿名方法.
 	 */
-	public void execute(Model model, PostAction postAction) {
+	public void postExecute(Model model, PostAction postAction) {
 
 		Map<String, Object> args = model.asMap();
-		execute(args, postAction);
+		postExecute(args, postAction);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class BaseController {
 	 * @param map 一个 Key,Value类型的集合,它由SpringMvc创建.
 	 * @param postAction 代理的执行方法,可以建立它的匿名方法.
 	 */
-	public void execute(Map<String, Object> model, PostAction postAction) {
+	public void postExecute(Map<String, Object> model, PostAction postAction) {
 
 		PostResult postResult = new PostResult();
 

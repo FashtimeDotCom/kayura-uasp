@@ -69,14 +69,14 @@ public class DiskStorageExecutor implements StorageExecutor {
 		String dirKey = getUsableDir();
 		String diskDir = uploadPaths.get(dirKey);
 
-		result.addAttr("dirKey", dirKey);
+		result.addData("dirKey", dirKey);
 
 		Date now = new Date();
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String subPath = format.format(now);
 
 		Path filePath = Paths.get(diskDir, subPath);
-		result.addAttr("dirPath", filePath.toString());
+		result.addData("dirPath", filePath.toString());
 
 		FileOutputStream out = null;
 		try {
@@ -87,7 +87,7 @@ public class DiskStorageExecutor implements StorageExecutor {
 			}
 
 			File file = new File(filePath.toString(), model.getFileId());
-			result.addAttr("filePath", file.getAbsolutePath());
+			result.addData("filePath", file.getAbsolutePath());
 
 			if (!file.exists()) {
 				file.createNewFile();

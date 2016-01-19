@@ -23,7 +23,7 @@ public class GlobalExceptionController extends BaseController {
 
 		ModelAndView view = new ModelAndView("views/file/error");
 
-		execute(view.getModel(), new PostAction() {
+		postExecute(view.getModel(), new PostAction() {
 
 			@Override
 			public void invoke(PostResult r) {

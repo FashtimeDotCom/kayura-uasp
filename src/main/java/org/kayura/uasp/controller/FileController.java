@@ -53,7 +53,7 @@ public class FileController extends BaseController {
 	public String fileUpload(@RequestParam("file") MultipartFile[] files, HttpServletRequest req,
 			HttpServletResponse res, Map<String, Object> map, UploadModel um) {
 
-		execute(map, new PostAction() {
+		postExecute(map, new PostAction() {
 
 			@Override
 			public void invoke(PostResult r) {
@@ -87,8 +87,8 @@ public class FileController extends BaseController {
 					r.setSuccess("文件全部上传成功。");
 				}
 
-				r.addAttr("succeedFiles", succeedFiles);
-				r.addAttr("errorFiles", errorFiles);
+				r.addData("succeedFiles", succeedFiles);
+				r.addData("errorFiles", errorFiles);
 
 			}
 		});

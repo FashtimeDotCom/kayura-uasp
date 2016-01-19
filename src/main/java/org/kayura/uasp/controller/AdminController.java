@@ -82,7 +82,7 @@ public class AdminController extends BaseController {
 	@RequestMapping(value = "user/save", method = RequestMethod.POST)
 	public void userSave(Map<String, Object> map, final User user) {
 
-		execute(map, new PostAction() {
+		postExecute(map, new PostAction() {
 			@Override
 			public void invoke(PostResult postResult) {
 				GeneralResult result = userService.createNewUser(user);
