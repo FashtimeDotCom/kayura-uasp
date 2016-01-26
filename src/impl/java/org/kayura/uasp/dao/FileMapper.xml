@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.3//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kayura.uasp.dao.FileMapper">
+
+	<!-- 文件存储关系持久化 -->
+
+	<resultMap id="fileInfoMap" type="org.kayura.uasp.po.FileInfo">
+		<result property="fileId" column="File_Id" />
+		<result property="fileSize" column="FileSize" />
+		<result property="fileType" column="FileType" />
+		<result property="postfix" column="Postfix" />
+		<result property="diskPath" column="DiskPath" />
+		<result property="md5" column="MD5" />
+		<result property="refCount" column="RefCount" />
+		<result property="isReadonly" column="IsReadonly" />
+		<result property="isCompressed" column="IsCompressed" />
+		<result property="ratio" column="Ratio" />
+		<result property="isEncrypted" column="IsEncrypted" />
+		<result property="status" column="Status" />
+	</resultMap>
+
+	<resultMap id="fileRelationMap" type="org.kayura.uasp.po.FileRelation">
+		<result property="frId" column="Fr_Id" />
+		<result property="fileId" column="File_Id" />
+		<result property="tenantId" column="Tenant_Id" />
+		<result property="bizId" column="BizId" />
+		<result property="category" column="Category" />
+		<result property="fileName" column="FileName" />
+		<result property="uploaderId" column="UploaderId" />
+		<result property="uploaderName" column="UploaderName" />
+		<result property="uploadTime" column="UploadTime" />
+		<result property="allowChange" column="AllowChange" />
+		<result property="serial" column="Serial" />
+		<result property="tags" column="Tags" />
+	</resultMap>
+	
+	<!-- FileInfo -->
+
+	<insert id="insertFileInfo" parameterType="org.kayura.uasp.po.FileInfo">
+		INSERT UASP_FileInfos (
+			File_Id,
+			FileSize,
+			ContentType,
+			Postfix,
+			SaveMode,
+			DiskPath,
+			MD5,
+			RefCount,
+			IsCompressed,
+			Ratio,
+			IsEncrypted,
+			Status
+		) VALUES(
+			#{fileId},
+			#{fileSize},
+			#{contentType},
+			#{postfix},
+			#{saveMode},
+			#{diskPath},
+			#{md5},
+			#{refCount},
+			#{isCompressed},
+			#{ratio},
+			#{isEncrypted},
+			#{status}
+		)		
+	</insert>
+
+	<select id="selectFileInfoByMap" parameterMap="map">
+		SELECT
+			t.File_Id,
+			t.FileSize,
+			t.ContentType,
+			t.Postfix,
+			t.SaveMode,
+			t.DiskPath,
+			t.MD5,
+			t.RefCount,
+			t.IsCompressed,
+			t.Ratio,
+			t.IsEncrypted,
+			t.Status
+		FROM UASP_FileInfos t
+		<where>
+			<if test="fileId != null">
+				AND ( t.File_Id = #{fileId} )
+			</if>
+			<if test="md5 != null">
+				AND ( t.MD5 = #{md5} )
+			</if>
+		</where>
+	</select>
+
+	<select id="fileInfoExistsByMap" parameterMap="map" resultMap="bool">
+		SELECT COUNT(1) > 0 FROM UASP_FileInfos t
+		<where>
+			<if test="fileId != null">
+				AND ( t.File_Id = #{fileId} )
+			</if>
+			<if test="md5 != null">
+				AND ( t.MD5 = #{md5} )
+			</if>
+		</where>
+	</select>
+	
+	<!-- FileRelation -->
+
+	<insert id="insertFileRelation" parameterMap="org.kayura.uasp.po.FileRelation">
+		INSERT UASP_FileRelations (
+			Fr_Id,
+			File_Id,
+			Tenant_Id,
+			BizId,
+			Category,
+			FileName,
+			UploaderId,
+			UploaderName,
+			UploadTime,
+			AllowChange,
+			Serial,
+			Tags
+		) VALUES (
+			#{frId},
+			#{fileId},
+			#{tenantId},
+			#{bizId},
+			#{category},
+			#{fileName},
+			#{uploaderId},
+			#{uploaderName},
+			#{uploadTime},
+			#{allowChange},
+			#{serial},
+			#{tags}
+		)			
+	</insert>
+	
+	<select id="selectFileRelationByMap" parameterMap="map">
+		SELECT 
+			t.Fr_Id,
+			t.File_Id,
+			t.Tenant_Id,
+			t.BizId,
+			t.Category,
+			t.FileName,
+			t.UploaderId,
+			t.UploaderName,
+			t.UploadTime,
+			t.AllowChange,
+			t.Serial,
+			t.Tags
+		FROM UASP_FileRelations t
+		<where>
+			<if test="frId != null">
+				AND ( t.Fr_Id = #{frId} )
+			</if>
+			<if test="fileId != null">
+				AND ( t.File_Id = #{fileId} )
+			</if>
+			<if test="bizId != null">
+				AND ( t.BizId = #{bizId} )
+			</if>
+			<if test="category != null">
+				AND ( t.Category = #{category} )
+			</if>
+			<if test="uploader != null">
+				AND ( t.UploaderId = #{uploader} )
+			</if>
+			<if test="tag != null">
+				AND ( t.Tags )
+			</if>
+		</where>	
+	
+	</select>
+	
+
+</mapper>

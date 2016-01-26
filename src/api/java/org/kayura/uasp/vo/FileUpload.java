@@ -2,24 +2,27 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.uasp.po;
+package org.kayura.uasp.vo;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author liangxia@live.com
  */
-public class FileRelation implements Serializable {
+public class FileUpload {
 
-	private static final long serialVersionUID = 5439242987648558566L;
-
-	private String frId;
-	private String fileId;
+	private String fileName;
+	private Integer fileSize;
+	private String contentType;
+	private String postfix;
+	private byte[] fileContent;
+	private String md5;
+	private Boolean isCompressed;
+	private Double ratio;
+	private Boolean isEncrypted;
 	private String tenantId;
 	private String bizId;
 	private String category;
-	private String fileName;
 	private String uploaderId;
 	private String uploaderName;
 	private Date uploadTime;
@@ -27,20 +30,76 @@ public class FileRelation implements Serializable {
 	private String serial;
 	private String tags;
 
-	public String getFrId() {
-		return frId;
+	public String getFileName() {
+		return fileName;
 	}
 
-	public void setFrId(String frId) {
-		this.frId = frId;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
-	public String getFileId() {
-		return fileId;
+	public Integer getFileSize() {
+		return fileSize;
 	}
 
-	public void setFileId(String fileId) {
-		this.fileId = fileId;
+	public void setFileSize(Integer fileSize) {
+		this.fileSize = fileSize;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public String getPostfix() {
+		return postfix;
+	}
+
+	public void setPostfix(String postfix) {
+		this.postfix = postfix;
+	}
+
+	public byte[] getFileContent() {
+		return fileContent;
+	}
+
+	public void setFileContent(byte[] fileContent) {
+		this.fileContent = fileContent;
+	}
+
+	public String getMd5() {
+		return md5;
+	}
+
+	public void setMd5(String md5) {
+		this.md5 = md5;
+	}
+
+	public Boolean getIsCompressed() {
+		return isCompressed;
+	}
+
+	public void setIsCompressed(Boolean isCompressed) {
+		this.isCompressed = isCompressed;
+	}
+
+	public Double getRatio() {
+		return ratio;
+	}
+
+	public void setRatio(Double ratio) {
+		this.ratio = ratio;
+	}
+
+	public Boolean getIsEncrypted() {
+		return isEncrypted;
+	}
+
+	public void setIsEncrypted(Boolean isEncrypted) {
+		this.isEncrypted = isEncrypted;
 	}
 
 	public String getTenantId() {
@@ -65,14 +124,6 @@ public class FileRelation implements Serializable {
 
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 	public String getUploaderId() {

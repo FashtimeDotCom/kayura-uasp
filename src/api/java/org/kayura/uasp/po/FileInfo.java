@@ -15,16 +15,15 @@ public class FileInfo implements Serializable {
 
 	private String fileId;
 	private Integer fileSize;
-	private String fileType;
+	private String contentType;
 	private String postfix;
 	private String diskPath;
-	private Integer status;
-	private String crc;
+	private String md5;
 	private Integer refCount;
-	private Boolean isReadonly;
-	private Boolean isCompress;
+	private Boolean isCompressed;
 	private Double ratio;
 	private Boolean isEncrypted;
+	private Integer status;
 
 	public String getFileId() {
 		return fileId;
@@ -42,12 +41,12 @@ public class FileInfo implements Serializable {
 		this.fileSize = fileSize;
 	}
 
-	public String getFileType() {
-		return fileType;
+	public String getContentType() {
+		return contentType;
 	}
 
-	public void setFileType(String fileType) {
-		this.fileType = fileType;
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 	public String getPostfix() {
@@ -66,20 +65,12 @@ public class FileInfo implements Serializable {
 		this.diskPath = diskPath;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public String getMd5() {
+		return md5;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public String getCrc() {
-		return crc;
-	}
-
-	public void setCrc(String crc) {
-		this.crc = crc;
+	public void setMd5(String md5) {
+		this.md5 = md5;
 	}
 
 	public Integer getRefCount() {
@@ -90,20 +81,12 @@ public class FileInfo implements Serializable {
 		this.refCount = refCount;
 	}
 
-	public Boolean getIsReadonly() {
-		return isReadonly;
+	public Boolean getIsCompressed() {
+		return isCompressed;
 	}
 
-	public void setIsReadonly(Boolean isReadonly) {
-		this.isReadonly = isReadonly;
-	}
-
-	public Boolean getIsCompress() {
-		return isCompress;
-	}
-
-	public void setIsCompress(Boolean isCompress) {
-		this.isCompress = isCompress;
+	public void setIsCompressed(Boolean isCompressed) {
+		this.isCompressed = isCompressed;
 	}
 
 	public Double getRatio() {
@@ -120,6 +103,14 @@ public class FileInfo implements Serializable {
 
 	public void setIsEncrypted(Boolean isEncrypted) {
 		this.isEncrypted = isEncrypted;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }
