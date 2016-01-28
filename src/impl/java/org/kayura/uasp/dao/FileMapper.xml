@@ -11,10 +11,6 @@
 		<result property="postfix" column="Postfix" />
 		<result property="diskPath" column="DiskPath" />
 		<result property="md5" column="MD5" />
-		<result property="refCount" column="RefCount" />
-		<result property="isReadonly" column="IsReadonly" />
-		<result property="isCompressed" column="IsCompressed" />
-		<result property="ratio" column="Ratio" />
 		<result property="isEncrypted" column="IsEncrypted" />
 		<result property="status" column="Status" />
 	</resultMap>
@@ -42,12 +38,8 @@
 			FileSize,
 			ContentType,
 			Postfix,
-			SaveMode,
 			DiskPath,
 			MD5,
-			RefCount,
-			IsCompressed,
-			Ratio,
 			IsEncrypted,
 			Status
 		) VALUES(
@@ -55,29 +47,21 @@
 			#{fileSize},
 			#{contentType},
 			#{postfix},
-			#{saveMode},
 			#{diskPath},
 			#{md5},
-			#{refCount},
-			#{isCompressed},
-			#{ratio},
 			#{isEncrypted},
 			#{status}
 		)		
 	</insert>
 
-	<select id="selectFileInfoByMap" parameterMap="map">
+	<select id="getFileInfoByMap" parameterMap="map" resultMap="fileInfoMap">
 		SELECT
 			t.File_Id,
 			t.FileSize,
 			t.ContentType,
 			t.Postfix,
-			t.SaveMode,
 			t.DiskPath,
 			t.MD5,
-			t.RefCount,
-			t.IsCompressed,
-			t.Ratio,
 			t.IsEncrypted,
 			t.Status
 		FROM UASP_FileInfos t
@@ -90,8 +74,13 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="getKeyForFileInfo" parameterType="string" resultType="string">
+		SELECT t.File_Id FROM UASP_FileInfos t
+		WHERE ( t.MD5 = #{value} )
+	</select>
 
-	<select id="fileInfoExistsByMap" parameterMap="map" resultMap="bool">
+	<select id="fileInfoExistsByMap" parameterMap="map" resultType="bool">
 		SELECT COUNT(1) > 0 FROM UASP_FileInfos t
 		<where>
 			<if test="fileId != null">
@@ -135,25 +124,33 @@
 		)			
 	</insert>
 	
-	<select id="selectFileRelationByMap" parameterMap="map">
+	<sql id="fileRelationColumns">
+		t.Fr_Id,
+		t.File_Id,
+		t.Tenant_Id,
+		t.BizId,
+		t.Category,
+		t.FileName,
+		t.UploaderId,
+		t.UploaderName,
+		t.UploadTime,
+		t.AllowChange,
+		t.Serial,
+		t.Tags
+	</sql>
+	
+	<select id="getFileRelation" parameterMap="string" resultMap="fileRelationMap">
 		SELECT 
-			t.Fr_Id,
-			t.File_Id,
-			t.Tenant_Id,
-			t.BizId,
-			t.Category,
-			t.FileName,
-			t.UploaderId,
-			t.UploaderName,
-			t.UploadTime,
-			t.AllowChange,
-			t.Serial,
-			t.Tags
+			<include refid="fileRelationColumns" />
+		FROM UASP_FileRelations t
+		WHERE ( t.Fr_Id = #{frId} )
+	</select>
+	
+	<select id="findFileRelationsByMap" parameterMap="map" resultMap="fileRelationMap">
+		SELECT 
+			<include refid="fileRelationColumns" />
 		FROM UASP_FileRelations t
 		<where>
-			<if test="frId != null">
-				AND ( t.Fr_Id = #{frId} )
-			</if>
 			<if test="fileId != null">
 				AND ( t.File_Id = #{fileId} )
 			</if>
@@ -164,13 +161,12 @@
 				AND ( t.Category = #{category} )
 			</if>
 			<if test="uploader != null">
-				AND ( t.UploaderId = #{uploader} )
+				AND ( t.UploaderId = #{uploader} OR t.UploaderName = #{uploader} )
 			</if>
-			<if test="tag != null">
-				AND ( t.Tags )
+			<if test="tags != null">
+				AND ( t.Tags LIKE #{tags} )
 			</if>
-		</where>	
-	
+		</where>
 	</select>
 	
 

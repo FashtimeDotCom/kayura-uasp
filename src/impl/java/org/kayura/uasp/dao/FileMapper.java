@@ -31,8 +31,16 @@ public interface FileMapper extends BaseDao {
 	 * @param args 支持条件有: fileId, md5.
 	 * @return 返回 {@link FileInfo }
 	 */
-	FileInfo selectFileInfoByMap(Map<String, Object> args);
+	FileInfo getFileInfoByMap(Map<String, Object> args);
 
+	/**
+	 * 通过文件的Md5值读取到主键值信息.
+	 * 
+	 * @param md5 文件生成的Md5值.
+	 * @return 返回相应的主键值 或者为 null.
+	 */
+	String getKeyForFileInfo(String md5);
+	
 	/**
 	 * 检查指定条件下的文件信息是否存在.
 	 * 
@@ -40,7 +48,7 @@ public interface FileMapper extends BaseDao {
 	 * @return 若存在返回 true 否则返回 false.
 	 */
 	Boolean fileInfoExistsByMap(Map<String, Object> args);
-
+	
 	// FileRelation
 	
 	/**
@@ -53,9 +61,17 @@ public interface FileMapper extends BaseDao {
 	/**
 	 * 获取单条文件关系记录.
 	 * 
-	 * @param args 
-	 * @return
+	 * @param frId 文件关系ID.
+	 * @return 返回一条文件关系记录.
 	 */
-	FileRelation selectFileRelationByMap(Map<String, Object> args);
+	FileRelation getFileRelation(String frId);
+	
+	/**
+	 * 查找所有符件条件的文件关系记录集.
+	 * 
+	 * @param args 支持条件有: fileId (文件Id), bizId (关联业务Id), category (分类), uploader (上传者), tags (标签）
+	 * @return 返回所有符件条件的记录
+	 */
+	List<FileRelation> findFileRelationsByMap(Map<String, Object> args);
 	
 }

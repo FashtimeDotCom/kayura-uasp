@@ -4,30 +4,28 @@
  */
 package org.kayura.uasp.vo;
 
-import java.util.Date;
-
 /**
  * @author liangxia@live.com
  */
 public class FileUpload {
 
 	private String fileName;
-	private Integer fileSize;
+	private long fileSize;
 	private String contentType;
 	private String postfix;
 	private byte[] fileContent;
 	private String md5;
-	private Boolean isCompressed;
-	private Double ratio;
-	private Boolean isEncrypted;
+	private String diskPath;
+	private Boolean isEncrypt;
+	private String salt;
+
 	private String tenantId;
 	private String bizId;
 	private String category;
 	private String uploaderId;
 	private String uploaderName;
-	private Date uploadTime;
-	private String allowChange;
-	private String serial;
+	private Boolean allowChange;
+	private Integer serial;
 	private String tags;
 
 	public String getFileName() {
@@ -38,11 +36,11 @@ public class FileUpload {
 		this.fileName = fileName;
 	}
 
-	public Integer getFileSize() {
+	public long getFileSize() {
 		return fileSize;
 	}
 
-	public void setFileSize(Integer fileSize) {
+	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 	}
 
@@ -78,28 +76,28 @@ public class FileUpload {
 		this.md5 = md5;
 	}
 
-	public Boolean getIsCompressed() {
-		return isCompressed;
+	public String getDiskPath() {
+		return diskPath;
 	}
 
-	public void setIsCompressed(Boolean isCompressed) {
-		this.isCompressed = isCompressed;
+	public void setDiskPath(String diskPath) {
+		this.diskPath = diskPath;
 	}
 
-	public Double getRatio() {
-		return ratio;
+	public Boolean getIsEncrypt() {
+		return isEncrypt;
 	}
 
-	public void setRatio(Double ratio) {
-		this.ratio = ratio;
+	public void setIsEncrypt(Boolean isEncrypt) {
+		this.isEncrypt = isEncrypt;
 	}
 
-	public Boolean getIsEncrypted() {
-		return isEncrypted;
+	public String getSalt() {
+		return salt;
 	}
-
-	public void setIsEncrypted(Boolean isEncrypted) {
-		this.isEncrypted = isEncrypted;
+	
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 	public String getTenantId() {
@@ -142,27 +140,19 @@ public class FileUpload {
 		this.uploaderName = uploaderName;
 	}
 
-	public Date getUploadTime() {
-		return uploadTime;
-	}
-
-	public void setUploadTime(Date uploadTime) {
-		this.uploadTime = uploadTime;
-	}
-
-	public String getAllowChange() {
+	public Boolean getAllowChange() {
 		return allowChange;
 	}
 
-	public void setAllowChange(String allowChange) {
+	public void setAllowChange(Boolean allowChange) {
 		this.allowChange = allowChange;
 	}
 
-	public String getSerial() {
+	public Integer getSerial() {
 		return serial;
 	}
 
-	public void setSerial(String serial) {
+	public void setSerial(Integer serial) {
 		this.serial = serial;
 	}
 

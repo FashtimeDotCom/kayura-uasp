@@ -23,8 +23,8 @@ public class FileRelation implements Serializable {
 	private String uploaderId;
 	private String uploaderName;
 	private Date uploadTime;
-	private String allowChange;
-	private String serial;
+	private Boolean allowChange;
+	private Integer serial;
 	private String tags;
 
 	public String getFrId() {
@@ -99,19 +99,19 @@ public class FileRelation implements Serializable {
 		this.uploadTime = uploadTime;
 	}
 
-	public String getAllowChange() {
+	public Boolean getAllowChange() {
 		return allowChange;
 	}
 
-	public void setAllowChange(String allowChange) {
+	public void setAllowChange(Boolean allowChange) {
 		this.allowChange = allowChange;
 	}
 
-	public String getSerial() {
+	public Integer getSerial() {
 		return serial;
 	}
 
-	public void setSerial(String serial) {
+	public void setSerial(Integer serial) {
 		this.serial = serial;
 	}
 

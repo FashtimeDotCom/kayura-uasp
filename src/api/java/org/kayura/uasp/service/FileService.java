@@ -18,7 +18,7 @@ public interface FileService {
 	 * 文件上传.
 	 * 
 	 * @param fileUpload 上传的文件信息.
-	 * @return 在返回 frId, fileId.
+	 * @return 在返回 frid(String), fileid(String), newfile(Boolean).
 	 */
 	GeneralResult upload(FileUpload fileUpload);
 

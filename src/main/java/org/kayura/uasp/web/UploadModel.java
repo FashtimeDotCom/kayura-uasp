@@ -13,13 +13,13 @@ public class UploadModel implements Serializable {
 
 	private static final long serialVersionUID = 5013405337626162388L;
 
-	private String frId;
-	private String fileId;
-	private String fileName;
 	private String bizId;
+	private String fileName;
 	private String category;
 	private Integer serial;
-	private Boolean isChange;
+	private Boolean allowChange;
+	private String uploaderId;
+	private String uploaderName;
 	private Boolean isEncrypt;
 	private String tags;
 
@@ -29,6 +29,20 @@ public class UploadModel implements Serializable {
 
 	public void setBizId(String bizId) {
 		this.bizId = bizId;
+	}
+
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public String getCategory() {
@@ -47,12 +61,46 @@ public class UploadModel implements Serializable {
 		this.serial = serial;
 	}
 
-	public Boolean getIsChange() {
-		return isChange;
+	/**
+	 * @return the allowChange
+	 */
+	public Boolean getAllowChange() {
+		return allowChange;
 	}
 
-	public void setIsChange(Boolean isChange) {
-		this.isChange = isChange;
+	/**
+	 * @param allowChange the allowChange to set
+	 */
+	public void setAllowChange(Boolean allowChange) {
+		this.allowChange = allowChange;
+	}
+
+	/**
+	 * @return the uploaderId
+	 */
+	public String getUploaderId() {
+		return uploaderId;
+	}
+
+	/**
+	 * @param uploaderId the uploaderId to set
+	 */
+	public void setUploaderId(String uploaderId) {
+		this.uploaderId = uploaderId;
+	}
+
+	/**
+	 * @return the uploaderName
+	 */
+	public String getUploaderName() {
+		return uploaderName;
+	}
+
+	/**
+	 * @param uploaderName the uploaderName to set
+	 */
+	public void setUploaderName(String uploaderName) {
+		this.uploaderName = uploaderName;
 	}
 
 	public Boolean getIsEncrypt() {
@@ -69,30 +117,6 @@ public class UploadModel implements Serializable {
 
 	public void setTags(String tags) {
 		this.tags = tags;
-	}
-
-	public String getFrId() {
-		return frId;
-	}
-
-	public void setFrId(String frId) {
-		this.frId = frId;
-	}
-
-	public String getFileId() {
-		return fileId;
-	}
-
-	public void setFileId(String fileId) {
-		this.fileId = fileId;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 }

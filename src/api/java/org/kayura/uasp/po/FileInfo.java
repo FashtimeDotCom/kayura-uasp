@@ -13,16 +13,24 @@ public class FileInfo implements Serializable {
 
 	private static final long serialVersionUID = -4150550690724262841L;
 
+	/**
+	 * 临时状态的文件,可能会被定时清除.
+	 */
+	public static final Integer STATUS_TEMP = 0;
+
+	/**
+	 * 已持久化的文件,文件已经被表单引用,不可清除.
+	 */
+	public static final Integer STATUS_Fixed = 1;
+
 	private String fileId;
-	private Integer fileSize;
+	private long fileSize;
 	private String contentType;
 	private String postfix;
 	private String diskPath;
 	private String md5;
-	private Integer refCount;
-	private Boolean isCompressed;
-	private Double ratio;
 	private Boolean isEncrypted;
+	private String salt;
 	private Integer status;
 
 	public String getFileId() {
@@ -33,11 +41,11 @@ public class FileInfo implements Serializable {
 		this.fileId = fileId;
 	}
 
-	public Integer getFileSize() {
+	public long getFileSize() {
 		return fileSize;
 	}
 
-	public void setFileSize(Integer fileSize) {
+	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 	}
 
@@ -73,36 +81,26 @@ public class FileInfo implements Serializable {
 		this.md5 = md5;
 	}
 
-	public Integer getRefCount() {
-		return refCount;
-	}
-
-	public void setRefCount(Integer refCount) {
-		this.refCount = refCount;
-	}
-
-	public Boolean getIsCompressed() {
-		return isCompressed;
-	}
-
-	public void setIsCompressed(Boolean isCompressed) {
-		this.isCompressed = isCompressed;
-	}
-
-	public Double getRatio() {
-		return ratio;
-	}
-
-	public void setRatio(Double ratio) {
-		this.ratio = ratio;
-	}
-
 	public Boolean getIsEncrypted() {
 		return isEncrypted;
 	}
 
 	public void setIsEncrypted(Boolean isEncrypted) {
 		this.isEncrypted = isEncrypted;
+	}
+
+	/**
+	 * @return the salt
+	 */
+	public String getSalt() {
+		return salt;
+	}
+
+	/**
+	 * @param salt the salt to set
+	 */
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 	public Integer getStatus() {
