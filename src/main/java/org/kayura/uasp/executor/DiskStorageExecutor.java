@@ -5,7 +5,12 @@
 package org.kayura.uasp.executor;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -80,15 +85,15 @@ public class DiskStorageExecutor implements StorageExecutor {
 	}
 
 	@Override
-	public void storage(String fileName, String logicPath, byte[] fileContent) {
+	public void write(String fileName, String logicPath, byte[] fileContent) {
 
 		FileOutputStream out = null;
 		try {
 
 			String diskPath = convertDiskPath(logicPath);
 			Path dirPath = Paths.get(diskPath);
-			File filePath = dirPath.toFile();
 
+			File filePath = dirPath.toFile();
 			if (!filePath.exists()) {
 				filePath.mkdirs();
 			}
@@ -119,6 +124,32 @@ public class DiskStorageExecutor implements StorageExecutor {
 		String subPath = format.format(DateUtils.now());
 
 		return dirKey + subPath + "\\";
+	}
+
+	@Override
+	public byte[] read(String fileName, String logicPath) {
+
+		String diskPath = convertDiskPath(logicPath);
+		File file = new File(diskPath.toString(), fileName);
+		try {
+
+			if (file.exists()) {
+				
+				Long fileLen = file.length();
+				byte[] fileContent = new byte[fileLen.intValue()];
+
+				FileInputStream is = new FileInputStream(file);
+				is.read(fileContent);
+				is.close();
+
+				return fileContent;
+			}
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+
+		return new byte[0];
 	}
 
 }

@@ -4,12 +4,13 @@
  */
 package org.kayura.uasp.controller;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.crypto.Cipher;
@@ -24,10 +25,13 @@ import org.apache.commons.logging.LogFactory;
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.type.GeneralResult;
+import org.kayura.type.Result;
 import org.kayura.uasp.executor.StorageExecutor;
+import org.kayura.uasp.models.UploadItem;
 import org.kayura.uasp.service.FileService;
+import org.kayura.uasp.vo.FileDownload;
+import org.kayura.uasp.vo.FileListItem;
 import org.kayura.uasp.vo.FileUpload;
-import org.kayura.uasp.web.UploadModel;
 import org.kayura.utils.KeyUtils;
 import org.kayura.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,68 +72,74 @@ public class FileController extends BaseController {
 	 */
 	@RequestMapping(value = "/file/upload", method = RequestMethod.POST)
 	public String fileUpload(@RequestParam("file") MultipartFile[] files, HttpServletRequest req,
-			HttpServletResponse res, Map<String, Object> map, UploadModel um) {
-		
+			HttpServletResponse res, Map<String, Object> map, UploadItem ui) {
+
 		postExecute(map, new PostAction() {
 
 			@Override
 			public void invoke(PostResult r) {
-				
+
 				// 创建文件上传存储信息.
 				FileUpload fu = new FileUpload();
-				fu.setAllowChange(um.getAllowChange());
-				fu.setBizId(um.getBizId());
-				fu.setCategory(um.getCategory());
-				fu.setTags(um.getTags());
-				fu.setUploaderId(um.getUploaderId());
-				fu.setUploaderName(um.getUploaderName());
-				fu.setIsEncrypt(um.getIsEncrypt());
-				
+				fu.setAllowChange(ui.getAllowChange());
+				fu.setBizId(ui.getBizId());
+				fu.setCategory(ui.getCategory());
+				fu.setTags(ui.getTags());
+				fu.setUploaderId(ui.getUploaderId());
+				fu.setUploaderName(ui.getUploaderName());
+				fu.setIsEncrypt(ui.getIsEncrypt());
+
 				// 循环处理所有上传的文件.
-				Map<String, String> fridNames = new HashMap<String, String>();
+				Integer i = 0;
 				for (MultipartFile file : files) {
 
 					if (file.getSize() > 0) {
 						try {
 
-							byte[] fileContent = new byte[0];
-
-							fu.setSerial(um.getSerial());
+							// 设置上传的文件信息.
+							fu.setSerial(ui.getSerial());
 							fu.setFileName(file.getOriginalFilename());
 							fu.setFileSize(file.getSize());
 							fu.setContentType(file.getContentType());
 
 							// 请求加密文件内容.
+							byte[] fileContent = new byte[0];
 							if (fu.getIsEncrypt()) {
-
 								fu.setSalt(KeyUtils.random());
 								fileContent = aesDecrypt(file.getBytes(), fu.getSalt());
 							} else {
-								
 								fileContent = file.getBytes();
 							}
 
-							// 计算文件字节的 MD5 码.
+							// 计算文件字节的 MD5 码与存储路径.
 							fu.setMd5(md5Encrypt(fileContent));
-							fu.setDiskPath(storageExecutor.getLogicPath());
+							fu.setLogicPath(storageExecutor.getLogicPath());
 
 							// 保存数据至数据库.
 							GeneralResult gr = fileService.upload(fu);
-							fridNames.put(gr.getData("frid").toString(), fu.getFileName());
-							
-							if ((Boolean) gr.getData("newfile")) {
 
-								String fileId = gr.getData("fileid").toString();
-								storageExecutor.storage(fileId, fu.getDiskPath(), fileContent);
+							// 如果没有该文件记录,将保存一份新文件至磁盘.
+							if (gr.getBool("newfile")) {
+								String fileId = gr.getString("fileid");
+								storageExecutor.write(fileId, fu.getLogicPath(), fileContent);
 							}
+
+							// 生成上传文件的返回结果项.
+							FileListItem item = new FileListItem();
+							item.setFrId(gr.getString("frid"));
+							item.setFileSize(fu.getFileSize());
+							item.setFileName(fu.getFileName());
+							item.setPostfix(fu.getPostfix());
+
+							r.add((i++).toString(), item);
 
 						} catch (Exception e) {
 							logger.error("上传文件时发生异常。", e);
 						}
 					}
 				}
-				
-				r.addData("fridNames", fridNames);
+
+				// ...
 			}
 		});
 
@@ -139,7 +149,8 @@ public class FileController extends BaseController {
 	/**
 	 * 计算出字节内容的 md5 码.
 	 * 
-	 * @param content 字节内容.
+	 * @param content
+	 *            字节内容.
 	 * @return 返回该字节的 md5 码.
 	 * @throws NoSuchAlgorithmException
 	 */
@@ -152,8 +163,10 @@ public class FileController extends BaseController {
 	/**
 	 * 对字节进行 AES 加密.
 	 * 
-	 * @param rawBytes 原始字节内容.
-	 * @param encryptKey 私有密钥.
+	 * @param rawBytes
+	 *            原始字节内容.
+	 * @param encryptKey
+	 *            私有密钥.
 	 * @return 返回加密后的字节.
 	 * @throws Exception
 	 */
@@ -171,8 +184,10 @@ public class FileController extends BaseController {
 	/**
 	 * 对节进行 AES 解密.
 	 * 
-	 * @param encBytes 加密后的字节内容.
-	 * @param decryptKey 私有密钥.
+	 * @param encBytes
+	 *            加密后的字节内容.
+	 * @param decryptKey
+	 *            私有密钥.
 	 * @return 返回解密后的字节.
 	 * @throws Exception
 	 */
@@ -191,8 +206,28 @@ public class FileController extends BaseController {
 	 * 文件下载请求地址.
 	 */
 	@RequestMapping(value = "/file/get", method = RequestMethod.GET)
-	public void getFile(HttpServletRequest req, HttpServletResponse res) {
+	public void getFile(String id, HttpServletRequest req, HttpServletResponse res) {
 
+		Result<FileDownload> r = fileService.download(id);
+		if (r.isSucceed()) {
+			FileDownload fd = r.getData();
+
+			// res.setCharacterEncoding("utf-8");
+			// res.setContentType("multipart/form-data");
+
+			try {
+				byte[] fileContent = storageExecutor.read(fd.getFileId(), fd.getDiskPath());
+				if (fileContent.length > 0) {
+					res.setContentType(fd.getContentType());
+					res.setHeader("Content-Disposition", "attachment;fileName=" + fd.getFileName());
+					OutputStream os = res.getOutputStream();
+					os.write(fileContent);
+					os.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@RequestMapping(value = "/file/list", method = RequestMethod.GET)

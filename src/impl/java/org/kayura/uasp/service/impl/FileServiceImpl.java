@@ -4,9 +4,6 @@
  */
 package org.kayura.uasp.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.kayura.type.GeneralResult;
 import org.kayura.type.Result;
 import org.kayura.uasp.dao.FileMapper;
@@ -45,48 +42,72 @@ public class FileServiceImpl implements FileService {
 		// 在不允许修改文件内容时,可引用相同文件,以减少磁盘存储.
 		String fileId = null;
 		Boolean isNewFile = false;
-		if (!fu.getAllowChange()) {			
+		if (!fu.getAllowChange()) {
 			fileId = fileMapper.getKeyForFileInfo(fu.getMd5());
 		}
 
 		// 若没有相同的文件内容,将创建新文件.
 		if (fileId == null) {
 			fileId = KeyUtils.newId();
-			
+
 			FileInfo fi = new FileInfo();
 			fi.setFileId(fileId);
 			fi.setContentType(fu.getContentType());
 			fi.setFileSize(fu.getFileSize());
 			fi.setPostfix(fu.getPostfix());
-			fi.setDiskPath(fu.getDiskPath());
+			fi.setLogicPath(fu.getLogicPath());
 			fi.setMd5(fu.getMd5());
 			fi.setIsEncrypted(fu.getIsEncrypt());
 			fi.setSalt(fu.getSalt());
 			fi.setStatus(FileInfo.STATUS_TEMP);
-			
+
 			// 将文件信息添加至数据库.
 			fileMapper.insertFileInfo(fi);
-			
+
 			isNewFile = true;
 		}
-		
+
 		// 记录文件信息Id, 将文件关联保存至数据库.
 		fr.setFileId(fileId);
-		fileMapper.insertFileRelation(fr);		
+		fileMapper.insertFileRelation(fr);
 
 		// 创建返回值对象.
 		GeneralResult r = new GeneralResult();
-		r.addData("frid", fr.getFrId());
-		r.addData("fileid", fr.getFileId());
-		r.addData("newfile", isNewFile);
-		
-		return r;		
+		r.add("frid", fr.getFrId());
+		r.add("fileid", fr.getFileId());
+		r.add("newfile", isNewFile);
+
+		return r;
 	}
 
 	@Override
 	public Result<FileDownload> download(String frId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Result<FileDownload> r = new Result<FileDownload>();
+
+		FileRelation fr = fileMapper.getFileRelationById(frId);
+		if (fr == null) {
+			r.setError("frId: %s not exists。", frId);
+			return r;
+		}
+
+		FileInfo fi = fileMapper.getFileInfoById(fr.getFileId());
+		if (fi == null) {
+			r.setError("fileId: %s not exists.", fr.getFileId());
+			return r;
+		}
+
+		FileDownload fd = new FileDownload();
+		fd.setFrId(fr.getFrId());
+		fd.setDiskPath(fi.getLogicPath());
+		fd.setFileId(fr.getFileId());
+		fd.setFileName(fr.getFileName());
+		fd.setContentType(fi.getContentType());
+
+		r.setSuccess("读取下载文件信息成功.");
+		r.setData(fd);
+
+		return r;
 	}
 
 }

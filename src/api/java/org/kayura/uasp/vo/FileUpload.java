@@ -15,7 +15,7 @@ public class FileUpload {
 	private String postfix;
 	private byte[] fileContent;
 	private String md5;
-	private String diskPath;
+	private String logicPath;
 	private Boolean isEncrypt;
 	private String salt;
 
@@ -76,12 +76,12 @@ public class FileUpload {
 		this.md5 = md5;
 	}
 
-	public String getDiskPath() {
-		return diskPath;
+	public String getLogicPath() {
+		return logicPath;
 	}
 
-	public void setDiskPath(String diskPath) {
-		this.diskPath = diskPath;
+	public void setLogicPath(String logicPath) {
+		this.logicPath = logicPath;
 	}
 
 	public Boolean getIsEncrypt() {

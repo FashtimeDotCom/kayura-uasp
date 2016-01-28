@@ -2,14 +2,14 @@
  * Copyright 2015-2015 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.uasp.web;
+package org.kayura.uasp.models;
 
 import java.io.Serializable;
 
 /**
  * @author liangxia@live.com
  */
-public class UploadModel implements Serializable {
+public class UploadItem implements Serializable {
 
 	private static final long serialVersionUID = 5013405337626162388L;
 

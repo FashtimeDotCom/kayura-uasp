@@ -27,7 +27,7 @@ public class FileInfo implements Serializable {
 	private long fileSize;
 	private String contentType;
 	private String postfix;
-	private String diskPath;
+	private String logicPath;
 	private String md5;
 	private Boolean isEncrypted;
 	private String salt;
@@ -65,12 +65,12 @@ public class FileInfo implements Serializable {
 		this.postfix = postfix;
 	}
 
-	public String getDiskPath() {
-		return diskPath;
+	public String getLogicPath() {
+		return logicPath;
 	}
 
-	public void setDiskPath(String diskPath) {
-		this.diskPath = diskPath;
+	public void setLogicPath(String logicPath) {
+		this.logicPath = logicPath;
 	}
 
 	public String getMd5() {

@@ -28,10 +28,10 @@ public interface FileMapper extends BaseDao {
 	/**
 	 * 获取一个符合条件的文件信息记录.
 	 * 
-	 * @param args 支持条件有: fileId, md5.
+	 * @param fileId 文件主键Id.
 	 * @return 返回 {@link FileInfo }
 	 */
-	FileInfo getFileInfoByMap(Map<String, Object> args);
+	FileInfo getFileInfoById(String fileId);
 
 	/**
 	 * 通过文件的Md5值读取到主键值信息.
@@ -64,7 +64,7 @@ public interface FileMapper extends BaseDao {
 	 * @param frId 文件关系ID.
 	 * @return 返回一条文件关系记录.
 	 */
-	FileRelation getFileRelation(String frId);
+	FileRelation getFileRelationById(String frId);
 	
 	/**
 	 * 查找所有符件条件的文件关系记录集.

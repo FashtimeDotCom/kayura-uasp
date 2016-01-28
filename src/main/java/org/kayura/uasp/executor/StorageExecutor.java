@@ -13,6 +13,7 @@ public interface StorageExecutor {
 
 	String getLogicPath();
 	
-	void storage(String fileName, String logicPath, byte[] fileContent);
+	void write(String fileName, String logicPath, byte[] fileContent);
 
+	byte[] read(String fileName, String logicPath);
 }

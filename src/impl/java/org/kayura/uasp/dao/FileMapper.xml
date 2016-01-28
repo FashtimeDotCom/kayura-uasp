@@ -7,9 +7,9 @@
 	<resultMap id="fileInfoMap" type="org.kayura.uasp.po.FileInfo">
 		<result property="fileId" column="File_Id" />
 		<result property="fileSize" column="FileSize" />
-		<result property="fileType" column="FileType" />
+		<result property="contentType" column="ContentType" />
 		<result property="postfix" column="Postfix" />
-		<result property="diskPath" column="DiskPath" />
+		<result property="logicPath" column="LogicPath" />
 		<result property="md5" column="MD5" />
 		<result property="isEncrypted" column="IsEncrypted" />
 		<result property="status" column="Status" />
@@ -38,7 +38,7 @@
 			FileSize,
 			ContentType,
 			Postfix,
-			DiskPath,
+			LogicPath,
 			MD5,
 			IsEncrypted,
 			Status
@@ -47,32 +47,25 @@
 			#{fileSize},
 			#{contentType},
 			#{postfix},
-			#{diskPath},
+			#{logicPath},
 			#{md5},
 			#{isEncrypted},
 			#{status}
 		)		
 	</insert>
 
-	<select id="getFileInfoByMap" parameterMap="map" resultMap="fileInfoMap">
+	<select id="getFileInfoById" parameterType="string" resultMap="fileInfoMap">
 		SELECT
 			t.File_Id,
 			t.FileSize,
 			t.ContentType,
 			t.Postfix,
-			t.DiskPath,
+			t.LogicPath,
 			t.MD5,
 			t.IsEncrypted,
 			t.Status
 		FROM UASP_FileInfos t
-		<where>
-			<if test="fileId != null">
-				AND ( t.File_Id = #{fileId} )
-			</if>
-			<if test="md5 != null">
-				AND ( t.MD5 = #{md5} )
-			</if>
-		</where>
+		WHERE ( t.File_Id = #{value} )
 	</select>
 	
 	<select id="getKeyForFileInfo" parameterType="string" resultType="string">
@@ -80,7 +73,7 @@
 		WHERE ( t.MD5 = #{value} )
 	</select>
 
-	<select id="fileInfoExistsByMap" parameterMap="map" resultType="bool">
+	<select id="fileInfoExistsByMap" parameterType="map" resultSetType="bool">
 		SELECT COUNT(1) > 0 FROM UASP_FileInfos t
 		<where>
 			<if test="fileId != null">
@@ -94,7 +87,7 @@
 	
 	<!-- FileRelation -->
 
-	<insert id="insertFileRelation" parameterMap="org.kayura.uasp.po.FileRelation">
+	<insert id="insertFileRelation" parameterType="org.kayura.uasp.po.FileRelation">
 		INSERT UASP_FileRelations (
 			Fr_Id,
 			File_Id,
@@ -139,14 +132,14 @@
 		t.Tags
 	</sql>
 	
-	<select id="getFileRelation" parameterMap="string" resultMap="fileRelationMap">
+	<select id="getFileRelationById" parameterType="string" resultMap="fileRelationMap">
 		SELECT 
 			<include refid="fileRelationColumns" />
 		FROM UASP_FileRelations t
-		WHERE ( t.Fr_Id = #{frId} )
+		WHERE ( t.Fr_Id = #{value} )
 	</select>
 	
-	<select id="findFileRelationsByMap" parameterMap="map" resultMap="fileRelationMap">
+	<select id="findFileRelationsByMap" parameterType="map" resultMap="fileRelationMap">
 		SELECT 
 			<include refid="fileRelationColumns" />
 		FROM UASP_FileRelations t
