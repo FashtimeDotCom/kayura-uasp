@@ -99,10 +99,12 @@ public class FileServiceImpl implements FileService {
 
 		FileDownload fd = new FileDownload();
 		fd.setFrId(fr.getFrId());
-		fd.setDiskPath(fi.getLogicPath());
+		fd.setLogicPath(fi.getLogicPath());
 		fd.setFileId(fr.getFileId());
 		fd.setFileName(fr.getFileName());
 		fd.setContentType(fi.getContentType());
+		fd.setIsEncrypted(fi.getIsEncrypted());
+		fd.setSalt(fd.getSalt());		
 
 		r.setSuccess("读取下载文件信息成功.");
 		r.setData(fd);

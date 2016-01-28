@@ -6,11 +6,7 @@ package org.kayura.uasp.executor;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -21,8 +17,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kayura.exceptions.KayuraException;
-import org.kayura.type.GeneralResult;
-import org.kayura.type.Result;
 import org.kayura.utils.DateUtils;
 
 /**

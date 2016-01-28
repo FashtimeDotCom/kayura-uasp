@@ -14,7 +14,9 @@ public class FileDownload {
 	private String fileName;
 	private String contentType;
 	private byte[] content;
-	private String diskPath;
+	private String logicPath;
+	private Boolean isEncrypted;
+	private String salt;
 
 	public String getFrId() {
 		return frId;
@@ -56,12 +58,28 @@ public class FileDownload {
 		this.content = content;
 	}
 
-	public String getDiskPath() {
-		return diskPath;
+	public String getLogicPath() {
+		return logicPath;
 	}
 
-	public void setDiskPath(String diskPath) {
-		this.diskPath = diskPath;
+	public void setLogicPath(String logicPath) {
+		this.logicPath = logicPath;
+	}
+
+	public Boolean getIsEncrypted() {
+		return isEncrypted;
+	}
+
+	public void setIsEncrypted(Boolean isEncrypted) {
+		this.isEncrypted = isEncrypted;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 }

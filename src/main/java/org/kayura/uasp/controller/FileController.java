@@ -4,9 +4,6 @@
  */
 package org.kayura.uasp.controller;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -147,6 +144,47 @@ public class FileController extends BaseController {
 	}
 
 	/**
+	 * 文件下载请求地址.
+	 */
+	@RequestMapping(value = "/file/get", method = RequestMethod.GET)
+	public void getFile(String id, HttpServletRequest req, HttpServletResponse res) {
+
+		Result<FileDownload> r = fileService.download(id);
+		if (r.isSucceed()) {
+			FileDownload fd = r.getData();
+
+			// res.setCharacterEncoding("utf-8");
+			// res.setContentType("multipart/form-data");
+
+			try {
+				byte[] fileContent = storageExecutor.read(fd.getFileId(), fd.getLogicPath());
+				if (fileContent.length > 0) {
+
+					// 若是加密的文件需要先解密.
+					if (fd.getIsEncrypted()) {
+						fileContent = aesDecrypt(fileContent, fd.getSalt());
+					}
+
+					res.setContentType(fd.getContentType());
+					res.setHeader("Content-Disposition", "attachment;fileName=" + fd.getFileName());
+
+					OutputStream os = res.getOutputStream();
+					os.write(fileContent);
+					os.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@RequestMapping(value = "/file/list", method = RequestMethod.GET)
+	public String fileList(HttpServletRequest req, HttpServletResponse res) {
+
+		return this.viewResult("file/list");
+	}
+
+	/**
 	 * 计算出字节内容的 md5 码.
 	 * 
 	 * @param content
@@ -200,40 +238,6 @@ public class FileController extends BaseController {
 		cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(kgen.generateKey().getEncoded(), "AES"));
 
 		return cipher.doFinal(encBytes);
-	}
-
-	/**
-	 * 文件下载请求地址.
-	 */
-	@RequestMapping(value = "/file/get", method = RequestMethod.GET)
-	public void getFile(String id, HttpServletRequest req, HttpServletResponse res) {
-
-		Result<FileDownload> r = fileService.download(id);
-		if (r.isSucceed()) {
-			FileDownload fd = r.getData();
-
-			// res.setCharacterEncoding("utf-8");
-			// res.setContentType("multipart/form-data");
-
-			try {
-				byte[] fileContent = storageExecutor.read(fd.getFileId(), fd.getDiskPath());
-				if (fileContent.length > 0) {
-					res.setContentType(fd.getContentType());
-					res.setHeader("Content-Disposition", "attachment;fileName=" + fd.getFileName());
-					OutputStream os = res.getOutputStream();
-					os.write(fileContent);
-					os.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@RequestMapping(value = "/file/list", method = RequestMethod.GET)
-	public String fileList(HttpServletRequest req, HttpServletResponse res) {
-
-		return this.viewResult("file/list");
 	}
 
 }

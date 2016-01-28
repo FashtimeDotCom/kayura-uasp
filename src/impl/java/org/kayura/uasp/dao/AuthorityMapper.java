@@ -7,7 +7,6 @@ package org.kayura.uasp.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.kayura.core.BaseDao;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.uasp.po.Group;
