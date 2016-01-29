@@ -13,6 +13,10 @@ public interface StorageExecutor {
 
 	String getLogicPath();
 	
+	String getAbsolutePath();
+	
+	String convertAbsolutePath(String logicPath);
+	
 	void write(String fileName, String logicPath, byte[] fileContent);
 
 	byte[] read(String fileName, String logicPath);

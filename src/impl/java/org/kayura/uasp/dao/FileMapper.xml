@@ -5,23 +5,24 @@
 	<!-- 文件存储关系持久化 -->
 
 	<resultMap id="fileInfoMap" type="org.kayura.uasp.po.FileInfo">
-		<result property="fileId" column="File_Id" />
+		<id property="fileId" column="File_Id" />
 		<result property="fileSize" column="FileSize" />
 		<result property="contentType" column="ContentType" />
-		<result property="postfix" column="Postfix" />
 		<result property="logicPath" column="LogicPath" />
 		<result property="md5" column="MD5" />
 		<result property="isEncrypted" column="IsEncrypted" />
+		<result property="salt" column="Salt" />
 		<result property="status" column="Status" />
 	</resultMap>
 
 	<resultMap id="fileRelationMap" type="org.kayura.uasp.po.FileRelation">
-		<result property="frId" column="Fr_Id" />
+		<id property="frId" column="Fr_Id" />
 		<result property="fileId" column="File_Id" />
 		<result property="tenantId" column="Tenant_Id" />
 		<result property="bizId" column="BizId" />
 		<result property="category" column="Category" />
 		<result property="fileName" column="FileName" />
+		<result property="postfix" column="Postfix" />
 		<result property="uploaderId" column="UploaderId" />
 		<result property="uploaderName" column="UploaderName" />
 		<result property="uploadTime" column="UploadTime" />
@@ -37,19 +38,19 @@
 			File_Id,
 			FileSize,
 			ContentType,
-			Postfix,
 			LogicPath,
 			MD5,
 			IsEncrypted,
+			Salt,
 			Status
 		) VALUES(
 			#{fileId},
 			#{fileSize},
 			#{contentType},
-			#{postfix},
 			#{logicPath},
 			#{md5},
 			#{isEncrypted},
+			#{salt},
 			#{status}
 		)		
 	</insert>
@@ -59,10 +60,10 @@
 			t.File_Id,
 			t.FileSize,
 			t.ContentType,
-			t.Postfix,
 			t.LogicPath,
 			t.MD5,
 			t.IsEncrypted,
+			t.Salt,
 			t.Status
 		FROM UASP_FileInfos t
 		WHERE ( t.File_Id = #{value} )
@@ -73,7 +74,7 @@
 		WHERE ( t.MD5 = #{value} )
 	</select>
 
-	<select id="fileInfoExistsByMap" parameterType="map" resultSetType="bool">
+	<select id="fileInfoExistsByMap" parameterType="map" resultType="boolean">
 		SELECT COUNT(1) > 0 FROM UASP_FileInfos t
 		<where>
 			<if test="fileId != null">
@@ -95,6 +96,7 @@
 			BizId,
 			Category,
 			FileName,
+			Postfix,
 			UploaderId,
 			UploaderName,
 			UploadTime,
@@ -108,6 +110,7 @@
 			#{bizId},
 			#{category},
 			#{fileName},
+			#{postfix},
 			#{uploaderId},
 			#{uploaderName},
 			#{uploadTime},
@@ -124,6 +127,7 @@
 		t.BizId,
 		t.Category,
 		t.FileName,
+		t.Postfix,
 		t.UploaderId,
 		t.UploaderName,
 		t.UploadTime,

@@ -65,7 +65,7 @@ public class DiskStorageExecutor implements StorageExecutor {
 		this.uploadPaths = uploadPaths;
 	}
 
-	private String convertDiskPath(String logicPath) {
+	public String convertAbsolutePath(String logicPath) {
 
 		String diskPath = logicPath;
 		for (String key : uploadPaths.keySet()) {
@@ -84,7 +84,7 @@ public class DiskStorageExecutor implements StorageExecutor {
 		FileOutputStream out = null;
 		try {
 
-			String diskPath = convertDiskPath(logicPath);
+			String diskPath = convertAbsolutePath(logicPath);
 			Path dirPath = Paths.get(diskPath);
 
 			File filePath = dirPath.toFile();
@@ -120,15 +120,20 @@ public class DiskStorageExecutor implements StorageExecutor {
 		return dirKey + subPath + "\\";
 	}
 
+	public String getAbsolutePath() {
+		String logicPath = this.getLogicPath();
+		return convertAbsolutePath(logicPath);
+	}
+
 	@Override
 	public byte[] read(String fileName, String logicPath) {
 
-		String diskPath = convertDiskPath(logicPath);
+		String diskPath = convertAbsolutePath(logicPath);
 		File file = new File(diskPath.toString(), fileName);
 		try {
 
 			if (file.exists()) {
-				
+
 				Long fileLen = file.length();
 				byte[] fileContent = new byte[fileLen.intValue()];
 

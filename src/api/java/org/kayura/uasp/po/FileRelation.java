@@ -20,6 +20,7 @@ public class FileRelation implements Serializable {
 	private String bizId;
 	private String category;
 	private String fileName;
+	private String postfix;
 	private String uploaderId;
 	private String uploaderName;
 	private Date uploadTime;
@@ -73,6 +74,20 @@ public class FileRelation implements Serializable {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	/**
+	 * @return the postfix
+	 */
+	public String getPostfix() {
+		return postfix;
+	}
+
+	/**
+	 * @param postfix the postfix to set
+	 */
+	public void setPostfix(String postfix) {
+		this.postfix = postfix;
 	}
 
 	public String getUploaderId() {

@@ -13,6 +13,7 @@ public class FileListItem {
 	private String fileName;
 	private long fileSize;
 	private String postfix;
+	private Integer spendTime;
 
 	public String getFrId() {
 		return frId;
@@ -44,6 +45,20 @@ public class FileListItem {
 
 	public void setPostfix(String postfix) {
 		this.postfix = postfix;
+	}
+
+	/**
+	 * @return the spendTime
+	 */
+	public Integer getSpendTime() {
+		return spendTime;
+	}
+
+	/**
+	 * @param spendTime the spendTime to set
+	 */
+	public void setSpendTime(Integer spendTime) {
+		this.spendTime = spendTime;
 	}
 
 }

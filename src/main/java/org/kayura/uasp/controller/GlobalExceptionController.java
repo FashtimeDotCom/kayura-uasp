@@ -27,7 +27,9 @@ public class GlobalExceptionController extends BaseController {
 
 			@Override
 			public void invoke(PostResult r) {
-				r.setError("上传的文件超过大小.", ex);
+
+				MaxUploadSizeExceededException e = (MaxUploadSizeExceededException) ex;
+				r.setError("上传的文件超过最大限制 %d 。", e.getMaxUploadSize());
 			}
 		});
 

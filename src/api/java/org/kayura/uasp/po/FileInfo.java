@@ -26,7 +26,6 @@ public class FileInfo implements Serializable {
 	private String fileId;
 	private long fileSize;
 	private String contentType;
-	private String postfix;
 	private String logicPath;
 	private String md5;
 	private Boolean isEncrypted;
@@ -55,14 +54,6 @@ public class FileInfo implements Serializable {
 
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
-	}
-
-	public String getPostfix() {
-		return postfix;
-	}
-
-	public void setPostfix(String postfix) {
-		this.postfix = postfix;
 	}
 
 	public String getLogicPath() {

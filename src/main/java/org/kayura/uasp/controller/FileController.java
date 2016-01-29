@@ -4,7 +4,10 @@
  */
 package org.kayura.uasp.controller;
 
+import java.io.File;
 import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -89,23 +92,22 @@ public class FileController extends BaseController {
 				// 循环处理所有上传的文件.
 				Integer i = 0;
 				for (MultipartFile file : files) {
-
+					
 					if (file.getSize() > 0) {
 						try {
-
+							
 							// 设置上传的文件信息.
 							fu.setSerial(ui.getSerial());
 							fu.setFileName(file.getOriginalFilename());
+							fu.setPostfix(getExtensionName(fu.getFileName()));
 							fu.setFileSize(file.getSize());
 							fu.setContentType(file.getContentType());
 
 							// 请求加密文件内容.
-							byte[] fileContent = new byte[0];
+							byte[] fileContent = file.getBytes();
 							if (fu.getIsEncrypt()) {
 								fu.setSalt(KeyUtils.random());
-								fileContent = aesDecrypt(file.getBytes(), fu.getSalt());
-							} else {
-								fileContent = file.getBytes();
+								fileContent = aesEncrypt(fileContent, fu.getSalt());
 							}
 
 							// 计算文件字节的 MD5 码与存储路径.
@@ -117,21 +119,28 @@ public class FileController extends BaseController {
 
 							// 如果没有该文件记录,将保存一份新文件至磁盘.
 							if (gr.getBool("newfile")) {
-								String fileId = gr.getString("fileid");
-								storageExecutor.write(fileId, fu.getLogicPath(), fileContent);
-							}
+								
+								String fileId = gr.getString("fileid");		
 
+								String filePath = storageExecutor.convertAbsolutePath(fu.getLogicPath());
+								File writeFile = new File(filePath, fileId);
+								file.transferTo(writeFile);
+								
+								//storageExecutor.write(fileId, fu.getLogicPath(), fileContent);
+							}
+			                
 							// 生成上传文件的返回结果项.
 							FileListItem item = new FileListItem();
 							item.setFrId(gr.getString("frid"));
 							item.setFileSize(fu.getFileSize());
 							item.setFileName(fu.getFileName());
 							item.setPostfix(fu.getPostfix());
-
+			                
 							r.add((i++).toString(), item);
 
 						} catch (Exception e) {
 							logger.error("上传文件时发生异常。", e);
+							r.setError(e.getMessage(), e);
 						}
 					}
 				}
@@ -153,9 +162,6 @@ public class FileController extends BaseController {
 		if (r.isSucceed()) {
 			FileDownload fd = r.getData();
 
-			// res.setCharacterEncoding("utf-8");
-			// res.setContentType("multipart/form-data");
-
 			try {
 				byte[] fileContent = storageExecutor.read(fd.getFileId(), fd.getLogicPath());
 				if (fileContent.length > 0) {
@@ -166,16 +172,54 @@ public class FileController extends BaseController {
 					}
 
 					res.setContentType(fd.getContentType());
-					res.setHeader("Content-Disposition", "attachment;fileName=" + fd.getFileName());
+					res.setHeader("Content-Length", String.valueOf(fileContent.length));
+
+					// 设置下载文件名.
+					String agent = req.getHeader("USER-AGENT");
+					String fileName = fd.getFileName().replace(' ', '+');
+					if (agent.indexOf("Trident") != -1) {
+						fileName = URLEncoder.encode(fd.getFileName(), "UTF8");
+					} else if (agent.indexOf("Mozilla") != -1) {
+						fileName = new String(fileName.getBytes("UTF-8"), "ISO8859-1");
+					}
+					res.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
 
 					OutputStream os = res.getOutputStream();
 					os.write(fileContent);
 					os.close();
+				} else {
+					outText(res, "未能到读取到您请求下载的文件。");
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				outText(res, "文件下载时发生异常。");
+			}
+		} else {
+			outText(res, "您请求下载的文件记录不存在。");
+		}
+	}
+
+	void outText(HttpServletResponse res, String text) {
+
+		res.setContentType("text/html;charset=UTF-8");
+		res.setHeader("Content-type", "text/html;charset=UTF-8");
+		try {
+			OutputStream os = res.getOutputStream();
+			os.write(text.getBytes("UTF-8"));
+			os.close();
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	String getExtensionName(String filename) {
+
+		if ((filename != null) && (filename.length() > 0)) {
+			int dot = filename.lastIndexOf('.');
+			if ((dot > -1) && (dot < (filename.length() - 1))) {
+				return filename.substring(dot + 1);
 			}
 		}
+		return filename;
 	}
 
 	@RequestMapping(value = "/file/list", method = RequestMethod.GET)
@@ -187,8 +231,7 @@ public class FileController extends BaseController {
 	/**
 	 * 计算出字节内容的 md5 码.
 	 * 
-	 * @param content
-	 *            字节内容.
+	 * @param content 字节内容.
 	 * @return 返回该字节的 md5 码.
 	 * @throws NoSuchAlgorithmException
 	 */
@@ -201,43 +244,42 @@ public class FileController extends BaseController {
 	/**
 	 * 对字节进行 AES 加密.
 	 * 
-	 * @param rawBytes
-	 *            原始字节内容.
-	 * @param encryptKey
-	 *            私有密钥.
+	 * @param rawBytes 原始字节内容.
+	 * @param encryptKey 私有密钥.
 	 * @return 返回加密后的字节.
 	 * @throws Exception
 	 */
-	static byte[] aesEncrypt(byte[] rawBytes, String encryptKey) throws Exception {
+	byte[] aesEncrypt(byte[] rawBytes, String encryptKey) throws Exception {
 
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
-		kgen.init(128, new SecureRandom(encryptKey.getBytes()));
+		kgen.init(128, new SecureRandom(encryptKey.getBytes("UTF8")));
 
 		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(kgen.generateKey().getEncoded(), "AES"));
+		Key key = new SecretKeySpec(kgen.generateKey().getEncoded(), "AES");
+		cipher.init(Cipher.ENCRYPT_MODE, key);
 
-		return cipher.doFinal(rawBytes);
+		byte[] encValue = cipher.doFinal(rawBytes);
+		return encValue;
 	}
 
 	/**
 	 * 对节进行 AES 解密.
 	 * 
-	 * @param encBytes
-	 *            加密后的字节内容.
-	 * @param decryptKey
-	 *            私有密钥.
+	 * @param encBytes 加密后的字节内容.
+	 * @param decryptKey 私有密钥.
 	 * @return 返回解密后的字节.
 	 * @throws Exception
 	 */
-	static byte[] aesDecrypt(byte[] encBytes, String decryptKey) throws Exception {
+	byte[] aesDecrypt(byte[] encBytes, String decryptKey) throws Exception {
 
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
-		kgen.init(128, new SecureRandom(decryptKey.getBytes()));
+		kgen.init(128, new SecureRandom(decryptKey.getBytes("UTF8")));
 
 		Cipher cipher = Cipher.getInstance("AES");
-		cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(kgen.generateKey().getEncoded(), "AES"));
+		Key key = new SecretKeySpec(kgen.generateKey().getEncoded(), "AES");
+		cipher.init(Cipher.DECRYPT_MODE, key);
 
-		return cipher.doFinal(encBytes);
+		byte[] rawValue = cipher.doFinal(encBytes);
+		return rawValue;
 	}
-
 }

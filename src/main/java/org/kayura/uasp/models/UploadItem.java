@@ -14,7 +14,6 @@ public class UploadItem implements Serializable {
 	private static final long serialVersionUID = 5013405337626162388L;
 
 	private String bizId;
-	private String fileName;
 	private String category;
 	private Integer serial;
 	private Boolean allowChange;
@@ -23,26 +22,17 @@ public class UploadItem implements Serializable {
 	private Boolean isEncrypt;
 	private String tags;
 
+	public UploadItem() {
+		this.allowChange = false;
+		this.isEncrypt = false;
+	}
+
 	public String getBizId() {
 		return bizId;
 	}
 
 	public void setBizId(String bizId) {
 		this.bizId = bizId;
-	}
-
-	/**
-	 * @return the fileName
-	 */
-	public String getFileName() {
-		return fileName;
-	}
-
-	/**
-	 * @param fileName the fileName to set
-	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 	public String getCategory() {

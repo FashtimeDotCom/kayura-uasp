@@ -15,10 +15,12 @@ import org.kayura.uasp.vo.FileUpload;
 import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author liangxia@live.com
  */
+@Service
 public class FileServiceImpl implements FileService {
 
 	@Autowired
@@ -32,6 +34,8 @@ public class FileServiceImpl implements FileService {
 		fr.setTenantId(fu.getTenantId());
 		fr.setBizId(fu.getBizId());
 		fr.setCategory(fu.getCategory());
+		fr.setFileName(fu.getFileName());
+		fr.setPostfix(fu.getPostfix());
 		fr.setUploaderId(fu.getUploaderId());
 		fr.setUploaderName(fu.getUploaderName());
 		fr.setUploadTime(DateUtils.now());
@@ -54,7 +58,6 @@ public class FileServiceImpl implements FileService {
 			fi.setFileId(fileId);
 			fi.setContentType(fu.getContentType());
 			fi.setFileSize(fu.getFileSize());
-			fi.setPostfix(fu.getPostfix());
 			fi.setLogicPath(fu.getLogicPath());
 			fi.setMd5(fu.getMd5());
 			fi.setIsEncrypted(fu.getIsEncrypt());
@@ -104,7 +107,7 @@ public class FileServiceImpl implements FileService {
 		fd.setFileName(fr.getFileName());
 		fd.setContentType(fi.getContentType());
 		fd.setIsEncrypted(fi.getIsEncrypted());
-		fd.setSalt(fd.getSalt());		
+		fd.setSalt(fi.getSalt());		
 
 		r.setSuccess("读取下载文件信息成功.");
 		r.setData(fd);
