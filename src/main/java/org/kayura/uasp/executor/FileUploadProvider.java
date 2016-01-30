@@ -9,15 +9,9 @@ package org.kayura.uasp.executor;
  * 
  * @author liangxia@live.com
  */
-public interface StorageExecutor {
+public interface FileUploadProvider {
 
 	String getLogicPath();
 	
-	String getAbsolutePath();
-	
 	String convertAbsolutePath(String logicPath);
-	
-	void write(String fileName, String logicPath, byte[] fileContent);
-
-	byte[] read(String fileName, String logicPath);
 }

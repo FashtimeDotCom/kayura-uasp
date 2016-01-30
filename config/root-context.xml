@@ -12,7 +12,7 @@
 
 	<bean class="org.kayura.web.easyui.EasyUISupport" />
 	<bean class="org.kayura.spring.SpringBeanManager" />
-	<bean id="storageExecutor" class="org.kayura.uasp.executor.DiskStorageExecutor">
+	<bean id="storageExecutor" class="org.kayura.uasp.executor.FileUploadProviderImpl">
 		<property name="minSpace" value="512000" />
 		<property name="uploadPaths">
 			<map>

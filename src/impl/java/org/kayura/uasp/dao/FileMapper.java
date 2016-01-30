@@ -39,7 +39,7 @@ public interface FileMapper extends BaseDao {
 	 * @param md5 文件生成的Md5值.
 	 * @return 返回相应的主键值 或者为 null.
 	 */
-	String getKeyForFileInfo(String md5);
+	String getFileInfoKeyByMd5(String md5);
 	
 	/**
 	 * 检查指定条件下的文件信息是否存在.

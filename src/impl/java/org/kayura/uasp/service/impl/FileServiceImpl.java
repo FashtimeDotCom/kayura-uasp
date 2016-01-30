@@ -4,7 +4,6 @@
  */
 package org.kayura.uasp.service.impl;
 
-import org.kayura.type.GeneralResult;
 import org.kayura.type.Result;
 import org.kayura.uasp.dao.FileMapper;
 import org.kayura.uasp.po.FileInfo;
@@ -12,6 +11,7 @@ import org.kayura.uasp.po.FileRelation;
 import org.kayura.uasp.service.FileService;
 import org.kayura.uasp.vo.FileDownload;
 import org.kayura.uasp.vo.FileUpload;
+import org.kayura.uasp.vo.FileUploadResult;
 import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class FileServiceImpl implements FileService {
 	private FileMapper fileMapper;
 
 	@Override
-	public GeneralResult upload(FileUpload fu) {
+	public Result<FileUploadResult> upload(FileUpload fu) {
 
 		FileRelation fr = new FileRelation();
 		fr.setFrId(KeyUtils.newId());
@@ -47,7 +47,7 @@ public class FileServiceImpl implements FileService {
 		String fileId = null;
 		Boolean isNewFile = false;
 		if (!fu.getAllowChange()) {
-			fileId = fileMapper.getKeyForFileInfo(fu.getMd5());
+			fileId = fileMapper.getFileInfoKeyByMd5(fu.getMd5());
 		}
 
 		// 若没有相同的文件内容,将创建新文件.
@@ -62,11 +62,10 @@ public class FileServiceImpl implements FileService {
 			fi.setMd5(fu.getMd5());
 			fi.setIsEncrypted(fu.getIsEncrypt());
 			fi.setSalt(fu.getSalt());
-			fi.setStatus(FileInfo.STATUS_TEMP);
+			fi.setStatus(fu.getAllowChange() ? 1 : 0);
 
 			// 将文件信息添加至数据库.
 			fileMapper.insertFileInfo(fi);
-
 			isNewFile = true;
 		}
 
@@ -75,10 +74,12 @@ public class FileServiceImpl implements FileService {
 		fileMapper.insertFileRelation(fr);
 
 		// 创建返回值对象.
-		GeneralResult r = new GeneralResult();
-		r.add("frid", fr.getFrId());
-		r.add("fileid", fr.getFileId());
-		r.add("newfile", isNewFile);
+		Result<FileUploadResult> r = new Result<FileUploadResult>();
+		
+		FileUploadResult ur = new FileUploadResult();
+		ur.setFileId(fr.getFrId());
+		ur.setFileId(fr.getFileId());
+		ur.setNewFile(isNewFile);
 
 		return r;
 	}
@@ -107,7 +108,7 @@ public class FileServiceImpl implements FileService {
 		fd.setFileName(fr.getFileName());
 		fd.setContentType(fi.getContentType());
 		fd.setIsEncrypted(fi.getIsEncrypted());
-		fd.setSalt(fi.getSalt());		
+		fd.setSalt(fi.getSalt());
 
 		r.setSuccess("读取下载文件信息成功.");
 		r.setData(fd);
