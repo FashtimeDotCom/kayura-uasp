@@ -1,5 +1,5 @@
 /**
- * Copyright 2015-2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  * HomePage: http://www.kayura.org
  */
 package org.kayura.uasp.controller;
@@ -9,8 +9,8 @@ import org.kayura.core.PostResult;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
-import org.kayura.uasp.service.UserService;
 import org.kayura.uasp.po.User;
+import org.kayura.uasp.service.UserService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;

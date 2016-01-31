@@ -1,12 +1,12 @@
 /**
- * Copyright 2015-2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  * HomePage: http://www.kayura.org
  */
 package org.kayura.uasp.security;
 
 import org.kayura.security.LoginUser;
-import org.kayura.uasp.service.UserService;
 import org.kayura.uasp.po.User;
+import org.kayura.uasp.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Collection;

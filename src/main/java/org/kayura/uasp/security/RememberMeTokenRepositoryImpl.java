@@ -1,13 +1,13 @@
 /**
- * Copyright 2015-2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  * HomePage: http://www.kayura.org
  */
 package org.kayura.uasp.security;
 
 import java.util.Date;
 
-import org.kayura.uasp.service.UserService;
 import org.kayura.uasp.po.AutoLogin;
+import org.kayura.uasp.service.UserService;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
