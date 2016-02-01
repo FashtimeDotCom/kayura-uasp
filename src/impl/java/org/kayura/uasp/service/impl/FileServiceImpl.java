@@ -4,16 +4,22 @@
  */
 package org.kayura.uasp.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.kayura.type.GeneralResult;
 import org.kayura.type.Result;
 import org.kayura.uasp.dao.FileMapper;
 import org.kayura.uasp.po.FileInfo;
 import org.kayura.uasp.po.FileRelation;
 import org.kayura.uasp.service.FileService;
 import org.kayura.uasp.vo.FileDownload;
+import org.kayura.uasp.vo.FileContentUpdate;
 import org.kayura.uasp.vo.FileUpload;
 import org.kayura.uasp.vo.FileUploadResult;
 import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
+import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +45,6 @@ public class FileServiceImpl implements FileService {
 		fr.setUploaderId(fu.getUploaderId());
 		fr.setUploaderName(fu.getUploaderName());
 		fr.setUploadTime(DateUtils.now());
-		fr.setAllowChange(fu.getAllowChange());
 		fr.setSerial(fu.getSerial());
 		fr.setTags(fu.getTags());
 
@@ -62,7 +67,7 @@ public class FileServiceImpl implements FileService {
 			fi.setMd5(fu.getMd5());
 			fi.setIsEncrypted(fu.getIsEncrypt());
 			fi.setSalt(fu.getSalt());
-			fi.setStatus(fu.getAllowChange() ? 1 : 0);
+			fi.setAllowChange(fu.getAllowChange());
 
 			// 将文件信息添加至数据库.
 			fileMapper.insertFileInfo(fi);
@@ -75,11 +80,13 @@ public class FileServiceImpl implements FileService {
 
 		// 创建返回值对象.
 		Result<FileUploadResult> r = new Result<FileUploadResult>();
-		
+
 		FileUploadResult ur = new FileUploadResult();
-		ur.setFileId(fr.getFrId());
+		ur.setFrId(fr.getFrId());
 		ur.setFileId(fr.getFileId());
 		ur.setNewFile(isNewFile);
+		
+		r.setData(ur);
 
 		return r;
 	}
@@ -109,11 +116,30 @@ public class FileServiceImpl implements FileService {
 		fd.setContentType(fi.getContentType());
 		fd.setIsEncrypted(fi.getIsEncrypted());
 		fd.setSalt(fi.getSalt());
+		fd.setAllowChange(fi.getAllowChange());
 
 		r.setSuccess("读取下载文件信息成功.");
 		r.setData(fd);
 
 		return r;
+	}
+
+	@Override
+	public GeneralResult updateContent(FileContentUpdate fu) {
+
+		// 更新文件信息.
+		if (!StringUtils.isEmpty(fu.getFileId())) {
+
+			Map<String, Object> fileArgs = new HashMap<String, Object>();
+			fileArgs.put("fileSize", fu.getFileSize());
+			fileArgs.put("contentType", fu.getContentType());
+			//fileArgs.put("md5", fu.getMd5());
+			fileArgs.put("fileId", fu.getFileId());
+
+			fileMapper.updateFileInfo(fileArgs);
+		}
+
+		return Result.succeed();
 	}
 
 }

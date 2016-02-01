@@ -24,7 +24,6 @@ public class FileRelation implements Serializable {
 	private String uploaderId;
 	private String uploaderName;
 	private Date uploadTime;
-	private Boolean allowChange;
 	private Integer serial;
 	private String tags;
 
@@ -112,14 +111,6 @@ public class FileRelation implements Serializable {
 
 	public void setUploadTime(Date uploadTime) {
 		this.uploadTime = uploadTime;
-	}
-
-	public Boolean getAllowChange() {
-		return allowChange;
-	}
-
-	public void setAllowChange(Boolean allowChange) {
-		this.allowChange = allowChange;
 	}
 
 	public Integer getSerial() {

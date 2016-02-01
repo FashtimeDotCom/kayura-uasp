@@ -10,9 +10,9 @@
 		<result property="contentType" column="ContentType" />
 		<result property="logicPath" column="LogicPath" />
 		<result property="md5" column="MD5" />
+		<result property="allowChange" column="AllowChange" />
 		<result property="isEncrypted" column="IsEncrypted" />
 		<result property="salt" column="Salt" />
-		<result property="status" column="Status" />
 	</resultMap>
 
 	<resultMap id="fileRelationMap" type="org.kayura.uasp.po.FileRelation">
@@ -26,7 +26,6 @@
 		<result property="uploaderId" column="UploaderId" />
 		<result property="uploaderName" column="UploaderName" />
 		<result property="uploadTime" column="UploadTime" />
-		<result property="allowChange" column="AllowChange" />
 		<result property="serial" column="Serial" />
 		<result property="tags" column="Tags" />
 	</resultMap>
@@ -40,20 +39,39 @@
 			ContentType,
 			LogicPath,
 			MD5,
+			AllowChange,
 			IsEncrypted,
-			Salt,
-			Status
+			Salt
 		) VALUES(
 			#{fileId},
 			#{fileSize},
 			#{contentType},
 			#{logicPath},
 			#{md5},
+			#{allowChange},
 			#{isEncrypted},
-			#{salt},
-			#{status}
+			#{salt}
 		)		
 	</insert>
+	
+	<update id="updateFileInfo" parameterType="map">
+		UPDATE UASP_FileInfos 
+		<set>
+			<if test="fileSize != null">
+				FileSize = #{fileSize},
+			</if>
+			<if test="contentType != null">
+				ContentType = #{contentType},
+			</if>
+			<if test="md5 != null">
+				MD5 = #{md5},
+			</if>
+			<if test="allowChange != null">
+				AllowChange = #{allowChange},
+			</if>
+		</set>
+		WHERE ( File_Id = #{fileId} )
+	</update>
 
 	<select id="getFileInfoById" parameterType="string" resultMap="fileInfoMap">
 		SELECT
@@ -62,9 +80,9 @@
 			t.ContentType,
 			t.LogicPath,
 			t.MD5,
+			t.AllowChange,
 			t.IsEncrypted,
-			t.Salt,
-			t.Status
+			t.Salt
 		FROM UASP_FileInfos t
 		WHERE ( t.File_Id = #{value} )
 	</select>
@@ -100,7 +118,6 @@
 			UploaderId,
 			UploaderName,
 			UploadTime,
-			AllowChange,
 			Serial,
 			Tags
 		) VALUES (
@@ -114,11 +131,35 @@
 			#{uploaderId},
 			#{uploaderName},
 			#{uploadTime},
-			#{allowChange},
 			#{serial},
 			#{tags}
 		)			
 	</insert>
+	
+	<update id="updateFileRelation" parameterType="map">
+		UPDATE UASP_FileRelations 
+		<set>
+			<if test="category != null">
+				Category = #{category},
+			</if>
+			<if test="fileName != null">
+				FileName = #{fileName},
+			</if>
+			<if test="postfix != null">
+				Postfix = #{postfix},
+			</if>
+			<if test="uploadTime != null">
+				UploadTime = #{uploadTime},
+			</if>
+			<if test="serial != null">
+				Serial = #{serial},
+			</if>
+			<if test="tags != null">
+				Tags = #{tags},
+			</if>
+		</set>
+		WHERE ( Fr_Id = #{frId} )
+	</update>
 	
 	<sql id="fileRelationColumns">
 		t.Fr_Id,
@@ -131,7 +172,6 @@
 		t.UploaderId,
 		t.UploaderName,
 		t.UploadTime,
-		t.AllowChange,
 		t.Serial,
 		t.Tags
 	</sql>
@@ -140,6 +180,11 @@
 		SELECT 
 			<include refid="fileRelationColumns" />
 		FROM UASP_FileRelations t
+		WHERE ( t.Fr_Id = #{value} )
+	</select>
+		
+	<select id="getFileRelationTagsById" parameterType="string" resultType="string">
+		SELECT t.Tags FROM UASP_FileRelations t
 		WHERE ( t.Fr_Id = #{value} )
 	</select>
 	

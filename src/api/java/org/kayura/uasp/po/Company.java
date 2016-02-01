@@ -35,7 +35,7 @@ public class Company {
 	private String fax;
 	private String linkman;
 	private Date estaDate;
-	private Integer Serial;
+	private Integer serial;
 	private Integer status;
 
 	public String getCompanyId() {
@@ -167,11 +167,11 @@ public class Company {
 	}
 
 	public Integer getSerial() {
-		return Serial;
+		return this.serial;
 	}
 
 	public void setSerial(Integer serial) {
-		Serial = serial;
+		this.serial = serial;
 	}
 
 	public Integer getStatus() {

@@ -4,8 +4,10 @@
  */
 package org.kayura.uasp.service;
 
+import org.kayura.type.GeneralResult;
 import org.kayura.type.Result;
 import org.kayura.uasp.vo.FileDownload;
+import org.kayura.uasp.vo.FileContentUpdate;
 import org.kayura.uasp.vo.FileUpload;
 import org.kayura.uasp.vo.FileUploadResult;
 
@@ -32,4 +34,11 @@ public interface FileService {
 	 */
 	Result<FileDownload> download(String frId);
 
+	/**
+	 * 更新文件内容信息.
+	 * 
+	 * @param fileUpdate 更新后的文件信息.
+	 * @return 返回更新结果.
+	 */
+	GeneralResult updateContent(FileContentUpdate fileUpdate);
 }

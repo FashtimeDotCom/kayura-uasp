@@ -23,6 +23,7 @@ import org.kayura.utils.KeyUtils;
 import org.kayura.type.Result;
 import org.kayura.uasp.models.UploadItem;
 import org.kayura.uasp.service.FileService;
+import org.kayura.uasp.vo.FileContentUpdate;
 import org.kayura.uasp.vo.FileDownload;
 import org.kayura.uasp.vo.FileListItem;
 import org.kayura.uasp.vo.FileUpload;
@@ -116,8 +117,7 @@ public class FileController extends BaseController {
 
 							// 计算文件字节的 MD5 码与存储路径.
 							if (!fu.getAllowChange()) {
-								String rawString = fu.getContentType() + fu.getFileSize() + fu.getPostfix()
-										+ fu.getIsEncrypt();
+								String rawString = fu.getContentType() + fu.getFileSize() + fu.getIsEncrypt();
 								fu.setMd5(DigestUtils.md5Hex(rawString));
 								// fu.setMd5(DigestUtils.md5Hex(fileContent));
 							}
@@ -223,28 +223,45 @@ public class FileController extends BaseController {
 				if (file != null && !file.isEmpty()) {
 
 					try {
+
 						Result<FileDownload> rd = fileService.download(id);
 						if (rd.isSucceed()) {
 							FileDownload fd = rd.getData();
 
-							byte[] fileContent = new byte[0];
-							if (fd.getIsEncrypted()) {
-								fileContent = aesEncrypt(file.getBytes(), fd.getSalt());
-							}
+							if (fd.getAllowChange()) {
 
-							String absPath = uploadProvider.convertAbsolutePath(fd.getLogicPath());
-							File writeFile = new File(absPath, fd.getFileId());
+								byte[] fileContent = new byte[0];
+								if (fd.getIsEncrypted()) {
+									fileContent = aesEncrypt(file.getBytes(), fd.getSalt());
+								}
 
-							if (fd.getIsEncrypted()) {
-								FileUtils.writeByteArrayToFile(writeFile, fileContent);
+								FileContentUpdate fcu = new FileContentUpdate();
+								fcu.setFileId(fd.getFileId());
+								fcu.setContentType(file.getContentType());
+
+								String absPath = uploadProvider.convertAbsolutePath(fd.getLogicPath());
+								File writeFile = new File(absPath, fd.getFileId());
+
+								if (fd.getIsEncrypted()) {
+									FileUtils.writeByteArrayToFile(writeFile, fileContent);
+									fcu.setFileSize(Long.valueOf("" + fileContent.length));
+								} else {
+									file.transferTo(writeFile);
+									fcu.setFileSize(file.getSize());
+								}
+
+								fileService.updateContent(fcu);
 							} else {
-								file.transferTo(writeFile);
+								r.setFalied("此文件不允许修改。");
 							}
 						}
 
 					} catch (Exception e) {
-						e.printStackTrace();
+						logger.error("更新文件内容时发生异常。", e);
+						r.setError(e.getMessage(), e);
 					}
+				} else {
+					r.setFalied("没有上传文件内容。");
 				}
 			}
 		});
@@ -272,10 +289,8 @@ public class FileController extends BaseController {
 	/**
 	 * 对字节进行 AES 加密.
 	 * 
-	 * @param rawBytes
-	 *            原始字节内容.
-	 * @param encryptKey
-	 *            私有密钥.
+	 * @param rawBytes 原始字节内容.
+	 * @param encryptKey 私有密钥.
 	 * @return 返回加密后的字节.
 	 * @throws Exception
 	 */
@@ -295,10 +310,8 @@ public class FileController extends BaseController {
 	/**
 	 * 对节进行 AES 解密.
 	 * 
-	 * @param encBytes
-	 *            加密后的字节内容.
-	 * @param decryptKey
-	 *            私有密钥.
+	 * @param encBytes 加密后的字节内容.
+	 * @param decryptKey 私有密钥.
 	 * @return 返回解密后的字节.
 	 * @throws Exception
 	 */

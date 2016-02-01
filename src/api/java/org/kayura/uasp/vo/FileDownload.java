@@ -15,6 +15,7 @@ public class FileDownload {
 	private String contentType;
 	private byte[] content;
 	private String logicPath;
+	private Boolean allowChange;
 	private Boolean isEncrypted;
 	private String salt;
 
@@ -80,6 +81,20 @@ public class FileDownload {
 
 	public void setSalt(String salt) {
 		this.salt = salt;
+	}
+
+	/**
+	 * @return the allowChange
+	 */
+	public Boolean getAllowChange() {
+		return allowChange;
+	}
+
+	/**
+	 * @param allowChange the allowChange to set
+	 */
+	public void setAllowChange(Boolean allowChange) {
+		this.allowChange = allowChange;
 	}
 
 }

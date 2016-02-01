@@ -28,9 +28,9 @@ public class FileInfo implements Serializable {
 	private String contentType;
 	private String logicPath;
 	private String md5;
+	private Boolean allowChange;
 	private Boolean isEncrypted;
 	private String salt;
-	private Integer status;
 
 	public String getFileId() {
 		return fileId;
@@ -72,6 +72,14 @@ public class FileInfo implements Serializable {
 		this.md5 = md5;
 	}
 
+	public Boolean getAllowChange() {
+		return allowChange;
+	}
+
+	public void setAllowChange(Boolean allowChange) {
+		this.allowChange = allowChange;
+	}
+
 	public Boolean getIsEncrypted() {
 		return isEncrypted;
 	}
@@ -80,26 +88,12 @@ public class FileInfo implements Serializable {
 		this.isEncrypted = isEncrypted;
 	}
 
-	/**
-	 * @return the salt
-	 */
 	public String getSalt() {
 		return salt;
 	}
 
-	/**
-	 * @param salt the salt to set
-	 */
 	public void setSalt(String salt) {
 		this.salt = salt;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
 	}
 
 }
