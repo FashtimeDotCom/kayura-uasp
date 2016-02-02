@@ -18,27 +18,43 @@
 		<result property="value" column="Value" />
 		<result property="isFixed" column="IsFixed" />
 	</resultMap>
-	
-	
+
 	<select id="loadDictDefinces" parameterType="string" resultMap="dictDefineMap">
-		SELECT 
+		SELECT
 			t.Dict_Id,
-			t.Tenant_Id, 
+			t.Tenant_Id,
 			t.Code,
 			t.Name,
 			t.Description
 		FROM USAP_DictDefine t
-		WHERE ( t.Tenant_Id = #{value} )
+		WHERE 
+		<if test="value == null">
+			( t.Tenant_Id IS #{value} )
+		</if>
+		<if test="value != null">
+			( t.Tenant_Id = #{value} )
+		</if>	
+	</select>
+
+	<sql id="dictItemColumns">
+		t.Item_Id,
+		t.Parent_Id,
+		t.Dict_Id,
+		t.Name,
+		t.Value,
+		t.IsFixed
+	</sql>
+	
+	<select id="loadDictItems" parameterType="string" resultMap="dictItemMap">
+		SELECT
+			<include refid="dictItemColumns" />
+		FROM UASP_DictItems t
+		WHERE ( t.Dict_Id = #{value} )
 	</select>
 	
 	<select id="findDictItems" parameterType="map" resultMap="dictItemMap">
 		SELECT
-			t.Item_Id,
-			t.Parent_Id,
-			t.Dict_Id,
-			t.Name,
-			t.Value,
-			t.IsFixed
+			<include refid="dictItemColumns" />
 		FROM UASP_DictItems t
 		<where>
 			<if test="dictId != null">
@@ -52,5 +68,42 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="getDictItemsById" parameterType="string" resultMap="dictItemMap">
+		SELECT
+			<include refid="dictItemColumns" />
+		FROM UASP_DictItems t
+		WHERE ( t.Item_Id = #{value} )
+	</select>
 
+	<insert id="insertDictItem" parameterType="org.kayura.uasp.po.DictItem">
+		INSERT UASP_DictItems (
+			Item_Id,
+			Parent_Id,
+			Dict_Id,
+			Name,
+			Value,
+			IsFixed
+		) VALUES (
+			#{itemId},
+			#{parentId},
+			#{dictId},
+			#{name},
+			#{value},
+			#{isFixed}
+		)
+	</insert>
+	
+	<update id="updateDictItem" parameterType="org.kayura.uasp.po.DictItem">
+		UPDATE UASP_DictItems
+		SET	Name = #{name},
+			Value = #{value}
+		WHERE ( Item_Id = #{itemId} )
+	</update>
+	
+	<delete id="deleteDictItem" parameterType="string">
+		DELETE UASP_DictItems t
+		WHERE ( t.Item_Id = #{value} )
+	</delete>
+	
 </mapper>

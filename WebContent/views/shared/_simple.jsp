@@ -7,7 +7,6 @@
 	<e:renderSection name="head" />
 </head>
 <e:body style="overflow:hidden;">
-	<!-- Body -->
 	<e:renderSection name="body"></e:renderSection>
 </e:body>
 </html>

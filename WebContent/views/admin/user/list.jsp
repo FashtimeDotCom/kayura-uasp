@@ -19,7 +19,7 @@
 <e:section name="body">
 	<e:datagrid id="tt" fit="true" title="管理" rownumbers="true" fitColumns="true"
 		pagination="true" pageSize="10" singleSelect="true" striped="true"
-		toolbar="#tb,#tq" url="${root}/admin/user/find.json" method="get"
+		toolbar="#tb,#tq" url="${root}/admin/user/find.json" method="post"
 		idField="userId">
 		<e:columns>
 			<e:column field="ck" checkbox="true" />

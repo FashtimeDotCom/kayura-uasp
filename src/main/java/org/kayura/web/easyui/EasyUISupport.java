@@ -4,6 +4,7 @@
  */
 package org.kayura.web.easyui;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +51,18 @@ public class EasyUISupport implements UISupport {
 		
 		map.put("total", pageList.getTotalCount());
 		map.put("rows", pageList);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.kayura.web.ui.UISupport#createData(org.kayura.type.PageList)
+	 */
+	@Override
+	public Map<String, Object> createData(PageList<?> pageList) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("total", pageList.getTotalCount());
+		map.put("rows", pageList);
+		return map;
 	}
 
 }

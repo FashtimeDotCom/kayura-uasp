@@ -7,6 +7,7 @@ package org.kayura.uasp.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
 import org.kayura.uasp.po.DictDefine;
@@ -17,18 +18,18 @@ import org.kayura.uasp.po.DictItem;
  *
  * @author liangxia@live.com
  */
-public interface DictMapper {
-	
+public interface DictMapper extends BaseDao {
+
 	List<DictDefine> loadDictDefinces(String tenantId);
-	
+
 	PageList<DictItem> findDictItems(Map<String, Object> args, PageBounds bounds);
-	
+
 	DictItem getDictItemsById(String itemId);
-	
+
 	void insertDictItem(DictItem dictItem);
-	
-	void updateDictItem(Map<String, Object> args);
-	
-	void deleteDictItem(String itemId);		
+
+	void updateDictItem(DictItem dictItem);
+
+	void deleteDictItem(String itemId);
 
 }

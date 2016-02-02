@@ -6,6 +6,7 @@ package org.kayura.web;
 
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
+import org.kayura.security.LoginUser;
 import org.kayura.type.PageParams;
 import org.kayura.utils.PathUtils;
 import org.kayura.web.ui.UISupport;
@@ -14,7 +15,9 @@ import org.kayura.type.PageList;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -67,7 +70,13 @@ public class BaseController {
 	 * @return 返回 viewRootPath下的视图名的.
 	 */
 	public String viewResult(String viewName) {
+
 		return PathUtils.merge(viewRootPath, viewName);
+	}
+
+	public ModelAndView view(String viewName) {
+
+		return new ModelAndView(PathUtils.merge(viewRootPath, viewName));
 	}
 
 	/**
@@ -122,4 +131,7 @@ public class BaseController {
 		model.put("data", postResult.getData());
 	}
 
+	public LoginUser getLoginUser() {
+		return (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	}
 }

@@ -33,4 +33,12 @@ public interface UISupport {
 	 * @param pageList
 	 */
 	void putData(Map<String, Object> model, PageList<?> pageList);
+	
+	/**
+	 * 创建一个分页的数据包.
+	 * 
+	 * @param pageList
+	 * @return
+	 */
+	Map<String, Object> createData(PageList<?> pageList);
 }

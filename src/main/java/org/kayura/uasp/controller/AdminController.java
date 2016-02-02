@@ -38,22 +38,20 @@ public class AdminController extends BaseController {
 		this.setViewRootPath("views/admin/");
 	}
 
-	@RequestMapping(value = { "user/", "user/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = "user/list", method = RequestMethod.GET)
 	public String userList() {
 
 		return viewResult("user/list");
 	}
 
-	@RequestMapping(value = "user/find")
-	public String userFind(HttpServletRequest req, Map<String, Object> map, String keyword, String status) {
+	@RequestMapping(value = "user/find", method = RequestMethod.POST)
+	public void userFind(HttpServletRequest req, Map<String, Object> map, String keyword, String status) {
 
 		PageParams pageParams = ui.getPageParams(req);
 
 		Integer[] intStatus = StringUtils.toInteger(status);
 		PageList<User> users = userService.findUsers(keyword, intStatus, pageParams);
 		ui.putData(map, users);
-
-		return viewResult("user/find");
 	}
 
 	@RequestMapping(value = "user/new", method = RequestMethod.GET)
