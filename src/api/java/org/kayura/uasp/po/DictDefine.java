@@ -9,10 +9,17 @@ package org.kayura.uasp.po;
  */
 public class DictDefine {
 
+	/** 列表型数据项 */
+	public static final Integer DATATYPE_LIST = 0;
+	
+	/** 树型结构数据项 */
+	public static final Integer DATATYPE_TREE = 1;
+
 	private String id;
 	private String tenantId;
 	private String code;
 	private String name;
+	private Integer dataType;
 	private String description;
 
 	public String getId() {
@@ -45,6 +52,14 @@ public class DictDefine {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(Integer dataType) {
+		this.dataType = dataType;
 	}
 
 	public String getDescription() {

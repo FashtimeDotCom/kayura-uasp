@@ -45,13 +45,6 @@
 		t.IsFixed
 	</sql>
 	
-	<select id="loadDictItems" parameterType="string" resultMap="dictItemMap">
-		SELECT
-			<include refid="dictItemColumns" />
-		FROM UASP_DictItems t
-		WHERE ( t.Dict_Id = #{value} )
-	</select>
-	
 	<select id="findDictItems" parameterType="map" resultMap="dictItemMap">
 		SELECT
 			<include refid="dictItemColumns" />
