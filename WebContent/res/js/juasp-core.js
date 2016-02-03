@@ -163,7 +163,7 @@ juasp = {
 	 * @param {object} config  {url 请求处理的地址, data 请求传入的数据} 
 	 * @param {events} events 请求的回调事件. 支持: error, complete, success, failure.
 	 */
-	function post(config, events){
+	function _post(config, events){
 		
 		var cfg = $.extend({ url: '', data: {}, dataType: 'json' }, config);
 		
@@ -243,7 +243,7 @@ juasp = {
 	 * @param {String} returnUrl 可选值：可指定的跳转返回地址.
 	 * @returns void
 	 */
-	function skipUrl(targetUrl, mode, returnUrl) {
+	function _skipUrl(targetUrl, mode, returnUrl) {
 
 		var skipWin = win;
 
@@ -268,7 +268,7 @@ juasp = {
 	 * @param {String} url 指定打开的链接地址.
 	 * @param {String} icon 选项卡图标(暂不可用).
 	 */
-	function openTab(title, url, iconCls) {
+	function _openTab(title, url, iconCls) {
 
 		/* 取到选项卡的jquery对象 */
 		var tab = $top("#mainTabs");
@@ -301,7 +301,7 @@ juasp = {
 	 * </br>onClose 窗口关闭事件.
 	 * 
 	 */
-	function openWin(opts){
+	function _openWin(opts){
 		
 		var wid = newId();
 
@@ -312,15 +312,17 @@ juasp = {
 		    title: opts.title,
 		    width: opts.width,
 		    height: opts.height,
-		    shadow: true,
+		    shadow: false,
 		    modal: true,
 		    iconCls: opts.iconCls,
-		    closed: true,
+		    closed: false,
 		    minimizable: false,
 		    onClose : function(e){
-				removeCache("wid_" + wid);
-				var result = getCache("win_result_" + wid, null);
-				opts.onClose(result);
+		    	if(typeof opts.onClose == 'function') {
+					removeCache("wid_" + wid);
+					var result = getCache("win_result_" + wid, null);
+					opts.onClose(result);
+		    	}
 		    }
 		});
 		
@@ -335,7 +337,7 @@ juasp = {
 	 * 
 	 * @param {Object} result 返回给调用者的结果对象.
 	 */
-	function closeWin(result) {
+	function _closeWin(result) {
 		var wid = getQueryParam("_wid");
 		if (wid != null) {
 			var w = getCache("wid_" + wid, null);
@@ -352,7 +354,7 @@ juasp = {
 	 * @param {String} content 显示的内容.
 	 * @param {Event} onclose(r) 确认 true 或取消 false 响应的事件.
 	 */
-	function confirm(content, onclose) {
+	function _confirm(content, onclose) {
 		win.top.$.messager.confirm('确认', content, onclose);  
 	}
 	
@@ -362,7 +364,7 @@ juasp = {
 	 * @param {String} title 信息框的标题.
 	 * @param {String} content 显示的内容.
 	 */
-	function info(title, content) {
+	function _info(title, content) {
 
 		win.top.$.messager.show({
 			title: title,
@@ -379,21 +381,21 @@ juasp = {
 	 * @param {String} content 显示的内容.
 	 * @param {Event} onclose(r) 返回 r 值与 content 类型长度相同.
 	 */
-	function prompt(title, content, onclose){
+	function _prompt(title, content, onclose){
 		win.top.$.messager.prompt(title, content, function(r){
 			onclose(r);
 		});
 	}
 	
 	/** 绑定方法 **/
-	juasp.post = post;
-	juasp.skipUrl = skipUrl;
-	juasp.openTab = openTab;
-	juasp.openWin = openWin;
-	juasp.closeWin = closeWin;
-	juasp.confirm = confirm;
-	juasp.info = info;
-	juasp.prompt = prompt;
+	juasp.post = _post;
+	juasp.skipUrl = _skipUrl;
+	juasp.openTab = _openTab;
+	juasp.openWin = _openWin;
+	juasp.closeWin = _closeWin;
+	juasp.confirm = _confirm;
+	juasp.info = _info;
+	juasp.prompt = _prompt;
 	
 }(jQuery, window));
 

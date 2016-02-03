@@ -5,8 +5,9 @@
 <e:section name="head">
 	<script type="text/javascript">
 	
+		var dictId = "", id = "";
+		
 		$(function() {
-
 			$('#tv').tree({
 				url : "${root}/gm/dicts.json",
 				method : "post",
@@ -18,13 +19,13 @@
 					}
 				},
 				onClick: function(node){
-					findDictItems(node.id);
+					dictId = node.id;
+					findItems(dictId);
 				}
 			});
-			
 		});
 
-		function findDictItems(dictId) {
+		function findItems(dictId) {
 			$('#tg').datagrid({
 				url: "${root}/gm/dictItems.json",
 				method : "post",
@@ -40,6 +41,31 @@
 				}
 			});
 		}
+		
+		function newDict(){
+			juasp.openWin({
+				url: "${root}/gm/newdict?id=" + dictId,
+				width: "700px",
+				height: "500px",
+				title: "创建词典项",
+				onClose : function(result){
+					
+				}
+			});
+		}
+		
+		function editDict(){
+			juasp.openWin({
+				url: "${root}/gm/editdict?id=" + id,
+				width: "700px",
+				height: "500px",
+				title: "修改词典项",
+				onClose : function(result){
+					
+				}
+			});
+		}
+		
 	</script>
 	</script>
 </e:section>
@@ -60,10 +86,8 @@
 			</e:columns>
 		</e:datagrid>
 		<div id="tb">
-			<e:linkbutton id="add" iconCls="icon-add" plain="true" text="新增账号" />
-			<e:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑账号" />
-			<e:linkbutton id="cancel" iconCls="icon-cancel" plain="true"
-				text="删除账号" />
+			<e:linkbutton id="add" iconCls="icon-add" plain="true" text="新增账号" onclick="newDict()" />
+			<e:linkbutton id="cancel" iconCls="icon-cancel" plain="true" text="删除账号" />
 		</div>
 	</e:layoutunit>
 </e:section>

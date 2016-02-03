@@ -107,4 +107,15 @@ public class GeneralController extends BaseController {
 		});
 	}
 
+	@RequestMapping(value = "/newdict", method = RequestMethod.GET)
+	public String editDict(HttpServletRequest req, Map<String, Object> map, String pid, String id){
+
+		DictItem di = new DictItem();
+		di.setDictId(id);
+		di.setParentId(pid);
+		
+		map.put("model", di);
+		return this.viewResult("dictedit");
+	}
+	
 }
