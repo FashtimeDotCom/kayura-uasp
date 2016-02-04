@@ -20,6 +20,8 @@ import org.kayura.uasp.po.DictItem;
  */
 public interface DictMapper extends BaseDao {
 
+	DictDefine getDictDefineById(String dictId);
+	
 	List<DictDefine> loadDictDefinces(String tenantId);
 
 	PageList<DictItem> findDictItems(Map<String, Object> args, PageBounds bounds);

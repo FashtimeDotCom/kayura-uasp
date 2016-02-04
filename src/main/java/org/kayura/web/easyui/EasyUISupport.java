@@ -48,20 +48,16 @@ public class EasyUISupport implements UISupport {
 	public void putData(Map<String, Object> map, PageList<?> pageList) {
 
 		// {"total":"28","rows":[{}] }
-		
+
 		map.put("total", pageList.getTotalCount());
 		map.put("rows", pageList);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kayura.web.ui.UISupport#createData(org.kayura.type.PageList)
-	 */
 	@Override
-	public Map<String, Object> createData(PageList<?> pageList) {
+	public Map<String, Object> genPageData(PageList<?> pageList) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("total", pageList.getTotalCount());
-		map.put("rows", pageList);
+		putData(map, pageList);
 		return map;
 	}
 

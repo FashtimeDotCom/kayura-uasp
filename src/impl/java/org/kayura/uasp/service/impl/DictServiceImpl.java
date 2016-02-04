@@ -33,6 +33,13 @@ public class DictServiceImpl implements DictService {
 	private DictMapper dictMapper;
 
 	@Override
+	public Result<DictDefine> getDictDefineById(String dictId){
+
+		DictDefine list = dictMapper.getDictDefineById(dictId);
+		return new Result<DictDefine>(Result.SUCCEED, list);
+	}
+	
+	@Override
 	public Result<List<DictDefine>> loadDictDefinces(String tenantId) {
 
 		List<DictDefine> list = dictMapper.loadDictDefinces(tenantId);
@@ -40,7 +47,7 @@ public class DictServiceImpl implements DictService {
 	}
 
 	@Override
-	public PageList<DictItem> loadDictItems(String dictId, String parentId, PageParams params) {
+	public Result<PageList<DictItem>> loadDictItems(String dictId, String parentId, PageParams params) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("dictId", dictId);
@@ -49,7 +56,7 @@ public class DictServiceImpl implements DictService {
 		}
 
 		PageList<DictItem> list = dictMapper.findDictItems(args, new PageBounds(params));
-		return list;
+		return new Result<PageList<DictItem>>(Result.SUCCEED, list);
 	}
 
 	@Override
@@ -60,7 +67,7 @@ public class DictServiceImpl implements DictService {
 	}
 
 	@Override
-	public GeneralResult insertDictItem(DictItem dictItem) {
+	public GeneralResult createDictItem(DictItem dictItem) {
 
 		dictMapper.insertDictItem(dictItem);
 		return Result.succeed();

@@ -11,7 +11,9 @@ public class DictItem {
 
 	private String id;
 	private String parentId;
+	private String parentName;
 	private String dictId;
+	private String dictName;
 	private String name;
 	private String value;
 	private Boolean isFixed;
@@ -32,12 +34,28 @@ public class DictItem {
 		this.parentId = parentId;
 	}
 
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
 	public String getDictId() {
 		return dictId;
 	}
 
 	public void setDictId(String dictId) {
 		this.dictId = dictId;
+	}
+
+	public String getDictName() {
+		return dictName;
+	}
+
+	public void setDictName(String dictName) {
+		this.dictName = dictName;
 	}
 
 	public String getName() {
@@ -58,6 +76,18 @@ public class DictItem {
 
 	public Boolean getIsFixed() {
 		return isFixed;
+	}
+
+	public void setIsFixedName(String isFixedName) {
+		if (isFixedName == "是") {
+			this.isFixed = true;
+		} else {
+			this.isFixed = false;
+		}
+	}
+
+	public String getIsFixedName() {
+		return this.isFixed ? "是" : "否";
 	}
 
 	public void setIsFixed(Boolean isFixed) {

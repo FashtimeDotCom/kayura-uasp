@@ -27,16 +27,16 @@
 
 		function findItems(dictId) {
 			$('#tg').datagrid({
-				url: "${root}/gm/dictItems.json",
+				url: "${root}/gm/dict/load.json",
 				method : "post",
 				queryParams: {
 					"dictId": dictId
 				},
-				loadFilter: function(d){
-					if (d.data && d.data.items){
-						return d.data.items;
-					} else {
-						return d;
+				loadFilter: function(r){
+					if(r.type == juasp.SUCCESS) {
+						if (r.data && r.data.items){
+							return r.data.items;
+						}
 					}
 				}
 			});
@@ -44,9 +44,9 @@
 		
 		function newDict(){
 			juasp.openWin({
-				url: "${root}/gm/newdict?id=" + dictId,
-				width: "700px",
-				height: "500px",
+				url: "${root}/gm/dict/new?id=" + dictId,
+				width: "450px",
+				height: "300px",
 				title: "创建词典项",
 				onClose : function(result){
 					
@@ -56,9 +56,9 @@
 		
 		function editDict(){
 			juasp.openWin({
-				url: "${root}/gm/editdict?id=" + id,
-				width: "700px",
-				height: "500px",
+				url: "${root}/gm/dict/edit?id=" + id,
+				width: "500px",
+				height: "300px",
 				title: "修改词典项",
 				onClose : function(result){
 					
@@ -67,7 +67,6 @@
 		}
 		
 	</script>
-	</script>
 </e:section>
 
 <e:section name="body">
@@ -75,14 +74,14 @@
 		<ul id="tv" class="easyui-tree">   
 	</e:layoutunit>
 	<e:layoutunit region="center" border="false" >
-		<e:datagrid id="tg" fit="true" rownumbers="true" fitColumns="true"
+		<e:datagrid id="tg" fit="true" rownumbers="true" 
 			toolbar="#tb" pagination="true" pageSize="10" singleSelect="true"
 			striped="true" url="" method="post" idField="itemId" >
 			<e:columns>
 				<e:column field="ck" checkbox="true" />
-				<e:column field="name" title="词典名" />
-				<e:column field="value" title="词典值" />
-				<e:column field="isFixed" width="280" title="保留数据" />
+				<e:column field="name" title="词典名" width="200" />
+				<e:column field="value" title="词典值" width="150" />
+				<e:column field="isFixedName" width="80" title="保留数据" />
 			</e:columns>
 		</e:datagrid>
 		<div id="tb">

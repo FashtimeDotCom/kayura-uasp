@@ -12,6 +12,7 @@ import org.kayura.utils.PathUtils;
 import org.kayura.web.ui.UISupport;
 import org.kayura.type.PageList;
 
+import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,26 +75,36 @@ public class BaseController {
 		return PathUtils.merge(viewRootPath, viewName);
 	}
 
+	public ModelAndView errorPage(Exception ex) {
+
+		return errorPage(ex.getMessage(), ex.toString());
+	}
+
+	public ModelAndView errorPage(String message, String details) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("message", message);
+		map.put("details", details);
+
+		return errorPage(map);
+	}
+
+	public ModelAndView errorPage(Map<String, Object> map) {
+
+		return new ModelAndView("shared/error", map);
+	}
+
 	public ModelAndView view(String viewName) {
 
 		return new ModelAndView(PathUtils.merge(viewRootPath, viewName));
 	}
 
-	/**
-	 * 将对象转换成 json 格式的字符串.
-	 * 
-	 * @param object 用于转换的对象.
-	 * @return 返回 json 格式的字符串.
-	 */
-	public String jsonResult(Object object) {
-		String json = "";
-		try {
-			json = objectMapper.writeValueAsString(object);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			json = "{'result':{'type':'error',message:'数据转换成 Json 时发生异常.','attr':{}}}";
-		}
-		return json;
+	public ModelAndView view(String viewName, Map<String, Object> model) {
+
+		ModelAndView mv = view(viewName);
+		mv.addAllObjects(model);
+
+		return mv;
 	}
 
 	/**

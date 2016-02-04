@@ -40,5 +40,5 @@ public interface UISupport {
 	 * @param pageList
 	 * @return
 	 */
-	Map<String, Object> createData(PageList<?> pageList);
+	Map<String, Object> genPageData(PageList<?> pageList);
 }

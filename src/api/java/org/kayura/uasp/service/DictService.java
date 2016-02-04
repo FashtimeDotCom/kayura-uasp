@@ -19,14 +19,16 @@ import org.kayura.uasp.po.DictItem;
  * @author liangxia@live.com
  */
 public interface DictService {
-
+	
+	Result<DictDefine> getDictDefineById(String dictId);
+	
 	Result<List<DictDefine>> loadDictDefinces(String tenantId);
 
-	PageList<DictItem> loadDictItems(String dictId, String parentId, PageParams params);
+	Result<PageList<DictItem>> loadDictItems(String dictId, String parentId, PageParams params);
 
 	Result<DictItem> getDictItemsById(String itemId);
 
-	GeneralResult insertDictItem(DictItem dictItem);
+	GeneralResult createDictItem(DictItem dictItem);
 
 	GeneralResult updateDictItem(DictItem dictItem);
 

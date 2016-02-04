@@ -66,8 +66,10 @@ public class TreeTag extends TagRender {
 			if (getClassStyle() != null) {
 				out.write(" class=\"" + getClassStyle() + "\"");
 			}
-			if (getStyle() != null) {
-				out.write(" style=\"" + getStyle() + "\"");
+			if (getClassStyle() != null) {
+				out.write(" class=\"easyui-" + getEasyuiTag() + " " + getClassStyle() + "\"");
+			} else {
+				out.write(" class=\"easyui-" + getEasyuiTag() + "\"");
 			}
 			out.write(" data-options=\"");
 			out.write(optionsToString());

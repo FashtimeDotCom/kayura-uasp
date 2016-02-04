@@ -4,6 +4,20 @@
  */
 package org.kayura.uasp.controller;
 
+import org.kayura.core.PostAction;
+import org.kayura.core.PostResult;
+import org.kayura.type.GeneralResult;
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
+import org.kayura.type.Result;
+import org.kayura.uasp.po.DictDefine;
+import org.kayura.uasp.po.DictItem;
+import org.kayura.uasp.service.DictService;
+import org.kayura.utils.KeyUtils;
+import org.kayura.utils.StringUtils;
+import org.kayura.web.BaseController;
+import org.kayura.web.model.TreeNode;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,21 +26,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kayura.core.PostAction;
-import org.kayura.core.PostResult;
-import org.kayura.type.PageList;
-import org.kayura.type.PageParams;
-import org.kayura.type.Result;
-import org.kayura.uasp.po.DictDefine;
-import org.kayura.uasp.po.DictItem;
-import org.kayura.uasp.service.DictService;
-import org.kayura.utils.KeyUtils;
-import org.kayura.web.BaseController;
-import org.kayura.web.model.TreeNode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * GeneralController
@@ -51,9 +56,9 @@ public class GeneralController extends BaseController {
 	 * 数据词典管理浏览页.
 	 */
 	@RequestMapping(value = "/dict", method = RequestMethod.GET)
-	public String dictList() {
+	public ModelAndView dictList() {
 
-		return this.viewResult("dictlist");
+		return this.view("dictlist");
 	}
 
 	@RequestMapping(value = "/dicts", method = RequestMethod.POST)
@@ -92,30 +97,77 @@ public class GeneralController extends BaseController {
 		});
 	}
 
-	@RequestMapping(value = "/dictItems", method = RequestMethod.POST)
+	@RequestMapping(value = "/dict/load", method = RequestMethod.POST)
 	public void loadDictItems(HttpServletRequest req, Map<String, Object> map, String dictId) {
 
 		postExecute(map, new PostAction() {
-			
+
 			@Override
 			public void invoke(PostResult ps) {
-				
+
 				PageParams pageParams = ui.getPageParams(req);
-				PageList<DictItem> items = dictService.loadDictItems(dictId, null, pageParams);
-				ps.add("items", ui.createData(items));
+				Result<PageList<DictItem>> r = dictService.loadDictItems(dictId, null, pageParams);
+				ps.setCode(r.getCode());
+				if (r.isSucceed()) {
+					ps.add("items", ui.genPageData(r.getData()));
+				} else {
+					ps.addMessage(r.getMessage());
+				}
 			}
 		});
 	}
 
-	@RequestMapping(value = "/newdict", method = RequestMethod.GET)
-	public String editDict(HttpServletRequest req, Map<String, Object> map, String pid, String id){
+	@RequestMapping(value = "/dict/new", method = RequestMethod.GET)
+	public ModelAndView editDict(String pid, String id) {
 
-		DictItem di = new DictItem();
-		di.setDictId(id);
-		di.setParentId(pid);
-		
-		map.put("model", di);
-		return this.viewResult("dictedit");
+		ModelAndView mv;
+
+		Result<DictDefine> r = dictService.getDictDefineById(id);
+		if (r.isSucceed()) {
+
+			mv = this.view("dictedit");
+
+			DictItem di = new DictItem();
+			di.setDictId(id);
+			di.setDictName(r.getData().getName());
+			di.setIsFixed(false);
+
+			Boolean treeType = r.getData().getDataType() == DictDefine.DATATYPE_TREE;
+			if (treeType && !StringUtils.isEmpty(pid)) {
+
+				Result<DictItem> item = dictService.getDictItemsById(pid);
+				if (item.isSucceed()) {
+					di.setParentId(pid);
+					di.setParentName(item.getData().getDictName());
+				}
+			}
+
+			mv.addObject("treeType", treeType);
+			mv.addObject("model", di);
+		} else {
+
+			mv = this.errorPage(r.getMessage(), "");
+		}
+
+		return mv;
 	}
-	
+
+	@RequestMapping(value = "/dict/save", method = RequestMethod.POST)
+	public void saveDictItem(Map<String, Object> map, DictItem item) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				item.setId(KeyUtils.newId());
+				item.setIsFixed(false);
+				if (StringUtils.isEmpty(item.getParentId())) {
+					item.setParentId(null);
+				}
+				GeneralResult r = dictService.createDictItem(item);
+				ps.setResult(r);
+			}
+		});
+	}
 }

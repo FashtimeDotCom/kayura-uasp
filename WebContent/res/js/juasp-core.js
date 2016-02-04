@@ -156,6 +156,11 @@ juasp = {
 	juasp.getQueryParam = getQueryParam;
 	juasp.addUrlParam = addUrlParam;
 	juasp.newId = newId;
+	
+	juasp.SUCCESS = "success";
+	juasp.ERROR = "error";
+	juasp.FAILED = "failed";
+	
 
 	/**
 	 * 以 POST 方式请求一个处理.
@@ -217,14 +222,12 @@ juasp = {
 		        	}
 		        	
 		        	/* 处理未知的请求结果事件. */
-		        	if(result.type == 'unknown'){
-		        		if(typeof events.unknown == 'function'){
-		        			if(events.unknown(result)) return;
-		        		}
-		        		
-			        	errorTip("未知的请求结果类型。");
-		        		return;
-		        	}
+	        		if(typeof events.unknown == 'function'){
+	        			if(events.unknown(result)) return;
+	        		}
+	        		
+		        	errorTip("未知的请求结果类型。");
+	        		return;
 		        },
 	            complete: function (xhr, textStatus) {
 	            	// 调用完成事件.
@@ -305,30 +308,35 @@ juasp = {
 		
 		var wid = newId();
 
-		var w = $top('<div/>');
+		var w = $top("<div />");
 		setCache("wid_" + wid, w);
 		
+
 		w.window({
-		    title: opts.title,
-		    width: opts.width,
-		    height: opts.height,
-		    shadow: false,
-		    modal: true,
-		    iconCls: opts.iconCls,
-		    closed: false,
-		    minimizable: false,
-		    onClose : function(e){
-		    	if(typeof opts.onClose == 'function') {
+			title : opts.title,
+			width : opts.width,
+			height : opts.height,
+			shadow : false,
+			modal : true,
+			iconCls : opts.iconCls,
+			closed : false,
+			minimizable : false,
+			onClose : function(e) {
+				if (typeof opts.onClose == 'function') {
 					removeCache("wid_" + wid);
 					var result = getCache("win_result_" + wid, null);
 					opts.onClose(result);
-		    	}
-		    }
+				}
+			},
+			onOpen : function(e) {
+				w.css("overflow", "hidden");
+			}
 		});
 		
 		var url = addUrlParam(opts.url, '_wid', wid);
 		w.append('<iframe scrolling="auto" frameborder="0" src="' + url + '" ' 
 				+ 'style="width:100%;height:100%;"></iframe>');
+
 		w.window('open');
 	}
 	

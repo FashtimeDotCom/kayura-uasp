@@ -31,9 +31,13 @@ public class PostResult extends GeneralResult {
 	}
 
 	public void setResult(GeneralResult result) {
+		
 		this.setCode(result.getCode());
 		this.setMessage(result.getMessage());
-		this.setException(result.getException());
 		this.setData(result.getData());
+
+		if (this.getCode() == Result.ERROR) {
+			this.setException(result.getException());
+		}
 	}
 }

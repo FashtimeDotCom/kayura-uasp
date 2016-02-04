@@ -3,29 +3,35 @@
 <mapper namespace="org.kayura.uasp.dao.DictMapper">
 
 	<resultMap id="dictDefineMap" type="org.kayura.uasp.po.DictDefine">
-		<result property="id" column="Dict_Id" />
+		<id property="id" column="Dict_Id" />
 		<result property="tenantId" column="Tenant_Id" />
 		<result property="code" column="Code" />
 		<result property="name" column="Name" />
+		<result property="dataType" column="DataType" />
 		<result property="description" column="Description" />
 	</resultMap>
 
 	<resultMap id="dictItemMap" type="org.kayura.uasp.po.DictItem">
-		<result property="id" column="Item_Id" />
+		<id property="id" column="Item_Id" />
 		<result property="parentId" column="Parent_Id" />
 		<result property="dictId" column="Dict_Id" />
 		<result property="name" column="Name" />
 		<result property="value" column="Value" />
 		<result property="isFixed" column="IsFixed" />
 	</resultMap>
-
+	
+	<sql id="dictDefinceColumns">
+		t.Dict_Id,
+		t.Tenant_Id,
+		t.Code,
+		t.Name,
+		t.DataType,
+		t.Description
+	</sql>
+	
 	<select id="loadDictDefinces" parameterType="string" resultMap="dictDefineMap">
 		SELECT
-			t.Dict_Id,
-			t.Tenant_Id,
-			t.Code,
-			t.Name,
-			t.Description
+			<include refid="dictDefinceColumns" />
 		FROM USAP_DictDefine t
 		WHERE 
 		<if test="value == null">
@@ -34,6 +40,13 @@
 		<if test="value != null">
 			( t.Tenant_Id = #{value} )
 		</if>	
+	</select>
+
+	<select id="getDictDefineById" parameterType="string" resultMap="dictDefineMap">
+		SELECT
+			<include refid="dictDefinceColumns" />
+		FROM USAP_DictDefine t
+		WHERE t.Dict_id = #{value}
 	</select>
 
 	<sql id="dictItemColumns">
@@ -78,7 +91,7 @@
 			Value,
 			IsFixed
 		) VALUES (
-			#{itemId},
+			#{id},
 			#{parentId},
 			#{dictId},
 			#{name},
@@ -91,7 +104,7 @@
 		UPDATE UASP_DictItems
 		SET	Name = #{name},
 			Value = #{value}
-		WHERE ( Item_Id = #{itemId} )
+		WHERE ( Item_Id = #{id} )
 	</update>
 	
 	<delete id="deleteDictItem" parameterType="string">
