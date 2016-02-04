@@ -99,8 +99,10 @@ public class PanelTag extends TagRender {
 			if (id != null) {
 				out.write(" id=\"" + id + "\"");
 			}
-			if (classStyle != null) {
-				out.write(" class=\"" + getClassStyle() + "\"");
+			if (getClassStyle() != null) {
+				out.write(" class=\"easyui-" + getEasyuiTag() + " " + getClassStyle() + "\"");
+			} else {
+				out.write(" class=\"easyui-" + getEasyuiTag() + "\"");
 			}
 			if (style != null) {
 				out.write(" style=\"" + style + "\"");
