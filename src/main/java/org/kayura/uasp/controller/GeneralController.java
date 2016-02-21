@@ -162,9 +162,7 @@ public class GeneralController extends BaseController {
 
 				item.setId(KeyUtils.newId());
 				item.setIsFixed(false);
-				if (StringUtils.isEmpty(item.getParentId())) {
-					item.setParentId(null);
-				}
+				
 				GeneralResult r = dictService.createDictItem(item);
 				ps.setResult(r);
 			}

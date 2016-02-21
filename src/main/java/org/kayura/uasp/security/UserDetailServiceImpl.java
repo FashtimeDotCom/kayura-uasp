@@ -39,7 +39,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			User user = userService.getUserByUserName(username);
 
 			loginUser = new LoginUser(username, user.getPassword(), user.getIsEnabled(), true, true, true,
-					getAuthorities(user.getUserType()));
+					getAuthorities(user.getRoles()));
 
 			loginUser.setSalt(user.getSalt());
 			loginUser.setUserId(user.getUserId());
@@ -63,6 +63,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		if (roles.contains("ADMIN")) {
 			logger.debug("Grant ROLE_ADMIN to this user");
 			authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
+		
+		if (roles.contains("ROOT")) {
+			logger.debug("Grant ROLE_ROOT to this user");
+			authList.add(new SimpleGrantedAuthority("ROLE_ROOT"));
 		}
 
 		return authList;

@@ -69,6 +69,9 @@ public class DictServiceImpl implements DictService {
 	@Override
 	public GeneralResult createDictItem(DictItem dictItem) {
 
+		if (StringUtils.isEmpty(dictItem.getParentId())) {
+			dictItem.setParentId(null);
+		}
 		dictMapper.insertDictItem(dictItem);
 		return Result.succeed();
 	}

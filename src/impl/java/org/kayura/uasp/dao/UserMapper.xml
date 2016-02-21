@@ -16,7 +16,7 @@
 		<result property="keyword" column="Keyword" />
 		<result property="createTime" column="CreateTime" />
 		<result property="expireTime" column="ExpireTime" />
-		<result property="userType" column="UserType" />
+		<result property="roles" column="Roles" />
 		<result property="isEnabled" column="IsEnabled" />
 		<result property="isLocked" column="IsLocked" />
 	</resultMap>
@@ -43,7 +43,7 @@
 		t.Keyword,
 		t.CreateTime,
 		t.ExpireTime,
-		t.UserType,
+		t.Roles,
 		t.IsEnabled,
 		t.IsLocked
 	</sql>
@@ -59,8 +59,8 @@
 			<if test="keyword != null and keyword != ''">
 				AND ( t.Keyword LIKE #{keyword} )
 			</if>
-			<if test="userType != null">
-				AND ( t.UserType = #{userType} )
+			<if test="roles != null">
+				AND ( t.Roles = #{roles} )
 			</if>
 			<if test="isEnabled != null">
 				AND ( t.IsEnabled in ( ${isEnabled} ) )
@@ -128,7 +128,7 @@
 			Keyword,
 			CreateTime,
 			ExpireTime,
-			UserType,
+			Roles,
 			Status
 		) VALUES (
 			#{id},
@@ -142,7 +142,7 @@
 			#{keyword},
 			#{createTime},
 			#{expireTime},
-			#{userType},
+			#{roles},
 			#{status}
 		)
 	</insert>
@@ -153,7 +153,7 @@
 			Email = #{email},
 			MobileNo = #{mobileNo},
 			ExpireTime = #{expireTime},
-			UserType = #{userType},
+			Roles = #{roles},
 			Status = #{status}
 		WHERE User_Id = #{id}
 	</update>

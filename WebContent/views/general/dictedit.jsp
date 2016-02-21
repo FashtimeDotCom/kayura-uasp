@@ -6,7 +6,7 @@
 	<script type="text/javascript">
 		function submitForm() {
 			$('#ff').form('submit', {
-				url : '${root}/gm/dict/save',
+				url : '${root}/gm/dict/save.json',
 				onSubmit : function() {
 					
 				},

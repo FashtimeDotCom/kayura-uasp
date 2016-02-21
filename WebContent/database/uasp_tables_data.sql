@@ -64,7 +64,7 @@ drop table if exists USAP_DictDefine;
 create table UASP_AliveApps
 (
    Tenant_Id            varchar(32) not null comment '编号',
-   SubApp_Id            char(32) not null,
+   SubApp_Id            char(36) not null,
    ActiveTime           datetime not null,
    ExpireTime           datetime,
    Enabled              smallint not null comment '0 启用；1 禁用；',
@@ -76,8 +76,8 @@ create table UASP_AliveApps
 /*==============================================================*/
 create table UASP_AutoLogins
 (
-   Series_Id            char(32) not null,
-   User_Id              char(32) not null,
+   Series_Id            char(36) not null,
+   User_Id              char(36) not null,
    Token                varchar(64) not null,
    LastUsed             datetime not null,
    primary key (Series_Id)
@@ -88,7 +88,7 @@ create table UASP_AutoLogins
 /*==============================================================*/
 create table UASP_AutoNumbers
 (
-   AutoNumber_Id        char(32) not null,
+   AutoNumber_Id        char(36) not null,
    Tenant_Id            varchar(32) comment '编号',
    Code                 nvarchar(16) not null,
    Description          nvarchar(1024),
@@ -107,8 +107,8 @@ create table UASP_AutoNumbers
 /*==============================================================*/
 create table UASP_Companies
 (
-   Company_Id           char(32) not null,
-   Parent_Id            char(32),
+   Company_Id           char(36) not null,
+   Parent_Id            char(36),
    Tenant_Id            varchar(32) comment '编号',
    RowType              smallint not null comment '0 分类；1 公司；',
    Code                 varchar(32) not null,
@@ -134,9 +134,9 @@ create table UASP_Companies
 /*==============================================================*/
 create table UASP_Departments
 (
-   Department_Id        char(32) not null,
-   Parent_Id            char(32),
-   Company_Id           char(32) not null,
+   Department_Id        char(36) not null,
+   Parent_Id            char(36),
+   Company_Id           char(36) not null,
    RowType              smallint not null comment '0 分类；1 项；',
    Code                 varchar(32) not null,
    Name                 varchar(64) not null,
@@ -152,9 +152,9 @@ create table UASP_Departments
 /*==============================================================*/
 create table UASP_DictItems
 (
-   Item_Id              char(32) not null,
-   Parent_Id            char(32),
-   Dict_Id              char(32) not null,
+   Item_Id              varchar(32) not null,
+   Parent_Id            varchar(32),
+   Dict_Id              varchar(32) not null,
    Name                 varchar(32) not null,
    Value                varchar(1024) not null,
    IsFixed              bit not null,
@@ -166,10 +166,10 @@ create table UASP_DictItems
 /*==============================================================*/
 create table UASP_EmpPositions
 (
-   EmpPosition_Id       char(32) not null,
-   Department_Id        char(32),
-   Position_Id          char(32),
-   Employee_Id          char(32),
+   EmpPosition_Id       char(36) not null,
+   Department_Id        char(36),
+   Position_Id          char(36),
+   Employee_Id          char(36),
    primary key (EmpPosition_Id)
 );
 
@@ -178,7 +178,7 @@ create table UASP_EmpPositions
 /*==============================================================*/
 create table UASP_Employees
 (
-   Employee_Id          char(32) not null,
+   Employee_Id          char(36) not null,
    Code                 varchar(32),
    Name                 varchar(64) not null,
    Sex                  varchar(16) comment '词典',
@@ -196,7 +196,7 @@ create table UASP_Employees
 /*==============================================================*/
 create table UASP_FileInfos
 (
-   File_Id              char(32) not null,
+   File_Id              char(36) not null,
    FileSize             int not null,
    ContentType          varchar(512) not null,
    LogicPath            varchar(2048),
@@ -212,8 +212,8 @@ create table UASP_FileInfos
 /*==============================================================*/
 create table UASP_FileRelations
 (
-   Fr_Id                char(32) not null,
-   File_Id              char(32) not null,
+   Fr_Id                char(36) not null,
+   File_Id              char(36) not null,
    Tenant_Id            varchar(32) comment '编号',
    BizId                varchar(64) not null,
    Category             varchar(1024),
@@ -232,8 +232,8 @@ create table UASP_FileRelations
 /*==============================================================*/
 create table UASP_GroupRoles
 (
-   Group_Id             char(32) not null,
-   Role_Id              char(32) not null,
+   Group_Id             char(36) not null,
+   Role_Id              char(36) not null,
    primary key (Group_Id, Role_Id)
 );
 
@@ -242,8 +242,8 @@ create table UASP_GroupRoles
 /*==============================================================*/
 create table UASP_GroupUsers
 (
-   Group_Id             char(32) not null,
-   User_Id              char(32) not null,
+   Group_Id             char(36) not null,
+   User_Id              char(36) not null,
    primary key (Group_Id, User_Id)
 );
 
@@ -252,7 +252,7 @@ create table UASP_GroupUsers
 /*==============================================================*/
 create table UASP_Groups
 (
-   Group_Id             char(32) not null,
+   Group_Id             char(36) not null,
    Tenant_Id            varchar(32) comment '编号',
    Name                 varchar(64) not null,
    Enabled              bit not null comment '0 禁用；1 启用；',
@@ -264,10 +264,10 @@ create table UASP_Groups
 /*==============================================================*/
 create table UASP_MenuItems
 (
-   MenuItem_Id          char(32) not null,
-   Parent_Id            char(32),
-   MenuPlan_Id          char(32) not null,
-   Module_Id            char(32),
+   MenuItem_Id          char(36) not null,
+   Parent_Id            char(36),
+   MenuPlan_Id          char(36) not null,
+   Module_Id            char(36),
    Type                 smallint not null comment '1 菜单分类；2 菜单项；',
    DisplayName          varchar(64),
    Description          varchar(1024),
@@ -282,7 +282,7 @@ create table UASP_MenuItems
 /*==============================================================*/
 create table UASP_MenuSchemes
 (
-   MenuScheme_Id        char(32) not null,
+   MenuScheme_Id        char(36) not null,
    Tenant_Id            varchar(32) comment '此值为NULL时，为公共菜单方案',
    Code                 varchar(32) not null,
    Name                 varchar(64) not null,
@@ -294,9 +294,9 @@ create table UASP_MenuSchemes
 /*==============================================================*/
 create table UASP_Modules
 (
-   Module_Id            char(32) not null,
-   SubApp_Id            char(32),
-   Parent_Id            char(32),
+   Module_Id            char(36) not null,
+   SubApp_Id            char(36),
+   Parent_Id            char(36),
    Type                 smallint not null comment '1 模块分类；2 模块项；',
    Code                 varchar(32) not null,
    Name                 varchar(64) not null,
@@ -314,8 +314,8 @@ create table UASP_Modules
 /*==============================================================*/
 create table UASP_NumberCount
 (
-   NumberCount_Id       char(32) not null,
-   AutoNumber_Id        char(32),
+   NumberCount_Id       char(36) not null,
+   AutoNumber_Id        char(36),
    CountCycle           nvarchar(1024),
    Count                int,
    Remark               nvarchar(1024),
@@ -327,8 +327,8 @@ create table UASP_NumberCount
 /*==============================================================*/
 create table UASP_Positions
 (
-   Position_Id          char(32) not null,
-   Department_Id        char(32),
+   Position_Id          char(36) not null,
+   Department_Id        char(36),
    Code                 varchar(32),
    Name                 varchar(64),
    Level                int,
@@ -344,8 +344,8 @@ create table UASP_Positions
 /*==============================================================*/
 create table UASP_Profiles
 (
-   Profile_Id           char(32) not null,
-   User_Id              char(32) not null,
+   Profile_Id           char(36) not null,
+   User_Id              char(36) not null,
    Category             varchar(2048) not null,
    ObjectType           varchar(2048) not null,
    ValueType            varchar(2048) not null comment 'xml, json',
@@ -358,8 +358,8 @@ create table UASP_Profiles
 /*==============================================================*/
 create table UASP_RecycleNumbers
 (
-   RecycleNumber_Id     char(32) not null,
-   NumberCount_Id       char(32) not null,
+   RecycleNumber_Id     char(36) not null,
+   NumberCount_Id       char(36) not null,
    RecycleNo            varchar(1024) not null,
    primary key (RecycleNumber_Id)
 );
@@ -369,8 +369,8 @@ create table UASP_RecycleNumbers
 /*==============================================================*/
 create table UASP_RoleModules
 (
-   Role_Id              char(32) not null,
-   Module_Id            char(32) not null,
+   Role_Id              char(36) not null,
+   Module_Id            char(36) not null,
    Actions              varchar(4096),
    primary key (Role_Id, Module_Id)
 );
@@ -380,7 +380,7 @@ create table UASP_RoleModules
 /*==============================================================*/
 create table UASP_Roles
 (
-   Role_Id              char(32) not null,
+   Role_Id              char(36) not null,
    Tenant_Id            varchar(32) comment '编号',
    Name                 varchar(64) not null,
    Enabled              bit not null comment '0 禁用；1 启用；',
@@ -392,7 +392,7 @@ create table UASP_Roles
 /*==============================================================*/
 create table UASP_Settings
 (
-   Registry_Id          char(32) not null,
+   Registry_Id          char(36) not null,
    Tenant_Id            varchar(32) comment '编号',
    Path                 varchar(4096) not null,
    ItemKey              varchar(64) not null,
@@ -405,7 +405,7 @@ create table UASP_Settings
 /*==============================================================*/
 create table UASP_SubApps
 (
-   SubApp_Id            char(32) not null,
+   SubApp_Id            char(36) not null,
    Code                 varchar(32) not null,
    Name                 varchar(64) not null,
    Enabled              smallint not null comment '0 禁用；1 启动',
@@ -445,8 +445,8 @@ create table UASP_Tenants
 /*==============================================================*/
 create table UASP_UserEmployee
 (
-   User_Id              char(32) not null,
-   Employee_Id          char(32) not null,
+   User_Id              char(36) not null,
+   Employee_Id          char(36) not null,
    primary key (User_Id, Employee_Id)
 );
 
@@ -455,8 +455,8 @@ create table UASP_UserEmployee
 /*==============================================================*/
 create table UASP_UserRoles
 (
-   Role_Id              char(32) not null,
-   User_Id              char(32) not null,
+   Role_Id              char(36) not null,
+   User_Id              char(36) not null,
    primary key (Role_Id, User_Id)
 );
 
@@ -465,7 +465,7 @@ create table UASP_UserRoles
 /*==============================================================*/
 create table UASP_Users
 (
-   User_Id              char(32) not null,
+   User_Id              char(36) not null,
    Tenant_Id            varchar(32) comment '编号',
    UserName             varchar(64) not null,
    DisplayName          varchar(64) not null,
@@ -476,7 +476,7 @@ create table UASP_Users
    Keyword              varchar(2048),
    CreateTime           datetime not null,
    ExpireTime           datetime comment 'NULL 表时不过期.',
-   UserType             varchar(64) not null comment 'USER 员工；MANAGER 业务管理员；ADMIN 根管理员；',
+   Roles                varchar(128) not null comment 'USER 员工；ADMIN 系统管理员；ROOT 超级管理员；',
    IsEnabled            bit not null,
    IsLocked             bit not null,
    primary key (User_Id)
@@ -487,7 +487,7 @@ create table UASP_Users
 /*==============================================================*/
 create table USAP_DictDefine
 (
-   Dict_Id              char(32) not null,
+   Dict_Id              varchar(32) not null,
    Tenant_Id            varchar(32) comment '编号',
    Code                 varchar(32) not null,
    Name                 varchar(64) not null,
@@ -615,8 +615,19 @@ alter table UASP_Users add constraint FK_UASP_User_Ref_Tenant foreign key (Tenan
 alter table USAP_DictDefine add constraint FK_UASP_DictDefine_Ref_Tenant foreign key (Tenant_Id)
       references UASP_Tenants (Tenant_Id) on delete cascade on update restrict;
 
+
 -- ----------------------------
 -- Records of uasp_users
 -- ----------------------------
 INSERT INTO `uasp_users` VALUES ('BD817FA7716E11E586C6D8CB8A43F8DD', null, 'admin', '管理员', 'DI9JGSpp2M8gQ/tDVUQBuQ==', '18529aa9bc0764394e88e1ceb0c153e6ff621d18f377eb977e299bb66dbab5b0', 'admin@kayura.org', '13556090295', 'admin glr', '2015-10-13 13:54:32', null, 'ADMIN,USER', '', '\0');
 
+-- ----------------------------
+-- Records of usap_dictdefine
+-- ----------------------------
+INSERT INTO `usap_dictdefine` VALUES ('2A8DDB30D5EF11E58D5F00163E003262', null, 'Tndustry', '企业类型', '0', null);
+
+-- ----------------------------
+-- Records of uasp_dictitems
+-- ----------------------------
+INSERT INTO `uasp_dictitems` VALUES ('46491CCBD5EF11E58D5F00163E003262', null, '2A8DDB30D5EF11E58D5F00163E003262', '国企', '01', '');
+INSERT INTO `uasp_dictitems` VALUES ('669CE589D5EF11E58D5F00163E003262', null, '2A8DDB30D5EF11E58D5F00163E003262', '私企', '02', '');

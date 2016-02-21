@@ -322,8 +322,8 @@ juasp = {
 			closed : false,
 			minimizable : false,
 			onClose : function(e) {
+				removeCache("wid_" + wid);
 				if (typeof opts.onClose == 'function') {
-					removeCache("wid_" + wid);
 					var result = getCache("win_result_" + wid, null);
 					opts.onClose(result);
 				}

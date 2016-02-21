@@ -25,7 +25,7 @@ public class User implements Serializable {
 	private String keyword;
 	private Date createTime;
 	private Date expireTime;
-	private String userType;
+	private String roles;
 	private Boolean isEnabled;
 	private Boolean isLocked;
 
@@ -121,12 +121,12 @@ public class User implements Serializable {
 		this.expireTime = expireTime;
 	}
 
-	public String getUserType() {
-		return userType;
+	public String getRoles() {
+		return roles;
 	}
 
-	public void setUserType(String userType) {
-		this.userType = userType;
+	public void setRoles(String roles) {
+		this.roles = roles;
 	}
 
 	public Boolean getIsEnabled() {
