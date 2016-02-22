@@ -16,6 +16,7 @@ public class DictItem {
 	private String dictName;
 	private String name;
 	private String value;
+	private Integer serial;
 	private Boolean isFixed;
 
 	public String getId() {
@@ -72,6 +73,20 @@ public class DictItem {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	/**
+	 * @return the serial
+	 */
+	public Integer getSerial() {
+		return serial;
+	}
+
+	/**
+	 * @param serial the serial to set
+	 */
+	public void setSerial(Integer serial) {
+		this.serial = serial;
 	}
 
 	public Boolean getIsFixed() {

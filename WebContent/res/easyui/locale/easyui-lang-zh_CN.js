@@ -1,7 +1,7 @@
 if ($.fn.pagination){
 	$.fn.pagination.defaults.beforePageText = '第';
-	$.fn.pagination.defaults.afterPageText = '共{pages}页';
-	$.fn.pagination.defaults.displayMsg = '显示{from}到{to},共{total}记录';
+	$.fn.pagination.defaults.afterPageText = '共 {pages} 页';
+	$.fn.pagination.defaults.displayMsg = '显示 {from} 到 {to}, 共 {total} 记录';
 }
 if ($.fn.datagrid){
 	$.fn.datagrid.defaults.loadMsg = '正在处理，请稍待。。。';
@@ -18,13 +18,13 @@ $.map(['validatebox','textbox','filebox','searchbox',
 		'datebox','datetimebox','numberbox',
 		'spinner','numberspinner','timespinner','datetimespinner'], function(plugin){
 	if ($.fn[plugin]){
-		$.fn[plugin].defaults.missingMessage = '该输入项为必输项';
+		$.fn[plugin].defaults.missingMessage = '必填项';
 	}
 });
 if ($.fn.validatebox){
-	$.fn.validatebox.defaults.rules.email.message = '请输入有效的电子邮件地址';
-	$.fn.validatebox.defaults.rules.url.message = '请输入有效的URL地址';
-	$.fn.validatebox.defaults.rules.length.message = '输入内容长度必须介于{0}和{1}之间';
+	$.fn.validatebox.defaults.rules.email.message = '电子邮件格式';
+	$.fn.validatebox.defaults.rules.url.message = '为URL地址格式';
+	$.fn.validatebox.defaults.rules.length.message = '长度必须在{0}和{1}之间';
 	$.fn.validatebox.defaults.rules.remote.message = '请修正该字段';
 }
 if ($.fn.calendar){

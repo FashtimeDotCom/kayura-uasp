@@ -77,7 +77,7 @@ public class GeneralController extends BaseController {
 					List<DictDefine> list = r.getData();
 
 					TreeNode root = new TreeNode();
-					root.setId(KeyUtils.newId());
+					root.setId("ROOT");
 					root.setText("数据词典");
 
 					for (DictDefine d : list) {
@@ -105,13 +105,22 @@ public class GeneralController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				PageParams pageParams = ui.getPageParams(req);
-				Result<PageList<DictItem>> r = dictService.loadDictItems(dictId, null, pageParams);
-				ps.setCode(r.getCode());
-				if (r.isSucceed()) {
-					ps.add("items", ui.genPageData(r.getData()));
+				PageParams pp = ui.getPageParams(req);
+				
+				if(dictId.equals("ROOT")) {
+					
+					PageList<DictItem> list = new PageList<DictItem>(pp);
+					ps.setCode(Result.SUCCEED);
+					ps.add("items", ui.genPageData(list));
 				} else {
-					ps.addMessage(r.getMessage());
+					
+					Result<PageList<DictItem>> r = dictService.loadDictItems(dictId, null, pp);
+					ps.setCode(r.getCode());
+					if (r.isSucceed()) {
+						ps.add("items", ui.genPageData(r.getData()));
+					} else {
+						ps.addMessage(r.getMessage());
+					}
 				}
 			}
 		});
@@ -152,18 +161,57 @@ public class GeneralController extends BaseController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/dict/edit", method = RequestMethod.GET)
+	public ModelAndView getDictItem(String id) {
+
+		ModelAndView mv;
+
+		Result<DictItem> item = dictService.getDictItemsById(id);
+		if (item.isSucceed()) {
+
+			mv = this.view("dictedit");
+			mv.addObject("model", item.getData());
+		} else {
+
+			mv = this.errorPage(item.getMessage(), "");
+		}
+
+		return mv;
+	}
+
 	@RequestMapping(value = "/dict/save", method = RequestMethod.POST)
-	public void saveDictItem(Map<String, Object> map, DictItem item) {
+	public void saveDictItem(Map<String, Object> map, String name, DictItem item) {
 
 		postExecute(map, new PostAction() {
 
 			@Override
 			public void invoke(PostResult ps) {
 
-				item.setId(KeyUtils.newId());
-				item.setIsFixed(false);
-				
-				GeneralResult r = dictService.createDictItem(item);
+				GeneralResult r;
+				if (StringUtils.isEmpty(item.getId())) {
+
+					item.setId(KeyUtils.newId());
+					item.setIsFixed(false);
+
+					r = dictService.createDictItem(item);
+				} else {
+
+					r = dictService.updateDictItem(item);
+				}
+				ps.setResult(r);
+			}
+		});
+	}
+
+	@RequestMapping(value = "/dict/del", method = RequestMethod.POST)
+	public void saveDictItem(Map<String, Object> map, String id) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = dictService.deleteDictItem(id);
 				ps.setResult(r);
 			}
 		});

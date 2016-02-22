@@ -19,27 +19,50 @@
 					}
 				},
 				onClick: function(node){
-					dictId = node.id;
-					findItems(dictId);
+					var id = node.id;
+					findItems(node.id);
+					if(id == 'ROOT') {
+						$('#add').linkbutton('disable');
+						$('#edit').linkbutton('disable');
+						$('#delete').linkbutton('disable');
+					} else {
+						$('#add').linkbutton('enable');
+						$('#edit').linkbutton('enable');
+						$('#delete').linkbutton('enable');
+					}
 				}
 			});
 		});
 
-		function findItems(dictId) {
-			$('#tg').datagrid({
-				url: "${root}/gm/dict/load.json",
-				method : "post",
-				queryParams: {
-					"dictId": dictId
-				},
-				loadFilter: function(r){
-					if(r.type == juasp.SUCCESS) {
-						if (r.data && r.data.items){
-							return r.data.items;
+		function findItems(id) {
+
+			if(dictId != id){
+				
+				$('#tg').datagrid({
+					url: "${root}/gm/dict/load.json",
+					method : "post",
+					queryParams: {
+						"dictId": id
+					},
+					loadFilter: function(r){
+						if(r.type == juasp.SUCCESS) {
+							if (r.data && r.data.items){
+								return r.data.items;
+							}
 						}
+					},
+					onDblClickRow : function(idx, row){
+						editDict(row);
 					}
-				}
-			});
+				});
+			}
+			else {
+
+				$('#tg').datagrid('unselectAll');
+				$('#tg').datagrid('load');
+			}
+			
+			dictId = id;
 		}
 		
 		function newDict(){
@@ -49,23 +72,55 @@
 				height: "300px",
 				title: "创建词典项",
 				onClose : function(result){
-					
+					if(result == 1){
+						findItems(dictId);
+					}
 				}
 			});
 		}
 		
-		function editDict(){
-			juasp.openWin({
-				url: "${root}/gm/dict/edit?id=" + id,
-				width: "500px",
-				height: "300px",
-				title: "修改词典项",
-				onClose : function(result){
-					
-				}
-			});
+		function editDict(row){
+			
+			if(row == null){
+				row = $("#tg").datagrid("getSelected");
+			}
+			
+			if(row != null) {
+				juasp.openWin({
+					url: "${root}/gm/dict/edit?id=" + row.id,
+					width: "500px",
+					height: "300px",
+					title: "修改词典项",
+					onClose : function(result){
+						if(result == 1){
+							findItems(dictId);
+						}
+					}
+				});
+			} else {
+				juasp.info("编辑", "请选择要编辑的记录。");
+			}
 		}
 		
+		function delDict() {
+
+			var row = $("#tg").datagrid("getSelected");
+			
+			if(row != null) {
+				juasp.confirm("是否删除名称为【 " + row.name + " 】的词典项。", function(r) {
+					if(r == true) {
+						juasp.post('${root}/gm/dict/del.json', { id : row.id},
+								{ success: function(r){
+									var idx = $("#tg").datagrid("getRowIndex", row);
+									$("#tg").datagrid('deleteRow', idx);
+								}
+						});
+					}
+				});
+			} else {
+				juasp.info("删除", "请选择要删除的记录。");
+			}
+		}
 	</script>
 </e:section>
 
@@ -78,15 +133,16 @@
 			toolbar="#tb" pagination="true" pageSize="10" singleSelect="true"
 			striped="true" url="" method="post" idField="itemId" >
 			<e:columns>
-				<e:column field="ck" checkbox="true" />
 				<e:column field="name" title="词典名" width="200" />
 				<e:column field="value" title="词典值" width="150" />
+				<e:column field="serial" title="排序值" width="150" />
 				<e:column field="isFixedName" width="80" title="保留数据" />
 			</e:columns>
 		</e:datagrid>
 		<div id="tb">
-			<e:linkbutton id="add" iconCls="icon-add" plain="true" text="新增账号" onclick="newDict()" />
-			<e:linkbutton id="cancel" iconCls="icon-cancel" plain="true" text="删除账号" />
+			<e:linkbutton id="add" iconCls="icon-add" disabled="true" plain="true" text="新增" onclick="newDict()" />
+			<e:linkbutton id="edit" iconCls="icon-edit" disabled="true" plain="true" text="编辑" onclick="editDict()" />
+			<e:linkbutton id="delete" iconCls="icon-remove" disabled="true" plain="true" text="删除" onclick="delDict()" />
 		</div>
 	</e:layoutunit>
 </e:section>

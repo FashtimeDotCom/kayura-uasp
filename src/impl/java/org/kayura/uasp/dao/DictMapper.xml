@@ -14,9 +14,12 @@
 	<resultMap id="dictItemMap" type="org.kayura.uasp.po.DictItem">
 		<id property="id" column="Item_Id" />
 		<result property="parentId" column="Parent_Id" />
+		<result property="parentName" column="ParentName" />
 		<result property="dictId" column="Dict_Id" />
+		<result property="dictName" column="DictName" />
 		<result property="name" column="Name" />
 		<result property="value" column="Value" />
+		<result property="serial" column="Serial" />
 		<result property="isFixed" column="IsFixed" />
 	</resultMap>
 	
@@ -55,6 +58,7 @@
 		t.Dict_Id,
 		t.Name,
 		t.Value,
+		t.Serial,
 		t.IsFixed
 	</sql>
 	
@@ -73,12 +77,17 @@
 				AND ( t.Item_Id = #{itemId} )
 			</if>
 		</where>
+		ORDER BY t.Serial
 	</select>
 	
 	<select id="getDictItemsById" parameterType="string" resultMap="dictItemMap">
 		SELECT
-			<include refid="dictItemColumns" />
-		FROM UASP_DictItems t
+			<include refid="dictItemColumns" />,
+			d.Name AS DictName,
+			p.Name AS ParentName
+		FROM UASP_DictItems AS t 
+			INNER JOIN USAP_DictDefine AS d ON d.Dict_Id = t.Dict_Id
+			LEFT JOIN UASP_DictItems AS p ON p.Item_Id = t.Parent_Id
 		WHERE ( t.Item_Id = #{value} )
 	</select>
 
@@ -89,6 +98,7 @@
 			Dict_Id,
 			Name,
 			Value,
+			Serial,
 			IsFixed
 		) VALUES (
 			#{id},
@@ -96,6 +106,7 @@
 			#{dictId},
 			#{name},
 			#{value},
+			#{serial},
 			#{isFixed}
 		)
 	</insert>
@@ -103,13 +114,19 @@
 	<update id="updateDictItem" parameterType="org.kayura.uasp.po.DictItem">
 		UPDATE UASP_DictItems
 		SET	Name = #{name},
-			Value = #{value}
+			Value = #{value},
+			Serial = #{serial}
 		WHERE ( Item_Id = #{id} )
 	</update>
 	
+	<update id="increaseDictItemSerial" parameterType="string">
+		UPDATE UASP_DictItems
+		SET	 Serial = Serial + 1 
+		WHERE ( Item_Id = #{value} )
+	</update>
+	
 	<delete id="deleteDictItem" parameterType="string">
-		DELETE UASP_DictItems t
-		WHERE ( t.Item_Id = #{value} )
+		DELETE FROM UASP_DictItems WHERE ( Item_Id = #{value} )
 	</delete>
 	
 </mapper>

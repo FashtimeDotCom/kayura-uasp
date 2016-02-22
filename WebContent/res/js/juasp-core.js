@@ -145,6 +145,11 @@ juasp = {
 		}
 		return u;
 	}
+	
+	function isEmpty(value){
+		
+		return value == undefined || value == null || value == "";
+	}
 
 	/** 绑定常用方法至引导对象 **/
 	
@@ -156,6 +161,7 @@ juasp = {
 	juasp.getQueryParam = getQueryParam;
 	juasp.addUrlParam = addUrlParam;
 	juasp.newId = newId;
+	juasp.isEmpty = isEmpty;
 	
 	juasp.SUCCESS = "success";
 	juasp.ERROR = "error";
@@ -168,9 +174,9 @@ juasp = {
 	 * @param {object} config  {url 请求处理的地址, data 请求传入的数据} 
 	 * @param {events} events 请求的回调事件. 支持: error, complete, success, failure.
 	 */
-	function _post(config, events){
+	function post(url, data, events){
 		
-		var cfg = $.extend({ url: '', data: {}, dataType: 'json' }, config);
+		var cfg = { 'url': url, 'data': data, dataType: 'json' };
 		
 		if('undefined' == typeof events){ events = {}; }
 
@@ -183,12 +189,6 @@ juasp = {
 	            },
 	            success : function(result, status){
 	            	
-	            	/* 先判断是否存在result返回结果对象. */
-	            	if(!data.result){
-			        	jeos.errorTip("错误的返回结果对象值.");
-			        	return;
-	            	}
-	            	
 		        	/* 先执行完成回调事件,根据返回值决定是否执行后续代码. */
 		        	if(typeof events.complete == 'function'){
 		        		if(!events.complete(result)) return;
@@ -199,16 +199,15 @@ juasp = {
 		        		if(typeof events.error == 'function'){
 		        			if(events.error(result)) return;
 		        		}
-		        		errorTip(result.message);
+		        		info(result.message);
 		        		return;
 		        	}
-		        			        	
+
 		        	/* 处理执行成功时的事件,若未指定事件,将显示一个成功消息. */
 		        	if(result.type == 'success'){
 		        		if(typeof events.success == 'function'){
 		        			if(events.success(result)) return;
 		        		}
-		        		succTip(result.message);
 		        		return;
 		        	}
 
@@ -217,7 +216,6 @@ juasp = {
 		        		if(typeof events.failure == 'function'){
 		        			if(events.failure(result)) return;
 		        		}
-		        		warnTip(result.message);
 		        		return;
 		        	}
 		        	
@@ -226,7 +224,7 @@ juasp = {
 	        			if(events.unknown(result)) return;
 	        		}
 	        		
-		        	errorTip("未知的请求结果类型。");
+	        		info("未知的请求结果类型。");
 	        		return;
 		        },
 	            complete: function (xhr, textStatus) {
@@ -246,7 +244,7 @@ juasp = {
 	 * @param {String} returnUrl 可选值：可指定的跳转返回地址.
 	 * @returns void
 	 */
-	function _skipUrl(targetUrl, mode, returnUrl) {
+	function skipUrl(targetUrl, mode, returnUrl) {
 
 		var skipWin = win;
 
@@ -271,7 +269,7 @@ juasp = {
 	 * @param {String} url 指定打开的链接地址.
 	 * @param {String} icon 选项卡图标(暂不可用).
 	 */
-	function _openTab(title, url, iconCls) {
+	function openTab(title, url, iconCls) {
 
 		/* 取到选项卡的jquery对象 */
 		var tab = $top("#mainTabs");
@@ -304,7 +302,7 @@ juasp = {
 	 * </br>onClose 窗口关闭事件.
 	 * 
 	 */
-	function _openWin(opts){
+	function openWin(opts){
 		
 		var wid = newId();
 
@@ -345,7 +343,7 @@ juasp = {
 	 * 
 	 * @param {Object} result 返回给调用者的结果对象.
 	 */
-	function _closeWin(result) {
+	function closeWin(result) {
 		var wid = getQueryParam("_wid");
 		if (wid != null) {
 			var w = getCache("wid_" + wid, null);
@@ -362,7 +360,7 @@ juasp = {
 	 * @param {String} content 显示的内容.
 	 * @param {Event} onclose(r) 确认 true 或取消 false 响应的事件.
 	 */
-	function _confirm(content, onclose) {
+	function confirm(content, onclose) {
 		win.top.$.messager.confirm('确认', content, onclose);  
 	}
 	
@@ -372,7 +370,7 @@ juasp = {
 	 * @param {String} title 信息框的标题.
 	 * @param {String} content 显示的内容.
 	 */
-	function _info(title, content) {
+	function info(title, content) {
 
 		win.top.$.messager.show({
 			title: title,
@@ -389,21 +387,22 @@ juasp = {
 	 * @param {String} content 显示的内容.
 	 * @param {Event} onclose(r) 返回 r 值与 content 类型长度相同.
 	 */
-	function _prompt(title, content, onclose){
+	function prompt(title, content, onclose){
 		win.top.$.messager.prompt(title, content, function(r){
 			onclose(r);
 		});
 	}
 	
 	/** 绑定方法 **/
-	juasp.post = _post;
-	juasp.skipUrl = _skipUrl;
-	juasp.openTab = _openTab;
-	juasp.openWin = _openWin;
-	juasp.closeWin = _closeWin;
-	juasp.confirm = _confirm;
-	juasp.info = _info;
-	juasp.prompt = _prompt;
+	
+	juasp.post = post;
+	juasp.skipUrl = skipUrl;
+	juasp.openTab = openTab;
+	juasp.openWin = openWin;
+	juasp.closeWin = closeWin;
+	juasp.confirm = confirm;
+	juasp.info = info;
+	juasp.prompt = prompt;
 	
 }(jQuery, window));
 

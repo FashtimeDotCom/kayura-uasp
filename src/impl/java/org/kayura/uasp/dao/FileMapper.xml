@@ -89,7 +89,7 @@
 	
 	<select id="getFileInfoKeyByMd5" parameterType="string" resultType="string">
 		SELECT t.File_Id FROM UASP_FileInfos t
-		WHERE ( t.Status = 0 ) AND ( t.MD5 = #{value} ) 
+		WHERE ( t.MD5 = #{value} ) 
 	</select>
 
 	<select id="fileInfoExistsByMap" parameterType="map" resultType="boolean">

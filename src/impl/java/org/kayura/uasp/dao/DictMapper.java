@@ -32,6 +32,9 @@ public interface DictMapper extends BaseDao {
 
 	void updateDictItem(DictItem dictItem);
 
+	void increaseDictItemSerial(String itemId);
+
 	void deleteDictItem(String itemId);
+	
 
 }
