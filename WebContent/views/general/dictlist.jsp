@@ -21,7 +21,7 @@
 				onClick: function(node){
 					var id = node.id;
 					findItems(node.id);
-					if(id == 'ROOT') {
+					if(id == 'ROOT' || id == 'CATEGORY') {
 						$('#add').linkbutton('disable');
 						$('#edit').linkbutton('disable');
 						$('#delete').linkbutton('disable');

@@ -39,7 +39,7 @@ public class BaseController {
 	protected void setViewRootPath(String viewRootPath) {
 		this.viewRootPath = viewRootPath;
 	}
-
+	
 	/***
 	 * 用于从提供请求信息中获取分页信息.
 	 * 

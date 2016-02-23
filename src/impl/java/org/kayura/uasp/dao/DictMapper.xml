@@ -7,6 +7,7 @@
 		<result property="tenantId" column="Tenant_Id" />
 		<result property="code" column="Code" />
 		<result property="name" column="Name" />
+		<result property="catetory" column="Catetory" />
 		<result property="dataType" column="DataType" />
 		<result property="description" column="Description" />
 	</resultMap>
@@ -28,6 +29,7 @@
 		t.Tenant_Id,
 		t.Code,
 		t.Name,
+		t.Catetory,
 		t.DataType,
 		t.Description
 	</sql>

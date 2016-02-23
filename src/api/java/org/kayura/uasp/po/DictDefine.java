@@ -11,7 +11,7 @@ public class DictDefine {
 
 	/** 列表型数据项 */
 	public static final Integer DATATYPE_LIST = 0;
-	
+
 	/** 树型结构数据项 */
 	public static final Integer DATATYPE_TREE = 1;
 
@@ -19,6 +19,7 @@ public class DictDefine {
 	private String tenantId;
 	private String code;
 	private String name;
+	private String catetory;
 	private Integer dataType;
 	private String description;
 
@@ -52,6 +53,20 @@ public class DictDefine {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the catetory
+	 */
+	public String getCatetory() {
+		return catetory;
+	}
+
+	/**
+	 * @param catetory the catetory to set
+	 */
+	public void setCatetory(String catetory) {
+		this.catetory = catetory;
 	}
 
 	public Integer getDataType() {

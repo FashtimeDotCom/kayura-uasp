@@ -17,6 +17,7 @@ import org.kayura.uasp.dao.UserMapper;
 import org.kayura.uasp.po.AutoLogin;
 import org.kayura.uasp.po.User;
 import org.kayura.uasp.service.UserService;
+import org.kayura.utils.DateUtils;
 import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 
 	@Override
-	public PageList<User> findUsers(String keyword, Integer[] status, PageParams pageParams) {
+	public Result<PageList<User>> findUsers(String tenantId, String keyword, Integer[] status, PageParams pageParams) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("keyword", keyword);
@@ -40,8 +41,12 @@ public class UserServiceImpl implements UserService {
 			args.put("status", StringUtils.join(",", status));
 		}
 
+		if (!StringUtils.isEmpty(tenantId)) {
+			args.put("tenantId", tenantId);
+		}
+
 		PageList<User> list = userMapper.findUsersByMap(args, new PageBounds(pageParams));
-		return list;
+		return new Result<PageList<User>>(Result.SUCCEED, list);
 	}
 
 	@Override
@@ -83,6 +88,8 @@ public class UserServiceImpl implements UserService {
 		if (userMapper.isExistsByMap(args)) {
 			return Result.falied("该用户账号已经存在。");
 		}
+
+		user.setCreateTime(DateUtils.now());
 
 		userMapper.insertUser(user);
 		return Result.succeed();

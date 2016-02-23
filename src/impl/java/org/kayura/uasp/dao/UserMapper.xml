@@ -129,9 +129,10 @@
 			CreateTime,
 			ExpireTime,
 			Roles,
-			Status
+			IsEnabled,
+			IsLocked
 		) VALUES (
-			#{id},
+			#{userId},
 			#{tenantId},
 			#{userName},
 			#{displayName},
@@ -143,7 +144,8 @@
 			#{createTime},
 			#{expireTime},
 			#{roles},
-			#{status}
+			#{isEnabled},
+			#{isLocked}
 		)
 	</insert>
 
@@ -152,16 +154,18 @@
 		SET DisplayName = #{displayName},
 			Email = #{email},
 			MobileNo = #{mobileNo},
+			Keyword = #{keyword},
 			ExpireTime = #{expireTime},
 			Roles = #{roles},
-			Status = #{status}
-		WHERE User_Id = #{id}
+			IsEnabled = #{isEnabled},
+			IsLocked = #{isLocked}
+		WHERE User_Id = #{userId}
 	</update>
 	
 	<update id="changePassword" parameterType="map">
 		UPDATE UASP_Users
 		SET Password = #{password}
-		WHERE User_Id = #{id}
+		WHERE User_Id = #{userId}
 	</update>
 
 	<delete id="deleteUser" parameterType="string">

@@ -16,6 +16,10 @@ public class LoginUser extends User {
 
 	private static final long serialVersionUID = 4002208269317073182L;
 
+	public static final String ROLE_USER = "USER";
+	public static final String ROLE_ADMIN = "ADMIN";
+	public static final String ROLE_ROOT = "ROOT";
+
 	private String userId;
 	private String tenantId;
 	private String salt;
@@ -57,6 +61,20 @@ public class LoginUser extends User {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	public boolean hasAnyRole(String... roles) {
+
+		Collection<GrantedAuthority> grantedAuthorityList = getAuthorities();
+		for (String role : roles) {
+			for (GrantedAuthority authority : grantedAuthorityList) {
+				if (role.equals(authority.getAuthority())) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 }

@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @ControllerAdvice
-public class GlobalExceptionController extends BaseController {
+public class GlobalController extends BaseController {
 
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public ModelAndView maxUploadSizeException(Exception ex) {

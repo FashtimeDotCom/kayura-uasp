@@ -6,6 +6,7 @@ package org.kayura.uasp.controller;
 
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
+import org.kayura.security.LoginUser;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
@@ -21,6 +22,7 @@ import org.kayura.web.model.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -76,16 +78,31 @@ public class GeneralController extends BaseController {
 				if (r.isSucceed()) {
 					List<DictDefine> list = r.getData();
 
+					List<String> categories = list.stream().map(c -> c.getCatetory()).distinct()
+							.collect(Collectors.toList());
+
 					TreeNode root = new TreeNode();
 					root.setId("ROOT");
 					root.setText("数据词典");
 
-					for (DictDefine d : list) {
+					for (String c : categories) {
 
 						TreeNode n = new TreeNode();
-						n.setId(d.getId());
-						n.setText(d.getName());
+						n.setId("CATEGORY");
+						n.setText(c);
 
+						List<DictDefine> l2 = list.stream().filter(f -> f.getCatetory().equals(c))
+								.collect(Collectors.toList());
+
+						for (DictDefine l : l2) {
+
+							TreeNode d = new TreeNode();
+							d.setId(l.getId());
+							d.setText(l.getName());
+							
+							n.getChildren().add(d);
+						}
+						
 						root.getChildren().add(n);
 					}
 
@@ -106,15 +123,16 @@ public class GeneralController extends BaseController {
 			public void invoke(PostResult ps) {
 
 				PageParams pp = ui.getPageParams(req);
-				
-				if(dictId.equals("ROOT")) {
-					
+
+				if (dictId.equals("ROOT") || dictId.equals("CATEGORY")) {
+
 					PageList<DictItem> list = new PageList<DictItem>(pp);
 					ps.setCode(Result.SUCCEED);
 					ps.add("items", ui.genPageData(list));
 				} else {
-					
-					Result<PageList<DictItem>> r = dictService.loadDictItems(dictId, null, pp);
+
+					String tenantId = getLoginUser().getTenantId();
+					Result<PageList<DictItem>> r = dictService.loadDictItems(dictId, tenantId, pp);
 					ps.setCode(r.getCode());
 					if (r.isSucceed()) {
 						ps.add("items", ui.genPageData(r.getData()));
@@ -139,7 +157,6 @@ public class GeneralController extends BaseController {
 			DictItem di = new DictItem();
 			di.setDictId(id);
 			di.setDictName(r.getData().getName());
-			di.setIsFixed(false);
 
 			Boolean treeType = r.getData().getDataType() == DictDefine.DATATYPE_TREE;
 			if (treeType && !StringUtils.isEmpty(pid)) {
@@ -187,11 +204,12 @@ public class GeneralController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
+				LoginUser user = getLoginUser();
 				GeneralResult r;
 				if (StringUtils.isEmpty(item.getId())) {
 
 					item.setId(KeyUtils.newId());
-					item.setIsFixed(false);
+					item.setIsFixed(user.hasAnyRole(LoginUser.ROLE_ROOT));
 
 					r = dictService.createDictItem(item);
 				} else {
@@ -211,8 +229,18 @@ public class GeneralController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				GeneralResult r = dictService.deleteDictItem(id);
-				ps.setResult(r);
+				Result<DictItem> item = dictService.getDictItemsById(id);
+				if (item.isSucceed()) {
+
+					if (item.getData().getIsFixed() && !getLoginUser().hasAnyRole(LoginUser.ROLE_ROOT)) {
+
+						ps.setFalied("保留的数据 不允许被删除。");
+						return;
+					}
+
+					GeneralResult r = dictService.deleteDictItem(id);
+					ps.setResult(r);
+				}
 			}
 		});
 	}

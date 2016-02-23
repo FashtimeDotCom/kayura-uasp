@@ -9,6 +9,7 @@ import java.util.Date;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
+import org.kayura.type.Result;
 import org.kayura.uasp.po.AutoLogin;
 import org.kayura.uasp.po.User;
 
@@ -27,7 +28,7 @@ public interface UserService {
 	 * @param pageParams 分页信息.
 	 * @return 返回已经分页的集合及总记录信息.
 	 */
-	PageList<User> findUsers(String keyword, Integer[] status, PageParams pageParams);
+	Result<PageList<User>> findUsers(String tenantId, String keyword, Integer[] status, PageParams pageParams);
 	
 	/**
 	 * 修改用户密码。

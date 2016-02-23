@@ -48,6 +48,12 @@ public class HomeController extends BaseController {
 		return viewResult("index");
 	}
 
+	@RequestMapping(value = "/info", method = RequestMethod.GET)
+	public String info() {
+
+		return viewResult("info");
+	}
+	
 	@RequestMapping(value = "/res/vc", method = RequestMethod.GET)
 	public void AuthImage(HttpServletRequest req, HttpServletResponse res) throws IOException {
 

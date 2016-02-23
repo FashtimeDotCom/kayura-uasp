@@ -4,25 +4,81 @@
 
 <e:section name="head">
 	<script type="text/javascript">
+	
 		$(document).ready(function() {
+			
+			$('#tg').datagrid({
+				url: "${root}/admin/user/find.json",
+				method : "post",
+				queryParams: {
+					keyword : $('#keyword').val(),
+					status : $('#status').val()
+				},
+				loadFilter: function(r){
+					if(r.type == juasp.SUCCESS) {
+						if (r.data && r.data.items){
+							return r.data.items;
+						}
+					}
+				},
+				onDblClickRow : function(idx, row){
+					editUser(row);
+				}
+			});
 		});
 
 		function doSearch() {
-			$('#tt').datagrid('load', {
+			$('#tg').datagrid('load', {
 				keyword : $('#keyword').val(),
 				status : $('#status').val()
 			});
 		}
+		
+		function editUser(row){
+			
+			if(row == null){
+				row = $("#tg").datagrid("getSelected");
+			}
+			
+			if(row != null) {
+				juasp.openWin({
+					url: "${root}/admin/user/edit?id=" + row.userId,
+					width: "600px",
+					height: "500px",
+					title: "修改用户资料",
+					onClose : function(result){
+						if(result == 1){
+							//doSearch();
+						}
+					}
+				});
+			} else {
+				juasp.info("编辑", "请选择要编辑的记录。");
+			}
+		}
+		
+		function newUser(){
+			juasp.openWin({
+				url: "${root}/admin/user/new",
+				width: "600px",
+				height: "500px",
+				title: "创建用户资料",
+				onClose : function(result){
+					if(result == 1){
+						doSearch();
+					}
+				}
+			});
+		}
+		
 	</script>
 </e:section>
 
 <e:section name="body">
-	<e:datagrid id="tt" fit="true" title="管理" rownumbers="true" fitColumns="true"
+	<e:datagrid id="tg" fit="true" title="管理" rownumbers="true" fitColumns="true"
 		pagination="true" pageSize="10" singleSelect="true" striped="true"
-		toolbar="#tb,#tq" url="${root}/admin/user/find.json" method="post"
-		idField="userId">
+		toolbar="#tb,#tq" idField="userId">
 		<e:columns>
-			<e:column field="ck" checkbox="true" />
 			<e:column field="userName" width="100" title="用户名" />
 			<e:column field="displayName" width="180" title="显示名" />
 			<e:column field="email" width="280" title="电子邮件" />
@@ -31,10 +87,8 @@
 		</e:columns>
 	</e:datagrid>
 	<div id="tb">
-		<e:linkbutton id="add" iconCls="icon-add" plain="true" text="新增账号" />
-		<e:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑账号" />
-		<e:linkbutton id="cancel" iconCls="icon-cancel" plain="true"
-			text="删除账号" />
+		<e:linkbutton id="add" iconCls="icon-add" plain="true" text="新增账号" onclick="newUser()" />
+		<e:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑账号" onclick="editUser()" />
 	</div>
 	<div id="tq" style="padding-left: 8px">
 		关键字：
