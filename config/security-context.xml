@@ -10,9 +10,10 @@
 
 	<!-- 配置访问限制规则 -->
 	<http auto-config="true" use-expressions="true">
-
-		<!-- 登录页要求使用 https -->
+		
+		<!-- 无权限页 -->
 		<intercept-url pattern="/login**" access="permitAll" />
+		<intercept-url pattern="/info" access="permitAll" />
 	
 		<!-- 定义需要授权访问的请求路径 -->
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
