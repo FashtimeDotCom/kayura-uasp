@@ -4,9 +4,6 @@
 <%@ taglib prefix='sec' uri='http://www.springframework.org/security/tags'%>
 <%@ taglib prefix="e" uri="/WEB-INF/easyui.tld"%>
 <%
-	if (request.getUserPrincipal() != null) {
-		session.setAttribute("loginName", request.getUserPrincipal().getName());
-	}
 	session.setAttribute("root", request.getContextPath());
 	Cookie[] cookies = request.getCookies();
 	boolean themeReady = false;

@@ -21,8 +21,7 @@
 		</property>
 	</bean>
 
-	<bean
-		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="contentNegotiationManager">
 			<bean
 				class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
@@ -40,9 +39,7 @@
 		<property name="defaultViews">
 			<list>
 				<!-- JSON View -->
-				<bean
-					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
-
+				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
 				<!-- XML View -->
 				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
 					<constructor-arg>

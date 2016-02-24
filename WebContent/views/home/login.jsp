@@ -14,8 +14,8 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 </e:section>
 
 <e:section name="body">
-	<form id="loginForm" action="${root}/userlogin"
-		method="post">
+	<form id="loginForm" action="${root}/userlogin" method="post">
+		<input type="hidden" name="tid" value="${tid}" />
 		<div class="login_negative">
 			<div class="login_header" style="height: 100px; position: relative;">
 				<img src='${root}/res/images/login/logo.png' style="position: absolute;" alt="" />

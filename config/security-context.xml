@@ -4,14 +4,12 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<!-- 定义不需要过滤的请求路径 -->
-	<http pattern="/**/res/**" security="none" />
-	<http pattern="/example/**" security="none" />
-
 	<!-- 配置访问限制规则 -->
-	<http auto-config="true" use-expressions="true">
+	<http use-expressions="true" entry-point-ref="loginEntryPoint">
 		
-		<!-- 无权限页 -->
+		<!-- 定义不需要过滤的请求路径 -->
+		<intercept-url pattern="/**/res/**" access="permitAll" />
+		<intercept-url pattern="/example/**" access="permitAll" />
 		<intercept-url pattern="/login**" access="permitAll" />
 		<intercept-url pattern="/info" access="permitAll" />
 	
@@ -20,26 +18,50 @@
 		<intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
 		<intercept-url pattern="/**" access="hasRole('USER')" />
 
-		<!-- 用户登录配置 -->
-		<form-login login-processing-url="/userlogin" login-page="/login" 
-			authentication-failure-url="/login?error=1" 
-			password-parameter="p" username-parameter="u" />
-
 		<!-- 自动登录配置 -->
-		<remember-me key="${rememberme.key}" services-ref="rememberMeServices" />
+ 		<remember-me key="${rememberme.key}" services-ref="rememberMeServices" />
 		
 		<!-- 用户登出配置 -->
 		<logout logout-url="/logout" logout-success-url="/login?logout" invalidate-session="true" />
 
 		<!-- 用户会话配置 -->
-		<session-management session-fixation-protection="migrateSession" 
-			invalid-session-url="/login?inavlid">
+		<session-management session-fixation-protection="migrateSession" invalid-session-url="/login?inavlid">
 			<concurrency-control max-sessions="1" expired-url="/login?expired"/>
 		</session-management>
 
 		<!-- 自定义过滤器: 验证码安全过滤器. -->
 		<custom-filter ref="captchaAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
+
+		<!-- 自定义用户验证过滤器,替代了原默认的过滤器：增加对租户的处理 -->
+		<custom-filter ref="customLoginFilter" position="FORM_LOGIN_FILTER" />
+		
 	</http>
+
+	<!-- 使用了默认的登录入口,用于设置登录页地址 -->
+	<beans:bean id="loginEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:constructor-arg value="/login" />
+	</beans:bean>
+
+	<!-- 自定义的租户账号密码验证过滤器定义 -->
+	<beans:bean id="customLoginFilter" class="org.kayura.uasp.security.TenantUserPasswordLoginFilter">
+		<beans:property name="usernameParameter" value="u" />
+		<beans:property name="passwordParameter" value="p" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />
+		<beans:property name="authenticationFailureHandler">
+			<beans:bean
+				class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+				<beans:property name="defaultFailureUrl" value="/login?error=1" />
+			</beans:bean>
+		</beans:property>
+		<beans:property name="requiresAuthenticationRequestMatcher">
+			<beans:bean
+				class="org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.FilterProcessUrlRequestMatcher">
+				<beans:constructor-arg value="/userlogin" />
+			</beans:bean>
+		</beans:property>
+	</beans:bean>
 	
 	<!-- 使用数据库记录登录 Cookie 信息，随机产生密钥. -->
   	<beans:bean id="rememberMeServices" class="org.kayura.security.PersistentRememberMeServices">
@@ -49,7 +71,7 @@
  		<beans:property name="parameter" value="rme" />
 		<beans:property name="cookieName" value="KYLALID" />
 		<beans:property name="seriesLength" value="16" />
-		<beans:property name="tokenLength" value="32" />		
+		<beans:property name="tokenLength" value="32" />
 	</beans:bean>
  	<beans:bean id="tokenRepositoryImpl" class="org.kayura.uasp.security.RememberMeTokenRepositoryImpl">
 		<beans:property name="userService" ref="userServiceImpl" />

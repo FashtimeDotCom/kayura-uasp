@@ -12,7 +12,6 @@ import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.User;
 import org.kayura.uasp.service.UserService;
-import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
@@ -89,8 +88,11 @@ public class AdminController extends BaseController {
 	@RequestMapping(value = "user/new", method = RequestMethod.GET)
 	public String userNew(HttpServletRequest req, Map<String, Object> map, String id) {
 
-		User userVo = new User();
-		map.put("model", userVo);
+		User user = new User();
+		user.setRoles("USER");
+		user.setIsEnabled(true);
+		user.setIsLocked(false);
+		map.put("model", user);
 
 		return viewResult("user/edit");
 	}
@@ -100,7 +102,6 @@ public class AdminController extends BaseController {
 
 		User user = userService.getUserById(id);
 		user.setPassword("");
-		user.setExpireTime(DateUtils.now());
 		map.put("model", user);
 
 		return viewResult("user/edit");

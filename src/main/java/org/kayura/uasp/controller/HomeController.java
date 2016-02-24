@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
 import org.kayura.web.util.VerifyCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author liangxia@live.com
@@ -43,9 +44,10 @@ public class HomeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String index() {
+	public ModelAndView index(Map<String, Object> model) {
 
-		return viewResult("index");
+		model.put("loginName", this.getLoginUser().getDisplayName());
+		return view("index", model);
 	}
 
 	@RequestMapping(value = "/info", method = RequestMethod.GET)
@@ -53,7 +55,7 @@ public class HomeController extends BaseController {
 
 		return viewResult("info");
 	}
-	
+
 	@RequestMapping(value = "/res/vc", method = RequestMethod.GET)
 	public void AuthImage(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
@@ -74,14 +76,23 @@ public class HomeController extends BaseController {
 		VerifyCodeUtils.outputImage(w, h, res.getOutputStream(), verifyCode);
 	}
 
+	@RequestMapping(value = "/403", method = RequestMethod.GET)
+	public ModelAndView denied() {
+
+		return view("403");
+	}
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout,
-			@RequestParam(value = "expired", required = false) String expired,
-			@RequestParam(value = "inavlid", required = false) String inavlid, Map<String, Object> map,
-			HttpServletRequest req) {
+	public String login(String error, String logout, String expired, String inavlid, String tid,
+			Map<String, Object> map, HttpServletRequest req) {
 
 		HttpSession session = req.getSession(true);
+
+		if (!StringUtils.isEmpty(tid)) {
+			session.setAttribute("tenantId", tid);
+		} else {
+			tid = (String) session.getAttribute("tenantId");
+		}
 
 		if (error != null) {
 
@@ -100,6 +111,7 @@ public class HomeController extends BaseController {
 			map.put("message", "因您长时间未使用，需重新登录。");
 		}
 
+		map.put("tid", tid);
 		map.put("runMode", runMode);
 		return viewResult("login");
 	}

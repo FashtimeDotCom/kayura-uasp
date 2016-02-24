@@ -8,6 +8,7 @@
 		var dictId = "", id = "";
 		
 		$(function() {
+			
 			$('#tv').tree({
 				url : "${root}/gm/dicts.json",
 				method : "post",
@@ -35,9 +36,9 @@
 		});
 
 		function findItems(id) {
+			
+			if(dictId == "") {
 
-			if(dictId != id){
-				
 				$('#tg').datagrid({
 					url: "${root}/gm/dict/load.json",
 					method : "post",
@@ -55,12 +56,16 @@
 						editDict(row);
 					}
 				});
+				
+			} else {
+				
+				$('#tg').datagrid('load', { "dictId": id });
 			}
-			else {
+			//else {
 
-				$('#tg').datagrid('unselectAll');
-				$('#tg').datagrid('load');
-			}
+				//$('#tg').datagrid('unselectAll');
+				//$('#tg').datagrid('load');
+			//}
 			
 			dictId = id;
 		}
@@ -129,9 +134,8 @@
 		<ul id="tv" class="easyui-tree">   
 	</e:layoutunit>
 	<e:layoutunit region="center" border="false" >
-		<e:datagrid id="tg" fit="true" rownumbers="true" 
-			toolbar="#tb" pagination="true" pageSize="10" singleSelect="true"
-			striped="true" url="" method="post" idField="itemId" >
+		<e:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" 
+			pageSize="10" singleSelect="true" striped="true" idField="itemId" >
 			<e:columns>
 				<e:column field="name" title="词典名" width="200" />
 				<e:column field="value" title="词典值" width="150" />

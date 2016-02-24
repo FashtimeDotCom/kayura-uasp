@@ -12,7 +12,9 @@
 			欢迎：${loginName} <a href="${root}/logout" style="margin-left: 10px;">注销</a>		
 		</div>
 	</e:layoutunit>
-	<e:layoutunit region="south" style="height: 35px"></e:layoutunit>
+	<e:layoutunit region="south" style="height: 35px">
+		共 ${numUsers} 人在线.
+	</e:layoutunit>
 	<e:layoutunit region="west" split="true" title="导航栏"
 		style="width: 160px;">
 		<e:accordion fit="true" border="false">
