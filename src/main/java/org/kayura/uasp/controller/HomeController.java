@@ -101,8 +101,9 @@ public class HomeController extends BaseController {
 			} else if (error.equals("2")) {
 				map.put("message", "输入的验证码错误。");
 			}
-
+			
 			session.setAttribute("needvc", true);
+			
 		} else if (logout != null) {
 			map.put("message", "已经成功退出系统。");
 		} else if (expired != null) {

@@ -4,18 +4,18 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<http pattern="/**/res/**" security="none" />
+
 	<!-- 配置访问限制规则 -->
-	<http use-expressions="true" entry-point-ref="loginEntryPoint">
+	<http use-expressions="true" entry-point-ref="loginEntryPoint" access-denied-page="/403">
 		
 		<!-- 定义不需要过滤的请求路径 -->
-		<intercept-url pattern="/**/res/**" access="permitAll" />
 		<intercept-url pattern="/example/**" access="permitAll" />
 		<intercept-url pattern="/login**" access="permitAll" />
 		<intercept-url pattern="/info" access="permitAll" />
 	
 		<!-- 定义需要授权访问的请求路径 -->
-		<intercept-url pattern="/root/**" access="hasRole('ROOT')" />
-		<intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
+		<intercept-url pattern="/admin/**" access="hasRole('ADMIN') or hasRole('ROOT')" />
 		<intercept-url pattern="/**" access="hasRole('USER')" />
 
 		<!-- 自动登录配置 -->

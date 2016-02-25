@@ -53,28 +53,25 @@ public class CaptchaAuthenticationFilter extends GenericFilterBean {
 			String requestCaptcha = request.getParameter(this.getCaptchaFieldName());
 			String genCaptcha = (String) session.getAttribute("j_captcha");
 
+			session.removeAttribute("needvc");
 			logger.info("开始校验验证码，生成的验证码为：" + genCaptcha + " ，输入的验证码为：" + requestCaptcha);
 
-			if (!genCaptcha.equals(requestCaptcha)) {
+			if (genCaptcha != null && !genCaptcha.equals(requestCaptcha.toLowerCase())) {
 
 				try {
-					throw new CaptchaException(
-							"AbstractUserDetailsAuthenticationProvider.badCaptcha");
+					throw new CaptchaException("AbstractUserDetailsAuthenticationProvider.badCaptcha");
 				} catch (AuthenticationException e) {
 					unsuccessfulAuthentication(request, response, e);
+					return;
 				}
-				return;
 			}
-
-			session.removeAttribute("needvc");
 		}
 
 		chain.doFilter(request, response);
 	}
 
-	protected void unsuccessfulAuthentication(HttpServletRequest request,
-			HttpServletResponse response, AuthenticationException failed)
-					throws IOException, ServletException {
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
 
 		SecurityContextHolder.clearContext();
 
@@ -87,8 +84,7 @@ public class CaptchaAuthenticationFilter extends GenericFilterBean {
 		failureHandler.onAuthenticationFailure(request, response, failed);
 	}
 
-	public void setAuthenticationFailureHandler(
-			AuthenticationFailureHandler failureHandler) {
+	public void setAuthenticationFailureHandler(AuthenticationFailureHandler failureHandler) {
 		Assert.notNull(failureHandler, "failureHandler cannot be null");
 		this.failureHandler = failureHandler;
 	}

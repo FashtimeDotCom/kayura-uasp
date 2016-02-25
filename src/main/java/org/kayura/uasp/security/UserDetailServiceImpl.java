@@ -60,7 +60,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		logger.debug("Grant ROLE_USER to this user");
 		authList.add(new SimpleGrantedAuthority("USER"));
 
-		if (roles.contains("ADMIN") || roles.contains("ROOT")) {
+		if (roles.contains("ADMIN")) {
 			logger.debug("Grant ROLE_ADMIN to this user");
 			authList.add(new SimpleGrantedAuthority("ADMIN"));
 		}
