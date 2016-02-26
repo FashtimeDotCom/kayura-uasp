@@ -12,6 +12,7 @@ public class DictItem {
 	private String id;
 	private String parentId;
 	private String parentName;
+	private String tenantId;
 	private String dictId;
 	private String dictName;
 	private String name;
@@ -41,6 +42,20 @@ public class DictItem {
 
 	public void setParentName(String parentName) {
 		this.parentName = parentName;
+	}
+
+	/**
+	 * @return the tenantId
+	 */
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	/**
+	 * @param tenantId the tenantId to set
+	 */
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	public String getDictId() {

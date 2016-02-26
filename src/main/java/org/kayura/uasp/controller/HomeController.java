@@ -88,8 +88,12 @@ public class HomeController extends BaseController {
 
 		HttpSession session = req.getSession(true);
 
-		if (!StringUtils.isEmpty(tid)) {
-			session.setAttribute("tenantId", tid);
+		if (req.getParameterMap().containsKey("tid")) {
+			if (StringUtils.isEmpty(tid)) {
+				session.removeAttribute("tenantId");
+			} else {
+				session.setAttribute("tenantId", tid);
+			}
 		} else {
 			tid = (String) session.getAttribute("tenantId");
 		}
@@ -101,9 +105,9 @@ public class HomeController extends BaseController {
 			} else if (error.equals("2")) {
 				map.put("message", "输入的验证码错误。");
 			}
-			
+
 			session.setAttribute("needvc", true);
-			
+
 		} else if (logout != null) {
 			map.put("message", "已经成功退出系统。");
 		} else if (expired != null) {

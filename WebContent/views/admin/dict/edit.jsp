@@ -8,7 +8,7 @@
 		function submitForm() {
 			
 			$('#ff').form('submit', {
-				url : '${root}/gm/dict/save.json',
+				url : '${root}/admin/dict/save.json',
 				onSubmit : function() {
 					return $('#ff').form('validate');
 				},

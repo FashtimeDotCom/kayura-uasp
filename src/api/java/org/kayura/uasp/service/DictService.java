@@ -22,9 +22,9 @@ public interface DictService {
 	
 	Result<DictDefine> getDictDefineById(String dictId);
 	
-	Result<List<DictDefine>> loadDictDefinces(String tenantId);
+	Result<List<DictDefine>> loadDictDefinces();
 
-	Result<PageList<DictItem>> loadDictItems(String dictId, String parentId, PageParams params);
+	Result<PageList<DictItem>> loadDictItems(String tenantId, String dictId, String parentId, PageParams params);
 
 	Result<DictItem> getDictItemsById(String itemId);
 

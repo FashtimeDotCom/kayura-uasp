@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
+import org.kayura.security.LoginUser;
 import org.kayura.utils.KeyUtils;
 import org.kayura.type.Result;
 import org.kayura.uasp.models.UploadItem;
@@ -80,6 +81,8 @@ public class FileController extends BaseController {
 
 			@Override
 			public void invoke(PostResult r) {
+				
+				LoginUser user = getLoginUser();
 
 				// 创建文件上传存储信息.
 				FileUpload fu = new FileUpload();
@@ -87,8 +90,9 @@ public class FileController extends BaseController {
 				fu.setBizId(ui.getBizId());
 				fu.setCategory(ui.getCategory());
 				fu.setTags(ui.getTags());
-				fu.setUploaderId(ui.getUploaderId());
-				fu.setUploaderName(ui.getUploaderName());
+				fu.setTenantId(user.getTenantId());
+				fu.setUploaderId(user.getUserId());
+				fu.setUploaderName(user.getDisplayName());
 				fu.setIsEncrypt(ui.getIsEncrypt());
 
 				// 循环处理所有上传的文件.

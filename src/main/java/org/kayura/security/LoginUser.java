@@ -77,4 +77,16 @@ public class LoginUser extends User {
 		return false;
 	}
 
+	public Boolean hasRoot(){
+		return hasAnyRole(ROLE_ROOT);
+	}
+	
+	public Boolean hasAdmin(){
+		return hasAnyRole(ROLE_ADMIN);
+	}
+	
+	public Boolean hasUser(){
+		return hasAnyRole(ROLE_USER);
+	}
+	
 }

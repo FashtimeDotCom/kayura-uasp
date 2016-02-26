@@ -17,8 +17,6 @@ public class UploadItem implements Serializable {
 	private String category;
 	private Integer serial;
 	private Boolean allowChange;
-	private String uploaderId;
-	private String uploaderName;
 	private Boolean isEncrypt;
 	private String tags;
 
@@ -51,46 +49,12 @@ public class UploadItem implements Serializable {
 		this.serial = serial;
 	}
 
-	/**
-	 * @return the allowChange
-	 */
 	public Boolean getAllowChange() {
 		return allowChange;
 	}
 
-	/**
-	 * @param allowChange the allowChange to set
-	 */
 	public void setAllowChange(Boolean allowChange) {
 		this.allowChange = allowChange;
-	}
-
-	/**
-	 * @return the uploaderId
-	 */
-	public String getUploaderId() {
-		return uploaderId;
-	}
-
-	/**
-	 * @param uploaderId the uploaderId to set
-	 */
-	public void setUploaderId(String uploaderId) {
-		this.uploaderId = uploaderId;
-	}
-
-	/**
-	 * @return the uploaderName
-	 */
-	public String getUploaderName() {
-		return uploaderName;
-	}
-
-	/**
-	 * @param uploaderName the uploaderName to set
-	 */
-	public void setUploaderName(String uploaderName) {
-		this.uploaderName = uploaderName;
 	}
 
 	public Boolean getIsEncrypt() {

@@ -65,5 +65,9 @@ public class TreeNode {
     public Map<String, Object> getAttributes() {
         return attributes;
     }
+    
+    public void addAttr(String key, Object value){
+    	this.attributes.put(key, value);
+    }
 
 }

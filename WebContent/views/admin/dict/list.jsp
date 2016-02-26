@@ -10,13 +10,11 @@
 		$(function() {
 			
 			$('#tv').tree({
-				url : "${root}/gm/dicts.json",
+				url : "${root}/admin/dict/define.json",
 				method : "post",
 				loadFilter : function(r) {
 					if (r.data && r.data.items) {
 						return r.data.items;
-					} else {
-						return r;
 					}
 				},
 				onClick: function(node){
@@ -40,7 +38,7 @@
 			if(dictId == "") {
 
 				$('#tg').datagrid({
-					url: "${root}/gm/dict/load.json",
+					url: "${root}/admin/dict/load.json",
 					method : "post",
 					queryParams: {
 						"dictId": id
@@ -52,27 +50,34 @@
 							}
 						}
 					},
+					onClickRow : function(idx, row){
+						<c:if test="${ISROOT==false}">
+						if(row.isFixed){
+							$('#delete').linkbutton('disable');
+							$('#edit').linkbutton('disable');
+						}else {
+							$('#delete').linkbutton('enable');
+							$('#edit').linkbutton('enable');
+						}
+						</c:if>
+					},
 					onDblClickRow : function(idx, row){
 						editDict(row);
 					}
 				});
 				
 			} else {
-				
+
+				$('#tg').datagrid('unselectAll');
 				$('#tg').datagrid('load', { "dictId": id });
 			}
-			//else {
-
-				//$('#tg').datagrid('unselectAll');
-				//$('#tg').datagrid('load');
-			//}
 			
 			dictId = id;
 		}
 		
 		function newDict(){
 			juasp.openWin({
-				url: "${root}/gm/dict/new?id=" + dictId,
+				url: "${root}/admin/dict/new?id=" + dictId,
 				width: "450px",
 				height: "300px",
 				title: "创建词典项",
@@ -91,17 +96,23 @@
 			}
 			
 			if(row != null) {
-				juasp.openWin({
-					url: "${root}/gm/dict/edit?id=" + row.id,
-					width: "500px",
-					height: "300px",
-					title: "修改词典项",
-					onClose : function(result){
-						if(result == 1){
-							findItems(dictId);
+				<c:if test="${ISROOT==false}">
+				if(!row.isFixed){
+				</c:if>
+					juasp.openWin({
+						url: "${root}/admin/dict/edit?id=" + row.id,
+						width: "500px",
+						height: "300px",
+						title: "修改词典项",
+						onClose : function(result){
+							if(result == 1){
+								findItems(dictId);
+							}
 						}
-					}
-				});
+					});
+				<c:if test="${ISROOT==false}">
+				}
+				</c:if>
 			} else {
 				juasp.info("编辑", "请选择要编辑的记录。");
 			}
@@ -112,16 +123,22 @@
 			var row = $("#tg").datagrid("getSelected");
 			
 			if(row != null) {
-				juasp.confirm("是否删除名称为【 " + row.name + " 】的词典项。", function(r) {
-					if(r == true) {
-						juasp.post('${root}/gm/dict/del.json', { id : row.id},
-								{ success: function(r){
-									var idx = $("#tg").datagrid("getRowIndex", row);
-									$("#tg").datagrid('deleteRow', idx);
-								}
-						});
-					}
-				});
+				<c:if test="${ISROOT==false}">
+				if(!row.isFixed){
+				</c:if>
+					juasp.confirm("是否删除名称为【 " + row.name + " 】的词典项。", function(r) {
+						if(r == true) {
+							juasp.post('${root}/admin/dict/del.json', { id : row.id},
+									{ success: function(r){
+										var idx = $("#tg").datagrid("getRowIndex", row);
+										$("#tg").datagrid('deleteRow', idx);
+									}
+							});
+						}
+					});
+				<c:if test="${ISROOT==false}">
+				}
+				</c:if>
 			} else {
 				juasp.info("删除", "请选择要删除的记录。");
 			}
@@ -131,7 +148,7 @@
 
 <e:section name="body">
 	<e:layoutunit region="west" split="true" border="true" style="padding: 10px; width: 160px;">
-		<ul id="tv" class="easyui-tree">   
+		<ul id="tv" class="easyui-tree"></ul>
 	</e:layoutunit>
 	<e:layoutunit region="center" border="false" >
 		<e:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" 

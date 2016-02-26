@@ -4,7 +4,6 @@
 
 	<resultMap id="dictDefineMap" type="org.kayura.uasp.po.DictDefine">
 		<id property="id" column="Dict_Id" />
-		<result property="tenantId" column="Tenant_Id" />
 		<result property="code" column="Code" />
 		<result property="name" column="Name" />
 		<result property="catetory" column="Catetory" />
@@ -16,6 +15,7 @@
 		<id property="id" column="Item_Id" />
 		<result property="parentId" column="Parent_Id" />
 		<result property="parentName" column="ParentName" />
+		<result property="tenantId" column="Tenant_Id" />
 		<result property="dictId" column="Dict_Id" />
 		<result property="dictName" column="DictName" />
 		<result property="name" column="Name" />
@@ -26,7 +26,6 @@
 	
 	<sql id="dictDefinceColumns">
 		t.Dict_Id,
-		t.Tenant_Id,
 		t.Code,
 		t.Name,
 		t.Catetory,
@@ -38,13 +37,6 @@
 		SELECT
 			<include refid="dictDefinceColumns" />
 		FROM USAP_DictDefine t
-		WHERE 
-		<if test="value == null">
-			( t.Tenant_Id IS #{value} )
-		</if>
-		<if test="value != null">
-			( t.Tenant_Id = #{value} )
-		</if>	
 	</select>
 
 	<select id="getDictDefineById" parameterType="string" resultMap="dictDefineMap">
@@ -57,6 +49,7 @@
 	<sql id="dictItemColumns">
 		t.Item_Id,
 		t.Parent_Id,
+		t.Tenant_Id,
 		t.Dict_Id,
 		t.Name,
 		t.Value,
@@ -69,6 +62,12 @@
 			<include refid="dictItemColumns" />
 		FROM UASP_DictItems t
 		<where>
+			<if test="tenantId == null">
+				AND ( t.Tenant_Id IS NULL )
+			</if>
+			<if test="tenantId != null">
+				AND ( ( t.Tenant_Id IS NULL) OR (t.Tenant_Id = #{tenantId} ) )
+			</if>
 			<if test="dictId != null">
 				AND ( t.Dict_Id = #{dictId} )
 			</if>
@@ -98,6 +97,7 @@
 			Item_Id,
 			Parent_Id,
 			Dict_Id,
+			Tenant_Id,
 			Name,
 			Value,
 			Serial,
@@ -106,6 +106,7 @@
 			#{id},
 			#{parentId},
 			#{dictId},
+			#{tenantId},
 			#{name},
 			#{value},
 			#{serial},

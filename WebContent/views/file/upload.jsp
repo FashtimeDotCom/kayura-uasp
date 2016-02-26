@@ -12,8 +12,6 @@
 			style="width: 400px; padding: 30px 70px 50px 70px">
 			<form id="ff" method="post" action="${root}/file/upload" enctype="multipart/form-data">
 				<input type="hidden" name="bizId" value="C3CD06B2-1AE5-481F-A3BF-ADC177CD586F" />
-				<input type="hidden" name="uploaderId" value="BD817FA7-716E-11E5-86C6-D8CB8A43F8DD" />
-				<input type="hidden" name="uploaderName" value="管理员" />
 
 				<div style="margin-bottom: 20px">
 					<div style="margin-bottom: 5px">

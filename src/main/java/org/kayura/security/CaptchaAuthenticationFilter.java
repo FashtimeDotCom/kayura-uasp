@@ -48,7 +48,7 @@ public class CaptchaAuthenticationFilter extends GenericFilterBean {
 
 		HttpSession session = request.getSession();
 		Object needvc = session.getAttribute("needvc");
-		if (needvc != null && (Boolean) needvc) {
+		if (request.getMethod() == "POST" && needvc != null && (Boolean) needvc) {
 
 			String requestCaptcha = request.getParameter(this.getCaptchaFieldName());
 			String genCaptcha = (String) session.getAttribute("j_captcha");
@@ -56,7 +56,7 @@ public class CaptchaAuthenticationFilter extends GenericFilterBean {
 			session.removeAttribute("needvc");
 			logger.info("开始校验验证码，生成的验证码为：" + genCaptcha + " ，输入的验证码为：" + requestCaptcha);
 
-			if (genCaptcha != null && !genCaptcha.equals(requestCaptcha.toLowerCase())) {
+			if (genCaptcha != null && !genCaptcha.equals(requestCaptcha)) {
 
 				try {
 					throw new CaptchaException("AbstractUserDetailsAuthenticationProvider.badCaptcha");

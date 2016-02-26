@@ -199,7 +199,7 @@ juasp = {
 		        		if(typeof events.error == 'function'){
 		        			if(events.error(result)) return;
 		        		}
-		        		info(result.message);
+		        		info("异常", result.message);
 		        		return;
 		        	}
 
@@ -208,6 +208,7 @@ juasp = {
 		        		if(typeof events.success == 'function'){
 		        			if(events.success(result)) return;
 		        		}
+		        		info("成功", result.message);
 		        		return;
 		        	}
 
@@ -216,12 +217,14 @@ juasp = {
 		        		if(typeof events.failure == 'function'){
 		        			if(events.failure(result)) return;
 		        		}
+		        		info("失败", result.message);
 		        		return;
 		        	}
 		        	
 		        	/* 处理未知的请求结果事件. */
 	        		if(typeof events.unknown == 'function'){
 	        			if(events.unknown(result)) return;
+		        		info("未知结果", result.message);
 	        		}
 	        		
 	        		info("未知的请求结果类型。");

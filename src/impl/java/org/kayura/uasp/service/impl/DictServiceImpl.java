@@ -33,26 +33,32 @@ public class DictServiceImpl implements DictService {
 	private DictMapper dictMapper;
 
 	@Override
-	public Result<DictDefine> getDictDefineById(String dictId){
+	public Result<DictDefine> getDictDefineById(String dictId) {
 
 		DictDefine list = dictMapper.getDictDefineById(dictId);
 		return new Result<DictDefine>(Result.SUCCEED, list);
 	}
-	
-	@Override
-	public Result<List<DictDefine>> loadDictDefinces(String tenantId) {
 
-		List<DictDefine> list = dictMapper.loadDictDefinces(tenantId);
+	@Override
+	public Result<List<DictDefine>> loadDictDefinces() {
+
+		List<DictDefine> list = dictMapper.loadDictDefinces();
 		return new Result<List<DictDefine>>(Result.SUCCEED, list);
 	}
 
 	@Override
-	public Result<PageList<DictItem>> loadDictItems(String dictId, String parentId, PageParams params) {
+	public Result<PageList<DictItem>> loadDictItems(String tenantId, String dictId, String parentId,
+			PageParams params) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("dictId", dictId);
+		
 		if (!StringUtils.isEmpty(parentId)) {
 			args.put("parentId", parentId);
+		}
+		
+		if (!StringUtils.isEmpty(tenantId)) {
+			args.put("tenantId", tenantId);
 		}
 
 		PageList<DictItem> list = dictMapper.findDictItems(args, new PageBounds(params));

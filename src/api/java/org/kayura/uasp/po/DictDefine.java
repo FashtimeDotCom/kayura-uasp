@@ -16,7 +16,6 @@ public class DictDefine {
 	public static final Integer DATATYPE_TREE = 1;
 
 	private String id;
-	private String tenantId;
 	private String code;
 	private String name;
 	private String catetory;
@@ -29,14 +28,6 @@ public class DictDefine {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getTenantId() {
-		return tenantId;
-	}
-
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
 	}
 
 	public String getCode() {
