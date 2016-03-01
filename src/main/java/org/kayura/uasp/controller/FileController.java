@@ -9,7 +9,10 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -17,33 +20,35 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
-import org.kayura.utils.KeyUtils;
 import org.kayura.type.Result;
+import org.kayura.uasp.executor.FileUploadProvider;
 import org.kayura.uasp.models.UploadItem;
+import org.kayura.uasp.po.FileFolder;
+import org.kayura.uasp.po.Group;
 import org.kayura.uasp.service.FileService;
 import org.kayura.uasp.vo.FileContentUpdate;
 import org.kayura.uasp.vo.FileDownload;
 import org.kayura.uasp.vo.FileListItem;
 import org.kayura.uasp.vo.FileUpload;
 import org.kayura.uasp.vo.FileUploadResult;
+import org.kayura.utils.KeyUtils;
 import org.kayura.web.BaseController;
-import org.kayura.uasp.executor.FileUploadProvider;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.kayura.web.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 文件与图片的上传下载控制器类.
@@ -81,7 +86,7 @@ public class FileController extends BaseController {
 
 			@Override
 			public void invoke(PostResult r) {
-				
+
 				LoginUser user = getLoginUser();
 
 				// 创建文件上传存储信息.
@@ -271,6 +276,140 @@ public class FileController extends BaseController {
 		});
 	}
 
+	@RequestMapping(value = "/file/list", method = RequestMethod.GET)
+	public String fileList(HttpServletRequest req, HttpServletResponse res) {
+
+		return this.viewResult("file/list");
+	}
+
+	// 文件管理模块.
+
+	@RequestMapping(value = "/file/manager", method = RequestMethod.GET)
+	public ModelAndView manager() {
+
+		ModelAndView mv = this.view("file/manager");
+		return mv;
+	}
+
+	/**
+	 * 
+	 */
+	@RequestMapping(value = "/file/folders", method = RequestMethod.POST)
+	public void folderTree(Map<String, Object> map) {
+
+		LoginUser user = getLoginUser();
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				List<TreeNode> rootNode = new ArrayList<TreeNode>();
+
+				Result<List<FileFolder>> r = fileService.findFolders(user.getUserId());
+				if (r.isSucceed()) {
+
+					List<FileFolder> folders = r.getData();
+
+					// 添加 [系统文件夹]
+					List<FileFolder> sysFolders = folders.stream().filter(c -> c.getTenantId() == null)
+							.collect(Collectors.toList());
+
+					if (user.hasRoot() || !sysFolders.isEmpty()) {
+
+						TreeNode sysNode = new TreeNode();
+						sysNode.setId("SYSFOLDER");
+						sysNode.setText("系统文件夹");
+						sysNode.setIconCls("icon-book");
+						rootNode.add(sysNode);
+
+						for (FileFolder f : sysFolders) {
+
+							TreeNode n = new TreeNode();
+							n.setId(f.getFolderId());
+							n.setText(f.getName());
+							n.setIconCls("icon-folder");
+							sysNode.getChildren().add(n);
+						}
+					}
+
+					if (!user.hasRoot()) {
+
+						// 添加 [我的文件夹]
+						List<FileFolder> myFolders = folders.stream().filter(
+								c -> c.getTenantId() != null && c.getCreatorId() != null && c.getGroupId() == null)
+								.collect(Collectors.toList());
+
+						TreeNode myNode = new TreeNode();
+						myNode.setId("MYFOLDER");
+						myNode.setText("我的文件夹");
+						myNode.setIconCls("icon-book");
+						rootNode.add(myNode);
+
+						for (FileFolder f : myFolders) {
+
+							TreeNode n = new TreeNode();
+							n.setId(f.getFolderId());
+							n.setText(f.getName());
+							n.setIconCls("icon-folder");
+							myNode.getChildren().add(n);
+						}
+
+						List<String> groups = folders.stream().filter(c -> c.getGroupId() != null).map(m -> {
+							return m.getGroupId() + "#" + m.getGroupName();
+						}).distinct().collect(Collectors.toList());
+
+						TreeNode groupNode = new TreeNode();
+						groupNode.setId("MYGROUP");
+						groupNode.setText("我的群组");
+						groupNode.setIconCls("icon-book");
+						rootNode.add(groupNode);
+
+						for (String g : groups) {
+							
+							String gid = g.split("#")[0];
+							String gname = g.split("#")[1];
+
+							TreeNode gn = new TreeNode();
+							gn.setId("MYGROUP");
+							gn.setText(gname);
+							gn.setIconCls("icon-group");
+							groupNode.getChildren().add(gn);
+
+							// 添加 [我的群组]
+							List<FileFolder> myGroups = folders.stream()
+									.filter(c -> c.getGroupId() != null && c.getGroupId().equals(gid))
+									.collect(Collectors.toList());
+
+							for (FileFolder f : myGroups) {
+
+								TreeNode n = new TreeNode();
+								n.setId(f.getFolderId());
+								n.setText(f.getName());
+								n.setIconCls("icon-folder");
+								gn.getChildren().add(n);
+							}
+						}
+
+						// 添加 [我的分享]
+						TreeNode shareNode = new TreeNode();
+						shareNode.setId("MYSHARE");
+						shareNode.setText("同事的分享");
+						shareNode.setIconCls("icon-book");
+						rootNode.add(shareNode);
+					}
+
+				}
+
+				// 添加以返回结果.
+				ps.add("items", rootNode);
+			}
+		});
+
+	}
+
+	// 私有方法集.
+
 	void outText(HttpServletResponse res, String text) {
 
 		res.setContentType("text/html;charset=UTF-8");
@@ -282,12 +421,6 @@ public class FileController extends BaseController {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-	}
-
-	@RequestMapping(value = "/file/list", method = RequestMethod.GET)
-	public String fileList(HttpServletRequest req, HttpServletResponse res) {
-
-		return this.viewResult("file/list");
 	}
 
 	/**
@@ -331,4 +464,5 @@ public class FileController extends BaseController {
 		byte[] rawValue = cipher.doFinal(encBytes);
 		return rawValue;
 	}
+
 }

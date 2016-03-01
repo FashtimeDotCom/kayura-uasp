@@ -80,6 +80,9 @@
 				AND ( t.User_Id = #{userId} )
 			</if>
 			<if test="userName != null">
+				<if test="tenantId == null">
+					AND ( t.Tenant_Id IS NULL )
+				</if>
 				AND ( t.UserName = #{userName} )
 			</if>
 			<if test="loginName != null">

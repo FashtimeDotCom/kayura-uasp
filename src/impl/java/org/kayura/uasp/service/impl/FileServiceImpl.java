@@ -4,14 +4,20 @@
  */
 package org.kayura.uasp.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.kayura.type.GeneralResult;
 import org.kayura.type.Result;
 import org.kayura.uasp.dao.FileMapper;
+import org.kayura.uasp.dao.UserMapper;
+import org.kayura.uasp.po.FileFolder;
 import org.kayura.uasp.po.FileInfo;
 import org.kayura.uasp.po.FileRelation;
+import org.kayura.uasp.po.Group;
+import org.kayura.uasp.po.User;
 import org.kayura.uasp.service.FileService;
 import org.kayura.uasp.vo.FileDownload;
 import org.kayura.uasp.vo.FileContentUpdate;
@@ -19,6 +25,7 @@ import org.kayura.uasp.vo.FileUpload;
 import org.kayura.uasp.vo.FileUploadResult;
 import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
+import org.kayura.utils.MapUtils;
 import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +38,9 @@ public class FileServiceImpl implements FileService {
 
 	@Autowired
 	private FileMapper fileMapper;
+
+	@Autowired
+	private UserMapper userMapper;
 
 	@Override
 	public Result<FileUploadResult> upload(FileUpload fu) {
@@ -85,7 +95,7 @@ public class FileServiceImpl implements FileService {
 		ur.setFrId(fr.getFrId());
 		ur.setFileId(fr.getFileId());
 		ur.setNewFile(isNewFile);
-		
+
 		r.setData(ur);
 
 		return r;
@@ -121,6 +131,8 @@ public class FileServiceImpl implements FileService {
 		r.setSuccess("读取下载文件信息成功.");
 		r.setData(fd);
 
+		fileMapper.incrementDownloads(frId);
+
 		return r;
 	}
 
@@ -133,13 +145,41 @@ public class FileServiceImpl implements FileService {
 			Map<String, Object> fileArgs = new HashMap<String, Object>();
 			fileArgs.put("fileSize", fu.getFileSize());
 			fileArgs.put("contentType", fu.getContentType());
-			//fileArgs.put("md5", fu.getMd5());
+			// fileArgs.put("md5", fu.getMd5());
 			fileArgs.put("fileId", fu.getFileId());
 
 			fileMapper.updateFileInfo(fileArgs);
 		}
 
 		return Result.succeed();
+	}
+
+	@Override
+	public Result<List<FileFolder>> findFolders(String userId) {
+
+		List<FileFolder> folders = new ArrayList<FileFolder>();
+
+		// 添加所属用户的.
+		User user = userMapper.getUserByMap(MapUtils.make("userId", userId));
+		if (user != null) {
+
+			if (StringUtils.isEmpty(user.getTenantId())) {
+
+				List<FileFolder> list1 = fileMapper.getFolders(MapUtils.make("tenantId", "NULL"));
+				if (!list1.isEmpty()) {
+					folders.addAll(list1);
+				}
+			} else {
+
+				List<FileFolder> list2 = fileMapper.getFolders(MapUtils.make("userId", userId));
+				if (!list2.isEmpty()) {
+					folders.addAll(list2);
+				}
+			}
+		}
+
+		// 返回结果.
+		return new Result<List<FileFolder>>(Result.SUCCEED, folders);
 	}
 
 }

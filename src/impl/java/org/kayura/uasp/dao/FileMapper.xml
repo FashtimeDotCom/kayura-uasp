@@ -29,6 +29,28 @@
 		<result property="serial" column="Serial" />
 		<result property="tags" column="Tags" />
 	</resultMap>
+
+	<resultMap id="fileFolderMap" type="org.kayura.uasp.po.FileFolder">
+		<id property="folderId" column="Folder_Id" />
+		<result property="tenantId" column="Tenant_Id" />
+		<result property="parentId" column="Parent_Id" />
+		<result property="creatorId" column="Creator_Id" />
+		<result property="groupId" column="Group_Id" />
+		<result property="groupName" column="GroupName" />
+		<result property="name" column="Name" />
+		<result property="hidden" column="Hidden" />
+	</resultMap>
+
+	<resultMap type="org.kayura.uasp.po.FileShare" id="fileShareMap">
+		<id property="fileShareId" column="FileShare_Id" />
+		<result property="sharerId" column="Sharer_Id" />
+		<result property="sharerName" column="SharerName" />
+		<result property="receiverId" column="Receiver_Id" />
+		<result property="folderId" column="Folder_Id" />
+		<result property="folderName" column="FolderName" />
+		<result property="frId" column="Fr_Id" />
+		<result property="createTime" column="CreateTime" />
+	</resultMap>
 	
 	<!-- FileInfo -->
 
@@ -183,6 +205,10 @@
 		WHERE ( t.Fr_Id = #{value} )
 	</select>
 		
+	<update id="incrementDownloads" parameterType="string" >
+		UPDATE UASP_FileRelations SET Downloads = Downloads + 1 WHERE ( Fr_Id = #{value} )
+	</update>
+		
 	<select id="getFileRelationTagsById" parameterType="string" resultType="string">
 		SELECT t.Tags FROM UASP_FileRelations t
 		WHERE ( t.Fr_Id = #{value} )
@@ -211,5 +237,55 @@
 		</where>
 	</select>
 	
-
+	<select id="getFolders" parameterType="map" resultMap="fileFolderMap">
+		SELECT
+			t.Folder_Id,
+			t.Tenant_Id,
+			t.Parent_Id,
+			t.Creator_Id,
+			t.Group_Id,
+			g.Name GroupName,
+			t.`Name`,
+			t.Hidden
+		FROM uasp_filefolders AS t
+			LEFT JOIN uasp_groups g ON g.Group_Id = t.Group_Id
+		<where>
+			<if test="tenantId = 'NULL' and userId == null">
+				(t.Tenant_Id IS NULL)
+			</if>
+			<if test="userId != null">
+				((t.Tenant_Id IS NULL) AND (Hidden = 0) ) OR
+				((t.Creator_Id = #{userId}) AND (t.Group_Id IS NULL) ) OR 
+				((t.Group_Id IS NOT NULL) AND (Hidden = 0) AND EXISTS (
+				   SELECT 1 FROM uasp_groupusers_union u WHERE u.Group_Id = t.Group_Id AND u.User_Id = #{userId} 
+				))
+			</if>
+		</where>
+	</select>
+	
+	<select id="getFileShares" parameterType="map" resultMap="fileShareMap">
+		SELECT
+			t.FileShare_Id,
+			t.Sharer_Id,
+			t.Receiver_Id,
+			t.Folder_Id,
+			t.Fr_Id,
+			t.CreateTime
+		FROM uasp_fileshares AS t
+		<where>
+			<if test="sharerId != null">
+				AND ( t.Sharer_Id = :sharerId )
+			</if>
+			<if test="receiverId != null">
+				AND ( t.Receiver_Id = :receiverId )
+			</if>
+			<if test="findType == 'FOLDER' ">
+				AND ( t.Folder_Id IS NOT NULL )
+			</if>
+			<if test="findType == 'FILE' ">
+				AND ( t.Fr_Id IS NOT NULL )
+			</if>
+		</where>
+	</select>
+	
 </mapper>

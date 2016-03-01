@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.kayura.core.BaseDao;
+import org.kayura.uasp.po.FileFolder;
 import org.kayura.uasp.po.FileInfo;
 import org.kayura.uasp.po.FileRelation;
+import org.kayura.uasp.po.Group;
 
 /**
  * @author liangxia@live.com
@@ -79,6 +81,12 @@ public interface FileMapper extends BaseDao {
 	 * @return 返回一条文件关系记录.
 	 */
 	FileRelation getFileRelationById(String frId);
+	
+	/**
+	 * 更新下载计数.
+	 * @param frId 文件关系ID.
+	 */
+	void incrementDownloads(String frId);
 
 	/**
 	 * 获取文件关联信息的标签内容.
@@ -96,5 +104,13 @@ public interface FileMapper extends BaseDao {
 	 * @return 返回所有符件条件的记录
 	 */
 	List<FileRelation> findFileRelationsByMap(Map<String, Object> args);
+
+	/**
+	 * 获取符合条件的文件夹记录.
+	 * 
+	 * @param folderArgs 支持条件有： tenantId, userId
+	 * @return
+	 */
+	List<FileFolder> getFolders(Map<String, Object> folderArgs);
 
 }

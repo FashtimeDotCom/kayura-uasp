@@ -79,6 +79,12 @@
 	background:url('icons/design.png') no-repeat center center;
 }
 
+.icon-folder{
+	background:url('icons/folder.png') no-repeat center center;
+}
+.icon-book{
+	background:url('icons/book.png') no-repeat center center;
+}
 
 .icon-mini-add{
 	background:url('icons/mini_add.png') no-repeat center center;

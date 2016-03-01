@@ -17,6 +17,7 @@ public class FileRelation implements Serializable {
 	private String frId;
 	private String fileId;
 	private String tenantId;
+	private String folderId;
 	private String bizId;
 	private String category;
 	private String fileName;
@@ -49,6 +50,20 @@ public class FileRelation implements Serializable {
 
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	/**
+	 * @return the folderId
+	 */
+	public String getFolderId() {
+		return folderId;
+	}
+
+	/**
+	 * @param folderId the folderId to set
+	 */
+	public void setFolderId(String folderId) {
+		this.folderId = folderId;
 	}
 
 	public String getBizId() {

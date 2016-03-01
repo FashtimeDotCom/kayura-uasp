@@ -90,7 +90,7 @@ public class FileUploadProviderImpl implements FileUploadProvider {
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String subPath = format.format(DateUtils.now());
 
-		return dirKey + subPath + "\\";
+		return dirKey + "\\" + subPath + "\\";
 	}
 
 }

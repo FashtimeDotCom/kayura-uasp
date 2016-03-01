@@ -16,7 +16,7 @@
 		<property name="minSpace" value="512000" />
 		<property name="uploadPaths">
 			<map>
-				<entry key="#DiskA#" value="E:\UploadFiles\"></entry>
+				<entry key="{DiskA}" value="E:\UploadFiles"></entry>
 			</map>
 		</property>
 	</bean>
