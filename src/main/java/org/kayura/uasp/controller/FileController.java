@@ -28,6 +28,8 @@ import org.apache.commons.logging.LogFactory;
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.executor.FileUploadProvider;
 import org.kayura.uasp.models.UploadItem;
@@ -94,6 +96,7 @@ public class FileController extends BaseController {
 				FileUpload fu = new FileUpload();
 				fu.setAllowChange(ui.getAllowChange());
 				fu.setBizId(ui.getBizId());
+				fu.setFolderId(ui.getFolderId());
 				fu.setCategory(ui.getCategory());
 				fu.setTags(ui.getTags());
 				fu.setTenantId(user.getTenantId());
@@ -289,12 +292,12 @@ public class FileController extends BaseController {
 	public ModelAndView manager() {
 
 		ModelAndView mv = this.view("manager");
-		
+
 		LoginUser u = this.getLoginUser();
-		
+
 		mv.addObject("hasRoot", u.hasRoot());
 		mv.addObject("hasAdmin", u.hasAdmin());
-		
+
 		return mv;
 	}
 
@@ -504,11 +507,58 @@ public class FileController extends BaseController {
 	}
 
 	@RequestMapping(value = "/file/folder/new", method = RequestMethod.GET)
-	public ModelAndView createFolder(String pid) {
+	public ModelAndView createFolder(String pid, String pname, String gid, String gname) {
 
 		ModelAndView mv = this.view("folder");
 		
+		FileFolder model = new FileFolder();
+		model.setParentId(pid);
+		model.setParentName(pname);
+		model.setGroupId(gid);
+		model.setGroupName(gname);
+		
+		mv.addObject("model", model);
 		return mv;
+	}
+
+	@RequestMapping(value = "/file/find", method = RequestMethod.POST)
+	public void findFiles(HttpServletRequest req, Map<String, Object> map, String folderId) {
+
+		LoginUser user = this.getLoginUser();
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				PageParams pp = ui.getPageParams(req);
+
+				if (!StringUtils.isEmpty(folderId) && (folderId.equals("NOTCLASSIFIED") || folderId.length() == 32)) {
+
+					String id = null;
+					if (folderId.equals("NOTCLASSIFIED")) {
+						id = "NULL";
+					} else {
+						id = folderId;
+					}
+
+					Result<PageList<FileListItem>> r = fileService.findFilesByFolder(id, user.getUserId(), pp);
+					if (r.isSucceed()) {
+						ps.add("items", ui.genPageData(r.getData()));
+					} else {
+						ps.addMessage(r.getMessage());
+					}
+
+				} else {
+
+					PageList<FileListItem> items = new PageList<FileListItem>(pp);
+					ps.setCode(Result.SUCCEED);
+					ps.add("items", ui.genPageData(items));
+				}
+			}
+
+		});
+
 	}
 
 	// 私有方法集.
@@ -529,8 +579,10 @@ public class FileController extends BaseController {
 	/**
 	 * 对字节进行 AES 加密.
 	 * 
-	 * @param rawBytes 原始字节内容.
-	 * @param encryptKey 私有密钥.
+	 * @param rawBytes
+	 *            原始字节内容.
+	 * @param encryptKey
+	 *            私有密钥.
 	 * @return 返回加密后的字节.
 	 * @throws Exception
 	 */
@@ -550,8 +602,10 @@ public class FileController extends BaseController {
 	/**
 	 * 对节进行 AES 解密.
 	 * 
-	 * @param encBytes 加密后的字节内容.
-	 * @param decryptKey 私有密钥.
+	 * @param encBytes
+	 *            加密后的字节内容.
+	 * @param decryptKey
+	 *            私有密钥.
 	 * @return 返回解密后的字节.
 	 * @throws Exception
 	 */

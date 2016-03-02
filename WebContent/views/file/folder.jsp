@@ -27,12 +27,18 @@
 <e:section name="body">
 	<div class="easyui-panel" border="false" style="padding: 10px 40px 10px 40px; ">
 		<form id="ff" class="easyui-form" method="post">
-			<input type="hidden" name="id" value="${model.folderId}" />
+			<input type="hidden" name="folderId" value="${model.folderId}" />
 			<input type="hidden" name="parentId" value="${model.parentId}" />
+			<input type="hidden" name="parentId" value="${model.groupId}" />
 			<table cellpadding="5">
 				<tr>
 					<td>上级文件夹:</td>
+					<c:if test="${model.parentId != null }">
 					<td>${model.parentName}</td>
+					</c:if>
+					<c:if test="${model.groupId != null }">
+					<td>${model.groupName}</td>
+					</c:if>
 				</tr>
 				<tr>
 					<td>文件夹名称:</td>

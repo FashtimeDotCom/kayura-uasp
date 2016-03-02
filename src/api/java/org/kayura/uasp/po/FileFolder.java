@@ -14,6 +14,7 @@ public class FileFolder {
 	private String folderId;
 	private String tenantId;
 	private String parentId;
+	private String parentName;
 	private String creatorId;
 	private String groupId;
 	private String groupName;
@@ -44,6 +45,14 @@ public class FileFolder {
 		this.parentId = parentId;
 	}
 
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
 	public String getCreatorId() {
 		return creatorId;
 	}
@@ -68,7 +77,8 @@ public class FileFolder {
 	}
 
 	/**
-	 * @param groupName the groupName to set
+	 * @param groupName
+	 *            the groupName to set
 	 */
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;

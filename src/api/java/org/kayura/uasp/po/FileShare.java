@@ -20,6 +20,7 @@ public class FileShare {
 	private String sharerId;
 	private String sharerName;
 	private String receiverId;
+	private String receiverName;
 	private String folderId;
 	private String folderName;
 	private String frId;
@@ -58,6 +59,14 @@ public class FileShare {
 		this.receiverId = receiverId;
 	}
 
+	public String getReceiverName() {
+		return receiverName;
+	}
+
+	public void setReceiverName(String receiverName) {
+		this.receiverName = receiverName;
+	}
+
 	public String getFolderId() {
 		return folderId;
 	}
@@ -90,7 +99,8 @@ public class FileShare {
 	}
 
 	/**
-	 * @param fileName the fileName to set
+	 * @param fileName
+	 *            the fileName to set
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;

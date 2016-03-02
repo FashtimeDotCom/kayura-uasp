@@ -9,7 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.GeneralResult;
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.dao.FileMapper;
 import org.kayura.uasp.dao.UserMapper;
@@ -20,6 +23,7 @@ import org.kayura.uasp.po.FileShare;
 import org.kayura.uasp.po.User;
 import org.kayura.uasp.service.FileService;
 import org.kayura.uasp.vo.FileDownload;
+import org.kayura.uasp.vo.FileListItem;
 import org.kayura.uasp.vo.FileContentUpdate;
 import org.kayura.uasp.vo.FileUpload;
 import org.kayura.uasp.vo.FileUploadResult;
@@ -185,8 +189,10 @@ public class FileServiceImpl implements FileService {
 	/**
 	 * 查找别人共享给我的共享文件信息 。
 	 * 
-	 * @param receiverId 共享文件接收人Id.
-	 * @param findType 查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
+	 * @param receiverId
+	 *            共享文件接收人Id.
+	 * @param findType
+	 *            查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
 	 * @return 返回符合条件的文件共享信息.
 	 */
 	public Result<List<FileShare>> findFileShares(String receiverId, String findType) {
@@ -205,8 +211,10 @@ public class FileServiceImpl implements FileService {
 	/**
 	 * 查找我共享给别人的共享文件信息 。
 	 * 
-	 * @param receiverId 共享人Id.
-	 * @param findType 查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
+	 * @param receiverId
+	 *            共享人Id.
+	 * @param findType
+	 *            查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
 	 * @return 返回符合条件的文件共享信息.
 	 */
 	public Result<List<FileShare>> findMyShares(String sharerId, String findType) {
@@ -220,6 +228,20 @@ public class FileServiceImpl implements FileService {
 		List<FileShare> list = fileMapper.getFileShares(args);
 
 		return new Result<List<FileShare>>(Result.SUCCEED, list);
+	}
+
+	@Override
+	public Result<PageList<FileListItem>> findFilesByFolder(String folderId, String uploaderId, PageParams params) {
+
+		Map<String, Object> args = MapUtils.make("folderId", folderId);
+
+		if (!StringUtils.isEmpty(uploaderId)) {
+			args.put("uploaderId", uploaderId);
+		}
+
+		PageList<FileListItem> list = fileMapper.findFiles(args, new PageBounds(params));
+
+		return new Result<PageList<FileListItem>>(Result.SUCCEED, list);
 	}
 
 }

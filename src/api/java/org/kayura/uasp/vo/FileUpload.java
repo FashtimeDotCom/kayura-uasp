@@ -21,6 +21,7 @@ public class FileUpload {
 
 	private String tenantId;
 	private String bizId;
+	private String folderId;
 	private String category;
 	private String uploaderId;
 	private String uploaderName;
@@ -114,6 +115,14 @@ public class FileUpload {
 
 	public void setBizId(String bizId) {
 		this.bizId = bizId;
+	}
+
+	public String getFolderId() {
+		return folderId;
+	}
+
+	public void setFolderId(String folderId) {
+		this.folderId = folderId;
 	}
 
 	public String getCategory() {

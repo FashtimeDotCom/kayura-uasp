@@ -206,6 +206,53 @@
 		FROM UASP_FileRelations t
 		WHERE ( t.Fr_Id = #{value} )
 	</select>
+
+	<resultMap id="fileListItemMap" type="org.kayura.uasp.vo.FileListItem">
+		<id property="frId" column="Fr_Id" />
+		<result property="fileName" column="FileName" />
+		<result property="fileSize" column="FileSize" />
+		<result property="postfix" column="Postfix" />
+		<result property="uploaderId" column="UploaderId" />
+		<result property="uploaderName" column="UploaderName" />
+		<result property="uploadTime" column="UploadTime" />
+		<result property="downloads" column="Downloads" />
+		<result property="allowChange" column="AllowChange" />
+		<result property="isEncrypted" column="IsEncrypted" />
+	</resultMap>
+		
+	<select id="findFiles" parameterType="map" resultMap="fileListItemMap">
+		SELECT
+			t.Fr_Id,
+			t.FileName,
+			i.FileSize,
+			t.Postfix,
+			t.UploaderId,
+			t.UploaderName,
+			t.UploadTime,
+			t.Downloads,
+			i.AllowChange,
+			i.IsEncrypted
+		FROM uasp_filerelations AS t
+			INNER JOIN uasp_fileinfos AS i ON t.File_Id = i.File_Id
+		<where>
+			<if test="folderId != null and folderId != 'NULL'">
+				AND ( t.Folder_Id = #{folderId} )
+			</if>
+			<if test="folderId == 'NULL'">
+				AND ( t.Folder_Id IS NULL ) 
+			</if>
+			<if test="uploaderId != null">
+				AND ( t.UploaderId = #{uploaderId} )
+			</if>
+			<if test="bizId != null">
+				AND ( t.BizId = #{bizId} )
+			</if>
+			<if test="tag != null">
+				AND ( t.Tags LIKE #{tag} )
+			</if>
+		</where>
+		ORDER BY t.Serial ASC
+	</select>
 		
 	<update id="incrementDownloads" parameterType="string" >
 		UPDATE UASP_FileRelations SET Downloads = Downloads + 1 WHERE ( Fr_Id = #{value} )
