@@ -16,7 +16,7 @@ import org.kayura.uasp.dao.UserMapper;
 import org.kayura.uasp.po.FileFolder;
 import org.kayura.uasp.po.FileInfo;
 import org.kayura.uasp.po.FileRelation;
-import org.kayura.uasp.po.Group;
+import org.kayura.uasp.po.FileShare;
 import org.kayura.uasp.po.User;
 import org.kayura.uasp.service.FileService;
 import org.kayura.uasp.vo.FileDownload;
@@ -180,6 +180,46 @@ public class FileServiceImpl implements FileService {
 
 		// 返回结果.
 		return new Result<List<FileFolder>>(Result.SUCCEED, folders);
+	}
+
+	/**
+	 * 查找别人共享给我的共享文件信息 。
+	 * 
+	 * @param receiverId 共享文件接收人Id.
+	 * @param findType 查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
+	 * @return 返回符合条件的文件共享信息.
+	 */
+	public Result<List<FileShare>> findFileShares(String receiverId, String findType) {
+
+		Map<String, Object> args = MapUtils.make("receiverId", receiverId);
+
+		if (!StringUtils.isEmpty(findType)) {
+			args.put("findType", findType);
+		}
+
+		List<FileShare> list = fileMapper.getFileShares(args);
+
+		return new Result<List<FileShare>>(Result.SUCCEED, list);
+	}
+
+	/**
+	 * 查找我共享给别人的共享文件信息 。
+	 * 
+	 * @param receiverId 共享人Id.
+	 * @param findType 查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
+	 * @return 返回符合条件的文件共享信息.
+	 */
+	public Result<List<FileShare>> findMyShares(String sharerId, String findType) {
+
+		Map<String, Object> args = MapUtils.make("sharerId", sharerId);
+
+		if (!StringUtils.isEmpty(findType)) {
+			args.put("findType", findType);
+		}
+
+		List<FileShare> list = fileMapper.getFileShares(args);
+
+		return new Result<List<FileShare>>(Result.SUCCEED, list);
 	}
 
 }

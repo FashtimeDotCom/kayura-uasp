@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 112.74.85.217_MYSQL
-Source Server Version : 50546
-Source Host           : 112.74.85.217:13803
+Source Server         : local_mysql
+Source Server Version : 50615
+Source Host           : localhost:3306
 Source Database       : kayura_db
 
 Target Server Type    : MYSQL
-Target Server Version : 50546
+Target Server Version : 50615
 File Encoding         : 65001
 
-Date: 2016-03-01 15:52:22
+Date: 2016-03-02 17:20:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,8 +27,8 @@ CREATE TABLE `uasp_aliveapps` (
   `Enabled` smallint(6) NOT NULL COMMENT '0 启用；1 禁用；',
   PRIMARY KEY (`Tenant_Id`,`SubApp_Id`),
   KEY `FK_UASP_AliveApp_Ref_SubApp` (`SubApp_Id`),
-  CONSTRAINT `FK_UASP_AliveApp_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_AliveApp_Ref_SubApp` FOREIGN KEY (`SubApp_Id`) REFERENCES `uasp_subapps` (`SubApp_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_AliveApp_Ref_SubApp` FOREIGN KEY (`SubApp_Id`) REFERENCES `uasp_subapps` (`SubApp_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_AliveApp_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -52,7 +52,6 @@ CREATE TABLE `uasp_autologins` (
 -- ----------------------------
 -- Records of uasp_autologins
 -- ----------------------------
-INSERT INTO `uasp_autologins` VALUES ('XfGodSLPIOS6eycoGUvIUw==', 'ED5591AB52CC489F8A52445CF6125CD8', 'GYAL2eVN3L5G2Ddu6RFPwu2CA/KzjAe8PSLB9guk+TU=', '2016-03-01 15:48:46');
 
 -- ----------------------------
 -- Table structure for uasp_autonumbers
@@ -106,8 +105,8 @@ CREATE TABLE `uasp_companies` (
   PRIMARY KEY (`Company_Id`),
   KEY `FK_UASP_Company_Parent_Ref_ID` (`Parent_Id`),
   KEY `FK_UASP_Company_Ref_Tenant` (`Tenant_Id`),
-  CONSTRAINT `FK_UASP_Company_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_Company_Parent_Ref_ID` FOREIGN KEY (`Parent_Id`) REFERENCES `uasp_companies` (`Company_Id`)
+  CONSTRAINT `FK_UASP_Company_Parent_Ref_ID` FOREIGN KEY (`Parent_Id`) REFERENCES `uasp_companies` (`Company_Id`),
+  CONSTRAINT `FK_UASP_Company_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -132,8 +131,8 @@ CREATE TABLE `uasp_departments` (
   PRIMARY KEY (`Department_Id`),
   KEY `FK_UASP_Department_Parent_Ref_ID` (`Parent_Id`),
   KEY `FK_UASP_Department_Ref_Company` (`Company_Id`),
-  CONSTRAINT `FK_UASP_Department_Ref_Company` FOREIGN KEY (`Company_Id`) REFERENCES `uasp_companies` (`Company_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_Department_Parent_Ref_ID` FOREIGN KEY (`Parent_Id`) REFERENCES `uasp_departments` (`Department_Id`)
+  CONSTRAINT `FK_UASP_Department_Parent_Ref_ID` FOREIGN KEY (`Parent_Id`) REFERENCES `uasp_departments` (`Department_Id`),
+  CONSTRAINT `FK_UASP_Department_Ref_Company` FOREIGN KEY (`Company_Id`) REFERENCES `uasp_companies` (`Company_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -157,9 +156,9 @@ CREATE TABLE `uasp_dictitems` (
   KEY `FK_UASP_DictItem_Parent_Ref_ID` (`Parent_Id`),
   KEY `FK_UASP_DictItem_Ref_DictDefine` (`Dict_Id`),
   KEY `FK_UASP_DictItem_Ref_Tenant` (`Tenant_Id`),
-  CONSTRAINT `FK_UASP_DictItem_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE,
   CONSTRAINT `FK_UASP_DictItem_Parent_Ref_ID` FOREIGN KEY (`Parent_Id`) REFERENCES `uasp_dictitems` (`Item_Id`),
-  CONSTRAINT `FK_UASP_DictItem_Ref_DictDefine` FOREIGN KEY (`Dict_Id`) REFERENCES `usap_dictdefine` (`Dict_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_DictItem_Ref_DictDefine` FOREIGN KEY (`Dict_Id`) REFERENCES `usap_dictdefine` (`Dict_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_DictItem_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -243,9 +242,9 @@ CREATE TABLE `uasp_emppositions` (
   KEY `FK_UASP_EmpPosition_Ref_Department` (`Department_Id`),
   KEY `FK_UASP_EmpPosition_Ref_Employee` (`Employee_Id`),
   KEY `FK_UASP_EmpPosition_Ref_Position` (`Position_Id`),
-  CONSTRAINT `FK_UASP_EmpPosition_Ref_Position` FOREIGN KEY (`Position_Id`) REFERENCES `uasp_positions` (`Position_Id`) ON DELETE CASCADE,
   CONSTRAINT `FK_UASP_EmpPosition_Ref_Department` FOREIGN KEY (`Department_Id`) REFERENCES `uasp_departments` (`Department_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_EmpPosition_Ref_Employee` FOREIGN KEY (`Employee_Id`) REFERENCES `uasp_employees` (`Employee_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_EmpPosition_Ref_Employee` FOREIGN KEY (`Employee_Id`) REFERENCES `uasp_employees` (`Employee_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_EmpPosition_Ref_Position` FOREIGN KEY (`Position_Id`) REFERENCES `uasp_positions` (`Position_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -279,9 +278,13 @@ CREATE TABLE `uasp_filefolders` (
 -- Records of uasp_filefolders
 -- ----------------------------
 INSERT INTO `uasp_filefolders` VALUES ('0B360E55DF8211E58D5F00163E003262', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', null, '个人照片', '\0');
+INSERT INTO `uasp_filefolders` VALUES ('0F2D7BE1E02011E59888D8CB8A43F8DD', 'DB9611E', null, '18C5BD7D457647ECB3F688D4ECF1C0C8', null, '大广高速', '\0');
 INSERT INTO `uasp_filefolders` VALUES ('2E5421CDDF7611E58D5F00163E003262', 'DB9611E', null, '18C5BD7D457647ECB3F688D4ECF1C0C8', null, '工作文档', '\0');
-INSERT INTO `uasp_filefolders` VALUES ('43D97ADADF7611E58D5F00163E003262', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', 'EFA7A76EDF7111E58D5F00163E003262', '项目文档', '\0');
-INSERT INTO `uasp_filefolders` VALUES ('72523D23DF7C11E58D5F00163E003262', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', '3FAA7E74DF7C11E58D5F00163E003262', '项目文档', '\0');
+INSERT INTO `uasp_filefolders` VALUES ('43D97ADADF7611E58D5F00163E003262', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', 'EFA7A76EDF7111E58D5F00163E003262', '招头标', '\0');
+INSERT INTO `uasp_filefolders` VALUES ('72523D23DF7C11E58D5F00163E003262', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', '3FAA7E74DF7C11E58D5F00163E003262', '招头标', '\0');
+INSERT INTO `uasp_filefolders` VALUES ('A8E0231EDF8D11E58FA3D8CB8A43F8DD', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', 'EFA7A76EDF7111E58D5F00163E003262', '合同文件', '\0');
+INSERT INTO `uasp_filefolders` VALUES ('B1900536E04011E59888D8CB8A43F8DD', null, 'F732A19CDF7511E58D5F00163E003262', 'BD817FA7716E11E586C6D8CB8A43F8DD', null, '教学视频', '\0');
+INSERT INTO `uasp_filefolders` VALUES ('D8FCD6DBE04011E59888D8CB8A43F8DD', null, 'F732A19CDF7511E58D5F00163E003262', 'BD817FA7716E11E586C6D8CB8A43F8DD', null, '操作手册', '\0');
 INSERT INTO `uasp_filefolders` VALUES ('F732A19CDF7511E58D5F00163E003262', null, null, 'BD817FA7716E11E586C6D8CB8A43F8DD', null, '培训文档', '\0');
 
 -- ----------------------------
@@ -332,9 +335,9 @@ CREATE TABLE `uasp_filerelations` (
   KEY `FK_UASP_FileRelation_Ref_FileFolder` (`Folder_Id`),
   KEY `FK_UASP_FileRelation_Ref_FileInfo` (`File_Id`),
   KEY `FK_UASP_FileRelation_Ref_Tenant` (`Tenant_Id`),
-  CONSTRAINT `FK_UASP_FileRelation_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE,
   CONSTRAINT `FK_UASP_FileRelation_Ref_FileFolder` FOREIGN KEY (`Folder_Id`) REFERENCES `uasp_filefolders` (`Folder_Id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_UASP_FileRelation_Ref_FileInfo` FOREIGN KEY (`File_Id`) REFERENCES `uasp_fileinfos` (`File_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_FileRelation_Ref_FileInfo` FOREIGN KEY (`File_Id`) REFERENCES `uasp_fileinfos` (`File_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_FileRelation_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -354,16 +357,25 @@ CREATE TABLE `uasp_fileshares` (
   `FileShare_Id` char(32) NOT NULL,
   `Sharer_Id` char(32) NOT NULL,
   `Receiver_Id` char(32) NOT NULL,
+  `Folder_Id` char(32) DEFAULT NULL,
+  `Fr_Id` char(32) DEFAULT NULL,
+  `CreateTime` datetime NOT NULL,
   PRIMARY KEY (`FileShare_Id`),
+  KEY `FK_UASP_FileShare_Ref_Folder` (`Folder_Id`),
   KEY `FK_UASP_FileShare_Ref_Receiver` (`Receiver_Id`),
+  KEY `FK_UASP_FileShare_Ref_Relation` (`Fr_Id`),
   KEY `FK_UASP_FileShare_Ref_Sharer` (`Sharer_Id`),
-  CONSTRAINT `FK_UASP_FileShare_Ref_Sharer` FOREIGN KEY (`Sharer_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_FileShare_Ref_Receiver` FOREIGN KEY (`Receiver_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_FileShare_Ref_Folder` FOREIGN KEY (`Folder_Id`) REFERENCES `uasp_filefolders` (`Folder_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_FileShare_Ref_Receiver` FOREIGN KEY (`Receiver_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_FileShare_Ref_Relation` FOREIGN KEY (`Fr_Id`) REFERENCES `uasp_filerelations` (`Fr_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_FileShare_Ref_Sharer` FOREIGN KEY (`Sharer_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uasp_fileshares
 -- ----------------------------
+INSERT INTO `uasp_fileshares` VALUES ('97867ABCDF8B11E58FA3D8CB8A43F8DD', '18C5BD7D457647ECB3F688D4ECF1C0C8', 'ED5591AB52CC489F8A52445CF6125CD8', '2E5421CDDF7611E58D5F00163E003262', null, '2016-03-01 16:58:12');
+INSERT INTO `uasp_fileshares` VALUES ('ED083B30E01F11E59888D8CB8A43F8DD', '18C5BD7D457647ECB3F688D4ECF1C0C8', 'ED5591AB52CC489F8A52445CF6125CD8', '0F2D7BE1E02011E59888D8CB8A43F8DD', null, '2016-03-02 10:41:32');
 
 -- ----------------------------
 -- Table structure for uasp_grouproles
@@ -374,8 +386,8 @@ CREATE TABLE `uasp_grouproles` (
   `Role_Id` char(32) NOT NULL,
   PRIMARY KEY (`Group_Id`,`Role_Id`),
   KEY `FK_UASP_GroupRole_Ref_Role` (`Role_Id`),
-  CONSTRAINT `FK_UASP_GroupRole_Ref_Role` FOREIGN KEY (`Role_Id`) REFERENCES `uasp_roles` (`Role_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_GroupRole_Ref_Group` FOREIGN KEY (`Group_Id`) REFERENCES `uasp_groups` (`Group_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_GroupRole_Ref_Group` FOREIGN KEY (`Group_Id`) REFERENCES `uasp_groups` (`Group_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_GroupRole_Ref_Role` FOREIGN KEY (`Role_Id`) REFERENCES `uasp_roles` (`Role_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -413,8 +425,8 @@ CREATE TABLE `uasp_groupusers` (
   `User_Id` char(32) NOT NULL,
   PRIMARY KEY (`Group_Id`,`User_Id`),
   KEY `FK_UASP_GroupUser_Ref_User` (`User_Id`),
-  CONSTRAINT `FK_UASP_GroupUser_Ref_User` FOREIGN KEY (`User_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_GroupUser_Ref_Group` FOREIGN KEY (`Group_Id`) REFERENCES `uasp_groups` (`Group_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_GroupUser_Ref_Group` FOREIGN KEY (`Group_Id`) REFERENCES `uasp_groups` (`Group_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_GroupUser_Ref_User` FOREIGN KEY (`User_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -441,9 +453,9 @@ CREATE TABLE `uasp_menuitems` (
   KEY `FK_UASP_MenuItem_Parent_Ref_ID` (`Parent_Id`),
   KEY `FK_UASP_MenuItem_Ref_MenuScheme` (`MenuPlan_Id`),
   KEY `FK_UASP_MenuItem_Ref_Module` (`Module_Id`),
-  CONSTRAINT `FK_UASP_MenuItem_Ref_Module` FOREIGN KEY (`Module_Id`) REFERENCES `uasp_modules` (`Module_Id`) ON DELETE CASCADE,
   CONSTRAINT `FK_UASP_MenuItem_Parent_Ref_ID` FOREIGN KEY (`Parent_Id`) REFERENCES `uasp_menuitems` (`MenuItem_Id`),
-  CONSTRAINT `FK_UASP_MenuItem_Ref_MenuScheme` FOREIGN KEY (`MenuPlan_Id`) REFERENCES `uasp_menuschemes` (`MenuScheme_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_MenuItem_Ref_MenuScheme` FOREIGN KEY (`MenuPlan_Id`) REFERENCES `uasp_menuschemes` (`MenuScheme_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_MenuItem_Ref_Module` FOREIGN KEY (`Module_Id`) REFERENCES `uasp_modules` (`Module_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -488,8 +500,8 @@ CREATE TABLE `uasp_modules` (
   PRIMARY KEY (`Module_Id`),
   KEY `FK_UASP_Module_Parent_Ref_ID` (`Parent_Id`),
   KEY `FK_UASP_Module_Ref_SubApp` (`SubApp_Id`),
-  CONSTRAINT `FK_UASP_Module_Ref_SubApp` FOREIGN KEY (`SubApp_Id`) REFERENCES `uasp_subapps` (`SubApp_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_Module_Parent_Ref_ID` FOREIGN KEY (`Parent_Id`) REFERENCES `uasp_modules` (`Module_Id`)
+  CONSTRAINT `FK_UASP_Module_Parent_Ref_ID` FOREIGN KEY (`Parent_Id`) REFERENCES `uasp_modules` (`Module_Id`),
+  CONSTRAINT `FK_UASP_Module_Ref_SubApp` FOREIGN KEY (`SubApp_Id`) REFERENCES `uasp_subapps` (`SubApp_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -585,8 +597,8 @@ CREATE TABLE `uasp_rolemodules` (
   `Actions` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`Role_Id`,`Module_Id`),
   KEY `FK_UASP_RoleModule_Ref_Module` (`Module_Id`),
-  CONSTRAINT `FK_UASP_RoleModule_Ref_Module` FOREIGN KEY (`Module_Id`) REFERENCES `uasp_modules` (`Module_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_RoleModel_Ref_Role` FOREIGN KEY (`Role_Id`) REFERENCES `uasp_roles` (`Role_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_RoleModel_Ref_Role` FOREIGN KEY (`Role_Id`) REFERENCES `uasp_roles` (`Role_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_RoleModule_Ref_Module` FOREIGN KEY (`Module_Id`) REFERENCES `uasp_modules` (`Module_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -630,46 +642,6 @@ CREATE TABLE `uasp_settings` (
 
 -- ----------------------------
 -- Records of uasp_settings
--- ----------------------------
-
--- ----------------------------
--- Table structure for uasp_sharefiles
--- ----------------------------
-DROP TABLE IF EXISTS `uasp_sharefiles`;
-CREATE TABLE `uasp_sharefiles` (
-  `ShareFile_Id` char(32) NOT NULL,
-  `FileShare_Id` char(32) DEFAULT NULL,
-  `Fr_Id` char(32) DEFAULT NULL,
-  `CreateTime` datetime NOT NULL,
-  PRIMARY KEY (`ShareFile_Id`),
-  KEY `FK_UASP_ShareFile_Ref_FileRelation` (`Fr_Id`),
-  KEY `FK_UASP_ShareFile_Ref_FileShare` (`FileShare_Id`),
-  CONSTRAINT `FK_UASP_ShareFile_Ref_FileShare` FOREIGN KEY (`FileShare_Id`) REFERENCES `uasp_fileshares` (`FileShare_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_ShareFile_Ref_FileRelation` FOREIGN KEY (`Fr_Id`) REFERENCES `uasp_filerelations` (`Fr_Id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of uasp_sharefiles
--- ----------------------------
-
--- ----------------------------
--- Table structure for uasp_sharefolders
--- ----------------------------
-DROP TABLE IF EXISTS `uasp_sharefolders`;
-CREATE TABLE `uasp_sharefolders` (
-  `ShareFolder_Id` char(32) NOT NULL,
-  `FileShare_Id` char(32) DEFAULT NULL,
-  `Folder_Id` char(32) DEFAULT NULL,
-  `CreateTime` datetime NOT NULL,
-  PRIMARY KEY (`ShareFolder_Id`),
-  KEY `FK_UASP_ShareFolder_Ref_FileShare` (`FileShare_Id`),
-  KEY `FK_UASP_ShareFolder_Ref_Folder` (`Folder_Id`),
-  CONSTRAINT `FK_UASP_ShareFolder_Ref_Folder` FOREIGN KEY (`Folder_Id`) REFERENCES `uasp_filefolders` (`Folder_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_ShareFolder_Ref_FileShare` FOREIGN KEY (`FileShare_Id`) REFERENCES `uasp_fileshares` (`FileShare_Id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of uasp_sharefolders
 -- ----------------------------
 
 -- ----------------------------
@@ -734,8 +706,8 @@ CREATE TABLE `uasp_useremployee` (
   `Employee_Id` char(32) NOT NULL,
   PRIMARY KEY (`User_Id`,`Employee_Id`),
   KEY `FK_UASP_UserEmployee_Ref_Employee` (`Employee_Id`),
-  CONSTRAINT `FK_UASP_UserEmployee_Ref_User` FOREIGN KEY (`User_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_UserEmployee_Ref_Employee` FOREIGN KEY (`Employee_Id`) REFERENCES `uasp_employees` (`Employee_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_UserEmployee_Ref_Employee` FOREIGN KEY (`Employee_Id`) REFERENCES `uasp_employees` (`Employee_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_UserEmployee_Ref_User` FOREIGN KEY (`User_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -751,8 +723,8 @@ CREATE TABLE `uasp_userroles` (
   `User_Id` char(32) NOT NULL,
   PRIMARY KEY (`Role_Id`,`User_Id`),
   KEY `FK_UASP_UserRole_Ref_User` (`User_Id`),
-  CONSTRAINT `FK_UASP_UserRole_Ref_User` FOREIGN KEY (`User_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_UserRole_Ref_Role` FOREIGN KEY (`Role_Id`) REFERENCES `uasp_roles` (`Role_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_UserRole_Ref_Role` FOREIGN KEY (`Role_Id`) REFERENCES `uasp_roles` (`Role_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_UserRole_Ref_User` FOREIGN KEY (`User_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

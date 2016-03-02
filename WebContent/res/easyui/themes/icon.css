@@ -82,8 +82,21 @@
 .icon-folder{
 	background:url('icons/folder.png') no-repeat center center;
 }
+.icon-share{
+	background:url('icons/share.png') no-repeat center center;
+}
 .icon-book{
 	background:url('icons/book.png') no-repeat center center;
+}
+.icon-user{
+	background:url('icons/user.png') no-repeat center center;
+}
+
+.icon-addfolder{
+	background:url('icons/addfolder.png') no-repeat center center;
+}
+.icon-download{
+	background:url('icons/download.png') no-repeat center center;
 }
 
 .icon-mini-add{

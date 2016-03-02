@@ -9,65 +9,68 @@ import java.util.Map;
  * Created by JiangFeng on 2014/8/8.
  */
 public class TreeNode {
-    private String id;
-    private String text;
-    private String iconCls = "";
-    private boolean checked;
-    private String state;
-    private final List<TreeNode> children = new ArrayList<TreeNode>();
-    private final Map<String,Object> attributes = new HashMap<String, Object>();
 
-    public String getId() {
-        return id;
-    }
+	public static final String STATE_OPEN = "open";
+	public static final String STATE_Closed = "closed";
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private String id;
+	private String text;
+	private String iconCls = "";
+	private boolean checked;
+	private String state;
+	private final List<TreeNode> children = new ArrayList<TreeNode>();
+	private final Map<String, Object> attributes = new HashMap<String, Object>();
 
-    public String getText() {
-        return text;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setText(String text) {
-        this.text = text;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getIconCls() {
-        return iconCls;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public void setIconCls(String iconCls) {
-        this.iconCls = iconCls;
-    }
+	public void setText(String text) {
+		this.text = text;
+	}
 
-    public boolean isChecked() {
-        return checked;
-    }
+	public String getIconCls() {
+		return iconCls;
+	}
 
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
+	}
 
-    public String getState() {
-        return state;
-    }
+	public boolean isChecked() {
+		return checked;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
 
-    public List<TreeNode> getChildren() {
-        return children;
-    }
+	public String getState() {
+		return state;
+	}
 
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    public Map<String, Object> getAttributes() {
-        return attributes;
-    }
-    
-    public void addAttr(String key, Object value){
-    	this.attributes.put(key, value);
-    }
+	public List<TreeNode> getChildren() {
+		return children;
+	}
+
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	public void addAttr(String key, Object value) {
+		this.attributes.put(key, value);
+	}
 
 }

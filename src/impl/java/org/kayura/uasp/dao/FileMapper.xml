@@ -46,9 +46,11 @@
 		<result property="sharerId" column="Sharer_Id" />
 		<result property="sharerName" column="SharerName" />
 		<result property="receiverId" column="Receiver_Id" />
+		<result property="receiverName" column="ReceiverName" />
 		<result property="folderId" column="Folder_Id" />
 		<result property="folderName" column="FolderName" />
 		<result property="frId" column="Fr_Id" />
+		<result property="fileName" column="FileName" />
 		<result property="createTime" column="CreateTime" />
 	</resultMap>
 	
@@ -267,17 +269,41 @@
 		SELECT
 			t.FileShare_Id,
 			t.Sharer_Id,
+			<if test="receiverId != null">
+			s.DisplayName AS SharerName,
+			</if>
 			t.Receiver_Id,
+			<if test="sharerId != null">
+			r.DisplayName AS ReceiverName,
+			</if>
 			t.Folder_Id,
+			<if test="findType == null or findType == 'FOLDER' ">
+			f.Name FolderName,
+			</if>
 			t.Fr_Id,
+			<if test="findType == null or findType == 'FILE' ">
+			c.FileName,
+			</if>
 			t.CreateTime
 		FROM uasp_fileshares AS t
+		<if test="sharerId != null">
+		LEFT JOIN uasp_users AS r ON t.Receiver_Id = r.User_Id
+		</if>
+		<if test="receiverId != null">
+		LEFT JOIN uasp_users AS s ON t.Sharer_Id = s.User_Id
+		</if>
+		<if test="findType == null or findType == 'FOLDER' ">
+		LEFT JOIN uasp_filefolders AS f ON t.Folder_Id = f.Folder_Id
+		</if>
+		<if test="findType == null or findType == 'FILE' ">
+		LEFT JOIN uasp_filerelations AS c ON t.Fr_Id = c.Fr_Id
+		</if>
 		<where>
 			<if test="sharerId != null">
-				AND ( t.Sharer_Id = :sharerId )
+				AND ( t.Sharer_Id = #{sharerId} )
 			</if>
 			<if test="receiverId != null">
-				AND ( t.Receiver_Id = :receiverId )
+				AND ( t.Receiver_Id = #{receiverId} )
 			</if>
 			<if test="findType == 'FOLDER' ">
 				AND ( t.Folder_Id IS NOT NULL )

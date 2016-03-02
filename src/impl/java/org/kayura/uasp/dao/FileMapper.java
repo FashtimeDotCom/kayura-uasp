@@ -11,7 +11,7 @@ import org.kayura.core.BaseDao;
 import org.kayura.uasp.po.FileFolder;
 import org.kayura.uasp.po.FileInfo;
 import org.kayura.uasp.po.FileRelation;
-import org.kayura.uasp.po.Group;
+import org.kayura.uasp.po.FileShare;
 
 /**
  * @author liangxia@live.com
@@ -108,9 +108,15 @@ public interface FileMapper extends BaseDao {
 	/**
 	 * 获取符合条件的文件夹记录.
 	 * 
-	 * @param folderArgs 支持条件有： tenantId, userId
+	 * @param args 支持条件有： tenantId, userId
 	 * @return
 	 */
-	List<FileFolder> getFolders(Map<String, Object> folderArgs);
+	List<FileFolder> getFolders(Map<String, Object> args);
 
+	/**
+	 * 获取符合条件的文件共享信息.
+	 * @param args sharerId 共享者Id, receiverId 接收者Id, findType 查找类型:FOLDER 文件夹, FILE 文件, null 查全部..
+	 * @return 返回符合条件的文件共享信息.
+	 */
+	List<FileShare> getFileShares(Map<String, Object> args);
 }

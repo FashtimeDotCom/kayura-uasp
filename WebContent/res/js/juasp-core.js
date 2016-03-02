@@ -312,7 +312,6 @@ juasp = {
 		var w = $top("<div />");
 		setCache("wid_" + wid, w);
 		
-
 		w.window({
 			title : opts.title,
 			width : opts.width,

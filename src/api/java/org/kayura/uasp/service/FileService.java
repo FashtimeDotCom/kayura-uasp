@@ -10,7 +10,7 @@ import org.kayura.type.GeneralResult;
 import org.kayura.type.Result;
 import org.kayura.uasp.vo.FileDownload;
 import org.kayura.uasp.po.FileFolder;
-import org.kayura.uasp.po.Group;
+import org.kayura.uasp.po.FileShare;
 import org.kayura.uasp.vo.FileContentUpdate;
 import org.kayura.uasp.vo.FileUpload;
 import org.kayura.uasp.vo.FileUploadResult;
@@ -52,4 +52,21 @@ public interface FileService {
 	 */
 	Result<List<FileFolder>> findFolders(String userId);
 
+	/**
+	 * 查找别人共享给我的共享文件信息 。
+	 * 
+	 * @param receiverId 共享文件接收人Id.
+	 * @param findType 查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
+	 * @return 返回符合条件的文件共享信息.
+	 */
+	Result<List<FileShare>> findFileShares(String receiverId, String findType);
+
+	/**
+	 * 查找我共享给别人的共享文件信息 。
+	 * 
+	 * @param receiverId 共享人Id.
+	 * @param findType 查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
+	 * @return 返回符合条件的文件共享信息.
+	 */
+	Result<List<FileShare>> findMyShares(String sharerId, String findType);
 }

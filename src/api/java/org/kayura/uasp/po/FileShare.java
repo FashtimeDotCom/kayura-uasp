@@ -13,6 +13,9 @@ import java.util.Date;
  */
 public class FileShare {
 
+	public static final String SHARETYPES_FOLDER = "FOLDER";
+	public static final String SHARETYPES_FILE = "FILE";
+
 	private String fileShareId;
 	private String sharerId;
 	private String sharerName;
@@ -20,6 +23,7 @@ public class FileShare {
 	private String folderId;
 	private String folderName;
 	private String frId;
+	private String fileName;
 	private Date createTime;
 
 	public String getFileShareId() {
@@ -76,6 +80,20 @@ public class FileShare {
 
 	public void setFrId(String frId) {
 		this.frId = frId;
+	}
+
+	/**
+	 * @return the fileName
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+
+	/**
+	 * @param fileName the fileName to set
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public Date getCreateTime() {

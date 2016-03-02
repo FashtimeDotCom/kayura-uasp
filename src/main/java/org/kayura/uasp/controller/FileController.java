@@ -32,7 +32,7 @@ import org.kayura.type.Result;
 import org.kayura.uasp.executor.FileUploadProvider;
 import org.kayura.uasp.models.UploadItem;
 import org.kayura.uasp.po.FileFolder;
-import org.kayura.uasp.po.Group;
+import org.kayura.uasp.po.FileShare;
 import org.kayura.uasp.service.FileService;
 import org.kayura.uasp.vo.FileContentUpdate;
 import org.kayura.uasp.vo.FileDownload;
@@ -40,6 +40,7 @@ import org.kayura.uasp.vo.FileListItem;
 import org.kayura.uasp.vo.FileUpload;
 import org.kayura.uasp.vo.FileUploadResult;
 import org.kayura.utils.KeyUtils;
+import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
 import org.kayura.web.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +68,13 @@ public class FileController extends BaseController {
 	private FileService fileService;
 
 	public FileController() {
-		this.setViewRootPath("views/");
+		this.setViewRootPath("views/file/");
 	}
 
 	@RequestMapping(value = "/file/upload", method = RequestMethod.GET)
 	public String fileUpload() {
 
-		return this.viewResult("file/upload");
+		return this.viewResult("upload");
 	}
 
 	/**
@@ -169,7 +170,7 @@ public class FileController extends BaseController {
 			}
 		});
 
-		return this.viewResult("file/upload");
+		return this.viewResult("upload");
 	}
 
 	/**
@@ -279,7 +280,7 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/list", method = RequestMethod.GET)
 	public String fileList(HttpServletRequest req, HttpServletResponse res) {
 
-		return this.viewResult("file/list");
+		return this.viewResult("list");
 	}
 
 	// 文件管理模块.
@@ -287,7 +288,13 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/manager", method = RequestMethod.GET)
 	public ModelAndView manager() {
 
-		ModelAndView mv = this.view("file/manager");
+		ModelAndView mv = this.view("manager");
+		
+		LoginUser u = this.getLoginUser();
+		
+		mv.addObject("hasRoot", u.hasRoot());
+		mv.addObject("hasAdmin", u.hasAdmin());
+		
 		return mv;
 	}
 
@@ -295,7 +302,7 @@ public class FileController extends BaseController {
 	 * 
 	 */
 	@RequestMapping(value = "/file/folders", method = RequestMethod.POST)
-	public void folderTree(Map<String, Object> map) {
+	public void folderTree(Map<String, Object> map, String id) {
 
 		LoginUser user = getLoginUser();
 
@@ -306,99 +313,166 @@ public class FileController extends BaseController {
 
 				List<TreeNode> rootNode = new ArrayList<TreeNode>();
 
-				Result<List<FileFolder>> r = fileService.findFolders(user.getUserId());
-				if (r.isSucceed()) {
+				if (!StringUtils.isEmpty(id)) {
+					if (id.length() == 32) {
 
-					List<FileFolder> folders = r.getData();
-
-					// 添加 [系统文件夹]
-					List<FileFolder> sysFolders = folders.stream().filter(c -> c.getTenantId() == null)
-							.collect(Collectors.toList());
-
-					if (user.hasRoot() || !sysFolders.isEmpty()) {
-
-						TreeNode sysNode = new TreeNode();
-						sysNode.setId("SYSFOLDER");
-						sysNode.setText("系统文件夹");
-						sysNode.setIconCls("icon-book");
-						rootNode.add(sysNode);
-
-						for (FileFolder f : sysFolders) {
-
-							TreeNode n = new TreeNode();
-							n.setId(f.getFolderId());
-							n.setText(f.getName());
-							n.setIconCls("icon-folder");
-							sysNode.getChildren().add(n);
-						}
+						/*
+						 * TreeNode n = new TreeNode();
+						 * n.setId(KeyUtils.newId()); n.setText("子文件夹");
+						 * n.setState(TreeNode.STATE_Closed);
+						 * n.setIconCls("icon-folder"); rootNode.add(n);
+						 */
 					}
+				} else {
 
-					if (!user.hasRoot()) {
+					Result<List<FileFolder>> r = fileService.findFolders(user.getUserId());
+					if (r.isSucceed()) {
 
-						// 添加 [我的文件夹]
-						List<FileFolder> myFolders = folders.stream().filter(
-								c -> c.getTenantId() != null && c.getCreatorId() != null && c.getGroupId() == null)
+						List<FileFolder> folders = r.getData();
+
+						// 添加 [系统文件夹]
+						List<FileFolder> sysFolders = folders.stream()
+								.filter(c -> c.getTenantId() == null && c.getParentId() == null)
 								.collect(Collectors.toList());
 
-						TreeNode myNode = new TreeNode();
-						myNode.setId("MYFOLDER");
-						myNode.setText("我的文件夹");
-						myNode.setIconCls("icon-book");
-						rootNode.add(myNode);
+						if (user.hasRoot() || !sysFolders.isEmpty()) {
 
-						for (FileFolder f : myFolders) {
+							TreeNode sysNode = new TreeNode();
+							sysNode.setId("SYSFOLDER");
+							sysNode.setText("系统文件夹");
+							sysNode.setIconCls("icon-book");
+							rootNode.add(sysNode);
 
-							TreeNode n = new TreeNode();
-							n.setId(f.getFolderId());
-							n.setText(f.getName());
-							n.setIconCls("icon-folder");
-							myNode.getChildren().add(n);
+							for (FileFolder f : sysFolders) {
+
+								TreeNode n = new TreeNode();
+								n.setId(f.getFolderId());
+								n.setText(f.getName());
+								n.setState(TreeNode.STATE_OPEN);
+								n.setIconCls("icon-folder");
+								sysNode.getChildren().add(n);
+
+								appendChildFolders(n, folders);
+							}
 						}
 
-						List<String> groups = folders.stream().filter(c -> c.getGroupId() != null).map(m -> {
-							return m.getGroupId() + "#" + m.getGroupName();
-						}).distinct().collect(Collectors.toList());
+						if (!user.hasRoot()) {
 
-						TreeNode groupNode = new TreeNode();
-						groupNode.setId("MYGROUP");
-						groupNode.setText("我的群组");
-						groupNode.setIconCls("icon-book");
-						rootNode.add(groupNode);
-
-						for (String g : groups) {
-							
-							String gid = g.split("#")[0];
-							String gname = g.split("#")[1];
-
-							TreeNode gn = new TreeNode();
-							gn.setId("MYGROUP");
-							gn.setText(gname);
-							gn.setIconCls("icon-group");
-							groupNode.getChildren().add(gn);
-
-							// 添加 [我的群组]
-							List<FileFolder> myGroups = folders.stream()
-									.filter(c -> c.getGroupId() != null && c.getGroupId().equals(gid))
+							// 添加 [我的文件夹]
+							List<FileFolder> myFolders = folders.stream()
+									.filter(c -> c.getTenantId() != null && c.getCreatorId() != null
+											&& c.getGroupId() == null && c.getParentId() == null)
 									.collect(Collectors.toList());
 
-							for (FileFolder f : myGroups) {
+							TreeNode myNode = new TreeNode();
+							myNode.setId("MYFOLDER");
+							myNode.setText("我的文件夹");
+							myNode.setIconCls("icon-book");
+							rootNode.add(myNode);
+
+							for (FileFolder f : myFolders) {
 
 								TreeNode n = new TreeNode();
 								n.setId(f.getFolderId());
 								n.setText(f.getName());
 								n.setIconCls("icon-folder");
-								gn.getChildren().add(n);
+								n.setState(TreeNode.STATE_OPEN);
+								myNode.getChildren().add(n);
+
+								appendChildFolders(n, folders);
+							}
+
+							TreeNode nc = new TreeNode();
+							nc.setId("NOTCLASSIFIED");
+							nc.setText("未归类");
+							nc.setIconCls("icon-folder");
+							myNode.getChildren().add(nc);
+
+							// 添加 [我的群组]
+							List<String> groups = folders.stream().filter(c -> c.getGroupId() != null).map(m -> {
+								return m.getGroupId() + "#" + m.getGroupName();
+							}).distinct().collect(Collectors.toList());
+
+							if (!groups.isEmpty()) {
+
+								TreeNode groupNode = new TreeNode();
+								groupNode.setId("MYGROUP");
+								groupNode.setText("我的群组");
+								groupNode.setIconCls("icon-book");
+								rootNode.add(groupNode);
+
+								for (String g : groups) {
+
+									String gid = g.split("#")[0];
+									String gname = g.split("#")[1];
+
+									TreeNode gn = new TreeNode();
+									gn.setId("GROUPITEM");
+									gn.setText(gname);
+									gn.setIconCls("icon-group");
+									gn.addAttr("groupid", gid);
+									groupNode.getChildren().add(gn);
+
+									List<FileFolder> myGroups = folders.stream().filter(c -> c.getGroupId() != null
+											&& c.getGroupId().equals(gid) && c.getParentId() == null)
+											.collect(Collectors.toList());
+
+									for (FileFolder f : myGroups) {
+
+										TreeNode n = new TreeNode();
+										n.setId(f.getFolderId());
+										n.setText(f.getName());
+										n.setState(TreeNode.STATE_OPEN);
+										n.setIconCls("icon-folder");
+										gn.getChildren().add(n);
+
+										appendChildFolders(n, folders);
+									}
+								}
+							}
+
+							// 添加 [同事的分享]
+							List<FileShare> shares = fileService
+									.findFileShares(user.getUserId(), FileShare.SHARETYPES_FOLDER).getData();
+							if (!shares.isEmpty()) {
+
+								List<String> sharers = shares.stream().map(m -> {
+									return m.getSharerId() + "#" + m.getSharerName();
+								}).distinct().collect(Collectors.toList());
+
+								TreeNode shareNode = new TreeNode();
+								shareNode.setId("MYSHARE");
+								shareNode.setText("同事的分享");
+								shareNode.setIconCls("icon-book");
+								rootNode.add(shareNode);
+
+								for (String s : sharers) {
+
+									String sharerId = s.split("#")[0];
+									String sharerName = s.split("#")[1];
+
+									TreeNode gn = new TreeNode();
+									gn.setId("SHARER");
+									gn.setText(sharerName);
+									gn.setIconCls("icon-user");
+									shareNode.getChildren().add(gn);
+
+									List<FileShare> sharelist = shares.stream()
+											.filter(c -> c.getSharerId().equals(sharerId)).collect(Collectors.toList());
+
+									for (FileShare f : sharelist) {
+
+										TreeNode n = new TreeNode();
+										n.setId(f.getFolderId());
+										n.setText(f.getFolderName());
+										n.setState(TreeNode.STATE_OPEN);
+										n.setIconCls("icon-folder");
+										gn.getChildren().add(n);
+									}
+								}
 							}
 						}
-
-						// 添加 [我的分享]
-						TreeNode shareNode = new TreeNode();
-						shareNode.setId("MYSHARE");
-						shareNode.setText("同事的分享");
-						shareNode.setIconCls("icon-book");
-						rootNode.add(shareNode);
 					}
-
 				}
 
 				// 添加以返回结果.
@@ -406,6 +480,35 @@ public class FileController extends BaseController {
 			}
 		});
 
+	}
+
+	void appendChildFolders(TreeNode node, List<FileFolder> folders) {
+
+		List<FileFolder> childs = folders.stream()
+				.filter(c -> c.getParentId() != null && c.getParentId().equals(node.getId()))
+				.collect(Collectors.toList());
+		if (!childs.isEmpty()) {
+
+			for (FileFolder f : childs) {
+
+				TreeNode n = new TreeNode();
+				n.setId(f.getFolderId());
+				n.setText(f.getName());
+				n.setState(TreeNode.STATE_OPEN);
+				n.setIconCls("icon-folder");
+				node.getChildren().add(n);
+
+				appendChildFolders(n, folders);
+			}
+		}
+	}
+
+	@RequestMapping(value = "/file/folder/new", method = RequestMethod.GET)
+	public ModelAndView createFolder(String pid) {
+
+		ModelAndView mv = this.view("folder");
+		
+		return mv;
 	}
 
 	// 私有方法集.
