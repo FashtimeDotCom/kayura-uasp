@@ -5,7 +5,8 @@
 <e:section name="head">
 	<script type="text/javascript">
 	
-		var folderId = "", folderName = "", groupId = "";
+		var isfirst = true;
+		var folderId = "", folderName = "";
 		var nodeType = ""; // SYSFOLDER, MYFOLDER, MYGROUP, MYSHARE
 		var hasRoot = ${hasRoot}, hasAdmin = ${hasAdmin};
 
@@ -33,8 +34,8 @@
 
 		function findFiles(id) {
 
-			if (folderId == "") {
-
+			if(isfirst) {
+				
 				$('#tg').datagrid({
 					url : "${root}/file/find.json",
 					method : "post",
@@ -49,33 +50,29 @@
 						}
 					},
 					onClickRow : function(idx, row) {
-						$('#downfile').linkbutton('enable');
-						$("#downfile").attr("href", "${root}/file/get?id=" + row.frId);
+						clickFile(row);
 					},
 					onDblClickRow : function(idx, row) {
-
+	
 					}
 				});
-
 			} else {
 
-				$('#tg').datagrid('unselectAll');
 				$('#tg').datagrid('load', { "folderId" : id });
+				$('#tg').datagrid('unselectAll');
 			}
-
-			folderId = id;
+			
+			isfirst = false;
 		}
 		
 		function clickFolder(node){
 
-			buttonStatus(node);
-			findFiles(node.id);
+			folderStatus(node);
+			findFiles(folderId);
 
-			$('#tg').datagrid('unselectAll');
-			$('#downfile').linkbutton('disable');
 		}
 
-		function buttonStatus(node) {
+		function folderStatus(node) {
 
 			var root = node;
 			while (true) {
@@ -88,50 +85,48 @@
 			}
 			
 			nodeType = root.id;
-			
-			if(node.id == 'GROUPITEM'){
-				groupId = node.attributes["groupid"];
-			} else if(node.id.length == 32) {
-				folderId = node.id;
-			} else {
-				folderId = "";
-			}
-			
+			folderId = node.id;
 			folderName = node.text;
 			
-			if ((nodeType == "MYFOLDER") || 
-				(hasRoot && nodeType == "SYSFOLDER") ||
-				(hasAdmin && root.id == "MYGROUP" && node.id != "MYGROUP")) {
-				
-				$('#mm').menu('enableItem', $("#addfolder"));
-			} else {
-				$('#mm').menu('disableItem', $("#addfolder"));
-			}
+			// 可操作节点区.
+			var isEditArea = (nodeType == "MYFOLDER") || (hasRoot && nodeType == "SYSFOLDER") || (nodeType == "MYGROUP");
+			// 是否为用户文件夹.
+			var isUserFolder = isEditArea && folderId != "NOTCLASSIFIED";
+			// 可上传节点.
+			var uploadState = isEditArea && isUserFolder;
+			// 可创建目录节点.
+			var addfolderState = isUserFolder && folderId != "MYGROUP" && hasAdmin;
+			// 可移除目录节点.
+			var removefolderState = isEditArea && isUserFolder;
+			// 可分享目录节点.
+			var shareState = (nodeType == "MYFOLDER") && (folderId.length == 32);
+
+			// 控制按钮状态.
+			$('#mm').menu((removefolderState?'enableItem':'disableItem'), $("#removefolder"));
+			$('#mm').menu((addfolderState?'enableItem':'disableItem'), $("#addfolder"));
+			$('#mm').menu((shareState?'showItem':'hideItem'), $("#sharefolder"));
 			
-			if ((nodeType == "MYFOLDER") || 
-				(nodeType == "MYGROUP") ||
-				(hasRoot && nodeType == "SYSFOLDER")) {
-				
-				if (node.id.length == 32 || node.id == "NOTCLASSIFIED") {
-					
-					$('#upload').linkbutton('enable');
-				} else {
-					$("#upload").linkbutton('disable');
-				}
-				
-				if (node.id.length == 32 && node.id != "NOTCLASSIFIED") {
-					
-					$('#mm').menu('enableItem', $("#removefolder"));
-				} else {
-					$('#mm').menu('disableItem', $("#removefolder"));
-				}
-				
-			} else {
-				$("#upload").linkbutton('disable');
-				$('#mm').menu('disableItem', $("#removefolder"));
-			}
+			$("#upload").linkbutton(uploadState?'enable':'disable');
+			
+			$('#downfile').linkbutton('disable');
+			$('#movefile').linkbutton('disable');
+			$('#copyfile').linkbutton('disable');
+			$('#sharefile').linkbutton('disable');
 		}
 
+		function clickFile(row){
+			
+			var isEditArea = (nodeType == "MYFOLDER") || (hasRoot && nodeType == "SYSFOLDER") || (hasAdmin && nodeType == "MYGROUP");
+
+			$('#downfile').linkbutton('enable');
+			$("#copyfile").linkbutton('enable');
+			
+			$("#movefile").linkbutton(isEditArea?'enable':'disable');
+			$("#sharefile").linkbutton(isEditArea?'enable':'disable');
+
+			$("#downfile").attr("href", "${root}/file/get?id=" + row.frId);
+		}
+		
 		function deleteFile() {
 
 			var row = $("#tg").datagrid("getSelected");
@@ -139,16 +134,12 @@
 			if (row != null) {
 				juasp.confirm("是否删除名称为【 " + row.name + " 】的词典项。", function(r) {
 					if (r == true) {
-						juasp.post('${root}/file/delete.json', {
-							id : row.id
-						},
-								{
-									success : function(r) {
-										var idx = $("#tg").datagrid(
-												"getRowIndex", row);
+						juasp.post('${root}/file/delete.json', { id : row.id },
+						{ success: function(r) {
+										var idx = $("#tg").datagrid( "getRowIndex", row);
 										$("#tg").datagrid('deleteRow', idx);
 									}
-								});
+						});
 					}
 				});
 			} else {
@@ -158,7 +149,7 @@
 
 		function createFolder() {
 
-			var openUrl = "${root}/file/folder/new?pid=" + folderId + "&pname=" + folderName + "&gid=" + groupId;
+			var openUrl = "${root}/file/folder/new?pid=" + folderId + "&pname=" + folderName;
 			
 			juasp.openWin({
 				url : openUrl,
@@ -183,21 +174,23 @@
 		<e:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" 
 			pageSize="10" singleSelect="true" striped="true" idField="frId">
 			<e:columns>
-				<e:column field="fileName" title="文件名" width="400" />
+				<e:column field="fileName" title="文件名" width="450" />
 				<e:column field="uploaderName" title="上传人" width="150" />
 				<e:column field="fileSize" title="大小" width="150" />
-				<e:column field="uploadTime" title="上传时间" width="120" />
+				<e:column field="uploadTime" title="上传时间" width="200" />
 			</e:columns>
 		</e:datagrid>
 		<div id="tb">
-			<e:linkbutton id="upload" iconCls="icon-add" plain="true" text="上传文件" />
-			<e:linkbutton id="downfile" iconCls="icon-download" plain="true" text="下载文件" />
+			<e:linkbutton id="upload" disabled="true" iconCls="icon-add" plain="true" text="上传文件" />
+			<e:linkbutton id="downfile" disabled="true" iconCls="icon-download" plain="true" text="下载" />
+			<e:linkbutton id="movefile" disabled="true" iconCls="icon-cut" plain="true" text="移动" />
+			<e:linkbutton id="copyfile" disabled="true" iconCls="icon-copy" plain="true" text="复制" />
+			<e:linkbutton id="sharefile" disabled="true" iconCls="icon-share" plain="true" text="分享" />
 		</div>
 		<div id="mm" class="easyui-menu" style="width: 120px;">
-			<div id="addfolder" onclick="createFolder()"
-				data-options="iconCls:'icon-addfolder'">添加</div>
-			<div id="removefolder" onclick="removeit()"
-				data-options="iconCls:'icon-remove'">移除</div>
+			<div id="addfolder" onclick="createFolder()" data-options="iconCls:'icon-addfolder'">添加</div>
+			<div id="removefolder" onclick="removeit()" data-options="iconCls:'icon-remove'">移除</div>
+			<div id="sharefolder" onclick="removeit()" data-options="iconCls:'icon-share'">分享</div>
 			<div class="menu-sep"></div>
 			<div onclick="expand()">展开</div>
 			<div onclick="collapse()">收缩</div>

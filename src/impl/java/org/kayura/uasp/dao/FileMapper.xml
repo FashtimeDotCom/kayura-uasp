@@ -234,6 +234,9 @@
 			i.IsEncrypted
 		FROM uasp_filerelations AS t
 			INNER JOIN uasp_fileinfos AS i ON t.File_Id = i.File_Id
+			<if test="sharerId != null or receiverId != null">
+			INNER JOIN uasp_fileshares AS s ON s.Fr_Id = t.Fr_Id
+			</if>
 		<where>
 			<if test="folderId != null and folderId != 'NULL'">
 				AND ( t.Folder_Id = #{folderId} )
@@ -243,6 +246,15 @@
 			</if>
 			<if test="uploaderId != null">
 				AND ( t.UploaderId = #{uploaderId} )
+			</if>
+			<if test="sharerId != null or receiverId != null">
+				AND ( s.Folder_Id IS NULL ) 
+			</if>
+			<if test="sharerId != null">
+				AND ( s.Sharer_Id = #{sharerId} )
+			</if>
+			<if test="receiverId != null">
+				AND ( s.Receiver_Id = #{receiverId} )
 			</if>
 			<if test="bizId != null">
 				AND ( t.BizId = #{bizId} )

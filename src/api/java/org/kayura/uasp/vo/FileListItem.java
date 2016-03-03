@@ -4,8 +4,6 @@
  */
 package org.kayura.uasp.vo;
 
-import java.util.Date;
-
 /**
  * @author liangxia@live.com
  */
@@ -17,7 +15,7 @@ public class FileListItem {
 	private String postfix;
 	private String uploaderId;
 	private String uploaderName;
-	private Date uploadTime;
+	private String uploadTime;
 	private Integer downloads;
 	private Boolean allowChange;
 	private Boolean isEncrypted;
@@ -71,11 +69,11 @@ public class FileListItem {
 		this.uploaderName = uploaderName;
 	}
 
-	public Date getUploadTime() {
+	public String getUploadTime() {
 		return uploadTime;
 	}
 
-	public void setUploadTime(Date uploadTime) {
+	public void setUploadTime(String uploadTime) {
 		this.uploadTime = uploadTime;
 	}
 

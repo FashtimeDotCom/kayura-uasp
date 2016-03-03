@@ -410,10 +410,9 @@ public class FileController extends BaseController {
 									String gname = g.split("#")[1];
 
 									TreeNode gn = new TreeNode();
-									gn.setId("GROUPITEM");
+									gn.setId("GROUPITEM#" + gid);
 									gn.setText(gname);
 									gn.setIconCls("icon-group");
-									gn.addAttr("groupid", gid);
 									groupNode.getChildren().add(gn);
 
 									List<FileFolder> myGroups = folders.stream().filter(c -> c.getGroupId() != null
@@ -455,7 +454,7 @@ public class FileController extends BaseController {
 									String sharerName = s.split("#")[1];
 
 									TreeNode gn = new TreeNode();
-									gn.setId("SHARER");
+									gn.setId("SHARER#" + sharerId);
 									gn.setText(sharerName);
 									gn.setIconCls("icon-user");
 									shareNode.getChildren().add(gn);
@@ -510,19 +509,25 @@ public class FileController extends BaseController {
 	public ModelAndView createFolder(String pid, String pname, String gid, String gname) {
 
 		ModelAndView mv = this.view("folder");
-		
+
 		FileFolder model = new FileFolder();
 		model.setParentId(pid);
 		model.setParentName(pname);
 		model.setGroupId(gid);
 		model.setGroupName(gname);
-		
+
 		mv.addObject("model", model);
 		return mv;
 	}
 
 	@RequestMapping(value = "/file/find", method = RequestMethod.POST)
 	public void findFiles(HttpServletRequest req, Map<String, Object> map, String folderId) {
+
+		// folderId 值有几种类型：
+		// 0F2D7BE1E02011E59888D8CB8A43F8DD 文件夹ID
+		// SHARER#18C5BD7D457647ECB3F688D4ECF1C0C8 共享人ID
+		// null 未定义
+		// NOTCLASSIFIED 我的文件夹->未分类
 
 		LoginUser user = this.getLoginUser();
 
@@ -533,16 +538,30 @@ public class FileController extends BaseController {
 
 				PageParams pp = ui.getPageParams(req);
 
-				if (!StringUtils.isEmpty(folderId) && (folderId.equals("NOTCLASSIFIED") || folderId.length() == 32)) {
+				if (!StringUtils.isEmpty(folderId) && (folderId.equals("NOTCLASSIFIED")
+						|| folderId.startsWith("SHARER#") || folderId.length() == 32)) {
 
 					String id = null;
-					if (folderId.equals("NOTCLASSIFIED")) {
-						id = "NULL";
+					String uploaderId = null;
+					Result<PageList<FileListItem>> r = fileService.findFilesByFolder(id, uploaderId, pp);
+
+					if (folderId.startsWith("SHARER#")) {
+						
+						String sharerId = folderId.split("#")[1];
+
+						r = fileService.findFilesByShare(sharerId, user.getUserId(), pp);
 					} else {
-						id = folderId;
+						
+						if (folderId.equals("NOTCLASSIFIED")) {
+							id = "NULL";
+							uploaderId = user.getUserId();
+						} else {
+							id = folderId;
+						}
+						
+						r = fileService.findFilesByFolder(id, uploaderId, pp);
 					}
 
-					Result<PageList<FileListItem>> r = fileService.findFilesByFolder(id, user.getUserId(), pp);
 					if (r.isSucceed()) {
 						ps.add("items", ui.genPageData(r.getData()));
 					} else {
@@ -579,10 +598,8 @@ public class FileController extends BaseController {
 	/**
 	 * 对字节进行 AES 加密.
 	 * 
-	 * @param rawBytes
-	 *            原始字节内容.
-	 * @param encryptKey
-	 *            私有密钥.
+	 * @param rawBytes 原始字节内容.
+	 * @param encryptKey 私有密钥.
 	 * @return 返回加密后的字节.
 	 * @throws Exception
 	 */
@@ -602,10 +619,8 @@ public class FileController extends BaseController {
 	/**
 	 * 对节进行 AES 解密.
 	 * 
-	 * @param encBytes
-	 *            加密后的字节内容.
-	 * @param decryptKey
-	 *            私有密钥.
+	 * @param encBytes 加密后的字节内容.
+	 * @param decryptKey 私有密钥.
 	 * @return 返回解密后的字节.
 	 * @throws Exception
 	 */

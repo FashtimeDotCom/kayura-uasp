@@ -189,10 +189,8 @@ public class FileServiceImpl implements FileService {
 	/**
 	 * 查找别人共享给我的共享文件信息 。
 	 * 
-	 * @param receiverId
-	 *            共享文件接收人Id.
-	 * @param findType
-	 *            查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
+	 * @param receiverId 共享文件接收人Id.
+	 * @param findType 查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
 	 * @return 返回符合条件的文件共享信息.
 	 */
 	public Result<List<FileShare>> findFileShares(String receiverId, String findType) {
@@ -211,10 +209,8 @@ public class FileServiceImpl implements FileService {
 	/**
 	 * 查找我共享给别人的共享文件信息 。
 	 * 
-	 * @param receiverId
-	 *            共享人Id.
-	 * @param findType
-	 *            查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
+	 * @param receiverId 共享人Id.
+	 * @param findType 查找类型: FOLDER 文件夹,FILE 文件, null 查全部.
 	 * @return 返回符合条件的文件共享信息.
 	 */
 	public Result<List<FileShare>> findMyShares(String sharerId, String findType) {
@@ -237,6 +233,24 @@ public class FileServiceImpl implements FileService {
 
 		if (!StringUtils.isEmpty(uploaderId)) {
 			args.put("uploaderId", uploaderId);
+		}
+
+		PageList<FileListItem> list = fileMapper.findFiles(args, new PageBounds(params));
+
+		return new Result<PageList<FileListItem>>(Result.SUCCEED, list);
+	}
+
+	@Override
+	public Result<PageList<FileListItem>> findFilesByShare(String sharerId, String receiverId, PageParams params) {
+		
+		Map<String, Object> args = new HashMap<String, Object>();
+
+		if (!StringUtils.isEmpty(sharerId)) {
+			args.put("sharerId", sharerId);
+		}
+		
+		if (!StringUtils.isEmpty(receiverId)) {
+			args.put("receiverId", receiverId);
 		}
 
 		PageList<FileListItem> list = fileMapper.findFiles(args, new PageBounds(params));
