@@ -49,10 +49,9 @@
 		<c:if test="${type != null}">
 			<h2>Type: ${type}</h2>
 			<h2>Message: ${message}</h2>
-			<h2>Data: <%=JsonUtils.fromObject(request.getAttribute("data"))%></h2>
-			
+			<h2>Data: ${JsonUtils.fromObject(data)}</h2>
 			<c:forEach var="m" items="${data}">
-				<a target="_blank" href="${root}/file/get?id=<c:out value="${m.value.frId}"></c:out>"><c:out value="${m.value.fileName}"></c:out></a>
+				<a target="_blank" href="${root}/file/get?id=<c:out value="${m['frId']}"></c:out>"><c:out value="${m['fileName']}"></c:out></a>
 				<br>
 			</c:forEach>
 		</c:if>

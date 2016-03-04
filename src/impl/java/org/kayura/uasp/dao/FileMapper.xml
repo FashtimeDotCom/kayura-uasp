@@ -200,12 +200,23 @@
 		t.Tags
 	</sql>
 	
-	<select id="getFileRelationById" parameterType="string" resultMap="fileRelationMap">
-		SELECT 
-			<include refid="fileRelationColumns" />
-		FROM UASP_FileRelations t
-		WHERE ( t.Fr_Id = #{value} )
+	<select id="downloadFileByIds" parameterType="list" resultMap="fileRelationMap">
+		SELECT <include refid="fileRelationColumns" />
+		FROM UASP_FileRelations t 
+		WHERE t.Fr_Id IN 
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
 	</select>
+	
+	<update id="updateFileDownloads" parameterType="list" >
+		UPDATE UASP_FileRelations 
+		SET Downloads = Downloads + 1 
+		WHERE Fr_Id IN 
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
 
 	<resultMap id="fileListItemMap" type="org.kayura.uasp.vo.FileListItem">
 		<id property="frId" column="Fr_Id" />
@@ -265,11 +276,7 @@
 		</where>
 		ORDER BY t.Serial ASC
 	</select>
-		
-	<update id="incrementDownloads" parameterType="string" >
-		UPDATE UASP_FileRelations SET Downloads = Downloads + 1 WHERE ( Fr_Id = #{value} )
-	</update>
-		
+	
 	<select id="getFileRelationTagsById" parameterType="string" resultType="string">
 		SELECT t.Tags FROM UASP_FileRelations t
 		WHERE ( t.Fr_Id = #{value} )

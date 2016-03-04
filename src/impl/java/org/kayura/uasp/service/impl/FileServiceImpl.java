@@ -106,36 +106,38 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public Result<FileDownload> download(String frId) {
+	public Result<List<FileDownload>> download(List<String> frIds) {
 
-		Result<FileDownload> r = new Result<FileDownload>();
+		Result<List<FileDownload>> r = new Result<List<FileDownload>>();
 
-		FileRelation fr = fileMapper.getFileRelationById(frId);
-		if (fr == null) {
-			r.setError("frId: %s not exists。", frId);
-			return r;
+		List<FileRelation> list = fileMapper.downloadFileByIds(frIds);
+
+		List<FileDownload> resultList = new ArrayList<FileDownload>();
+		for (FileRelation fr : list) {
+
+			FileInfo fi = fileMapper.getFileInfoById(fr.getFileId());
+			if (fi == null) {
+				r.setError("fileId: %s not exists.", fr.getFileId());
+				return r;
+			}
+
+			FileDownload fd = new FileDownload();
+			fd.setFrId(fr.getFrId());
+			fd.setLogicPath(fi.getLogicPath());
+			fd.setFileId(fr.getFileId());
+			fd.setFileName(fr.getFileName());
+			fd.setContentType(fi.getContentType());
+			fd.setIsEncrypted(fi.getIsEncrypted());
+			fd.setSalt(fi.getSalt());
+			fd.setAllowChange(fi.getAllowChange());
+
+			resultList.add(fd);
 		}
-
-		FileInfo fi = fileMapper.getFileInfoById(fr.getFileId());
-		if (fi == null) {
-			r.setError("fileId: %s not exists.", fr.getFileId());
-			return r;
-		}
-
-		FileDownload fd = new FileDownload();
-		fd.setFrId(fr.getFrId());
-		fd.setLogicPath(fi.getLogicPath());
-		fd.setFileId(fr.getFileId());
-		fd.setFileName(fr.getFileName());
-		fd.setContentType(fi.getContentType());
-		fd.setIsEncrypted(fi.getIsEncrypted());
-		fd.setSalt(fi.getSalt());
-		fd.setAllowChange(fi.getAllowChange());
 
 		r.setSuccess("读取下载文件信息成功.");
-		r.setData(fd);
-
-		fileMapper.incrementDownloads(frId);
+		r.setData(resultList);
+		
+		fileMapper.updateFileDownloads(frIds);
 
 		return r;
 	}
@@ -242,13 +244,13 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public Result<PageList<FileListItem>> findFilesByShare(String sharerId, String receiverId, PageParams params) {
-		
+
 		Map<String, Object> args = new HashMap<String, Object>();
 
 		if (!StringUtils.isEmpty(sharerId)) {
 			args.put("sharerId", sharerId);
 		}
-		
+
 		if (!StringUtils.isEmpty(receiverId)) {
 			args.put("receiverId", receiverId);
 		}

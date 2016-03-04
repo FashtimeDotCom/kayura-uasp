@@ -9,17 +9,9 @@
 			
 			$('#tg').datagrid({
 				url: "${root}/admin/user/find.json",
-				method : "post",
 				queryParams: {
 					keyword : $('#keyword').val(),
 					status : $('#status').val()
-				},
-				loadFilter: function(r){
-					if(r.type == juasp.SUCCESS) {
-						if (r.data && r.data.items){
-							return r.data.items;
-						}
-					}
 				},
 				onDblClickRow : function(idx, row){
 					editUser(row);

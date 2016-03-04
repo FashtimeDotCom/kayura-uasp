@@ -4,6 +4,13 @@
  */
 package org.kayura.uasp.vo;
 
+import java.util.Date;
+
+import org.kayura.serializer.DateTimeJsonSerializer;
+import org.kayura.serializer.FileSizeJsonSerializer;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 /**
  * @author liangxia@live.com
  */
@@ -15,11 +22,10 @@ public class FileListItem {
 	private String postfix;
 	private String uploaderId;
 	private String uploaderName;
-	private String uploadTime;
+	private Date uploadTime;
 	private Integer downloads;
 	private Boolean allowChange;
 	private Boolean isEncrypted;
-	private long spendTime;
 
 	public String getFrId() {
 		return frId;
@@ -37,6 +43,7 @@ public class FileListItem {
 		this.fileName = fileName;
 	}
 
+	@JsonSerialize(using = FileSizeJsonSerializer.class)
 	public long getFileSize() {
 		return fileSize;
 	}
@@ -69,11 +76,12 @@ public class FileListItem {
 		this.uploaderName = uploaderName;
 	}
 
-	public String getUploadTime() {
+	@JsonSerialize(using = DateTimeJsonSerializer.class)
+	public Date getUploadTime() {
 		return uploadTime;
 	}
 
-	public void setUploadTime(String uploadTime) {
+	public void setUploadTime(Date uploadTime) {
 		this.uploadTime = uploadTime;
 	}
 
@@ -99,14 +107,6 @@ public class FileListItem {
 
 	public void setIsEncrypted(Boolean isEncrypted) {
 		this.isEncrypted = isEncrypted;
-	}
-
-	public long getSpendTime() {
-		return spendTime;
-	}
-
-	public void setSpendTime(long spendTime) {
-		this.spendTime = spendTime;
 	}
 
 }

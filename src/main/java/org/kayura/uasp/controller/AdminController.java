@@ -89,7 +89,7 @@ public class AdminController extends BaseController {
 				Result<PageList<User>> r = userService.findUsers(tenantId, keyword, intStatus, pageParams);
 				ps.setCode(r.getCode());
 				if (r.isSucceed()) {
-					ps.add("items", ui.genPageData(r.getData()));
+					ps.setData(ui.genPageData(r.getData()));
 				} else {
 					ps.addMessage(r.getMessage());
 				}
@@ -206,7 +206,7 @@ public class AdminController extends BaseController {
 					nodes.add(root);
 				}
 
-				ps.add("items", nodes);
+				ps.setData(nodes);
 			}
 		});
 	}
@@ -224,14 +224,14 @@ public class AdminController extends BaseController {
 
 					PageList<DictItem> list = new PageList<DictItem>(pp);
 					ps.setCode(Result.SUCCEED);
-					ps.add("items", ui.genPageData(list));
+					ps.setData(ui.genPageData(list));
 				} else {
 
 					String tenantId = getLoginUser().getTenantId();
 					Result<PageList<DictItem>> r = dictService.loadDictItems(tenantId, dictId, parentId, pp);
 					ps.setCode(r.getCode());
 					if (r.isSucceed()) {
-						ps.add("items", ui.genPageData(r.getData()));
+						ps.setData(ui.genPageData(r.getData()));
 					} else {
 						ps.addMessage(r.getMessage());
 					}

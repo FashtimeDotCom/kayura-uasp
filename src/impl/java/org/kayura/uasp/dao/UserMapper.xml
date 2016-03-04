@@ -23,6 +23,7 @@
 
 	<resultMap id="autoLoginMap" type="org.kayura.uasp.po.AutoLogin">
 		<result property="seriesId" column="Series_Id" />
+		<result property="tenantId" column="Tenant_Id" />
 		<result property="userId" column="User_Id" />
 		<result property="userName" column="UserName" />
 		<result property="token" column="Token" />
@@ -201,7 +202,7 @@
 	</update>
 	
 	<select id="getLoginTokenById" parameterType="string" resultMap="autoLoginMap">
-		SELECT t.Series_Id, t.User_Id, u.UserName, t.Token, t.LastUsed
+		SELECT t.Series_Id, u.Tenant_Id, t.User_Id, u.UserName, t.Token, t.LastUsed
 		FROM UASP_AutoLogins t join UASP_Users u ON t.User_Id = u.User_Id
 		WHERE t.Series_Id = #{seriesId}
 	</select>

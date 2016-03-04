@@ -11,9 +11,11 @@ import org.kayura.type.Result;
  * @author liangxia@live.com
  *
  */
-public class PostResult extends GeneralResult {
+public class PostResult extends Result<Object> {
 
 	private static final long serialVersionUID = 247868975293321852L;
+
+	private Exception exception;
 
 	public String getType() {
 
@@ -30,14 +32,31 @@ public class PostResult extends GeneralResult {
 		return "unknown";
 	}
 
+	public Exception getException() {
+		return exception;
+	}
+
+	public void setException(Exception exception) {
+		this.setCode(ERROR);
+		this.exception = exception;
+	}
+
+	public void setError(String message, Exception exception) {
+		this.setCode(ERROR);
+		this.setMessage(message);
+		this.exception = exception;
+	}
+
+	public void setFalied(String message) {
+		this.setCode(FAILED);
+		this.setMessage(message);
+	}
+
 	public void setResult(GeneralResult result) {
-		
+
 		this.setCode(result.getCode());
 		this.setMessage(result.getMessage());
 		this.setData(result.getData());
-
-		if (this.getCode() == Result.ERROR) {
-			this.setException(result.getException());
-		}
+		this.setException(result.getException());
 	}
 }

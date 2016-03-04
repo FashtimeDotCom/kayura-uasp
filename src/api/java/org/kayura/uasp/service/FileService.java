@@ -34,10 +34,10 @@ public interface FileService {
 	/**
 	 * 通过文件关系ID，下载该文件信息或内容.
 	 * 
-	 * @param frId 文件关系Id.
+	 * @param frIds 文件关系Id.
 	 * @return 返回文件下载数据.
 	 */
-	Result<FileDownload> download(String frId);
+	Result<List<FileDownload>> download(List<String> frIds);
 
 	/**
 	 * 更新文件内容信息.

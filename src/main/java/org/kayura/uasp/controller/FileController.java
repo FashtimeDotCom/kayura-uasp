@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import java.security.Key;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -105,7 +106,8 @@ public class FileController extends BaseController {
 				fu.setIsEncrypt(ui.getIsEncrypt());
 
 				// 循环处理所有上传的文件.
-				Integer i = 0;
+				List<Object> resultList = new ArrayList<Object>();
+
 				for (MultipartFile file : files) {
 
 					if (!file.isEmpty()) {
@@ -153,14 +155,14 @@ public class FileController extends BaseController {
 							}
 
 							// 生成上传文件的返回结果项.
-							FileListItem item = new FileListItem();
-							item.setFrId(ur.getFrId());
-							item.setFileSize(fu.getFileSize());
-							item.setFileName(fu.getFileName());
-							item.setPostfix(fu.getPostfix());
-							item.setSpendTime(System.currentTimeMillis() - a1);
+							Map<Object, Object> item = new HashMap<Object, Object>();
+							item.put("frId", ur.getFrId());
+							item.put("fileSize", fu.getFileSize());
+							item.put("fileName", fu.getFileName());
+							item.put("postfix", fu.getPostfix());
+							item.put("spendTime", System.currentTimeMillis() - a1);
 
-							r.add((i++).toString(), item);
+							resultList.add(item);
 
 						} catch (Exception e) {
 							logger.error("上传文件时发生异常。", e);
@@ -169,7 +171,7 @@ public class FileController extends BaseController {
 					}
 				}
 
-				// ...
+				r.setData(resultList);
 			}
 		});
 
@@ -180,30 +182,39 @@ public class FileController extends BaseController {
 	 * 文件下载请求地址.
 	 */
 	@RequestMapping(value = "/file/get", method = RequestMethod.GET)
-	public void getFile(String id, HttpServletRequest req, HttpServletResponse res) {
+	public void getFile(@RequestParam("id") List<String> ids, HttpServletRequest req, HttpServletResponse res) {
 
-		Result<FileDownload> r = fileService.download(id);
+		Result<List<FileDownload>> r = fileService.download(ids);
 		if (r.isSucceed()) {
 
-			FileDownload fd = r.getData();
+			List<FileDownload> fdlst = r.getData();
 			try {
 
-				String absPath = uploadProvider.convertAbsolutePath(fd.getLogicPath());
-				File readFile = new File(absPath, fd.getFileId());
-				byte[] fileContent = FileUtils.readFileToByteArray(readFile);
-				if (fileContent.length > 0) {
+				if (fdlst.size() == 1) {
 
-					// 若是加密的文件需要先解密.
-					if (fd.getIsEncrypted()) {
-						fileContent = aesDecrypt(fileContent, fd.getSalt());
+					FileDownload fd = fdlst.get(0);
+					
+					String absPath = uploadProvider.convertAbsolutePath(fd.getLogicPath());
+					File readFile = new File(absPath, fd.getFileId());
+					byte[] fileContent = FileUtils.readFileToByteArray(readFile);
+					if (fileContent.length > 0) {
+
+						// 若是加密的文件需要先解密.
+						if (fd.getIsEncrypted()) {
+							fileContent = aesDecrypt(fileContent, fd.getSalt());
+						}
+
+					} else {
+						outText(res, "未能到读取到您请求下载的文件。");
 					}
 
 					res.setContentType(fd.getContentType());
 					res.setHeader("Content-Length", String.valueOf(fileContent.length));
 
 					// 设置下载文件名.
-					String agent = req.getHeader("USER-AGENT");
 					String fileName = fd.getFileName().replace(' ', '+');
+
+					String agent = req.getHeader("USER-AGENT");
 					if (agent.indexOf("Trident") != -1) {
 						fileName = URLEncoder.encode(fd.getFileName(), "UTF8");
 					} else if (agent.indexOf("Mozilla") != -1) {
@@ -214,8 +225,9 @@ public class FileController extends BaseController {
 					OutputStream os = res.getOutputStream();
 					os.write(fileContent);
 					os.close();
-				} else {
-					outText(res, "未能到读取到您请求下载的文件。");
+
+				} else if (fdlst.size() > 1) {
+
 				}
 			} catch (Exception e) {
 				logger.error(e);
@@ -237,10 +249,13 @@ public class FileController extends BaseController {
 
 					try {
 
-						Result<FileDownload> rd = fileService.download(id);
-						if (rd.isSucceed()) {
-							FileDownload fd = rd.getData();
+						List<String> ids = new ArrayList<String>();
+						ids.add(id);
 
+						Result<List<FileDownload>> rd = fileService.download(ids);
+						if (rd.isSucceed()) {
+
+							FileDownload fd = rd.getData().stream().findFirst().get();
 							if (fd.getAllowChange()) {
 
 								byte[] fileContent = new byte[0];
@@ -478,7 +493,7 @@ public class FileController extends BaseController {
 				}
 
 				// 添加以返回结果.
-				ps.add("items", rootNode);
+				ps.setData(rootNode);
 			}
 		});
 
@@ -546,24 +561,24 @@ public class FileController extends BaseController {
 					Result<PageList<FileListItem>> r = fileService.findFilesByFolder(id, uploaderId, pp);
 
 					if (folderId.startsWith("SHARER#")) {
-						
+
 						String sharerId = folderId.split("#")[1];
 
 						r = fileService.findFilesByShare(sharerId, user.getUserId(), pp);
 					} else {
-						
+
 						if (folderId.equals("NOTCLASSIFIED")) {
 							id = "NULL";
 							uploaderId = user.getUserId();
 						} else {
 							id = folderId;
 						}
-						
+
 						r = fileService.findFilesByFolder(id, uploaderId, pp);
 					}
 
 					if (r.isSucceed()) {
-						ps.add("items", ui.genPageData(r.getData()));
+						ps.setData(ui.genPageData(r.getData()));
 					} else {
 						ps.addMessage(r.getMessage());
 					}
@@ -572,7 +587,7 @@ public class FileController extends BaseController {
 
 					PageList<FileListItem> items = new PageList<FileListItem>(pp);
 					ps.setCode(Result.SUCCEED);
-					ps.add("items", ui.genPageData(items));
+					ps.setData(ui.genPageData(items));
 				}
 			}
 

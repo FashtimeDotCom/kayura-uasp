@@ -171,7 +171,8 @@ juasp = {
 	/**
 	 * 以 POST 方式请求一个处理.
 	 * 
-	 * @param {object} config  {url 请求处理的地址, data 请求传入的数据} 
+	 * @param {url} 请求处理的地址.
+	 * @param {data} 请求传入的数据. 
 	 * @param {events} events 请求的回调事件. 支持: error, complete, success, failure.
 	 */
 	function post(url, data, events){
@@ -394,7 +395,7 @@ juasp = {
 			onclose(r);
 		});
 	}
-	
+
 	/** 绑定方法 **/
 	
 	juasp.post = post;

@@ -11,12 +11,6 @@
 			
 			$('#tv').tree({
 				url : "${root}/admin/dict/define.json",
-				method : "post",
-				loadFilter : function(r) {
-					if (r.data && r.data.items) {
-						return r.data.items;
-					}
-				},
 				onClick: function(node){
 					var id = node.id;
 					findItems(node.id);
@@ -39,16 +33,8 @@
 
 				$('#tg').datagrid({
 					url: "${root}/admin/dict/load.json",
-					method : "post",
 					queryParams: {
 						"dictId": id
-					},
-					loadFilter: function(r){
-						if(r.type == juasp.SUCCESS) {
-							if (r.data && r.data.items){
-								return r.data.items;
-							}
-						}
 					},
 					onClickRow : function(idx, row){
 						<c:if test="${ISROOT==false}">

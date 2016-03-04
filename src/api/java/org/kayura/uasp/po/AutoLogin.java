@@ -7,11 +7,12 @@ package org.kayura.uasp.po;
 import java.io.Serializable;
 import java.util.Date;
 
-public class AutoLogin implements Serializable  {
+public class AutoLogin implements Serializable {
 
 	private static final long serialVersionUID = 1830325111339907642L;
-	
+
 	private String seriesId;
+	private String tenantId;
 	private String userId;
 	private String userName;
 	private String token;
@@ -39,6 +40,20 @@ public class AutoLogin implements Serializable  {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	/**
+	 * @return the tenantId
+	 */
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	/**
+	 * @param tenantId the tenantId to set
+	 */
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	public String getToken() {

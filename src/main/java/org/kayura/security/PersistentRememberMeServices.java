@@ -60,15 +60,16 @@ public class PersistentRememberMeServices extends AbstractRememberMeServices {
 		final String presentedSeries = cookieTokens[0];
 		final String presentedToken = cookieTokens[1];
 
-		PersistentRememberMeToken token = tokenRepository.getTokenForSeries(presentedSeries);
+		TenantUserRememberMeToken token = (TenantUserRememberMeToken) tokenRepository
+				.getTokenForSeries(presentedSeries);
 
 		if (token == null) {
 			throw new RememberMeAuthenticationException("No persistent token found for series id: " + presentedSeries);
 		}
-		
+
 		if (!presentedToken.equals(token.getTokenValue())) {
 
-			tokenRepository.removeUserTokens(token.getUsername());
+			tokenRepository.removeUserTokens(token.getUserId());
 
 			throw new CookieTheftException(messages.getMessage("PersistentTokenBasedRememberMeServices.cookieStolen",
 					"Invalid remember-me token (Series/token) mismatch. Implies previous cookie theft attack."));
@@ -94,13 +95,13 @@ public class PersistentRememberMeServices extends AbstractRememberMeServices {
 			throw new RememberMeAuthenticationException("Autologin failed due to data access problem");
 		}
 
-		return getUserDetailsService().loadUserByUsername(token.getUsername());
+		return getUserDetailsService().loadUserByUsername(token.getTenantUserName());
 	}
 
 	protected void onLoginSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication successfulAuthentication) {
 
-		LoginUser user = (LoginUser)successfulAuthentication.getPrincipal();
+		LoginUser user = (LoginUser) successfulAuthentication.getPrincipal();
 
 		logger.debug("Creating new persistent login for user " + user.getUsername());
 
@@ -119,7 +120,7 @@ public class PersistentRememberMeServices extends AbstractRememberMeServices {
 		super.logout(request, response, authentication);
 
 		if (authentication != null) {
-			LoginUser user = (LoginUser)authentication.getPrincipal();
+			LoginUser user = (LoginUser) authentication.getPrincipal();
 			tokenRepository.removeUserTokens(user.getUserId());
 		}
 	}
