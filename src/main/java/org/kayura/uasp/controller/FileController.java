@@ -4,7 +4,12 @@
  */
 package org.kayura.uasp.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.security.Key;
@@ -14,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -42,6 +49,7 @@ import org.kayura.uasp.vo.FileDownload;
 import org.kayura.uasp.vo.FileListItem;
 import org.kayura.uasp.vo.FileUpload;
 import org.kayura.uasp.vo.FileUploadResult;
+import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
@@ -188,50 +196,118 @@ public class FileController extends BaseController {
 		if (r.isSucceed()) {
 
 			List<FileDownload> fdlst = r.getData();
+			if (fdlst.size() == 0) {
+
+				outText(res, "你要下载的文件不存在。");
+				return;
+			}
+
 			try {
 
-				if (fdlst.size() == 1) {
+				String tempPath = uploadProvider.getTempPath();
 
-					FileDownload fd = fdlst.get(0);
-					
-					String absPath = uploadProvider.convertAbsolutePath(fd.getLogicPath());
-					File readFile = new File(absPath, fd.getFileId());
-					byte[] fileContent = FileUtils.readFileToByteArray(readFile);
-					if (fileContent.length > 0) {
+				File downFile = null;
+				String fileName = null;
 
-						// 若是加密的文件需要先解密.
-						if (fd.getIsEncrypted()) {
-							fileContent = aesDecrypt(fileContent, fd.getSalt());
+				if (fdlst.size() > 1) {
+
+					String rawString = String.join("|",
+							fdlst.stream().map(c -> c.getFrId()).collect(Collectors.toList()));
+
+					downFile = new File(tempPath, DigestUtils.md5Hex(rawString) + ".zip");
+					if (!downFile.exists()) {
+
+						OutputStream os = new BufferedOutputStream(new FileOutputStream(downFile));
+						ZipOutputStream zout = new ZipOutputStream(os);
+
+						byte[] buf = new byte[1024 * 32];
+						int len;
+
+						for (FileDownload fd : fdlst) {
+
+							String absPath = uploadProvider.convertAbsolutePath(fd.getLogicPath());
+							File srcFile = new File(absPath, fd.getFileId());
+
+							if (fd.getIsEncrypted()) {
+
+								File aesFile = new File(tempPath, srcFile.getName());
+								if (!aesFile.exists()) {
+									byte[] fileContent = FileUtils.readFileToByteArray(srcFile);
+									fileContent = aesDecrypt(fileContent, fd.getSalt());
+								}
+
+								srcFile = aesFile;
+							}
+
+							if (srcFile.isFile() && srcFile.exists()) {
+
+								ZipEntry entry = new ZipEntry(fd.getFileName());
+								zout.putNextEntry(entry);
+
+								BufferedInputStream bis = new BufferedInputStream(new FileInputStream(srcFile));
+								while ((len = bis.read(buf)) > 0) {
+									zout.write(buf, 0, len);
+								}
+								bis.close();
+								zout.closeEntry();
+							}
 						}
 
+						zout.finish();
+						zout.close();
+					}
+
+					fileName = "合并下载" + fdlst.size() + "个文件_" + DateUtils.now("yyyyMMddHHmmss") + ".zip";
+					res.setContentType("application/octet-stream");
+
+				} else if (fdlst.size() == 1) {
+
+					FileDownload fd = fdlst.get(0);
+
+					String absPath = uploadProvider.convertAbsolutePath(fd.getLogicPath());
+					File srcFile = new File(absPath, fd.getFileId());
+
+					if (fd.getIsEncrypted()) {
+
+						File aesFile = new File(tempPath, srcFile.getName());
+						if (!aesFile.exists()) {
+							byte[] fileContent = FileUtils.readFileToByteArray(srcFile);
+							fileContent = aesDecrypt(fileContent, fd.getSalt());
+						}
+						downFile = aesFile;
 					} else {
-						outText(res, "未能到读取到您请求下载的文件。");
+						downFile = srcFile;
 					}
 
+					fileName = fd.getFileName();
 					res.setContentType(fd.getContentType());
-					res.setHeader("Content-Length", String.valueOf(fileContent.length));
-
-					// 设置下载文件名.
-					String fileName = fd.getFileName().replace(' ', '+');
-
-					String agent = req.getHeader("USER-AGENT");
-					if (agent.indexOf("Trident") != -1) {
-						fileName = URLEncoder.encode(fd.getFileName(), "UTF8");
-					} else if (agent.indexOf("Mozilla") != -1) {
-						fileName = new String(fileName.getBytes("UTF-8"), "ISO8859-1");
-					}
-					res.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
-
-					OutputStream os = res.getOutputStream();
-					os.write(fileContent);
-					os.close();
-
-				} else if (fdlst.size() > 1) {
-
 				}
+
+				// 设置下载文件名.
+				String agent = req.getHeader("USER-AGENT");
+				if (agent.indexOf("Trident") != -1) {
+					fileName = URLEncoder.encode(fileName, "UTF8");
+				} else if (agent.indexOf("Mozilla") != -1) {
+					fileName = new String(fileName.getBytes("UTF-8"), "ISO8859-1");
+				}
+
+				res.setHeader("Content-Length", String.valueOf(downFile.length()));
+				res.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
+
+				InputStream is = new FileInputStream(downFile);
+				OutputStream os = res.getOutputStream();
+
+				byte[] b = new byte[1024 * 32];
+				int length;
+				while ((length = is.read(b)) > 0) {
+					os.write(b, 0, length);
+				}
+
+				os.close();
+				is.close();
 			} catch (Exception e) {
 				logger.error(e);
-				outText(res, "文件下载时发生异常。");
+				outText(res, "文件下载时发生异常。" + e);
 			}
 		} else {
 			logger.error(r.getMessage());
@@ -356,7 +432,7 @@ public class FileController extends BaseController {
 						if (user.hasRoot() || !sysFolders.isEmpty()) {
 
 							TreeNode sysNode = new TreeNode();
-							sysNode.setId("SYSFOLDER");
+							sysNode.setId(FileFolder.SYSFOLDER);
 							sysNode.setText("系统文件夹");
 							sysNode.setIconCls("icon-book");
 							rootNode.add(sysNode);
@@ -383,7 +459,7 @@ public class FileController extends BaseController {
 									.collect(Collectors.toList());
 
 							TreeNode myNode = new TreeNode();
-							myNode.setId("MYFOLDER");
+							myNode.setId(FileFolder.MYFOLDER);
 							myNode.setText("我的文件夹");
 							myNode.setIconCls("icon-book");
 							rootNode.add(myNode);
@@ -401,7 +477,7 @@ public class FileController extends BaseController {
 							}
 
 							TreeNode nc = new TreeNode();
-							nc.setId("NOTCLASSIFIED");
+							nc.setId(FileFolder.NOTCLASSIFIED);
 							nc.setText("未归类");
 							nc.setIconCls("icon-folder");
 							myNode.getChildren().add(nc);
@@ -414,7 +490,7 @@ public class FileController extends BaseController {
 							if (!groups.isEmpty()) {
 
 								TreeNode groupNode = new TreeNode();
-								groupNode.setId("MYGROUP");
+								groupNode.setId(FileFolder.MYGROUP);
 								groupNode.setText("我的群组");
 								groupNode.setIconCls("icon-book");
 								rootNode.add(groupNode);
@@ -425,7 +501,7 @@ public class FileController extends BaseController {
 									String gname = g.split("#")[1];
 
 									TreeNode gn = new TreeNode();
-									gn.setId("GROUPITEM#" + gid);
+									gn.setId(FileFolder.GROUPITEM + "#" + gid);
 									gn.setText(gname);
 									gn.setIconCls("icon-group");
 									groupNode.getChildren().add(gn);
@@ -458,7 +534,7 @@ public class FileController extends BaseController {
 								}).distinct().collect(Collectors.toList());
 
 								TreeNode shareNode = new TreeNode();
-								shareNode.setId("MYSHARE");
+								shareNode.setId(FileFolder.MYSHARE);
 								shareNode.setText("同事的分享");
 								shareNode.setIconCls("icon-book");
 								rootNode.add(shareNode);
@@ -469,14 +545,13 @@ public class FileController extends BaseController {
 									String sharerName = s.split("#")[1];
 
 									TreeNode gn = new TreeNode();
-									gn.setId("SHARER#" + sharerId);
+									gn.setId(FileFolder.SHARER + "#" + sharerId);
 									gn.setText(sharerName);
 									gn.setIconCls("icon-user");
 									shareNode.getChildren().add(gn);
 
 									List<FileShare> sharelist = shares.stream()
 											.filter(c -> c.getSharerId().equals(sharerId)).collect(Collectors.toList());
-
 									for (FileShare f : sharelist) {
 
 										TreeNode n = new TreeNode();
@@ -533,6 +608,45 @@ public class FileController extends BaseController {
 
 		mv.addObject("model", model);
 		return mv;
+	}
+
+	@RequestMapping(value = "/file/folder/save", method = RequestMethod.POST)
+	public void saveFolder(Map<String, Object> map, FileFolder model) {
+
+		LoginUser user = this.getLoginUser();
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				if (StringUtils.isEmpty(model.getFolderId())) {
+
+					String parentId = model.getParentId();
+					if (StringUtils.isEmpty(parentId)) {
+						model.setParentId(null);
+					} else if (FileFolder.SYSFOLDER.equals(parentId)) {
+						model.setParentId(null);
+					} else if (parentId.startsWith(FileFolder.SYSFOLDER)) {
+						String[] vs = parentId.split("#");
+						model.setParentId(null);
+						model.setGroupId(vs[1]);
+					} else if (parentId.length() == 32) {
+						model.setParentId(parentId);
+					} else {
+						ps.setError("错误的设置的父级目录。");
+						return;
+					}
+
+					model.setFolderId(KeyUtils.newId());
+					model.setTenantId(user.getTenantId());
+					model.setCreatorId(user.getUserId());
+					model.setHidden(false);
+				}
+				
+				fileService.saveFolder(model);
+			}
+		});
 	}
 
 	@RequestMapping(value = "/file/find", method = RequestMethod.POST)

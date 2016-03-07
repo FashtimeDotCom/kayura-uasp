@@ -23,6 +23,7 @@ public class FileUploadProviderImpl implements FileUploadProvider {
 	private static final Log logger = LogFactory.getLog(FileUploadProviderImpl.class);
 
 	private Map<String, String> uploadPaths;
+	private String tempPath;
 	private Long minSpace;
 
 	public FileUploadProviderImpl() {
@@ -48,11 +49,11 @@ public class FileUploadProviderImpl implements FileUploadProvider {
 					return key;
 				}
 			}
-			
+
 		} catch (Exception e) {
 			logger.error("获取存储目录时发生异常。", e);
 		}
-		
+
 		throw new KayuraException("上传文件库的存储空间不足。");
 	}
 
@@ -80,6 +81,20 @@ public class FileUploadProviderImpl implements FileUploadProvider {
 		}
 
 		return diskPath;
+	}
+
+	public String getTempPath() {
+		
+		File tp = new File(tempPath);
+		if (!tp.exists()) {
+			tp.mkdirs();
+		}
+		
+		return tempPath;
+	}
+
+	public void setTempPath(String tempPath) {
+		this.tempPath = tempPath;
 	}
 
 	@Override

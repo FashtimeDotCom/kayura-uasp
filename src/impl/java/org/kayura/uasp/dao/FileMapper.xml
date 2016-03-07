@@ -305,19 +305,36 @@
 		</where>
 	</select>
 	
+	<!-- Folders -->
+	
+	<sql id="fileFolderColumns">
+		t.Folder_Id,
+		t.Tenant_Id,
+		t.Parent_Id,
+		t.Creator_Id,
+		t.Group_Id,
+		g.Name GroupName,
+		t.`Name`,
+		t.Hidden
+	</sql>
+	
+	<select id="getFolderById" parameterType="map" resultMap="fileFolderMap">
+		SELECT
+			<include refid="fileFolderColumns" />
+		FROM uasp_filefolders AS t
+			LEFT JOIN uasp_groups g ON g.Group_Id = t.Group_Id
+		WHERE (t.Folder_Id = #{value})
+	</select>
+	
 	<select id="getFolders" parameterType="map" resultMap="fileFolderMap">
 		SELECT
-			t.Folder_Id,
-			t.Tenant_Id,
-			t.Parent_Id,
-			t.Creator_Id,
-			t.Group_Id,
-			g.Name GroupName,
-			t.`Name`,
-			t.Hidden
+			<include refid="fileFolderColumns" />
 		FROM uasp_filefolders AS t
 			LEFT JOIN uasp_groups g ON g.Group_Id = t.Group_Id
 		<where>
+			<if test="folderId != null">
+				(t.Folder_Id = #{folderId})
+			</if>
 			<if test="tenantId = 'NULL' and userId == null">
 				(t.Tenant_Id IS NULL)
 			</if>
@@ -330,6 +347,49 @@
 			</if>
 		</where>
 	</select>
+	
+	<insert id="insertFolder" parameterType="org.kayura.uasp.po.FileFolder">
+		INSERT uasp_filefolders (
+			Folder_Id,
+			Tenant_Id,
+			Parent_Id,
+			Creator_Id,
+			Group_Id,
+			Name,
+			Hidden
+		) VALUES (
+			#{folderId},
+			#{tenantId},
+			#{parentId},
+			#{creatorId},
+			#{groupId},
+			#{name},
+			#{hidden}
+		)
+	</insert>
+	
+	<insert id="updateFolder" parameterType="map">
+		UPDATE uasp_filefolders
+		<set>
+			<if test="parentId != null">
+			Parent_Id = #{parentId},
+			</if>
+			<if test="name != null">
+			Name = #{name},
+			</if>
+			<if test="hidden != null">
+			Hidden = #{hidden},
+			</if>
+		</set>
+		WHERE Folder_Id = #{folderId}
+	</insert>
+	
+	<delete id="deleteFolder" parameterType="string">
+		DELETE FROM uasp_filefolders
+		WHERE Folder_Id = #{folderId}
+	</delete>
+	
+	<!-- Shares -->
 	
 	<select id="getFileShares" parameterType="map" resultMap="fileShareMap">
 		SELECT
@@ -379,5 +439,6 @@
 			</if>
 		</where>
 	</select>
+		
 	
 </mapper>

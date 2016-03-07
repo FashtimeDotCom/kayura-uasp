@@ -91,5 +91,12 @@ public interface FileService {
 	 * @return 返回符合条件的文件信息列表.
 	 */
 	Result<PageList<FileListItem>> findFilesByShare(String sharerId, String receiverId, PageParams params);
-	
+
+	/**
+	 * 保存或者更新一个文件夹信息.
+	 * 
+	 * @param fileFolder 文件夹信息.
+	 * @return
+	 */
+	GeneralResult saveFolder(FileFolder fileFolder);
 }

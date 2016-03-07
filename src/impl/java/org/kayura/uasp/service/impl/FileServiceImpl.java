@@ -108,38 +108,31 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public Result<List<FileDownload>> download(List<String> frIds) {
 
-		Result<List<FileDownload>> r = new Result<List<FileDownload>>();
+		List<FileDownload> resultList = new ArrayList<FileDownload>();
 
 		List<FileRelation> list = fileMapper.downloadFileByIds(frIds);
-
-		List<FileDownload> resultList = new ArrayList<FileDownload>();
 		for (FileRelation fr : list) {
 
 			FileInfo fi = fileMapper.getFileInfoById(fr.getFileId());
-			if (fi == null) {
-				r.setError("fileId: %s not exists.", fr.getFileId());
-				return r;
+			if (fi != null) {
+
+				FileDownload fd = new FileDownload();
+				fd.setFrId(fr.getFrId());
+				fd.setLogicPath(fi.getLogicPath());
+				fd.setFileId(fr.getFileId());
+				fd.setFileName(fr.getFileName());
+				fd.setContentType(fi.getContentType());
+				fd.setIsEncrypted(fi.getIsEncrypted());
+				fd.setSalt(fi.getSalt());
+				fd.setAllowChange(fi.getAllowChange());
+
+				resultList.add(fd);
 			}
-
-			FileDownload fd = new FileDownload();
-			fd.setFrId(fr.getFrId());
-			fd.setLogicPath(fi.getLogicPath());
-			fd.setFileId(fr.getFileId());
-			fd.setFileName(fr.getFileName());
-			fd.setContentType(fi.getContentType());
-			fd.setIsEncrypted(fi.getIsEncrypted());
-			fd.setSalt(fi.getSalt());
-			fd.setAllowChange(fi.getAllowChange());
-
-			resultList.add(fd);
 		}
 
-		r.setSuccess("读取下载文件信息成功.");
-		r.setData(resultList);
-		
 		fileMapper.updateFileDownloads(frIds);
 
-		return r;
+		return new Result<List<FileDownload>>(Result.SUCCEED, resultList);
 	}
 
 	@Override
@@ -258,6 +251,21 @@ public class FileServiceImpl implements FileService {
 		PageList<FileListItem> list = fileMapper.findFiles(args, new PageBounds(params));
 
 		return new Result<PageList<FileListItem>>(Result.SUCCEED, list);
+	}
+
+	@Override
+	public GeneralResult saveFolder(FileFolder folder) {
+
+		String id = folder.getFolderId();
+		if (!StringUtils.isEmpty(id)) {
+			
+			FileFolder entity = fileMapper.getFolderById(id);
+
+		} else {
+
+		}
+
+		return null;
 	}
 
 }

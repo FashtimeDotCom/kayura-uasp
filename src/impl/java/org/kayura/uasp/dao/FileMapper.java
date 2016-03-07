@@ -116,7 +116,7 @@ public interface FileMapper extends BaseDao {
 	 * @return
 	 */
 	List<FileFolder> getFolders(Map<String, Object> args);
-
+	
 	/**
 	 * 获取符合条件的文件共享信息.
 	 * 
@@ -133,5 +133,11 @@ public interface FileMapper extends BaseDao {
 	 * @return
 	 */
 	PageList<FileListItem> findFiles(Map<String, Object> args, PageBounds bounds);
+
+	/**
+	 * @param folderId
+	 * @return
+	 */
+	FileFolder getFolderById(String folderId);
 
 }

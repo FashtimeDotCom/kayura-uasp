@@ -14,6 +14,7 @@
 	<bean class="org.kayura.spring.SpringBeanManager" />
 	<bean id="storageExecutor" class="org.kayura.uasp.executor.FileUploadProviderImpl">
 		<property name="minSpace" value="512000" />
+		<property name="tempPath" value="E:\UploadFiles\Temp\" />
 		<property name="uploadPaths">
 			<map>
 				<entry key="{DiskA}" value="E:\UploadFiles"></entry>

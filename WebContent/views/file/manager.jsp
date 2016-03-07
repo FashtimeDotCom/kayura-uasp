@@ -26,10 +26,9 @@
 
 		jctx = (function(win, $) {
 			
-			var selectRoot, selectNode;
 			var hasRoot = ${hasRoot}, hasAdmin = ${hasAdmin};
 			var isfirst = true;
-			var folderId = "", folderName = "";
+			var selectRoot, selectNode;
 	
 			// 页面的动作状态.
 			var actions = {
@@ -45,11 +44,16 @@
 			};
 			
 			function _findFiles(nodeId) {
+				
 				if(isfirst) {
+					
 					$('#tg').datagrid({
 						url : "${root}/file/find.json",
 						queryParams : { "folderId" : nodeId },
-						onClickRow : function(idx, row) {
+						onSelect : function(index, rows) {
+							_clickRow(this);
+						},
+						onUnselect : function(index, rows) {
 							_clickRow(this);
 						},
 						onSelectAll : function(rows) {
@@ -57,7 +61,7 @@
 						},
 						onUnselectAll : function(rows) {
 							_clickRow(this);
-						},
+						}
 					});
 				} else {
 	
@@ -130,7 +134,7 @@
 			
 			function _createFolder() {
 	
-				var openUrl = "${root}/file/folder/new?pid=" + folderId + "&pname=" + folderName;
+				var openUrl = "${root}/file/folder/new?pid=" + selectNode.id + "&pname=" + selectNode.text;
 				
 				juasp.openWin({
 					url : openUrl,
@@ -142,6 +146,16 @@
 						}
 					}
 				});
+			}
+
+			function selectFileIds(){
+
+				var ids = "";
+				var rows = $('#tg').datagrid("getSelections");
+				for(var i in rows) {
+					ids += ids + "," + rows[i].frId;
+				}
+				return rows.length > 0 ? ids.substr(1) : "";
 			}
 			
 			function _removeFolder(){
@@ -158,11 +172,9 @@
 			
 			function _downfile() {
 
-				var rows = $('#tg').datagrid("getSelections");
-				if(rows.length > 0 ) {
-					var url = "${root}/file/get?id=" + rows[0].frId;
-					win.open(url);
-				}
+				var ids = selectFileIds();
+				var url = "${root}/file/get?id=" + ids;
+				win.open(url);
 			}
 			
 			function _deleteFile(){

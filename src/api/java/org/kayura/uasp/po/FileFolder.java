@@ -11,6 +11,14 @@ package org.kayura.uasp.po;
  */
 public class FileFolder {
 
+	public static final String SYSFOLDER = "SYSFOLDER";
+	public static final String MYFOLDER = "MYFOLDER";
+	public static final String NOTCLASSIFIED = "NOTCLASSIFIED";
+	public static final String MYGROUP = "MYGROUP";
+	public static final String GROUPITEM = "GROUPITEM";
+	public static final String MYSHARE = "MYSHARE";
+	public static final String SHARER = "SHARER";
+
 	private String folderId;
 	private String tenantId;
 	private String parentId;
@@ -77,8 +85,7 @@ public class FileFolder {
 	}
 
 	/**
-	 * @param groupName
-	 *            the groupName to set
+	 * @param groupName the groupName to set
 	 */
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;

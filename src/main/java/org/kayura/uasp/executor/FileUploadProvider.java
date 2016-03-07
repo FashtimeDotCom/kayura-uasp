@@ -11,7 +11,9 @@ package org.kayura.uasp.executor;
  */
 public interface FileUploadProvider {
 
+	String getTempPath();
+
 	String getLogicPath();
-	
+
 	String convertAbsolutePath(String logicPath);
 }
