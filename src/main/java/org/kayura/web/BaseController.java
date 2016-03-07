@@ -12,6 +12,7 @@ import org.kayura.utils.PathUtils;
 import org.kayura.web.ui.UISupport;
 import org.kayura.type.PageList;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
@@ -39,7 +45,7 @@ public class BaseController {
 	protected void setViewRootPath(String viewRootPath) {
 		this.viewRootPath = viewRootPath;
 	}
-	
+
 	/***
 	 * 用于从提供请求信息中获取分页信息.
 	 * 
@@ -140,6 +146,17 @@ public class BaseController {
 		model.put("type", postResult.getType());
 		model.put("message", postResult.getMessage());
 		model.put("data", postResult.getData());
+	}
+
+	public String json(Object data) {
+		String s = null;
+		try {
+			s = objectMapper.writeValueAsString(data);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage(), e);
+		}
+		return s;
 	}
 
 	public LoginUser getLoginUser() {

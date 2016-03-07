@@ -8,12 +8,15 @@
 		function submitForm() {
 			
 			$('#ff').form('submit', {
-				url : '${root}/file/folder/save.json',
+				url : '${root}/file/folder/save',
+				ajax : true,
 				onSubmit : function() {
 					return $('#ff').form('validate');
 				},
 				success : function(data) {
-					juasp.closeWin(1);
+					var r = eval('(' + data + ')'); 
+					var t =  $("#name").textbox("getValue");
+					juasp.closeWin({result: 1, 'id': r.data.id, text: t});
 				}
 			});
 		}
@@ -29,20 +32,19 @@
 		<form id="ff" class="easyui-form" method="post">
 			<input type="hidden" name="folderId" value="${model.folderId}" />
 			<input type="hidden" name="parentId" value="${model.parentId}" />
-			<input type="hidden" name="parentId" value="${model.groupId}" />
+			<input type="hidden" name="groupId" value="${model.groupId}" />
 			<table cellpadding="5">
 				<tr>
 					<td>上级文件夹:</td>
-					<c:if test="${model.parentId != null }">
 					<td>${model.parentName}</td>
-					</c:if>
-					<c:if test="${model.groupId != null }">
-					<td>${model.groupName}</td>
-					</c:if>
 				</tr>
 				<tr>
 					<td>文件夹名称:</td>
-					<td><input class="easyui-textbox" name="name" style="width:180px" value="${model.name}" data-options="required:true,validType:'length[1,32]'"></input></td>
+					<td><input class="easyui-textbox" id="name" name="name" style="width:180px" value="${model.name}" data-options="required:true,validType:'length[1,32]'"></input></td>
+				</tr>
+				<tr>
+					<td>隐藏的目录:</td>
+					<td><input class="easyui-textbox" name="hidden" style="width:180px" value="${model.hidden}"></input></td>
 				</tr>
 			</table>
 		</form>

@@ -36,6 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
+import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
@@ -51,6 +52,7 @@ import org.kayura.uasp.vo.FileUpload;
 import org.kayura.uasp.vo.FileUploadResult;
 import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
+import org.kayura.utils.MapUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
 import org.kayura.web.model.TreeNode;
@@ -59,6 +61,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -382,10 +385,9 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/manager", method = RequestMethod.GET)
 	public ModelAndView manager() {
 
-		ModelAndView mv = this.view("manager");
-
 		LoginUser u = this.getLoginUser();
 
+		ModelAndView mv = this.view("manager");
 		mv.addObject("hasRoot", u.hasRoot());
 		mv.addObject("hasAdmin", u.hasAdmin());
 
@@ -408,14 +410,23 @@ public class FileController extends BaseController {
 				List<TreeNode> rootNode = new ArrayList<TreeNode>();
 
 				if (!StringUtils.isEmpty(id)) {
+
 					if (id.length() == 32) {
 
-						/*
-						 * TreeNode n = new TreeNode();
-						 * n.setId(KeyUtils.newId()); n.setText("子文件夹");
-						 * n.setState(TreeNode.STATE_Closed);
-						 * n.setIconCls("icon-folder"); rootNode.add(n);
-						 */
+						Result<List<FileFolder>> r = fileService.findChildFolders(id);
+						if (r.isSucceed()) {
+
+							List<FileFolder> childFolders = r.getData();
+							for (FileFolder f : childFolders) {
+
+								TreeNode n = new TreeNode();
+								n.setId(f.getFolderId());
+								n.setText(f.getName());
+								n.setState(TreeNode.STATE_OPEN);
+								n.setIconCls("icon-folder");
+								rootNode.add(n);
+							}
+						}
 					}
 				} else {
 
@@ -596,22 +607,63 @@ public class FileController extends BaseController {
 	}
 
 	@RequestMapping(value = "/file/folder/new", method = RequestMethod.GET)
-	public ModelAndView createFolder(String pid, String pname, String gid, String gname) {
+	public ModelAndView createFolder(String pid, String pname) {
 
 		ModelAndView mv = this.view("folder");
 
 		FileFolder model = new FileFolder();
-		model.setParentId(pid);
+
+		if (StringUtils.isEmpty(pid)) {
+			model.setParentId(null);
+		} else if (FileFolder.SYSFOLDER.equals(pid)) {
+			model.setParentId(null);
+		} else if (pid.startsWith(FileFolder.SYSFOLDER)) {
+			String[] vs = pid.split("#");
+			model.setParentId(null);
+			model.setGroupId(vs[1]);
+		} else if (pid.length() == 32) {
+			model.setParentId(pid);
+		}
+
 		model.setParentName(pname);
-		model.setGroupId(gid);
-		model.setGroupName(gname);
 
 		mv.addObject("model", model);
 		return mv;
 	}
 
-	@RequestMapping(value = "/file/folder/save", method = RequestMethod.POST)
-	public void saveFolder(Map<String, Object> map, FileFolder model) {
+	@RequestMapping(value = "/file/folder/edit", method = RequestMethod.GET)
+	public ModelAndView updateFolder(String id) {
+
+		ModelAndView mv = null;
+
+		Result<FileFolder> r = fileService.getFolderById(id);
+		if (r.isSucceed()) {
+			mv = this.view("folder");
+			mv.addObject("model", r.getData());
+		} else {
+			mv = this.errorPage(r.getMessage(), "");
+		}
+
+		return mv;
+	}
+
+	@RequestMapping(value = "/file/folder/remove", method = RequestMethod.POST)
+	public void removeFolder(Map<String, Object> map, @RequestParam("id") String folderId) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = fileService.removeFolder(folderId);
+				ps.setResult(r);
+			}
+		});
+	}
+
+	@RequestMapping(value = "/file/folder/save", method = RequestMethod.POST, produces = "text/htm;charset=UTF-8")
+	@ResponseBody 
+	public String saveFolder(Map<String, Object> map, FileFolder model) {
 
 		LoginUser user = this.getLoginUser();
 
@@ -622,31 +674,22 @@ public class FileController extends BaseController {
 
 				if (StringUtils.isEmpty(model.getFolderId())) {
 
-					String parentId = model.getParentId();
-					if (StringUtils.isEmpty(parentId)) {
-						model.setParentId(null);
-					} else if (FileFolder.SYSFOLDER.equals(parentId)) {
-						model.setParentId(null);
-					} else if (parentId.startsWith(FileFolder.SYSFOLDER)) {
-						String[] vs = parentId.split("#");
-						model.setParentId(null);
-						model.setGroupId(vs[1]);
-					} else if (parentId.length() == 32) {
-						model.setParentId(parentId);
-					} else {
-						ps.setError("错误的设置的父级目录。");
-						return;
-					}
-
-					model.setFolderId(KeyUtils.newId());
 					model.setTenantId(user.getTenantId());
 					model.setCreatorId(user.getUserId());
 					model.setHidden(false);
 				}
-				
-				fileService.saveFolder(model);
+
+				GeneralResult r = fileService.saveFolder(model);
+				if (r.isSucceed()) {
+					ps.setCode(Result.SUCCEED);
+					ps.setData(MapUtils.make("id", r.get("folderId")));
+				} else {
+					ps.setResult(r);
+				}
 			}
 		});
+		
+		return json(map);
 	}
 
 	@RequestMapping(value = "/file/find", method = RequestMethod.POST)

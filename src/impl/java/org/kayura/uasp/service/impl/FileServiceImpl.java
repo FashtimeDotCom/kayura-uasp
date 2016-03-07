@@ -181,6 +181,18 @@ public class FileServiceImpl implements FileService {
 		return new Result<List<FileFolder>>(Result.SUCCEED, folders);
 	}
 
+	public Result<List<FileFolder>> findChildFolders(String folderId) {
+
+		List<FileFolder> list = fileMapper.getFolders(MapUtils.make("parentId", folderId));
+		return new Result<List<FileFolder>>(Result.SUCCEED, list);
+	}
+
+	public Result<FileFolder> getFolderById(String folderId) {
+
+		FileFolder folder = fileMapper.getFolderById(folderId);
+		return new Result<FileFolder>(Result.SUCCEED, folder);
+	}
+
 	/**
 	 * 查找别人共享给我的共享文件信息 。
 	 * 
@@ -249,7 +261,6 @@ public class FileServiceImpl implements FileService {
 		}
 
 		PageList<FileListItem> list = fileMapper.findFiles(args, new PageBounds(params));
-
 		return new Result<PageList<FileListItem>>(Result.SUCCEED, list);
 	}
 
@@ -257,15 +268,43 @@ public class FileServiceImpl implements FileService {
 	public GeneralResult saveFolder(FileFolder folder) {
 
 		String id = folder.getFolderId();
-		if (!StringUtils.isEmpty(id)) {
-			
-			FileFolder entity = fileMapper.getFolderById(id);
 
+		if (StringUtils.isEmpty(id)) {
+
+			folder.setFolderId(KeyUtils.newId());
+			fileMapper.insertFolder(folder);
 		} else {
 
+			if (fileMapper.existsFolderById(id)) {
+
+				Map<String, Object> args = new HashMap<String, Object>();
+				args.put("folderId", id);
+				args.put("name", folder.getName());
+				args.put("hidden", folder.getHidden());
+
+				fileMapper.updateFolder(args);
+			} else {
+
+				fileMapper.insertFolder(folder);
+			}
 		}
 
-		return null;
+		GeneralResult r = Result.succeed();
+		r.add("folderId", folder.getFolderId());
+
+		return r;
+	}
+
+	@Override
+	public GeneralResult removeFolder(String id) {
+
+		if (fileMapper.getFolderChildsById(id) > 0) {
+			return Result.falied("存在子文件夹，不允许被删除。");
+		} else {
+			fileMapper.deleteFolder(id);
+		}
+
+		return Result.succeed();
 	}
 
 }

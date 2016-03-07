@@ -55,6 +55,10 @@ public interface FileService {
 	 */
 	Result<List<FileFolder>> findFolders(String userId);
 
+	Result<List<FileFolder>> findChildFolders(String folderId);
+	
+	Result<FileFolder> getFolderById(String folderId);
+
 	/**
 	 * 查找别人共享给我的共享文件信息 。
 	 * 
@@ -99,4 +103,11 @@ public interface FileService {
 	 * @return
 	 */
 	GeneralResult saveFolder(FileFolder fileFolder);
+
+	/**
+	 * 删除一个已经存在的文件夹.
+	 * 
+	 * @param id 文件夹Id.
+	 */
+	GeneralResult removeFolder(String folderId);
 }

@@ -109,6 +109,8 @@ public interface FileMapper extends BaseDao {
 	 */
 	List<FileRelation> findFileRelationsByMap(Map<String, Object> args);
 
+	// Folder
+
 	/**
 	 * 获取符合条件的文件夹记录.
 	 * 
@@ -116,7 +118,7 @@ public interface FileMapper extends BaseDao {
 	 * @return
 	 */
 	List<FileFolder> getFolders(Map<String, Object> args);
-	
+
 	/**
 	 * 获取符合条件的文件共享信息.
 	 * 
@@ -129,15 +131,53 @@ public interface FileMapper extends BaseDao {
 	/**
 	 * 查找符合条件的文件信息.
 	 * 
-	 * @param args
+	 * @param args 查询文件条件参数.
 	 * @return
 	 */
 	PageList<FileListItem> findFiles(Map<String, Object> args, PageBounds bounds);
 
 	/**
-	 * @param folderId
+	 * 获取一个文件夹信息Id.
+	 * 
+	 * @param folderId 文件夹Id.
 	 * @return
 	 */
 	FileFolder getFolderById(String folderId);
 
+	/**
+	 * 检查某个文件夹ID是否存在.
+	 * 
+	 * @param folderId 文件夹Id.
+	 * @return
+	 */
+	Boolean existsFolderById(String folderId);
+
+	/**
+	 * 获取子文件夹的数量.
+	 * 
+	 * @param folderId 文件夹Id.
+	 * @return
+	 */
+	Integer getFolderChildsById(String folderId);
+
+	/**
+	 * 向数据库中添加一个新的文件夹记录.
+	 * 
+	 * @param folder 新文件夹信息.
+	 */
+	void insertFolder(FileFolder folder);
+
+	/**
+	 * 更新一个数据库存在的文件夹信息.
+	 * 
+	 * @param folder 新文件夹信息.
+	 */
+	void updateFolder(Map<String, Object> args);
+
+	/**
+	 * 删除一个文件夹信息.
+	 * 
+	 * @param folderId 文件夹Id.
+	 */
+	void deleteFolder(String folderId);
 }

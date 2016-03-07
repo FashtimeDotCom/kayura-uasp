@@ -326,6 +326,18 @@
 		WHERE (t.Folder_Id = #{value})
 	</select>
 	
+	<select id="existsFolderById" parameterType="string" resultType="boolean">
+		SELECT COUNT(1) > 0 
+		FROM uasp_filefolders
+		WHERE ( Folder_Id = #{value} )
+	</select>
+	
+	<select id="getFolderChildsById" parameterType="string" resultType="integer">
+		SELECT COUNT(1)
+		FROM uasp_filefolders
+		WHERE ( Parent_Id = #{value} )
+	</select>
+	
 	<select id="getFolders" parameterType="map" resultMap="fileFolderMap">
 		SELECT
 			<include refid="fileFolderColumns" />
@@ -333,10 +345,13 @@
 			LEFT JOIN uasp_groups g ON g.Group_Id = t.Group_Id
 		<where>
 			<if test="folderId != null">
-				(t.Folder_Id = #{folderId})
+				 (t.Folder_Id = #{folderId} )
+			</if>
+			<if test="parentId != null">
+				( t.Parent_Id = #{parentId} )
 			</if>
 			<if test="tenantId = 'NULL' and userId == null">
-				(t.Tenant_Id IS NULL)
+				( t.Tenant_Id IS NULL )
 			</if>
 			<if test="userId != null">
 				((t.Tenant_Id IS NULL) AND (Hidden = 0) ) OR
@@ -368,7 +383,7 @@
 		)
 	</insert>
 	
-	<insert id="updateFolder" parameterType="map">
+	<update id="updateFolder" parameterType="map">
 		UPDATE uasp_filefolders
 		<set>
 			<if test="parentId != null">
@@ -382,7 +397,7 @@
 			</if>
 		</set>
 		WHERE Folder_Id = #{folderId}
-	</insert>
+	</update>
 	
 	<delete id="deleteFolder" parameterType="string">
 		DELETE FROM uasp_filefolders

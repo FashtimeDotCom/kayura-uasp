@@ -4,6 +4,8 @@
  */
 package org.kayura.uasp.po;
 
+import org.kayura.utils.StringUtils;
+
 /**
  * FileFolder
  *
@@ -38,7 +40,7 @@ public class FileFolder {
 	}
 
 	public String getTenantId() {
-		return tenantId;
+		return StringUtils.emptyToNull(this.tenantId);
 	}
 
 	public void setTenantId(String tenantId) {
@@ -46,7 +48,7 @@ public class FileFolder {
 	}
 
 	public String getParentId() {
-		return parentId;
+		return StringUtils.emptyToNull(this.parentId);
 	}
 
 	public void setParentId(String parentId) {
@@ -70,7 +72,7 @@ public class FileFolder {
 	}
 
 	public String getGroupId() {
-		return groupId;
+		return StringUtils.emptyToNull(this.groupId);
 	}
 
 	public void setGroupId(String groupId) {

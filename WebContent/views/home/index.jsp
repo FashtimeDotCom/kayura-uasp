@@ -31,7 +31,7 @@
 	<e:layoutunit region="center">
 		<e:tabs id="mainTabs" fit="true" border="false">
 			<e:tab id="homePage" title="首页" iconCls="icon-home" style="padding: 0px;overflow:hidden;">
-				<iframe frameborder="0" style="width:100%;height:100%;" src="${root}/portal" 
+				<iframe frameborder="0" style="width:100%;height:100%;" src="" 
 						scrolling="auto" name="contentframe"></iframe>
 			</e:tab>
 		</e:tabs>

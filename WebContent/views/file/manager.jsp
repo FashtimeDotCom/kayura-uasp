@@ -6,19 +6,18 @@
 	<script type="text/javascript">
 			
 		$(function() {
-
 			$('#tv').tree({
 				url : "${root}/file/folders.json",
-				method : "post",
+				animate: true,
 				onClick : function(node) {
 					var root = $(this).tree("getRootNode", node);
-					jctx.clickNode(root, node);
+					jctx.clicknode(root, node);
 				},
 				onContextMenu: function(e, node){
 					e.preventDefault();
 					$(this).tree('select', node.target);
 					var root = $(this).tree("getRootNode", node);
-					jctx.clickNode(root, node);
+					jctx.clicknode(root, node);
 					$('#mm').menu('show', { left: e.pageX, top: e.pageY });
 				}
 			});
@@ -26,7 +25,6 @@
 
 		jctx = (function(win, $) {
 			
-			var hasRoot = ${hasRoot}, hasAdmin = ${hasAdmin};
 			var isfirst = true;
 			var selectRoot, selectNode;
 	
@@ -107,13 +105,11 @@
 				selectNode = node;
 				
 				_initActions();
-				
 				<c:if test="${hasRoot}">
 				actions.addfolder = true;
 				actions.removefolder = node.children.length == 0 && node.id.length == 32;
 				actions.upload = node.id.length == 32;
 				</c:if>
-				
 				_findFiles(node.id);
 				_applyActions(actions);
 			}
@@ -133,16 +129,26 @@
 			}
 			
 			function _createFolder() {
-	
 				var openUrl = "${root}/file/folder/new?pid=" + selectNode.id + "&pname=" + selectNode.text;
-				
 				juasp.openWin({
 					url : openUrl,
 					width : "450px",
 					height : "200px",
 					title : "创建文件夹",
-					onClose : function(result) {
-						if (result == 1) {
+					onClose : function(r) {
+						if (r.result == 1) {
+/* 							var t = $('#tv');
+							t.tree('append', {
+								parent: (selectNode?selectNode.target:null),
+								data: [{ id: r.id, text: r.text }]
+							}); */
+							
+							var t = $('#tv');
+							var node = t.tree('getSelected');
+							t.tree('append', {
+								parent: (node?node.target:null),
+								data: [{ id:'newid', text: 'new item1'}]
+							});
 						}
 					}
 				});
@@ -150,16 +156,26 @@
 
 			function selectFileIds(){
 
-				var ids = "";
 				var rows = $('#tg').datagrid("getSelections");
-				for(var i in rows) {
-					ids += ids + "," + rows[i].frId;
-				}
-				return rows.length > 0 ? ids.substr(1) : "";
+				var names = [];
+				$.each(rows, function(index, item){
+					names.push(item.frId);
+				});
+				return names.join(",");
 			}
 			
 			function _removeFolder(){
 				
+				juasp.confirm("是否删除【 " + selectNode.text + " 】文件夹。", function(r) {
+					if(r == true) {
+						juasp.post('${root}/file/folder/remove.json', 
+								{ id : selectNode.id },
+								{ success: function(r){
+									$("#tv").tree("remove", selectNode.target);
+								}
+						});
+					}
+				});
 			}
 
 			function _shareFolder(){
@@ -190,24 +206,29 @@
 			}
 			
 			function _shareFile(){
-				
+				var t = $('#tv');
+				var node = t.tree('getSelected');
+				t.tree('append', {
+					parent: (node?node.target:null),
+					data: [{ id:'newid1', state: 'closed', text: 'new item1'}]
+				});
 			}
 			
 			return {
-				clickNode : _clickNode,
-				createFolder : _createFolder,
-				removeFolder : _removeFolder,
-				shareFolder : _shareFolder,
+				clicknode : _clickNode,
+				createfolder : _createFolder,
+				removefolder : _removeFolder,
+				sharefolder : _shareFolder,
 
-				uploadFile : _uploadFile,
+				uploadfile : _uploadFile,
 				downfile : _downfile,
-				deleteFile : _deleteFile,
-				moveFile : _moveFile,
-				copyFile : _copyFile,
-				shareFile : _shareFile
+				deletefile : _deleteFile,
+				movefile : _moveFile,
+				copyfile : _copyFile,
+				sharefile : _shareFile
 			}
 			
-		}(window,jQuery));
+		}(window, jQuery));
 	</script>
 </e:section>
 
@@ -235,11 +256,11 @@
 			<e:linkbutton id="sharefile" onclick="jctx.sharefile()" disabled="true" iconCls="icon-share" plain="true" text="分享" />
 		</div>
 		<div id="mm" class="easyui-menu" style="width: 120px;">
-			<div id="addfolder" onclick="jctx.createFolder()" data-options="iconCls:'icon-addfolder'">添加</div>
-			<div id="removefolder" onclick="jctx.removeFolder()" data-options="iconCls:'icon-remove'">移除</div>
-			<div id="sharefolder" onclick="jctx.shareFolder()" data-options="iconCls:'icon-share'">分享</div>
+			<div id="addfolder" onclick="jctx.createfolder()" data-options="iconCls:'icon-addfolder'">添加</div>
+			<div id="removefolder" onclick="jctx.removefolder()" data-options="iconCls:'icon-remove'">移除</div>
+			<div id="sharefolder" onclick="jctx.sharefolder()" data-options="iconCls:'icon-share'">分享</div>
 			<div class="menu-sep"></div>
-			<div onclick="expand()">展开</div>
+			<div onclick="jctx.sharefile()">展开</div>
 			<div onclick="collapse()">收缩</div>
 		</div>
 	</e:layoutunit>
