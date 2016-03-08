@@ -107,12 +107,15 @@
 	 * 默认的 jeasyui 数据过滤方法.
 	 */
 	function _loadFilter(r) {
-
-		if (r.type == juasp.SUCCESS && r.data) {
-			return r.data;
+		
+		if(r.type != undefined) {
+			if (r.type == juasp.SUCCESS && r.data) {
+				return r.data;
+			} else {
+				juasp.info(r.message);
+			}
 		} else {
-			juasp.info(r.message);
-			return null;
+			return r;
 		}
 	}
 

@@ -6,6 +6,8 @@ package org.kayura.uasp.models;
 
 import java.io.Serializable;
 
+import org.kayura.utils.StringUtils;
+
 /**
  * @author liangxia@live.com
  */
@@ -27,7 +29,7 @@ public class UploadItem implements Serializable {
 	}
 
 	public String getBizId() {
-		return bizId;
+		return StringUtils.isEmpty(bizId) ? null : this.bizId;
 	}
 
 	public void setBizId(String bizId) {
@@ -35,7 +37,7 @@ public class UploadItem implements Serializable {
 	}
 
 	public String getFolderId() {
-		return folderId;
+		return StringUtils.isEmpty(folderId) ? null : this.folderId;
 	}
 
 	public void setFolderId(String folderId) {
@@ -43,7 +45,7 @@ public class UploadItem implements Serializable {
 	}
 
 	public String getCategory() {
-		return category;
+		return StringUtils.isEmpty(category) ? null : this.category;
 	}
 
 	public void setCategory(String category) {
@@ -51,7 +53,7 @@ public class UploadItem implements Serializable {
 	}
 
 	public Integer getSerial() {
-		return serial;
+		return serial == null ? 0 : this.serial;
 	}
 
 	public void setSerial(Integer serial) {
@@ -59,7 +61,7 @@ public class UploadItem implements Serializable {
 	}
 
 	public Boolean getAllowChange() {
-		return allowChange;
+		return allowChange == null ? false : this.allowChange;
 	}
 
 	public void setAllowChange(Boolean allowChange) {
@@ -67,7 +69,7 @@ public class UploadItem implements Serializable {
 	}
 
 	public Boolean getIsEncrypt() {
-		return isEncrypt;
+		return isEncrypt == null ? false : this.isEncrypt;
 	}
 
 	public void setIsEncrypt(Boolean isEncrypt) {
@@ -75,7 +77,7 @@ public class UploadItem implements Serializable {
 	}
 
 	public String getTags() {
-		return tags;
+		return StringUtils.isEmpty(tags) ? null : this.tags;
 	}
 
 	public void setTags(String tags) {

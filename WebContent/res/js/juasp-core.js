@@ -12,7 +12,6 @@ juasp = {
 
 (function($, win) {
 	
-	
 	/* 如果当前框架是顶层，就创建缓存对象 */
 	if (win == win.top) {
 		win.cache = new ClassMap();
@@ -23,13 +22,11 @@ juasp = {
 	 * 
 	 * @param {Integer} len 可指定的字符长度.
 	 */
-	function newId(len) {
+	function _newId(len) {
 		var str = "", range = 32, arr = [ '0', '1', '2', '3', '4', '5', '6',
-				'7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-				'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-				'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-				'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-				'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ];
+				'7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 
+				'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 
+				'V', 'W', 'X', 'Y', 'Z' ];
 
 		if ('number' == typeof len) {
 			range = len;
@@ -46,7 +43,7 @@ juasp = {
 	/**
 	 * 获取当前页面的顶层窗口对象.
 	 */
-	function getTop() {
+	function _getTop() {
 		return win.top;
 	}
 	
@@ -54,7 +51,8 @@ juasp = {
 	 * 获取当前页面框架中的内容框架页对象.
 	 * 若当前是顶层页将获得当前页对象.
 	 */
-	function getContent() {
+	function _getContent() {
+		
 		var ctt = win;
 
 		if (ctt == win.top) {
@@ -72,14 +70,16 @@ juasp = {
 	 * 获取顶层框架页标签的jQuery对象.
 	 */
 	function $top(tag) {
-		return getTop().$(tag);
+		
+		return _getTop().$(tag);
 	}
 	
 	/**
 	 * 获取内容框架页标签的jQuery对象.
 	 */
 	function $content(tag) {
-		return getContent().$(tag);
+		
+		return _getContent().$(tag);
 	}
 
 	/**
@@ -88,14 +88,14 @@ juasp = {
 	 * @param {String} key 缓存关键字.
 	 * @param {Object} newValue 若指定了newValue将返回原值后,用新值替换缓存.若新值为 null 将仅移除原缓存值.
 	 */
-	function getCache(key, newValue) {
+	function _getCache(key, newValue) {
 
-		var value = getTop().cache.get(key);
+		var value = _getTop().cache.get(key);
 
 		if ('undefined' != typeof newValue) {
-			removeCache(key);
+			_removeCache(key);
 			if (newValue != null) {
-				setCache(key, newValue);
+				_setCache(key, newValue);
 			}
 		}
 
@@ -107,28 +107,29 @@ juasp = {
 	 * @param {String} key 缓存关键字.
 	 * @param {Object} value 缓存对象.
 	 */
-	function setCache(key, value) {
-		getTop().cache.set(key, value);
+	function _setCache(key, value) {
+		
+		_getTop().cache.set(key, value);
 	}
 
 	/**
 	 * 移除一个缓存对象.
 	 * @param {String} key 缓存关键字.
 	 */
-	function removeCache(key) {
-		getTop().cache.removeKey(key);
+	function _removeCache(key) {
+		
+		_getTop().cache.removeKey(key);
 	}
 
 	/**
 	 * 获取当前页面中的查询参数值,若无该参数将返回null.
 	 * @param {String} name 查询参数名称.
 	 */
-	function getQueryParam(name) {
+	function _getQueryParam(name) {
+		
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 		var r = window.location.search.substr(1).match(reg);
-		if (r != null)
-			return (r[2]);
-		return null;
+		return (r != null) ? (r[2]) : null;
 	}
 
 	/**
@@ -137,7 +138,8 @@ juasp = {
 	 * @param {String} paramName 查询参数名称.
 	 * @param {String} paramValue 查询参数值.
 	 */
-	function addUrlParam(url, paramName, paramValue) {
+	function _addUrlParam(url, paramName, paramValue) {
+		
 		var u = url;
 		if (url != null && url.length > 0) {
 			u = u + (url.indexOf("?") > 0 ? "&" : "?") + paramName + "="
@@ -146,7 +148,7 @@ juasp = {
 		return u;
 	}
 	
-	function isEmpty(value){
+	function _isEmpty(value){
 		
 		return value == undefined || value == null || value == "";
 	}
@@ -155,19 +157,18 @@ juasp = {
 	
 	juasp.$top = $top;
 	juasp.$content = $content;
-	juasp.getCache = getCache;
-	juasp.setCache = setCache;
-	juasp.removeCache = removeCache;
-	juasp.getQueryParam = getQueryParam;
-	juasp.addUrlParam = addUrlParam;
-	juasp.newId = newId;
-	juasp.isEmpty = isEmpty;
+	juasp.getCache = _getCache;
+	juasp.setCache = _setCache;
+	juasp.removeCache = _removeCache;
+	juasp.getQueryParam = _getQueryParam;
+	juasp.addUrlParam = _addUrlParam;
+	juasp.newId = _newId;
+	juasp.isEmpty = _isEmpty;
 	
 	juasp.SUCCESS = "success";
 	juasp.ERROR = "error";
 	juasp.FAILED = "failed";
 	
-
 	/**
 	 * 以 POST 方式请求一个处理.
 	 * 
@@ -175,11 +176,11 @@ juasp = {
 	 * @param {data} 请求传入的数据. 
 	 * @param {events} events 请求的回调事件. 支持: error, complete, success, failure.
 	 */
-	function post(url, data, events){
+	function _post(url, data, events){
 		
 		var cfg = { 'url': url, 'data': data, dataType: 'json' };
 		
-		if('undefined' == typeof events){ events = {}; }
+		if('undefined' == typeof events) { events = {}; }
 
 		$.ajax({url: cfg.url,
 	            type: "POST",
@@ -198,37 +199,41 @@ juasp = {
 		        	/* 系统返回执行异常时的处理,为未预期异常类型. */
 		        	if(result.type == 'error'){
 		        		if(typeof events.error == 'function'){
-		        			if(events.error(result)) return;
+		        			events.error(result);
+		        		} else {
+		        			_info("异常", result.message);
 		        		}
-		        		info("异常", result.message);
 		        		return;
 		        	}
 
 		        	/* 处理执行成功时的事件,若未指定事件,将显示一个成功消息. */
 		        	if(result.type == 'success'){
 		        		if(typeof events.success == 'function'){
-		        			if(events.success(result)) return;
+		        			events.success(result);
+		        		} else {
+		        			_info("成功", result.message);
 		        		}
-		        		info("成功", result.message);
 		        		return;
 		        	}
 
 		        	/* 处理执行发生失败时的事件,若未指定事件,将显示一个警告消息. */
 		        	if(result.type == 'failed'){
 		        		if(typeof events.failure == 'function'){
-		        			if(events.failure(result)) return;
+		        			events.failure(result);
+		        		} else {
+		        			_info("失败", result.message);
 		        		}
-		        		info("失败", result.message);
 		        		return;
 		        	}
 		        	
 		        	/* 处理未知的请求结果事件. */
 	        		if(typeof events.unknown == 'function'){
-	        			if(events.unknown(result)) return;
-		        		info("未知结果", result.message);
+	        			events.unknown(result);
+	        		} else {
+	        			_info("未知结果", result.message);
 	        		}
 	        		
-	        		info("未知的请求结果类型。");
+	        		_info("未知的请求结果类型。");
 	        		return;
 		        },
 	            complete: function (xhr, textStatus) {
@@ -248,14 +253,14 @@ juasp = {
 	 * @param {String} returnUrl 可选值：可指定的跳转返回地址.
 	 * @returns void
 	 */
-	function skipUrl(targetUrl, mode, returnUrl) {
+	function _skipUrl(targetUrl, mode, returnUrl) {
 
 		var skipWin = win;
 
 		if (mode == 1) {
-			skipWin = getContent();
+			skipWin = _getContent();
 		} else if (mode == 2) {
-			skipWin = getTop();
+			skipWin = _getTop();
 		}
 
 		var url = targetUrl;
@@ -273,7 +278,7 @@ juasp = {
 	 * @param {String} url 指定打开的链接地址.
 	 * @param {String} icon 选项卡图标(暂不可用).
 	 */
-	function openTab(title, url, iconCls) {
+	function _openTab(title, url, iconCls) {
 
 		/* 取到选项卡的jquery对象 */
 		var tab = $top("#mainTabs");
@@ -306,12 +311,12 @@ juasp = {
 	 * </br>onClose 窗口关闭事件.
 	 * 
 	 */
-	function openWin(opts){
+	function _openWin(opts){
 		
-		var wid = newId();
+		var wid = _newId();
 
 		var w = $top("<div />");
-		setCache("wid_" + wid, w);
+		_setCache("wid_" + wid, w);
 		
 		w.window({
 			title : opts.title,
@@ -323,9 +328,9 @@ juasp = {
 			closed : false,
 			minimizable : false,
 			onClose : function(e) {
-				removeCache("wid_" + wid);
+				_removeCache("wid_" + wid);
 				if (typeof opts.onClose == 'function') {
-					var result = getCache("win_result_" + wid, null);
+					var result = _getCache("win_result_" + wid, null);
 					opts.onClose(result);
 				}
 			},
@@ -334,7 +339,7 @@ juasp = {
 			}
 		});
 		
-		var url = addUrlParam(opts.url, '_wid', wid);
+		var url = _addUrlParam(opts.url, '_wid', wid);
 		w.append('<iframe scrolling="auto" frameborder="0" src="' + url + '" ' 
 				+ 'style="width:100%;height:100%;"></iframe>');
 
@@ -346,11 +351,11 @@ juasp = {
 	 * 
 	 * @param {Object} result 返回给调用者的结果对象.
 	 */
-	function closeWin(result) {
-		var wid = getQueryParam("_wid");
+	function _closeWin(result) {
+		var wid = _getQueryParam("_wid");
 		if (wid != null) {
-			var w = getCache("wid_" + wid, null);
-			setCache("win_result_" + wid, result);
+			var w = _getCache("wid_" + wid, null);
+			_setCache("win_result_" + wid, result);
 			if (w != null) {
 				w.window('close');
 			}
@@ -363,7 +368,7 @@ juasp = {
 	 * @param {String} content 显示的内容.
 	 * @param {Event} onclose(r) 确认 true 或取消 false 响应的事件.
 	 */
-	function confirm(content, onclose) {
+	function _confirm(content, onclose) {
 		win.top.$.messager.confirm('确认', content, onclose);  
 	}
 	
@@ -373,7 +378,7 @@ juasp = {
 	 * @param {String} title 信息框的标题.
 	 * @param {String} content 显示的内容.
 	 */
-	function info(title, content) {
+	function _info(title, content) {
 
 		win.top.$.messager.show({
 			title: title,
@@ -390,7 +395,7 @@ juasp = {
 	 * @param {String} content 显示的内容.
 	 * @param {Event} onclose(r) 返回 r 值与 content 类型长度相同.
 	 */
-	function prompt(title, content, onclose){
+	function _prompt(title, content, onclose){
 		win.top.$.messager.prompt(title, content, function(r){
 			onclose(r);
 		});
@@ -398,14 +403,14 @@ juasp = {
 
 	/** 绑定方法 **/
 	
-	juasp.post = post;
-	juasp.skipUrl = skipUrl;
-	juasp.openTab = openTab;
-	juasp.openWin = openWin;
-	juasp.closeWin = closeWin;
-	juasp.confirm = confirm;
-	juasp.info = info;
-	juasp.prompt = prompt;
+	juasp.post = _post;
+	juasp.skipUrl = _skipUrl;
+	juasp.openTab = _openTab;
+	juasp.openWin = _openWin;
+	juasp.closeWin = _closeWin;
+	juasp.confirm = _confirm;
+	juasp.info = _info;
+	juasp.prompt = _prompt;
 	
 }(jQuery, window));
 

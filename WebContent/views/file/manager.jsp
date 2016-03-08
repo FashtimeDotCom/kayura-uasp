@@ -3,8 +3,11 @@
 <e:section name="title">文件管理</e:section>
 
 <e:section name="head">
+	<e:resource location="res/uploader" name="webuploader.css" />
+	<e:resource location="res/uploader" name="webuploader.js" />
+
 	<script type="text/javascript">
-			
+	
 		$(function() {
 			$('#tv').tree({
 				url : "${root}/file/folders.json",
@@ -22,9 +25,10 @@
 				}
 			});
 		});
-
+		
 		jctx = (function(win, $) {
-			
+
+			var uploader = null;
 			var isfirst = true;
 			var selectRoot, selectNode;
 	
@@ -97,6 +101,35 @@
 				$("#copyfile").linkbutton(_actions.copyfile?'enable':'disable');
 				$("#removefile").linkbutton(_actions.removefile?'enable':'disable');
 				$("#sharefile").linkbutton(_actions.sharefile?'enable':'disable');
+				
+				if(_actions.upload) {
+					_initUploader();
+				}
+			}
+			
+			function _initUploader() {
+				
+				if(uploader == null) {
+					
+					uploader = WebUploader.create({
+			            swf: '${root}/res/webuploader/Uploader.swf',
+			            server: '${root}/file/upload.json',
+						pick: '#upload',
+						auto: true,
+						formData:{
+							folderId: selectNode.id
+						}
+					});
+					
+			        uploader.on('uploadFinished', function (file, response) {
+						_findFiles(selectNode.id);
+			        });
+			        
+				} else {
+					uploader.options.formData = {
+						folderId: selectNode.id
+					};
+				}
 			}
 			
 			function _clickNode(root, node){
@@ -106,7 +139,7 @@
 				
 				_initActions();
 				<c:if test="${hasRoot}">
-				actions.addfolder = true;
+				actions.addfolder = node.id != "NOTCLASSIFIED";
 				actions.removefolder = node.children.length == 0 && node.id.length == 32;
 				actions.upload = node.id.length == 32;
 				</c:if>
@@ -137,17 +170,9 @@
 					title : "创建文件夹",
 					onClose : function(r) {
 						if (r.result == 1) {
-/* 							var t = $('#tv');
-							t.tree('append', {
-								parent: (selectNode?selectNode.target:null),
-								data: [{ id: r.id, text: r.text }]
-							}); */
-							
-							var t = $('#tv');
-							var node = t.tree('getSelected');
-							t.tree('append', {
-								parent: (node?node.target:null),
-								data: [{ id:'newid', text: 'new item1'}]
+							$('#tv').tree('append', {
+								parent: selectNode.target,
+								data: [{ id: r.id, iconCls: 'icon-folder', text: r.text, children:[] }]
 							});
 						}
 					}
@@ -206,12 +231,7 @@
 			}
 			
 			function _shareFile(){
-				var t = $('#tv');
-				var node = t.tree('getSelected');
-				t.tree('append', {
-					parent: (node?node.target:null),
-					data: [{ id:'newid1', state: 'closed', text: 'new item1'}]
-				});
+
 			}
 			
 			return {
@@ -229,6 +249,18 @@
 			}
 			
 		}(window, jQuery));
+		
+		function expand(){
+			
+			var node = $('#tv').tree('getSelected');
+			$('#tv').tree('expand', (node?node.target:null))  
+		}
+		
+		function collapse(){
+			
+			var node = $('#tv').tree('getSelected');
+			$('#tv').tree('collapse', (node?node.target:null))  
+		}
 	</script>
 </e:section>
 
@@ -248,7 +280,7 @@
 			</e:columns>
 		</e:datagrid>
 		<div id="tb">
-			<e:linkbutton id="upload" onclick="jctx.upload()" disabled="true" iconCls="icon-add" plain="true" text="上传文件" />
+			<e:linkbutton id="upload" disabled="true" iconCls="icon-add" plain="true" text="上传文件" />
 			<e:linkbutton id="downfile" onclick="jctx.downfile()" disabled="true" iconCls="icon-download" plain="true" text="下载" />
 			<e:linkbutton id="movefile" onclick="jctx.movefile()" disabled="true" iconCls="icon-cut" plain="true" text="移动" />
 			<e:linkbutton id="copyfile" onclick="jctx.copyfile()" disabled="true" iconCls="icon-copy" plain="true" text="复制" />
@@ -260,7 +292,7 @@
 			<div id="removefolder" onclick="jctx.removefolder()" data-options="iconCls:'icon-remove'">移除</div>
 			<div id="sharefolder" onclick="jctx.sharefolder()" data-options="iconCls:'icon-share'">分享</div>
 			<div class="menu-sep"></div>
-			<div onclick="jctx.sharefile()">展开</div>
+			<div onclick="expand()">展开</div>
 			<div onclick="collapse()">收缩</div>
 		</div>
 	</e:layoutunit>

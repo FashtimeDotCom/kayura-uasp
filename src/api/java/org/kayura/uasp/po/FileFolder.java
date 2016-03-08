@@ -102,7 +102,7 @@ public class FileFolder {
 	}
 
 	public Boolean getHidden() {
-		return hidden;
+		return hidden == null ? false : this.hidden;
 	}
 
 	public void setHidden(Boolean hidden) {

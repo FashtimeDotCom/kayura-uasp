@@ -91,6 +91,15 @@ public class FileController extends BaseController {
 		return this.viewResult("upload");
 	}
 
+	@RequestMapping(value = "/file/uploader", method = RequestMethod.GET)
+	public ModelAndView fileUploader(UploadItem ui) {
+
+		ModelAndView mv = this.view("uploader");
+
+		mv.addObject("model", ui);
+		return mv;
+	}
+
 	/**
 	 * 文件上传请求地址.
 	 */
@@ -437,7 +446,7 @@ public class FileController extends BaseController {
 
 						// 添加 [系统文件夹]
 						List<FileFolder> sysFolders = folders.stream()
-								.filter(c -> c.getTenantId() == null && c.getParentId() == null)
+								.filter(c -> c.getHidden() == false && c.getTenantId() == null && c.getParentId() == null)
 								.collect(Collectors.toList());
 
 						if (user.hasRoot() || !sysFolders.isEmpty()) {
@@ -458,6 +467,14 @@ public class FileController extends BaseController {
 								sysNode.getChildren().add(n);
 
 								appendChildFolders(n, folders);
+							}
+
+							if (user.hasRoot()) {
+								TreeNode nc = new TreeNode();
+								nc.setId(FileFolder.NOTCLASSIFIED);
+								nc.setText("未归类");
+								nc.setIconCls("icon-folder");
+								sysNode.getChildren().add(nc);
 							}
 						}
 
@@ -625,6 +642,7 @@ public class FileController extends BaseController {
 			model.setParentId(pid);
 		}
 
+		model.setHidden(false);
 		model.setParentName(pname);
 
 		mv.addObject("model", model);
@@ -661,8 +679,8 @@ public class FileController extends BaseController {
 		});
 	}
 
-	@RequestMapping(value = "/file/folder/save", method = RequestMethod.POST, produces = "text/htm;charset=UTF-8")
-	@ResponseBody 
+	@RequestMapping(value = "/file/folder/save", method = RequestMethod.POST)
+	@ResponseBody
 	public String saveFolder(Map<String, Object> map, FileFolder model) {
 
 		LoginUser user = this.getLoginUser();
@@ -676,7 +694,6 @@ public class FileController extends BaseController {
 
 					model.setTenantId(user.getTenantId());
 					model.setCreatorId(user.getUserId());
-					model.setHidden(false);
 				}
 
 				GeneralResult r = fileService.saveFolder(model);
@@ -688,7 +705,7 @@ public class FileController extends BaseController {
 				}
 			}
 		});
-		
+
 		return json(map);
 	}
 
@@ -710,7 +727,7 @@ public class FileController extends BaseController {
 
 				PageParams pp = ui.getPageParams(req);
 
-				if (!StringUtils.isEmpty(folderId) && (folderId.equals("NOTCLASSIFIED")
+				if (!StringUtils.isEmpty(folderId) && (folderId.equals(FileFolder.NOTCLASSIFIED)
 						|| folderId.startsWith("SHARER#") || folderId.length() == 32)) {
 
 					String id = null;

@@ -9,10 +9,6 @@
 			
 			$('#ff').form('submit', {
 				url : '${root}/file/folder/save',
-				ajax : true,
-				onSubmit : function() {
-					return $('#ff').form('validate');
-				},
 				success : function(data) {
 					var r = eval('(' + data + ')'); 
 					var t =  $("#name").textbox("getValue");
@@ -44,7 +40,14 @@
 				</tr>
 				<tr>
 					<td>隐藏的目录:</td>
-					<td><input class="easyui-textbox" name="hidden" style="width:180px" value="${model.hidden}"></input></td>
+					<td>
+					<c:if test="${model.hidden==true}">
+					<input type="checkbox" name="hidden" checked></input>
+					</c:if>
+					<c:if test="${model.hidden==false}">
+					<input type="checkbox" name="hidden"></input>
+					</c:if>
+					</td>
 				</tr>
 			</table>
 		</form>

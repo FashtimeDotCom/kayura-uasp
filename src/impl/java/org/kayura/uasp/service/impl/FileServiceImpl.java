@@ -53,6 +53,7 @@ public class FileServiceImpl implements FileService {
 		fr.setFrId(KeyUtils.newId());
 		fr.setTenantId(fu.getTenantId());
 		fr.setBizId(fu.getBizId());
+		fr.setFolderId(fu.getFolderId());
 		fr.setCategory(fu.getCategory());
 		fr.setFileName(fu.getFileName());
 		fr.setPostfix(fu.getPostfix());
