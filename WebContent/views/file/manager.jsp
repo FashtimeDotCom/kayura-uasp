@@ -224,6 +224,18 @@
 			
 			function _moveFile(){
 				
+				var openUrl = "${root}/file/folder/select";
+				juasp.openWin({
+					url : openUrl,
+					width : "450px",
+					height : "400px",
+					title : "移动至文件夹",
+					onClose : function(r) {
+						if (r.result == 1) {
+							alert(r.data);
+						}
+					}
+				});
 			}
 			
 			function _copyFile(){
@@ -231,7 +243,7 @@
 			}
 			
 			function _shareFile(){
-
+				
 			}
 			
 			return {

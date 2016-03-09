@@ -403,13 +403,21 @@ public class FileController extends BaseController {
 		return mv;
 	}
 
+	public static final String FOLDERTYPE_ALL = "ALL";
+	public static final String FOLDERTYPE_MOVE = "MOVE";
+
 	/**
 	 * 
 	 */
 	@RequestMapping(value = "/file/folders", method = RequestMethod.POST)
-	public void folderTree(Map<String, Object> map, String id) {
+	public void folderTree(Map<String, Object> map, @RequestParam("t") String type, String id) {
 
 		LoginUser user = getLoginUser();
+		if (StringUtils.isEmpty(type)) {
+			type = FOLDERTYPE_ALL;
+		} else {
+			type = type.toUpperCase();
+		}
 
 		postExecute(map, new PostAction() {
 
@@ -445,8 +453,8 @@ public class FileController extends BaseController {
 						List<FileFolder> folders = r.getData();
 
 						// 添加 [系统文件夹]
-						List<FileFolder> sysFolders = folders.stream()
-								.filter(c -> c.getHidden() == false && c.getTenantId() == null && c.getParentId() == null)
+						List<FileFolder> sysFolders = folders.stream().filter(
+								c -> c.getHidden() == false && c.getTenantId() == null && c.getParentId() == null)
 								.collect(Collectors.toList());
 
 						if (user.hasRoot() || !sysFolders.isEmpty()) {
@@ -626,7 +634,7 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/folder/new", method = RequestMethod.GET)
 	public ModelAndView createFolder(String pid, String pname) {
 
-		ModelAndView mv = this.view("folder");
+		ModelAndView mv = this.view("folderedit");
 
 		FileFolder model = new FileFolder();
 
@@ -656,7 +664,7 @@ public class FileController extends BaseController {
 
 		Result<FileFolder> r = fileService.getFolderById(id);
 		if (r.isSucceed()) {
-			mv = this.view("folder");
+			mv = this.view("folderedit");
 			mv.addObject("model", r.getData());
 		} else {
 			mv = this.errorPage(r.getMessage(), "");
@@ -707,6 +715,13 @@ public class FileController extends BaseController {
 		});
 
 		return json(map);
+	}
+
+	@RequestMapping(value = "/file/folder/select", method = RequestMethod.GET)
+	public ModelAndView selectFolder() {
+
+		ModelAndView mv = this.view("folderselect");
+		return mv;
 	}
 
 	@RequestMapping(value = "/file/find", method = RequestMethod.POST)
