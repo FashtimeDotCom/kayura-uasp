@@ -7,7 +7,7 @@
 <e:renderSection name="head" />
 </head>
 <e:body>
-	<e:layoutunit region="center" border="false" style="padding: 5px">
+	<e:layoutunit region="center" border="false" style="padding: 3px">
 		<e:renderSection name="body"></e:renderSection>
 	</e:layoutunit>
 </e:body>

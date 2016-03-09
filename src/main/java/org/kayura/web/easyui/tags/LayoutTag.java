@@ -40,7 +40,9 @@ public class LayoutTag extends TagRender {
 				out.write(" id=\"" + id + "\"");
 			}
 			if (classStyle != null) {
-				out.write(" class=\"" + getClassStyle() + "\"");
+				out.write(" class=\"easyui-" + getEasyuiTag() + " " + getClassStyle() + "\"");
+			} else {
+				out.write(" class=\"easyui-" + getEasyuiTag() + "\"");
 			}
 			if (style != null) {
 				out.write(" style=\"" + style + "\"");

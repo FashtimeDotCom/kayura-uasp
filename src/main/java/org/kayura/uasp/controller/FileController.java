@@ -403,26 +403,28 @@ public class FileController extends BaseController {
 		return mv;
 	}
 
-	public static final String FOLDERTYPE_ALL = "ALL";
-	public static final String FOLDERTYPE_MOVE = "MOVE";
+	public static final String FOLDERTYPE_MANAGE = "MANAGE";
+	public static final String FOLDERTYPE_SELECT = "SELECT";
 
 	/**
 	 * 
 	 */
 	@RequestMapping(value = "/file/folders", method = RequestMethod.POST)
-	public void folderTree(Map<String, Object> map, @RequestParam("t") String type, String id) {
+	public void folderTree(Map<String, Object> map, String t, String id) {
 
 		LoginUser user = getLoginUser();
-		if (StringUtils.isEmpty(type)) {
-			type = FOLDERTYPE_ALL;
-		} else {
-			type = type.toUpperCase();
-		}
 
 		postExecute(map, new PostAction() {
 
 			@Override
 			public void invoke(PostResult ps) {
+
+				String type;
+				if (StringUtils.isEmpty(t)) {
+					type = FOLDERTYPE_MANAGE;
+				} else {
+					type = t.toUpperCase();
+				}
 
 				List<TreeNode> rootNode = new ArrayList<TreeNode>();
 
@@ -457,7 +459,8 @@ public class FileController extends BaseController {
 								c -> c.getHidden() == false && c.getTenantId() == null && c.getParentId() == null)
 								.collect(Collectors.toList());
 
-						if (user.hasRoot() || !sysFolders.isEmpty()) {
+						if (FOLDERTYPE_MANAGE.equals(type) && (user.hasRoot() || !sysFolders.isEmpty())
+								|| (FOLDERTYPE_SELECT.equals(type) && user.hasRoot())) {
 
 							TreeNode sysNode = new TreeNode();
 							sysNode.setId(FileFolder.SYSFOLDER);
@@ -563,7 +566,7 @@ public class FileController extends BaseController {
 							// 添加 [同事的分享]
 							List<FileShare> shares = fileService
 									.findFileShares(user.getUserId(), FileShare.SHARETYPES_FOLDER).getData();
-							if (!shares.isEmpty()) {
+							if (FOLDERTYPE_MANAGE.equals(type) && !shares.isEmpty()) {
 
 								List<String> sharers = shares.stream().map(m -> {
 									return m.getSharerId() + "#" + m.getSharerName();
@@ -687,6 +690,20 @@ public class FileController extends BaseController {
 		});
 	}
 
+	@RequestMapping(value = "/file/folder/move", method = RequestMethod.POST)
+	public void moveFolder(Map<String, Object> map, @RequestParam("id") List<String> ids, String folderId) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = fileService.moveFolder(ids, folderId);
+				ps.setResult(r);
+			}
+		});
+	}
+
 	@RequestMapping(value = "/file/folder/save", method = RequestMethod.POST)
 	@ResponseBody
 	public String saveFolder(Map<String, Object> map, FileFolder model) {
@@ -718,9 +735,10 @@ public class FileController extends BaseController {
 	}
 
 	@RequestMapping(value = "/file/folder/select", method = RequestMethod.GET)
-	public ModelAndView selectFolder() {
+	public ModelAndView selectFolder(String sid) {
 
 		ModelAndView mv = this.view("folderselect");
+		mv.addObject("sid", sid);
 		return mv;
 	}
 

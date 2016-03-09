@@ -133,24 +133,28 @@
 </e:section>
 
 <e:section name="body">
-	<e:layoutunit region="west" split="true" border="true" style="padding: 10px; width: 160px;">
-		<ul id="tv" class="easyui-tree"></ul>
-	</e:layoutunit>
-	<e:layoutunit region="center" border="false" >
-		<e:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" 
-			pageSize="10" singleSelect="true" striped="true" idField="itemId" >
-			<e:columns>
-				<e:column field="name" title="词典名" width="200" />
-				<e:column field="value" title="词典值" width="150" />
-				<e:column field="serial" title="排序值" width="150" />
-				<e:column field="isFixedName" width="80" title="保留数据" />
-			</e:columns>
-		</e:datagrid>
-		<div id="tb">
-			<e:linkbutton id="add" iconCls="icon-add" disabled="true" plain="true" text="新增" onclick="newDict()" />
-			<e:linkbutton id="edit" iconCls="icon-edit" disabled="true" plain="true" text="编辑" onclick="editDict()" />
-			<e:linkbutton id="delete" iconCls="icon-remove" disabled="true" plain="true" text="删除" onclick="delDict()" />
-		</div>
+	<e:layoutunit region="center" border="false" style="padding: 2px;">
+	<e:layout id="ctx" fit="true">
+		<e:layoutunit region="west" split="true" border="true" style="padding: 10px; width: 160px;">
+			<ul id="tv" class="easyui-tree"></ul>
+		</e:layoutunit>
+		<e:layoutunit region="center" border="false" >
+			<e:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" 
+				pageSize="10" singleSelect="true" striped="true" idField="itemId" >
+				<e:columns>
+					<e:column field="name" title="词典名" width="200" />
+					<e:column field="value" title="词典值" width="150" />
+					<e:column field="serial" title="排序值" width="150" />
+					<e:column field="isFixedName" width="80" title="保留数据" />
+				</e:columns>
+			</e:datagrid>
+			<div id="tb">
+				<e:linkbutton id="add" iconCls="icon-add" disabled="true" plain="true" text="新增" onclick="newDict()" />
+				<e:linkbutton id="edit" iconCls="icon-edit" disabled="true" plain="true" text="编辑" onclick="editDict()" />
+				<e:linkbutton id="delete" iconCls="icon-remove" disabled="true" plain="true" text="删除" onclick="delDict()" />
+			</div>
+		</e:layoutunit>
+	</e:layout>
 	</e:layoutunit>
 </e:section>
 

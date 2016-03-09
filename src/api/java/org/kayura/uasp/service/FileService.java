@@ -110,4 +110,13 @@ public interface FileService {
 	 * @param id 文件夹Id.
 	 */
 	GeneralResult removeFolder(String folderId);
+
+	/**
+	 * 将一个文件移动至目标文件夹.
+	 * 
+	 * @param frIds 文件Id
+	 * @param folderId 目标文件夹Id. 当值为 NULL 时, 表示将文件夹Id置空.
+	 * @return
+	 */
+	GeneralResult moveFolder(List<String> frIds, String folderId);
 }

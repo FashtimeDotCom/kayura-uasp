@@ -224,15 +224,21 @@
 			
 			function _moveFile(){
 				
-				var openUrl = "${root}/file/folder/select";
+				var ids = selectFileIds();
+				var openUrl = "${root}/file/folder/select?sid=" + selectNode.id;
 				juasp.openWin({
 					url : openUrl,
-					width : "450px",
+					width : "350px",
 					height : "400px",
 					title : "移动至文件夹",
 					onClose : function(r) {
 						if (r.result == 1) {
-							alert(r.data);
+							juasp.post('${root}/file/folder/move.json', 
+									{ id : ids, folderId: r.data },
+									{ success: function(r){
+										_findFiles(selectNode.id);
+									}
+							});
 						}
 					}
 				});
@@ -277,36 +283,40 @@
 </e:section>
 
 <e:section name="body">
-	<e:layoutunit region="west" split="true" border="true" style="padding: 10px; width: 200px;">
-		<ul id="tv" class="easyui-tree"></ul>
-	</e:layoutunit>
-	<e:layoutunit region="center" border="false">
-		<e:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" 
-			pageSize="10" idField="frId" >
-			<e:columns>
-				<e:column field="ck" checkbox="true" />
-				<e:column field="fileName" title="文件名" width="450" />
-				<e:column field="uploaderName" title="上传人" width="90" />
-				<e:column field="fileSize" title="大小" width="80" />
-				<e:column field="uploadTime" title="上传时间" width="150" />
-			</e:columns>
-		</e:datagrid>
-		<div id="tb">
-			<e:linkbutton id="upload" disabled="true" iconCls="icon-add" plain="true" text="上传文件" />
-			<e:linkbutton id="downfile" onclick="jctx.downfile()" disabled="true" iconCls="icon-download" plain="true" text="下载" />
-			<e:linkbutton id="movefile" onclick="jctx.movefile()" disabled="true" iconCls="icon-cut" plain="true" text="移动" />
-			<e:linkbutton id="copyfile" onclick="jctx.copyfile()" disabled="true" iconCls="icon-copy" plain="true" text="复制" />
-			<e:linkbutton id="removefile" onclick="jctx.removefile()" disabled="true" iconCls="icon-remove" plain="true" text="删除" />
-			<e:linkbutton id="sharefile" onclick="jctx.sharefile()" disabled="true" iconCls="icon-share" plain="true" text="分享" />
-		</div>
-		<div id="mm" class="easyui-menu" style="width: 120px;">
-			<div id="addfolder" onclick="jctx.createfolder()" data-options="iconCls:'icon-addfolder'">添加</div>
-			<div id="removefolder" onclick="jctx.removefolder()" data-options="iconCls:'icon-remove'">移除</div>
-			<div id="sharefolder" onclick="jctx.sharefolder()" data-options="iconCls:'icon-share'">分享</div>
-			<div class="menu-sep"></div>
-			<div onclick="expand()">展开</div>
-			<div onclick="collapse()">收缩</div>
-		</div>
+	<e:layoutunit region="center" border="false" style="padding: 2px;">
+	<e:layout id="ctx" fit="true">
+		<e:layoutunit region="west" split="true" border="true" style="padding: 10px; width: 200px;">
+			<ul id="tv" class="easyui-tree"></ul>
+		</e:layoutunit>
+		<e:layoutunit region="center" border="false">
+			<e:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" 
+				pageSize="10" idField="frId" >
+				<e:columns>
+					<e:column field="ck" checkbox="true" />
+					<e:column field="fileName" title="文件名" width="450" />
+					<e:column field="uploaderName" title="上传人" width="90" />
+					<e:column field="fileSize" title="大小" width="80" />
+					<e:column field="uploadTime" title="上传时间" width="150" />
+				</e:columns>
+			</e:datagrid>
+			<div id="tb">
+				<e:linkbutton id="upload" disabled="true" iconCls="icon-add" plain="true" text="上传文件" />
+				<e:linkbutton id="downfile" onclick="jctx.downfile()" disabled="true" iconCls="icon-download" plain="true" text="下载" />
+				<e:linkbutton id="movefile" onclick="jctx.movefile()" disabled="true" iconCls="icon-cut" plain="true" text="移动" />
+				<e:linkbutton id="copyfile" onclick="jctx.copyfile()" disabled="true" iconCls="icon-copy" plain="true" text="复制" />
+				<e:linkbutton id="removefile" onclick="jctx.removefile()" disabled="true" iconCls="icon-remove" plain="true" text="删除" />
+				<e:linkbutton id="sharefile" onclick="jctx.sharefile()" disabled="true" iconCls="icon-share" plain="true" text="分享" />
+			</div>
+			<div id="mm" class="easyui-menu" style="width: 120px;">
+				<div id="addfolder" onclick="jctx.createfolder()" data-options="iconCls:'icon-addfolder'">添加</div>
+				<div id="removefolder" onclick="jctx.removefolder()" data-options="iconCls:'icon-remove'">移除</div>
+				<div id="sharefolder" onclick="jctx.sharefolder()" data-options="iconCls:'icon-share'">分享</div>
+				<div class="menu-sep"></div>
+				<div onclick="expand()">展开</div>
+				<div onclick="collapse()">收缩</div>
+			</div>
+		</e:layoutunit>
+	</e:layout>
 	</e:layoutunit>
 </e:section>
 

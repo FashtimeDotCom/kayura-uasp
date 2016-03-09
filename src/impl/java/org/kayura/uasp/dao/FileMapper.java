@@ -83,7 +83,7 @@ public interface FileMapper extends BaseDao {
 	 * @param frIds 多个文件关系Id集.
 	 * @return
 	 */
-	List<FileRelation> downloadFileByIds(List<String> frIds);
+	List<FileRelation> getFileRelationByIds(List<String> frIds);
 
 	/**
 	 * 批量更新下载计数.
@@ -180,4 +180,5 @@ public interface FileMapper extends BaseDao {
 	 * @param folderId 文件夹Id.
 	 */
 	void deleteFolder(String folderId);
+
 }

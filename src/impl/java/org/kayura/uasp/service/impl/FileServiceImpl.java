@@ -111,7 +111,7 @@ public class FileServiceImpl implements FileService {
 
 		List<FileDownload> resultList = new ArrayList<FileDownload>();
 
-		List<FileRelation> list = fileMapper.downloadFileByIds(frIds);
+		List<FileRelation> list = fileMapper.getFileRelationByIds(frIds);
 		for (FileRelation fr : list) {
 
 			FileInfo fi = fileMapper.getFileInfoById(fr.getFileId());
@@ -304,6 +304,30 @@ public class FileServiceImpl implements FileService {
 		} else {
 			fileMapper.deleteFolder(id);
 		}
+
+		return Result.succeed();
+	}
+
+	@Override
+	public GeneralResult moveFolder(List<String> frIds, String folderId) {
+
+		String fid = folderId;
+		FileFolder folder = null;
+
+		if (fid == null || fid == "NULL" || FileFolder.NOTCLASSIFIED.equals(fid)) {
+			fid = "NULL";
+		} else {
+			folder = fileMapper.getFolderById(fid);
+			if (folder == null) {
+				return Result.falied("目标文件夹不存在.");
+			}
+		}
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("folderId", fid);
+		args.put("frIds", frIds);
+
+		fileMapper.updateFileRelation(args);
 
 		return Result.succeed();
 	}

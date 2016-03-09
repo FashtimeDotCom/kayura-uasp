@@ -9,9 +9,6 @@
 			
 			$('#ff').form('submit', {
 				url : '${root}/admin/dict/save.json',
-				onSubmit : function() {
-					return $('#ff').form('validate');
-				},
 				success : function(data) {
 					juasp.closeWin(1);
 				}

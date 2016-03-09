@@ -67,7 +67,7 @@
 </e:section>
 
 <e:section name="body">
-	<e:datagrid id="tg" fit="true" title="管理" rownumbers="true" 
+	<e:datagrid id="tg" fit="true" rownumbers="true" 
 		pagination="true" pageSize="10" singleSelect="true" striped="true"
 		toolbar="#tb,#tq" idField="userId">
 		<e:columns>

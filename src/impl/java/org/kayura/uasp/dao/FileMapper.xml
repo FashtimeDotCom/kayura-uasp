@@ -171,6 +171,16 @@
 			<if test="fileName != null">
 				FileName = #{fileName},
 			</if>
+			<if test="folderId != null">
+				<choose>
+					<when test="folderId == 'NULL'">
+						Folder_Id = NULL,
+					</when>
+					<otherwise>
+						Folder_Id = #{folderId},
+					</otherwise>
+				</choose>
+			</if>
 			<if test="postfix != null">
 				Postfix = #{postfix},
 			</if>
@@ -184,7 +194,17 @@
 				Tags = #{tags},
 			</if>
 		</set>
-		WHERE ( Fr_Id = #{frId} )
+		<where>
+			<if test="frId != null">
+				( Fr_Id = #{frId} )
+			</if>
+			<if test="frIds != null">
+				Fr_Id IN 
+				<foreach item="item" collection="frIds" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
 	</update>
 	
 	<sql id="fileRelationColumns">
@@ -202,7 +222,7 @@
 		t.Tags
 	</sql>
 	
-	<select id="downloadFileByIds" parameterType="list" resultMap="fileRelationMap">
+	<select id="getFileRelationByIds" parameterType="list" resultMap="fileRelationMap">
 		SELECT <include refid="fileRelationColumns" />
 		FROM UASP_FileRelations t 
 		WHERE t.Fr_Id IN 
