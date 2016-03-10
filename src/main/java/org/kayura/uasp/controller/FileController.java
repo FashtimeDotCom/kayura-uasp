@@ -296,6 +296,7 @@ public class FileController extends BaseController {
 				}
 
 				// 设置下载文件名.
+				fileName = fileName.replace(" ", "_");
 				String agent = req.getHeader("USER-AGENT");
 				if (agent.indexOf("Trident") != -1) {
 					fileName = URLEncoder.encode(fileName, "UTF8");
@@ -405,6 +406,7 @@ public class FileController extends BaseController {
 
 	public static final String FOLDERTYPE_MANAGE = "MANAGE";
 	public static final String FOLDERTYPE_SELECT = "SELECT";
+	public static final String NODEID_SPLIT = "_";
 
 	/**
 	 * 
@@ -540,7 +542,7 @@ public class FileController extends BaseController {
 									String gname = g.split("#")[1];
 
 									TreeNode gn = new TreeNode();
-									gn.setId(FileFolder.GROUPITEM + "#" + gid);
+									gn.setId(FileFolder.GROUPITEM + NODEID_SPLIT + gid);
 									gn.setText(gname);
 									gn.setIconCls("icon-group");
 									groupNode.getChildren().add(gn);
@@ -584,7 +586,7 @@ public class FileController extends BaseController {
 									String sharerName = s.split("#")[1];
 
 									TreeNode gn = new TreeNode();
-									gn.setId(FileFolder.SHARER + "#" + sharerId);
+									gn.setId(FileFolder.SHARER + NODEID_SPLIT + sharerId);
 									gn.setText(sharerName);
 									gn.setIconCls("icon-user");
 									shareNode.getChildren().add(gn);
@@ -645,8 +647,10 @@ public class FileController extends BaseController {
 			model.setParentId(null);
 		} else if (FileFolder.SYSFOLDER.equals(pid)) {
 			model.setParentId(null);
-		} else if (pid.startsWith(FileFolder.SYSFOLDER)) {
-			String[] vs = pid.split("#");
+		} else if (FileFolder.MYFOLDER.equals(pid)) {
+			model.setParentId(null);
+		} else if (pid.startsWith(FileFolder.GROUPITEM)) {
+			String[] vs = pid.split(NODEID_SPLIT);
 			model.setParentId(null);
 			model.setGroupId(vs[1]);
 		} else if (pid.length() == 32) {
@@ -693,12 +697,30 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/folder/move", method = RequestMethod.POST)
 	public void moveFolder(Map<String, Object> map, @RequestParam("id") List<String> ids, String folderId) {
 
+		LoginUser user = this.getLoginUser();
+		
 		postExecute(map, new PostAction() {
 
 			@Override
 			public void invoke(PostResult ps) {
 
-				GeneralResult r = fileService.moveFolder(ids, folderId);
+				GeneralResult r = fileService.moveToFolder(ids, folderId, user.getUserId());
+				ps.setResult(r);
+			}
+		});
+	}
+
+	@RequestMapping(value = "/file/folder/copy", method = RequestMethod.POST)
+	public void copyFolder(Map<String, Object> map, @RequestParam("id") List<String> ids, String folderId) {
+
+		LoginUser user = this.getLoginUser();
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = fileService.copyToFolder(ids, folderId, user.getUserId());
 				ps.setResult(r);
 			}
 		});
@@ -742,6 +764,21 @@ public class FileController extends BaseController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/file/remove", method = RequestMethod.POST)
+	public void removeFiles(Map<String, Object> map, @RequestParam("id") List<String> ids) {
+
+		LoginUser user = this.getLoginUser();
+
+		postExecute(map, new PostAction() {
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = fileService.removeFiles(ids, user.getUserId(), false);
+				ps.setResult(r);
+			}
+		});
+	}
+
 	@RequestMapping(value = "/file/find", method = RequestMethod.POST)
 	public void findFiles(HttpServletRequest req, Map<String, Object> map, String folderId) {
 
@@ -761,16 +798,15 @@ public class FileController extends BaseController {
 				PageParams pp = ui.getPageParams(req);
 
 				if (!StringUtils.isEmpty(folderId) && (folderId.equals(FileFolder.NOTCLASSIFIED)
-						|| folderId.startsWith("SHARER#") || folderId.length() == 32)) {
+						|| folderId.startsWith("SHARER" + NODEID_SPLIT) || folderId.length() == 32)) {
 
 					String id = null;
 					String uploaderId = null;
-					Result<PageList<FileListItem>> r = fileService.findFilesByFolder(id, uploaderId, pp);
+					Result<PageList<FileListItem>> r = null;
 
-					if (folderId.startsWith("SHARER#")) {
+					if (folderId.startsWith("SHARER" + NODEID_SPLIT)) {
 
-						String sharerId = folderId.split("#")[1];
-
+						String sharerId = folderId.split(NODEID_SPLIT)[1];
 						r = fileService.findFilesByShare(sharerId, user.getUserId(), pp);
 					} else {
 
@@ -785,7 +821,12 @@ public class FileController extends BaseController {
 					}
 
 					if (r.isSucceed()) {
-						ps.setData(ui.genPageData(r.getData()));
+						
+						PageList<FileListItem> items = r.getData();
+						for (FileListItem i : items.getRows()) {
+							i.setIsUploader(user.getUserId().equals(i.getUploaderId()));
+						}
+						ps.setData(ui.genPageData(items));
 					} else {
 						ps.addMessage(r.getMessage());
 					}

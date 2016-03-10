@@ -97,7 +97,7 @@
 			cmenu.menu('appendItem', {
 				text : col.title,
 				name : field,
-				iconCls : 'icon-ok'
+				iconCls : col.hidden ? 'icon-empty' : 'icon-ok' 
 			});
 		}
 		return cmenu;

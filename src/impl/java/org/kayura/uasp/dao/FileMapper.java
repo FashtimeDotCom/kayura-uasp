@@ -108,6 +108,13 @@ public interface FileMapper extends BaseDao {
 	 * @return 返回所有符件条件的记录
 	 */
 	List<FileRelation> findFileRelationsByMap(Map<String, Object> args);
+	
+	/**
+	 * 检查符合条件的文件关系记录是否存在.
+	 * @param args folderId 文件夹Id
+	 * @return
+	 */
+	Boolean existsFileRelationByMap(Map<String, Object> args);
 
 	// Folder
 
@@ -180,5 +187,15 @@ public interface FileMapper extends BaseDao {
 	 * @param folderId 文件夹Id.
 	 */
 	void deleteFolder(String folderId);
+
+	/**
+	 * @param args
+	 */
+	void copyToFolder(Map<String, Object> args);
+
+	/**
+	 * @param args
+	 */
+	void removeFiles(Map<String, Object> args);
 
 }

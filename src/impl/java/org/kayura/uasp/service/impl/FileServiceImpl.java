@@ -53,7 +53,6 @@ public class FileServiceImpl implements FileService {
 		fr.setFrId(KeyUtils.newId());
 		fr.setTenantId(fu.getTenantId());
 		fr.setBizId(fu.getBizId());
-		fr.setFolderId(fu.getFolderId());
 		fr.setCategory(fu.getCategory());
 		fr.setFileName(fu.getFileName());
 		fr.setPostfix(fu.getPostfix());
@@ -62,6 +61,12 @@ public class FileServiceImpl implements FileService {
 		fr.setUploadTime(DateUtils.now());
 		fr.setSerial(fu.getSerial());
 		fr.setTags(fu.getTags());
+
+		if (!StringUtils.isEmpty(fu.getFolderId())) {
+			if (fileMapper.existsFolderById(fu.getFolderId())) {
+				fr.setFolderId(fu.getFolderId());
+			}
+		}
 
 		// 在不允许修改文件内容时,可引用相同文件,以减少磁盘存储.
 		String fileId = null;
@@ -299,7 +304,9 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public GeneralResult removeFolder(String id) {
 
-		if (fileMapper.getFolderChildsById(id) > 0) {
+		if (fileMapper.existsFileRelationByMap(MapUtils.make("folderId", id))) {
+			return Result.falied("文件夹下存在文件，不允许被删除。");
+		} else if (fileMapper.getFolderChildsById(id) > 0) {
 			return Result.falied("存在子文件夹，不允许被删除。");
 		} else {
 			fileMapper.deleteFolder(id);
@@ -309,7 +316,7 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public GeneralResult moveFolder(List<String> frIds, String folderId) {
+	public GeneralResult moveToFolder(List<String> frIds, String folderId, String ownerId) {
 
 		String fid = folderId;
 		FileFolder folder = null;
@@ -326,8 +333,48 @@ public class FileServiceImpl implements FileService {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("folderId", fid);
 		args.put("frIds", frIds);
+		args.put("uploaderId", ownerId);
 
 		fileMapper.updateFileRelation(args);
+
+		return Result.succeed();
+	}
+
+	@Override
+	public GeneralResult copyToFolder(List<String> frIds, String folderId, String ownerId) {
+
+		String fid = folderId;
+
+		if (FileFolder.NOTCLASSIFIED.equals(fid)) {
+			fid = null;
+		}
+
+		if (!StringUtils.isEmpty(fid)) {
+			if (!fileMapper.existsFolderById(fid)) {
+				return Result.falied("目标文件夹不存在.");
+			}
+		}
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("folderId", fid);
+		args.put("frIds", frIds);
+		args.put("uploaderId", ownerId);
+		args.put("uploadTime", DateUtils.now());
+
+		fileMapper.copyToFolder(args);
+
+		return Result.succeed();
+	}
+
+	@Override
+	public GeneralResult removeFiles(List<String> frIds, String ownerId, Boolean isBiz) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("isBiz", isBiz);
+		args.put("frIds", frIds);
+		args.put("uploaderId", ownerId);
+
+		fileMapper.removeFiles(args);
 
 		return Result.succeed();
 	}

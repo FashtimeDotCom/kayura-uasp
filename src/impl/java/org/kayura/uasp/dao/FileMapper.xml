@@ -26,6 +26,7 @@
 		<result property="uploaderId" column="UploaderId" />
 		<result property="uploaderName" column="UploaderName" />
 		<result property="uploadTime" column="UploadTime" />
+		<result property="downloads" column="Downloads" />
 		<result property="serial" column="Serial" />
 		<result property="tags" column="Tags" />
 	</resultMap>
@@ -141,7 +142,6 @@
 			FileName,
 			Postfix,
 			UploaderId,
-			UploaderName,
 			UploadTime,
 			Serial,
 			Tags
@@ -155,11 +155,50 @@
 			#{fileName},
 			#{postfix},
 			#{uploaderId},
-			#{uploaderName},
 			#{uploadTime},
 			#{serial},
 			#{tags}
 		)			
+	</insert>
+	
+	<insert id="copyToFolder" parameterType="map">
+		INSERT UASP_FileRelations (
+			Fr_Id,
+			File_Id,
+			Tenant_Id,
+			Folder_Id,
+			BizId,
+			Category,
+			FileName,
+			Postfix,
+			UploaderId,
+			UploadTime,
+			Downloads,
+			Serial,
+			Tags
+		)
+		SELECT
+			newid() Fr_Id,
+			t.File_Id,
+			t.Tenant_Id,
+			<choose>
+			<when test="folderId == null">NULL,</when>
+			<otherwise>#{folderId},</otherwise>
+			</choose>
+			NULL,
+			t.Category,
+			t.FileName,
+			t.Postfix,
+			#{uploaderId},
+			#{uploadTime},
+			0,
+			t.Serial,
+			t.Tags
+		FROM uasp_filerelations AS t
+		WHERE t.Fr_Id IN 
+		<foreach item="item" collection="frIds" open="(" separator="," close=")">
+			#{item}
+		</foreach>
 	</insert>
 	
 	<update id="updateFileRelation" parameterType="map">
@@ -195,17 +234,43 @@
 			</if>
 		</set>
 		<where>
+			<if test="uploaderId != null">
+				AND ( UploaderId = #{uploaderId} )
+			</if>
 			<if test="frId != null">
-				( Fr_Id = #{frId} )
+				AND ( Fr_Id = #{frId} )
 			</if>
 			<if test="frIds != null">
-				Fr_Id IN 
+				AND ( Fr_Id IN 
 				<foreach item="item" collection="frIds" open="(" separator="," close=")">
 					#{item}
 				</foreach>
+				)
 			</if>
 		</where>
 	</update>
+	
+	<delete id="removeFiles" parameterType="map">
+		DELETE FROM UASP_FileRelations
+		<where>
+		<if test="isBiz == null or isBiz == false">
+			AND ( BizId IS NULL )
+		</if>
+		<if test="uploaderId != null">
+			AND ( UploaderId = #{uploaderId} )
+		</if>
+		<if test="frId != null">
+			AND ( Fr_Id = #{frId} )
+		</if>
+		<if test="frIds != null">
+			AND ( Fr_Id IN 
+			<foreach item="item" collection="frIds" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			)
+		</if>
+		</where>
+	</delete>
 	
 	<sql id="fileRelationColumns">
 		t.Fr_Id,
@@ -216,15 +281,17 @@
 		t.FileName,
 		t.Postfix,
 		t.UploaderId,
-		t.UploaderName,
 		t.UploadTime,
+		t.Downloads,
 		t.Serial,
 		t.Tags
 	</sql>
 	
 	<select id="getFileRelationByIds" parameterType="list" resultMap="fileRelationMap">
-		SELECT <include refid="fileRelationColumns" />
+		SELECT <include refid="fileRelationColumns" /> 
+			, u.DisplayName AS UploaderName
 		FROM UASP_FileRelations t 
+			INNER JOIN UASP_Users u ON t.UploaderId = u.User_Id
 		WHERE t.Fr_Id IN 
 		<foreach item="item" collection="list" open="(" separator="," close=")">
 			#{item}
@@ -248,6 +315,7 @@
 		<result property="uploaderId" column="UploaderId" />
 		<result property="uploaderName" column="UploaderName" />
 		<result property="uploadTime" column="UploadTime" />
+		<result property="isBiz" column="IsBiz" />
 		<result property="downloads" column="Downloads" />
 		<result property="allowChange" column="AllowChange" />
 		<result property="isEncrypted" column="IsEncrypted" />
@@ -260,12 +328,14 @@
 			i.FileSize,
 			t.Postfix,
 			t.UploaderId,
-			t.UploaderName,
+			u.DisplayName AS UploaderName,
 			t.UploadTime,
+			(!ISNULL(BizId) &amp;&amp; LENGTH(TRIM(BizId)) > 0) IsBiz,
 			t.Downloads,
 			i.AllowChange,
 			i.IsEncrypted
 		FROM uasp_filerelations AS t
+			INNER JOIN UASP_Users u ON t.UploaderId = u.User_Id
 			INNER JOIN uasp_fileinfos AS i ON t.File_Id = i.File_Id
 			<if test="sharerId != null or receiverId != null">
 			INNER JOIN uasp_fileshares AS s ON s.Fr_Id = t.Fr_Id
@@ -323,6 +393,22 @@
 			</if>
 			<if test="tags != null">
 				AND ( t.Tags LIKE #{tags} )
+			</if>
+		</where>
+	</select>
+	
+	<select id="existsFileRelationByMap" parameterType="map" resultType="boolean">
+		SELECT COUNT(1) > 0 
+		FROM UASP_FileRelations t
+		<where>
+			<if test="folderId != null">
+			AND ( t.Folder_Id = #{folderId} )
+			</if>
+			<if test="bizId != null">
+			AND ( t.BizId = #{bizId} )
+			</if>
+			<if test="uploaderId != null">
+			AND ( t.UploaderId = #{uploaderId} )
 			</if>
 		</where>
 	</select>

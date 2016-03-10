@@ -60,6 +60,16 @@ public interface FileService {
 	Result<FileFolder> getFolderById(String folderId);
 
 	/**
+	 * 删除指定文件关系.
+	 * 
+	 * @param frIds 文件关系Id集合.
+	 * @param ownerId 该文件的所有人Id.
+	 * @param isBiz 删除时是否包含已经关联业务表单的记录.
+	 * @return
+	 */
+	GeneralResult removeFiles(List<String> frIds, String ownerId, Boolean isBiz);
+	
+	/**
 	 * 查找别人共享给我的共享文件信息 。
 	 * 
 	 * @param receiverId 共享文件接收人Id.
@@ -116,7 +126,19 @@ public interface FileService {
 	 * 
 	 * @param frIds 文件Id
 	 * @param folderId 目标文件夹Id. 当值为 NULL 时, 表示将文件夹Id置空.
+	 * @param ownerId 文件所有者Id.
 	 * @return
 	 */
-	GeneralResult moveFolder(List<String> frIds, String folderId);
+	GeneralResult moveToFolder(List<String> frIds, String folderId, String ownerId);
+	
+	/**
+	 * 将一个文件复制至目标文件夹.
+	 * 
+	 * @param frIds 文件Id
+	 * @param folderId 目标文件夹Id. 当值为 NULL 时, 表示将文件夹Id置空.
+	 * @param ownerId 文件所有者Id.
+	 * @return
+	 */
+	GeneralResult copyToFolder(List<String> frIds, String folderId, String ownerId);
+
 }

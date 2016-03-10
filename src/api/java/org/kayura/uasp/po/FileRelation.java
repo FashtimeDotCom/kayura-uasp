@@ -25,6 +25,7 @@ public class FileRelation implements Serializable {
 	private String uploaderId;
 	private String uploaderName;
 	private Date uploadTime;
+	private Integer downloads;
 	private Integer serial;
 	private String tags;
 
@@ -126,6 +127,20 @@ public class FileRelation implements Serializable {
 
 	public void setUploadTime(Date uploadTime) {
 		this.uploadTime = uploadTime;
+	}
+
+	/**
+	 * @return the downloads
+	 */
+	public Integer getDownloads() {
+		return downloads;
+	}
+
+	/**
+	 * @param downloads the downloads to set
+	 */
+	public void setDownloads(Integer downloads) {
+		this.downloads = downloads;
 	}
 
 	public Integer getSerial() {

@@ -23,6 +23,8 @@ public class FileListItem {
 	private String uploaderId;
 	private String uploaderName;
 	private Date uploadTime;
+	private Boolean isBiz;
+	private Boolean isUploader;
 	private Integer downloads;
 	private Boolean allowChange;
 	private Boolean isEncrypted;
@@ -83,6 +85,34 @@ public class FileListItem {
 
 	public void setUploadTime(Date uploadTime) {
 		this.uploadTime = uploadTime;
+	}
+
+	/**
+	 * @return the isBiz
+	 */
+	public Boolean getIsBiz() {
+		return isBiz;
+	}
+
+	/**
+	 * @param isBiz the isBiz to set
+	 */
+	public void setIsBiz(Boolean isBiz) {
+		this.isBiz = isBiz;
+	}
+
+	/**
+	 * @return the isUploader
+	 */
+	public Boolean getIsUploader() {
+		return isUploader;
+	}
+
+	/**
+	 * @param isUploader the isUploader to set
+	 */
+	public void setIsUploader(Boolean isUploader) {
+		this.isUploader = isUploader;
 	}
 
 	public Integer getDownloads() {
