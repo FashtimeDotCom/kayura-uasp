@@ -73,7 +73,7 @@ public class AdminController extends BaseController {
 		return viewResult("user/list");
 	}
 
-	@RequestMapping(value = "user/find", method = RequestMethod.POST)
+	@RequestMapping(value = { "user/find", "/file/sharer/find" }, method = RequestMethod.POST)
 	public void userFind(HttpServletRequest req, Map<String, Object> map, String keyword, String status) {
 
 		postExecute(map, new PostAction() {
