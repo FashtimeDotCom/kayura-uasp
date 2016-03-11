@@ -51,9 +51,10 @@ public interface FileService {
 	 * 查找符合条件的目录信息.
 	 * 
 	 * @param userId 该用户下可用的目录.
+	 * @param isRoot 指定用户是否为根管理员.
 	 * @return 返回该租户下可用的目录.
 	 */
-	Result<List<FileFolder>> findFolders(String userId);
+	Result<List<FileFolder>> findFolders(String userId, Boolean isRoot);
 
 	Result<List<FileFolder>> findChildFolders(String folderId);
 	

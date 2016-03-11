@@ -451,7 +451,7 @@ public class FileController extends BaseController {
 					}
 				} else {
 
-					Result<List<FileFolder>> r = fileService.findFolders(user.getUserId());
+					Result<List<FileFolder>> r = fileService.findFolders(user.getUserId(), user.hasRoot());
 					if (r.isSucceed()) {
 
 						List<FileFolder> folders = r.getData();
@@ -698,7 +698,7 @@ public class FileController extends BaseController {
 	public void moveFolder(Map<String, Object> map, @RequestParam("id") List<String> ids, String folderId) {
 
 		LoginUser user = this.getLoginUser();
-		
+
 		postExecute(map, new PostAction() {
 
 			@Override
@@ -821,7 +821,7 @@ public class FileController extends BaseController {
 					}
 
 					if (r.isSucceed()) {
-						
+
 						PageList<FileListItem> items = r.getData();
 						for (FileListItem i : items.getRows()) {
 							i.setIsUploader(user.getUserId().equals(i.getUploaderId()));

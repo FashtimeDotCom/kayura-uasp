@@ -453,19 +453,20 @@
 			LEFT JOIN uasp_groups g ON g.Group_Id = t.Group_Id
 		<where>
 			<if test="folderId != null">
-				 (t.Folder_Id = #{folderId} )
+				AND (t.Folder_Id = #{folderId} )
 			</if>
 			<if test="parentId != null">
-				( t.Parent_Id = #{parentId} )
+				AND ( t.Parent_Id = #{parentId} )
 			</if>
-			<if test="tenantId = 'NULL' and userId == null">
-				( t.Tenant_Id IS NULL )
+			<if test="isRoot == true">
+				AND ( t.Tenant_Id IS NULL )
 			</if>
-			<if test="userId != null">
-				((t.Tenant_Id IS NULL) AND (Hidden = 0) ) OR
+			<if test="isRoot == false and userId != null">
+				AND ((t.Tenant_Id IS NULL) AND (Hidden = 0) ) OR
 				((t.Creator_Id = #{userId}) AND (t.Group_Id IS NULL) ) OR 
-				((t.Group_Id IS NOT NULL) AND (Hidden = 0) AND EXISTS (
-				   SELECT 1 FROM uasp_groupusers_union u WHERE u.Group_Id = t.Group_Id AND u.User_Id = #{userId} 
+				((t.Group_Id IS NOT NULL) AND (Hidden = 0) AND (
+					EXISTS (SELECT 1 FROM uasp_groupusers u WHERE u.Group_Id = t.Group_Id AND u.User_Id = #{userId}) OR
+					EXISTS (SELECT 1 FROM uasp_grouproles g JOIN uasp_userroles r ON g.Role_Id = r.Role_Id AND r.User_Id = #{userId}) 
 				))
 			</if>
 		</where>

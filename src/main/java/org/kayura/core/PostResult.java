@@ -56,13 +56,26 @@ public class PostResult extends Result<Object> {
 
 		this.setCode(result.getCode());
 		this.setMessage(result.getMessage());
-		
+
 		if (result.getData() != null) {
 			this.setData(result.getData());
 		}
-		
+
 		if (result.getException() != null) {
 			this.setException(result.getException());
 		}
+	}
+
+	public void setResult(Integer code, String message) {
+
+		this.setCode(code);
+		this.setMessage(message);
+	}
+	
+	public void setResult(Integer code, String message, Object data) {
+
+		this.setCode(code);
+		this.setMessage(message);
+		this.setData(data);
 	}
 }

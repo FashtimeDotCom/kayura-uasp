@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.3//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kayura.uasp.dao.OrganizMapper">
+
+	<resultMap id="organizItemMap" type="org.kayura.uasp.po.OrganizItem">
+		<result property="orgId" column="Org_Id" />
+		<result property="parentId" column="Parent_Id" />
+		<result property="code" column="Code" />
+		<result property="displayName" column="DisplayName" />
+		<result property="orgType" column="OrgType" />
+	</resultMap>
+
+	<select id="findOrgTree" parameterType="map" resultMap="organizItemMap">
+		SELECT Org_Id, Parent_Id, Code, DisplayName, OrgType 
+		FROM (
+			SELECT c.Company_Id AS Org_Id, c.Parent_Id, c.Code, c.ShortName AS DisplayName, 1 AS OrgType
+			FROM UASP_Companies AS c WHERE c.Tenant_Id = #{tenantId}
+			UNION ALL
+			SELECT d.Department_Id, IFNULL(d.Parent_Id, d.Company_Id), d.Code, d.Name, 2
+			FROM UASP_Departments d WHERE d.Tenant_Id = #{tenantId}
+			UNION ALL
+			SELECT p.Position_Id, p.Department_Id, p.Code, p.Name, 3
+			FROM UASP_Positions p WHERE p.Tenant_Id = #{tenantId}
+		) t 
+		<where>
+			<if test="parentId != null">
+			<choose>
+				<when test="parentId == 'NULL'">( t.Parent_Id IS NULL )</when>
+				<otherwise>( t.Parent_Id = #{parentId} )</otherwise>
+			</choose>
+			</if>
+		</where>
+	</select>
+
+</mapper>

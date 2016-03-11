@@ -160,28 +160,26 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public Result<List<FileFolder>> findFolders(String userId) {
-
-		List<FileFolder> folders = new ArrayList<FileFolder>();
+	public Result<List<FileFolder>> findFolders(String userId, Boolean isRoot) {
 
 		// 添加所属用户的.
-		User user = userMapper.getUserByMap(MapUtils.make("userId", userId));
-		if (user != null) {
+		if (isRoot == null) {
 
-			if (StringUtils.isEmpty(user.getTenantId())) {
-
-				List<FileFolder> list1 = fileMapper.getFolders(MapUtils.make("tenantId", "NULL"));
-				if (!list1.isEmpty()) {
-					folders.addAll(list1);
-				}
+			User user = userMapper.getUserByMap(MapUtils.make("userId", userId));
+			if (user != null) {
+				isRoot = user.getTenantId() == null;
 			} else {
-
-				List<FileFolder> list2 = fileMapper.getFolders(MapUtils.make("userId", userId));
-				if (!list2.isEmpty()) {
-					folders.addAll(list2);
-				}
+				return new Result<List<FileFolder>>(Result.FAILED, "传入的用户ID不存在。");
 			}
 		}
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("isRoot", isRoot);
+		if (!StringUtils.isEmpty(userId)) {
+			args.put("userId", userId);
+		}
+
+		List<FileFolder> folders = fileMapper.getFolders(args);
 
 		// 返回结果.
 		return new Result<List<FileFolder>>(Result.SUCCEED, folders);
