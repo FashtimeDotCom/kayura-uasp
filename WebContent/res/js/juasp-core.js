@@ -12,6 +12,11 @@ juasp = {
 
 (function($, win) {
 	
+	/* 计算站点根路径 */
+	var hostPath = win.location.href.substring(0, win.location.href.indexOf(win.location.pathname));
+	var projectName = win.location.pathname.substring(0, win.location.pathname.substr(1).indexOf('/') + 1);
+	juasp.root = hostPath + projectName;
+	
 	/* 如果当前框架是顶层，就创建缓存对象 */
 	if (win == win.top) {
 		win.cache = new ClassMap();

@@ -85,21 +85,6 @@ public class FileController extends BaseController {
 		this.setViewRootPath("views/file/");
 	}
 
-	@RequestMapping(value = "/file/upload", method = RequestMethod.GET)
-	public String fileUpload() {
-
-		return this.viewResult("upload");
-	}
-
-	@RequestMapping(value = "/file/uploader", method = RequestMethod.GET)
-	public ModelAndView fileUploader(UploadItem ui) {
-
-		ModelAndView mv = this.view("uploader");
-
-		mv.addObject("model", ui);
-		return mv;
-	}
-
 	/**
 	 * 文件上传请求地址.
 	 */

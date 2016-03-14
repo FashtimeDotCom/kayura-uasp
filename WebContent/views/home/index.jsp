@@ -19,11 +19,13 @@
 		style="width: 160px;">
 		<e:accordion fit="true" border="false">
 			<e:tab iconCls="icon-ok" title="常用模块">
-				<ul>	
+				<ul>
 					<li><a href="###" onclick="juasp.openTab('账号管理', '${root}/admin/user/list')" >账号管理</a></li>
 					<li><a href="###" onclick="juasp.openTab('数据词典', '${root}/admin/dict/list')" >数据词典</a></li>
 					<li><a href="###" onclick="juasp.openTab('组织机构', '${root}/org/manager')" >组织机构</a></li>
 					<li><a href="###" onclick="juasp.openTab('文件管理', '${root}/file/manager')" >文件管理</a></li>
+					<li><a href="###" onclick="juasp.openTab('文件上传', '${root}/mock/fileup')" >文件上传</a></li>
+					
 				</ul>
 			</e:tab>
 		</e:accordion>
