@@ -89,7 +89,7 @@ public class FileController extends BaseController {
 	 * 文件上传请求地址.
 	 */
 	@RequestMapping(value = "/file/upload", method = RequestMethod.POST)
-	public String fileUpload(@RequestParam("file") MultipartFile[] files, Map<String, Object> map, UploadItem ui) {
+	public String fileUpload(MultipartFile file, Map<String, Object> map, UploadItem ui) {
 
 		postExecute(map, new PostAction() {
 
@@ -110,73 +110,66 @@ public class FileController extends BaseController {
 				fu.setUploaderName(user.getDisplayName());
 				fu.setIsEncrypt(ui.getIsEncrypt());
 
-				// 循环处理所有上传的文件.
-				List<Object> resultList = new ArrayList<Object>();
+				// 循环处理上传的文件.
+				if (!file.isEmpty()) {
+					try {
 
-				for (MultipartFile file : files) {
+						long a1 = System.currentTimeMillis();
 
-					if (!file.isEmpty()) {
-						try {
+						// 设置上传的文件信息.
+						fu.setSerial(ui.getSerial());
+						fu.setFileName(file.getOriginalFilename());
+						fu.setPostfix(FilenameUtils.getExtension(fu.getFileName()));
+						fu.setFileSize(file.getSize());
+						fu.setContentType(file.getContentType());
+						fu.setLogicPath(uploadProvider.getLogicPath());
 
-							long a1 = System.currentTimeMillis();
-
-							// 设置上传的文件信息.
-							fu.setSerial(ui.getSerial());
-							fu.setFileName(file.getOriginalFilename());
-							fu.setPostfix(FilenameUtils.getExtension(fu.getFileName()));
-							fu.setFileSize(file.getSize());
-							fu.setContentType(file.getContentType());
-							fu.setLogicPath(uploadProvider.getLogicPath());
-
-							// 请求加密文件内容.
-							byte[] fileContent = new byte[0];
-							if (fu.getIsEncrypt()) {
-								fu.setSalt(KeyUtils.random());
-								fileContent = aesEncrypt(file.getBytes(), fu.getSalt());
-							}
-
-							// 计算文件字节的 MD5 码与存储路径.
-							if (!fu.getAllowChange()) {
-								String rawString = fu.getContentType() + fu.getFileSize() + fu.getIsEncrypt();
-								fu.setMd5(DigestUtils.md5Hex(rawString));
-								// fu.setMd5(DigestUtils.md5Hex(fileContent));
-							}
-
-							// 保存数据至数据库.
-							Result<FileUploadResult> gr = fileService.upload(fu);
-							FileUploadResult ur = gr.getData();
-
-							// 如果没有该文件记录,将保存一份新文件至磁盘.
-							if (ur.getNewFile()) {
-
-								String absPath = uploadProvider.convertAbsolutePath(fu.getLogicPath());
-								File writeFile = new File(absPath, ur.getFileId());
-
-								if (fu.getIsEncrypt()) {
-									FileUtils.writeByteArrayToFile(writeFile, fileContent);
-								} else {
-									file.transferTo(writeFile);
-								}
-							}
-
-							// 生成上传文件的返回结果项.
-							Map<Object, Object> item = new HashMap<Object, Object>();
-							item.put("frId", ur.getFrId());
-							item.put("fileSize", fu.getFileSize());
-							item.put("fileName", fu.getFileName());
-							item.put("postfix", fu.getPostfix());
-							item.put("spendTime", System.currentTimeMillis() - a1);
-
-							resultList.add(item);
-
-						} catch (Exception e) {
-							logger.error("上传文件时发生异常。", e);
-							r.setError(e.getMessage(), e);
+						// 请求加密文件内容.
+						byte[] fileContent = new byte[0];
+						if (fu.getIsEncrypt()) {
+							fu.setSalt(KeyUtils.random());
+							fileContent = aesEncrypt(file.getBytes(), fu.getSalt());
 						}
+
+						// 计算文件字节的 MD5 码与存储路径.
+						if (!fu.getAllowChange()) {
+							String rawString = fu.getContentType() + fu.getFileSize() + fu.getIsEncrypt();
+							fu.setMd5(DigestUtils.md5Hex(rawString));
+							// fu.setMd5(DigestUtils.md5Hex(fileContent));
+						}
+
+						// 保存数据至数据库.
+						Result<FileUploadResult> gr = fileService.upload(fu);
+						FileUploadResult ur = gr.getData();
+
+						// 如果没有该文件记录,将保存一份新文件至磁盘.
+						if (ur.getNewFile()) {
+
+							String absPath = uploadProvider.convertAbsolutePath(fu.getLogicPath());
+							File writeFile = new File(absPath, ur.getFileId());
+
+							if (fu.getIsEncrypt()) {
+								FileUtils.writeByteArrayToFile(writeFile, fileContent);
+							} else {
+								file.transferTo(writeFile);
+							}
+						}
+
+						// 生成上传文件的返回结果项.
+						Map<Object, Object> item = new HashMap<Object, Object>();
+						item.put("id", ui.getId());
+						item.put("frId", ur.getFrId());
+						item.put("fileSize", fu.getFileSize());
+						item.put("fileName", fu.getFileName());
+						item.put("postfix", fu.getPostfix());
+						item.put("spendTime", System.currentTimeMillis() - a1);
+						r.setData(item);
+
+					} catch (Exception e) {
+						logger.error("上传文件时发生异常。", e);
+						r.setError(e.getMessage(), e);
 					}
 				}
-
-				r.setData(resultList);
 			}
 		});
 

@@ -15,6 +15,7 @@ public class UploadItem implements Serializable {
 
 	private static final long serialVersionUID = 5013405337626162388L;
 
+	private String id;
 	private String bizId;
 	private String folderId;
 	private String category;
@@ -26,6 +27,14 @@ public class UploadItem implements Serializable {
 	public UploadItem() {
 		this.allowChange = false;
 		this.isEncrypt = false;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getBizId() {

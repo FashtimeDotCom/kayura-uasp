@@ -10,7 +10,13 @@
 	<script type="text/javascript">
 		$(function(){
 			$("#fileUpload1").uploader({
-				listid : "fileList1"
+				fileQueueId : "fileQueue1",
+				formData : {
+					
+				},
+				onFinished: function(){
+					juasp.info("上传文件", "文件全部上传完毕. ");
+				}
 			});
 		});
 	</script>
@@ -22,7 +28,7 @@
 		<p>此页模拟表单中多文件上传，大小限制，MD5校验，简单及表格显示列表。</p>
 		<e:panel id="p1" title="列表上传" style="width: 400px; padding: 40px">
 			<e:linkbutton id="fileUpload1" iconCls="icon-add" text="上传文件" />
-			<div id="fileList1"></div>
+			<lu id="fileQueue1"></lu>
 		</e:panel>
 	</e:layoutunit>
 </e:section>
