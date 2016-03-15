@@ -46,6 +46,19 @@ juasp = {
 	}
 
 	/**
+	 * 将文件大小数据量转换为 KB,MB... 显示方式.
+	 */
+	function _bytesToSize(bytes) {
+		
+	    if (bytes === 0) return '0 B';
+	    var k = 1024,
+	        sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+	        i = Math.floor(Math.log(bytes) / Math.log(k));
+
+	   return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+	}
+	
+	/**
 	 * 获取当前页面的顶层窗口对象.
 	 */
 	function _getTop() {
@@ -169,6 +182,7 @@ juasp = {
 	juasp.addUrlParam = _addUrlParam;
 	juasp.newId = _newId;
 	juasp.isEmpty = _isEmpty;
+	juasp.bytesToSize = _bytesToSize;
 	
 	juasp.SUCCESS = "success";
 	juasp.ERROR = "error";
@@ -376,6 +390,7 @@ juasp = {
 	function _confirm(content, onclose) {
 		win.top.$.messager.confirm('确认', content, onclose);  
 	}
+
 	
 	/**
 	 * 显示一个信息框.
@@ -383,7 +398,7 @@ juasp = {
 	 * @param {String} title 信息框的标题.
 	 * @param {String} content 显示的内容.
 	 */
-	function _info(title, content) {
+	function _message(title, content){
 
 		win.top.$.messager.show({
 			title: title,
@@ -391,6 +406,63 @@ juasp = {
 			timeout: 5000,
 			showType: 'slide'
 		});
+	}
+	
+	function _getTipQueue(){
+
+		var tipQueue = _getCache("tipQueue");
+		if(tipQueue == null){
+			tipQueue = new Array();
+			_setCache("tipQueue", tipQueue);
+		}
+		return tipQueue;
+	}
+	
+	function _tips(type, content){
+
+		if (win == win.top) {
+			
+			var tipQueue = _getTipQueue();
+			
+			if(tipQueue.length > 0){
+				try {
+					var e = tipQueue[tipQueue.length-1];
+					e.hide();
+				} catch(e) {}
+			}
+	
+			var $tip = $top('<div class="juasp-tipsfrom"><span class="juasp-' + type + 'tips">' + content + '</span></div>');
+			$tip.appendTo("body");
+			
+			tipQueue.push($tip);
+			
+			setTimeout(function(){ 
+				var t = tipQueue.shift();
+				if(t != null){
+					t.fadeOut('slow', function(){ t.remove(); });
+				}
+			}, 3000);
+		} else {
+
+			_getTop().tips(type, content);
+		}
+	}
+	
+	win.tips = _tips;
+	
+	function _infotips(content) {
+		
+		_tips('info', content);
+	}
+	
+	function _warntips(content) {
+		
+		_tips('warn', content);
+	}
+	
+	function _errortips(content) {
+		
+		_tips('error', content);
 	}
 	
 	/**
@@ -414,8 +486,12 @@ juasp = {
 	juasp.openWin = _openWin;
 	juasp.closeWin = _closeWin;
 	juasp.confirm = _confirm;
-	juasp.info = _info;
+	juasp.info = _infotips;
+	juasp.infotips = _infotips;
+	juasp.warntips = _warntips;
+	juasp.errortips = _errortips;
 	juasp.prompt = _prompt;
+	juasp.message = _message;
 	
 }(jQuery, window));
 

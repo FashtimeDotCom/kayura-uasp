@@ -25,6 +25,7 @@ public class ResourcesTag extends TagSupport {
 		try {
 			out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + location + "/easyui/themes/" + theme + "/easyui.css\">\r");
 			out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + location + "/easyui/themes/icon.css\">\r");
+			out.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + location + "/js/juasp.css\">\r");
 			out.write("<script type=\"text/javascript\" src=\"" + location + "/js/jquery.min.js\"></script>\r");
 			out.write("<script type=\"text/javascript\" src=\"" + location + "/easyui/jquery.easyui.min.js\"></script>\r");
 			out.write("<script type=\"text/javascript\" src=\"" + location + "/easyui/locale/easyui-lang-zh_CN.js\"></script>\r");

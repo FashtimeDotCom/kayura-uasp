@@ -102,7 +102,9 @@ public class FileController extends BaseController {
 				FileUpload fu = new FileUpload();
 				fu.setAllowChange(ui.getAllowChange());
 				fu.setBizId(ui.getBizId());
-				fu.setFolderId(ui.getFolderId());
+				if (StringUtils.isEmpty(ui.getBizId())) {
+					fu.setFolderId(ui.getFolderId());
+				}
 				fu.setCategory(ui.getCategory());
 				fu.setTags(ui.getTags());
 				fu.setTenantId(user.getTenantId());
