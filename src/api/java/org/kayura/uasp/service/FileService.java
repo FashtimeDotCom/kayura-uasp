@@ -57,7 +57,7 @@ public interface FileService {
 	Result<List<FileFolder>> findFolders(String userId, Boolean isRoot);
 
 	Result<List<FileFolder>> findChildFolders(String folderId);
-	
+
 	Result<FileFolder> getFolderById(String folderId);
 
 	/**
@@ -69,7 +69,7 @@ public interface FileService {
 	 * @return
 	 */
 	GeneralResult removeFiles(List<String> frIds, String ownerId, Boolean isBiz);
-	
+
 	/**
 	 * 查找别人共享给我的共享文件信息 。
 	 * 
@@ -88,7 +88,17 @@ public interface FileService {
 	 */
 	Result<List<FileShare>> findMyShares(String sharerId, String findType);
 
-	/***
+	/**
+	 * 根据业务表单信息查询文件关联数据.
+	 * 
+	 * @param bizId 业务表单Id.
+	 * @param category 表单文件分类.
+	 * @param tags 自定义标签,使用逗号间隔.
+	 * @return
+	 */
+	Result<List<FileListItem>> findFilesByBiz(String bizId, String category, String tags);
+
+	/**
 	 * 根据文件目录查找上传的文件列表.
 	 * 
 	 * @param folderId 指定的目录Id，值为字符串 NULL时，表示条件为NULL，不指定该值时表示不应该该条件.
@@ -131,7 +141,7 @@ public interface FileService {
 	 * @return
 	 */
 	GeneralResult moveToFolder(List<String> frIds, String folderId, String ownerId);
-	
+
 	/**
 	 * 将一个文件复制至目标文件夹.
 	 * 

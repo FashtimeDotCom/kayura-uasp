@@ -5,6 +5,7 @@
  * HomePage: http://www.kayura.org
  */
 
+// 文件上传组件.
 (function($, win) {
 
 	var $queue = null;
@@ -17,6 +18,16 @@
 	
 	function newid() {
 		return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+	}
+	
+	juasp.removefile = function (frid){
+		
+		juasp.post(appPath + '/file/remove.json', 
+				{ id : frid, isBiz : 1 },
+				{ success: function(r) {
+					$("#fc_" + frid).remove();
+				}
+		});
 	}
 	
 	// ...
@@ -36,6 +47,27 @@
 			$queue = $('<div class="webuploader-filequeues-list"></div>');
 			$queue.appendTo("body");
 		}
+
+		var $list = $("<div style='list-style: none;padding: 5px;'></div>");
+		target.after($list);
+		
+		if(!opts.actions.upload){
+			target.remove();
+		}
+		
+		// 下载文件列表.
+		juasp.post(appPath + '/file/find.json', 
+				{
+					bizId : opts.formData.bizId,
+					category : opts.formData.category,
+					tags : opts.formData.tags
+				},
+				{ success: function(r) {
+					for(var i in r.data){
+						appendFileList(r.data[i]);
+					}
+				}
+		});
 		
 		var uploader = WebUploader.create($.extend({ 
 			pick : '#' + targetId,
@@ -58,9 +90,11 @@
         
         uploader.on('uploadSuccess', function (file, response) {
         	
-        	$queue.find("#li_" + file.id).text(file.name + " 上传完成.");
+        	var t = $queue.find("#li_" + file.id);
+        	t.text(file.name + " 上传完成.");
+        	
             setTimeout(function(){
-            	$queue.find("#li_" + file.id).remove();
+            	t.fadeOut('slow', function(){ t.remove(); });
             },3000);
         });
         
@@ -99,7 +133,34 @@
         
         uploader.on('uploadAccept', function(o, r){
         	
+        	if(r.type == juasp.SUCCESS) {
+        		
+        		r.data.isUploader = true;
+        		
+        		appendFileList(r.data);
+        	}
         });
+        
+        function appendFileList(data){
+        	
+        	var html = '<li id="fc_' + data.frId + '">' ;
+        	
+        	if(opts.showicon){
+        		html += '<img src="'+ appPath + '/res/images/types/' + data.postfix + '.png" style="margin-right: 10px;">';
+        	}
+        	
+        	html += '<a href="' + appPath + '/file/get?id=' + data.frId;
+        	html += '" title="文件大小: ' + data.fileSize + '; 上传者: ' + data.uploaderName + ';">' + data.fileName + '</a>';
+        	
+        	if(opts.actions.remove && data.isUploader) {
+        		html += '<a href="javascript:void(0)" style="margin-left: 10px;" onclick="juasp.removefile(\'' + data.frId + '\')">'; 
+        		html += '<img src="'+ appPath + '/res/easyui/themes/icons/clear.png"></a>';
+        	}
+        	
+        	html += '</li>';
+        	
+    		$list.append(html);
+        }
 	}
 
 	var webuploader = function(options, param){
@@ -136,6 +197,10 @@
 	webuploader.defaults = {
 		onFinished : function () { },
 		onSuccess : function (file, res) { } ,
+		actions : {
+			upload : true,
+			remove : true
+		},
         formData: {				// 附件上传可接收的参数范本示例.
         	bizId : '',			// ● 绑定业务表单Id.
         	category : '',		// ● 该附件在表单中的分类.

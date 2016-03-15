@@ -158,13 +158,20 @@ public class FileController extends BaseController {
 						}
 
 						// 生成上传文件的返回结果项.
-						Map<Object, Object> item = new HashMap<Object, Object>();
-						item.put("id", ui.getId());
-						item.put("frId", ur.getFrId());
-						item.put("fileSize", fu.getFileSize());
-						item.put("fileName", fu.getFileName());
-						item.put("postfix", fu.getPostfix());
-						item.put("spendTime", System.currentTimeMillis() - a1);
+						FileListItem item = new FileListItem();
+						item.setRawId(ui.getId());
+						item.setFrId(ur.getFrId());
+						item.setUploaderId(fu.getUploaderId());
+						item.setUploaderName(fu.getUploaderName());
+						item.setIsUploader(true);
+						item.setIsEncrypted(ui.getIsEncrypt());
+						item.setAllowChange(ui.getAllowChange());
+						item.setUploadTime(DateUtils.now());
+						item.setDownloads(0);
+						item.setIsBiz(!StringUtils.isEmpty(ui.getBizId()));
+						item.setFileSize(fu.getFileSize());
+						item.setFileName(fu.getFileName());
+						item.setPostfix(fu.getPostfix());
 						r.setData(item);
 
 					} catch (Exception e) {
@@ -745,7 +752,7 @@ public class FileController extends BaseController {
 	}
 
 	@RequestMapping(value = "/file/remove", method = RequestMethod.POST)
-	public void removeFiles(Map<String, Object> map, @RequestParam("id") List<String> ids) {
+	public void removeFiles(Map<String, Object> map, Boolean isBiz, @RequestParam("id") List<String> ids) {
 
 		LoginUser user = this.getLoginUser();
 
@@ -753,14 +760,15 @@ public class FileController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				GeneralResult r = fileService.removeFiles(ids, user.getUserId(), false);
+				GeneralResult r = fileService.removeFiles(ids, user.getUserId(), isBiz);
 				ps.setResult(r);
 			}
 		});
 	}
 
 	@RequestMapping(value = "/file/find", method = RequestMethod.POST)
-	public void findFiles(HttpServletRequest req, Map<String, Object> map, String folderId) {
+	public void findFiles(HttpServletRequest req, Map<String, Object> map, String bizId, String category, String tags,
+			String folderId) {
 
 		// folderId 值有几种类型：
 		// 0F2D7BE1E02011E59888D8CB8A43F8DD 文件夹ID
@@ -808,9 +816,24 @@ public class FileController extends BaseController {
 						}
 						ps.setData(ui.genPageData(items));
 					} else {
+						ps.setCode(r.getCode());
 						ps.addMessage(r.getMessage());
 					}
 
+				} else if (!StringUtils.isEmpty(bizId)) {
+
+					Result<List<FileListItem>> r = fileService.findFilesByBiz(bizId, category, tags);
+
+					if (r.isSucceed()) {
+						List<FileListItem> items = r.getData();
+						for (FileListItem i : items) {
+							i.setIsUploader(user.getUserId().equals(i.getUploaderId()));
+						}
+						ps.setData(items);
+					} else {
+						ps.setCode(r.getCode());
+						ps.addMessage(r.getMessage());
+					}
 				} else {
 
 					PageList<FileListItem> items = new PageList<FileListItem>(pp);

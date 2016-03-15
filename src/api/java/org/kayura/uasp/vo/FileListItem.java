@@ -16,6 +16,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  */
 public class FileListItem {
 
+	private String rawId;
 	private String frId;
 	private String fileName;
 	private long fileSize;
@@ -28,6 +29,14 @@ public class FileListItem {
 	private Integer downloads;
 	private Boolean allowChange;
 	private Boolean isEncrypted;
+
+	public String getRawId() {
+		return rawId;
+	}
+
+	public void setRawId(String rawId) {
+		this.rawId = rawId;
+	}
 
 	public String getFrId() {
 		return frId;

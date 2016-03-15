@@ -320,8 +320,8 @@
 		<result property="allowChange" column="AllowChange" />
 		<result property="isEncrypted" column="IsEncrypted" />
 	</resultMap>
-		
-	<select id="findFiles" parameterType="map" resultMap="fileListItemMap">
+	
+	<sql id="findFiles_SQL">
 		SELECT
 			t.Fr_Id,
 			t.FileName,
@@ -362,11 +362,23 @@
 			<if test="bizId != null">
 				AND ( t.BizId = #{bizId} )
 			</if>
+			<if test="category != null">
+				AND ( t.Category = #{category} )
+			</if>
 			<if test="tag != null">
 				AND ( t.Tags LIKE #{tag} )
 			</if>
 		</where>
-		ORDER BY t.Serial ASC
+		ORDER BY t.Serial, t.UploadTime
+	</sql>
+	
+	
+	<select id="findFiles" parameterType="map" resultMap="fileListItemMap">
+		<include refid="findFiles_SQL"></include>
+	</select>
+		
+	<select id="findFilesPage" parameterType="map" resultMap="fileListItemMap">
+		<include refid="findFiles_SQL"></include>
 	</select>
 	
 	<select id="getFileRelationTagsById" parameterType="string" resultType="string">

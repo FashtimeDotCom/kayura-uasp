@@ -238,6 +238,24 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
+	public Result<List<FileListItem>> findFilesByBiz(String bizId, String category, String tags) {
+
+		Map<String, Object> args = MapUtils.make("bizId", bizId);
+
+		if (!StringUtils.isEmpty(category)) {
+			args.put("category", category);
+		}
+
+		if (!StringUtils.isEmpty(tags)) {
+			args.put("tags", tags.split(","));
+		}
+
+		List<FileListItem> list = fileMapper.findFiles(args);
+
+		return new Result<List<FileListItem>>(Result.SUCCEED, list);
+	}
+
+	@Override
 	public Result<PageList<FileListItem>> findFilesByFolder(String folderId, String uploaderId, PageParams params) {
 
 		Map<String, Object> args = MapUtils.make("folderId", folderId);
@@ -246,7 +264,7 @@ public class FileServiceImpl implements FileService {
 			args.put("uploaderId", uploaderId);
 		}
 
-		PageList<FileListItem> list = fileMapper.findFiles(args, new PageBounds(params));
+		PageList<FileListItem> list = fileMapper.findFilesPage(args, new PageBounds(params));
 
 		return new Result<PageList<FileListItem>>(Result.SUCCEED, list);
 	}
@@ -264,7 +282,7 @@ public class FileServiceImpl implements FileService {
 			args.put("receiverId", receiverId);
 		}
 
-		PageList<FileListItem> list = fileMapper.findFiles(args, new PageBounds(params));
+		PageList<FileListItem> list = fileMapper.findFilesPage(args, new PageBounds(params));
 		return new Result<PageList<FileListItem>>(Result.SUCCEED, list);
 	}
 

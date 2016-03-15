@@ -141,8 +141,16 @@ public interface FileMapper extends BaseDao {
 	 * @param args 查询文件条件参数.
 	 * @return
 	 */
-	PageList<FileListItem> findFiles(Map<String, Object> args, PageBounds bounds);
+	PageList<FileListItem> findFilesPage(Map<String, Object> args, PageBounds bounds);
 
+	/**
+	 * 查找符合条件的文件信息.
+	 * 
+	 * @param args 查询文件条件参数.
+	 * @return
+	 */
+	List<FileListItem> findFiles(Map<String, Object> args);
+	
 	/**
 	 * 获取一个文件夹信息Id.
 	 * 
