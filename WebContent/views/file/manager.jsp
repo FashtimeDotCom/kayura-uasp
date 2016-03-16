@@ -5,6 +5,7 @@
 <e:section name="head">
 	<e:resource location="res/js" name="webuploader.css" />
 	<e:resource location="res/js" name="webuploader.js" />
+	<e:resource location="res/js" name="juasp-uploader.js" />
 
 	<script type="text/javascript">
 	
@@ -80,6 +81,12 @@
 				
 				isfirst = false;
 			}
+			
+			function _formatterFileName(index, row){
+				
+				var icon = juasp.getIconName(row.postfix);
+				return '<img class="webuploader-fileitem-icon" src="${root}/res/images/types/' + icon + '.png">' + row.fileName;
+			}
 
 			function selectFileIds(){
 
@@ -122,17 +129,24 @@
 				<c:if test="${hasRoot == false}">
 				$("#sharefile").linkbutton(_actions.sharefile?'enable':'disable');
 				</c:if>
-				
-				if(_actions.upload) {
-					_initUploader();
-				}
 			}
 			
 			function _initUploader() {
 				
 				if(uploader == null) {
 					
-					uploader = WebUploader.create({
+					$("#upload").uploader({
+						formData : {
+							folderId: selectNode.id
+						},
+						onFinished : function (){
+							_findFiles(selectNode.id);
+						}
+					});
+					
+					uploader = 1;
+					
+/* 					uploader = WebUploader.create({
 			            swf: '${root}/res/webuploader/Uploader.swf',
 			            server: '${root}/file/upload.json',
 						pick: '#upload',
@@ -144,48 +158,55 @@
 					
 			        uploader.on('uploadFinished', function (file, response) {
 						_findFiles(selectNode.id);
-			        });
+			        }); */
 			        
 				} else {
-					uploader.options.formData = {
-						folderId: selectNode.id
-					};
+					
+					$("#upload").uploader('setFormData', {
+						folderId : selectNode.id
+					});
 				}
 			}
-			
-			function _clickNode(root, node){
-				
+
+			function _clickNode(root, node) {
+
 				selectRoot = root;
 				selectNode = node;
-				
+
 				_initActions();
-				
+
 				<c:choose>
 				<c:when test="${hasRoot}">
 				actions.addfolder = node.id != "NOTCLASSIFIED";
-				actions.removefolder = node.children.length == 0 && node.id.length == 32;
+				actions.removefolder = node.children.length == 0
+						&& node.id.length == 32;
 				actions.upload = node.id.length == 32;
 				</c:when>
 				<c:otherwise>
 				<c:choose>
 				<c:when test="${hasAdmin}">
-				actions.removefolder = (root.id == "MYFOLDER" || root.id == "MYGROUP") && node.children.length == 0 && node.id.length == 32;
+				actions.removefolder = (root.id == "MYFOLDER" || root.id == "MYGROUP")
+						&& node.children.length == 0 && node.id.length == 32;
 				</c:when>
 				<c:otherwise>
-				actions.removefolder = (root.id == "MYFOLDER") && node.children.length == 0 && node.id.length == 32;
+				actions.removefolder = (root.id == "MYFOLDER")
+						&& node.children.length == 0 && node.id.length == 32;
 				</c:otherwise>
 				</c:choose>
-				actions.addfolder = (root.id == "MYFOLDER" && node.id != "NOTCLASSIFIED") || (root.id == "MYGROUP" && node.id != "MYGROUP");
-				actions.upload = (root.id == "MYFOLDER" || root.id == "MYGROUP") && node.id.length == 32;
+				actions.addfolder = (root.id == "MYFOLDER" && node.id != "NOTCLASSIFIED")
+						|| (root.id == "MYGROUP" && node.id != "MYGROUP");
+				actions.upload = (root.id == "MYFOLDER" || root.id == "MYGROUP")
+						&& node.id.length == 32;
 				</c:otherwise>
 				</c:choose>
-				
+
 				_findFiles(node.id);
 				_applyActions(actions);
+				_initUploader();
 			}
-	
+
 			function _clickRow(t) {
-				
+
 				var ids = selectFileIds();
 				var i = ids.length;
 				actions.downfile = i > 0;
@@ -202,12 +223,13 @@
 				actions.movefile = myarea && (i > 0);
 				actions.removefile = myarea && (i > 0);
 				</c:if>
-				
+
 				_applyActions(actions);
 			}
-			
+
 			function _createFolder() {
-				var openUrl = "${root}/file/folder/new?pid=" + selectNode.id + "&pname=" + selectNode.text;
+				var openUrl = "${root}/file/folder/new?pid=" + selectNode.id
+						+ "&pname=" + selectNode.text;
 				juasp.openWin({
 					url : openUrl,
 					width : "450px",
@@ -216,68 +238,78 @@
 					onClose : function(r) {
 						if (r.result == 1) {
 							$('#tv').tree('append', {
-								parent: selectNode.target,
-								data: [{ id: r.id, iconCls: 'icon-folder', text: r.text, children:[] }]
+								parent : selectNode.target,
+								data : [ {
+									id : r.id,
+									iconCls : 'icon-folder',
+									text : r.text,
+									children : []
+								} ]
 							});
 						}
 					}
 				});
 			}
-			
-			function _removeFolder(){
-				
-				juasp.confirm("是否删除【 " + selectNode.text + " 】文件夹。", function(r) {
-					if(r == true) {
-						juasp.post('${root}/file/folder/remove.json', 
-								{ id : selectNode.id },
-								{ success: function(r){
-									$("#tv").tree("remove", selectNode.target);
-									_initActions();
-									_applyActions(actions);
-								}
+
+			function _removeFolder() {
+
+				juasp.confirm("是否删除【 " + selectNode.text + " 】文件夹。",
+						function(r) {
+							if (r == true) {
+								juasp.post('${root}/file/folder/remove.json', {
+									id : selectNode.id
+								}, {
+									success : function(r) {
+										$("#tv").tree("remove", selectNode.target);
+										_initActions();
+										_applyActions(actions);
+									}
+								});
+							}
 						});
-					}
-				});
 			}
 
-			function _shareFolder(){
-				
+			function _shareFolder() {
+
 			}
-			
-			function _uploadFile(){
-				
+
+			function _uploadFile() {
+
 			}
-			
+
 			function _downfile() {
 
 				var ids = selectFileIds();
 				var url = "${root}/file/get?id=" + ids;
 				win.open(url);
 			}
-			
-			function _removeFile(){
-				
+
+			function _removeFile() {
+
 				var rows = $('#tg').datagrid("getSelections");
 				var ids = [], names = [];
-				$.each(rows, function(index, item){
+				$.each(rows, function(index, item) {
 					ids.push(item.frId);
-					names.push("[<span color='blue'>" + item.fileName + "</span>]");
+					names.push("[<span color='blue'>" + item.fileName
+							+ "</span>]");
 				});
-				
-				juasp.confirm("<b>是否确认删除</b> " + names.join(",") + "<b> " + ids.length + " 个文件。</b>", function(r) {
-					if(r == true) {
-						juasp.post('${root}/file/remove.json', 
-								{ id : ids.join(",") },
-								{ success: function(r) {
-									_findFiles(selectNode.id);
-								}
+
+				juasp.confirm("<b>是否确认删除</b> " + names.join(",") + "<b> "
+						+ ids.length + " 个文件。</b>", function(r) {
+					if (r == true) {
+						juasp.post('${root}/file/remove.json', {
+							id : ids.join(",")
+						}, {
+							success : function(r) {
+								_findFiles(selectNode.id);
+							}
 						});
 					}
 				});
 			}
-			
-			function _selectFolder(action){
-				
+
+			function _selectFolder(action) {
+
 				var openUrl = "${root}/file/folder/select?sid=" + selectNode.id;
 				juasp.openWin({
 					url : openUrl,
@@ -286,44 +318,48 @@
 					title : "移动至文件夹",
 					onClose : function(r) {
 						if (r.result == 1) {
-							if(typeof action == 'function'){
+							if (typeof action == 'function') {
 								action(r);
 							}
 						}
 					}
 				});
 			}
-			
-			function _moveFile(){
-				
-				var ids = selectFileIds();
-				_selectFolder(function (r){
-					juasp.post('${root}/file/folder/move.json', 
-							{ id : ids, folderId: r.data },
-							{ success: function(r){
-								_findFiles(selectNode.id);
-							}
-					});
-				});
-			}
-			
-			function _copyFile(){
+
+			function _moveFile() {
 
 				var ids = selectFileIds();
-				_selectFolder(function (r){
-					juasp.post('${root}/file/folder/copy.json', 
-							{ id : ids, folderId: r.data },
-							{ success: function(r) {
-								_findFiles(selectNode.id);
-							}
+				_selectFolder(function(r) {
+					juasp.post('${root}/file/folder/move.json', {
+						id : ids,
+						folderId : r.data
+					}, {
+						success : function(r) {
+							_findFiles(selectNode.id);
+						}
 					});
 				});
 			}
-			
-			function _shareFile(){
-				
+
+			function _copyFile() {
+
+				var ids = selectFileIds();
+				_selectFolder(function(r) {
+					juasp.post('${root}/file/folder/copy.json', {
+						id : ids,
+						folderId : r.data
+					}, {
+						success : function(r) {
+							_findFiles(selectNode.id);
+						}
+					});
+				});
 			}
-			
+
+			function _shareFile() {
+
+			}
+
 			return {
 				clicknode : _clickNode,
 				createfolder : _createFolder,
@@ -335,21 +371,23 @@
 				removefile : _removeFile,
 				movefile : _moveFile,
 				copyfile : _copyFile,
-				sharefile : _shareFile
+				sharefile : _shareFile,
+				
+				formatterFileName : _formatterFileName 
 			}
-			
+
 		}(window, jQuery));
-		
-		function expand(){
-			
+
+		function expand() {
+
 			var node = $('#tv').tree('getSelected');
-			$('#tv').tree('expand', (node?node.target:null))  
+			$('#tv').tree('expand', (node ? node.target : null))
 		}
-		
-		function collapse(){
-			
+
+		function collapse() {
+
 			var node = $('#tv').tree('getSelected');
-			$('#tv').tree('collapse', (node?node.target:null))  
+			$('#tv').tree('collapse', (node ? node.target : null))
 		}
 	</script>
 </e:section>
@@ -365,7 +403,7 @@
 				pageSize="10" idField="frId" >
 				<e:columns>
 					<e:column field="ck" checkbox="true" />
-					<e:column field="fileName" title="文件名" width="450" />
+					<e:column field="fileName" formatter="jctx.formatterFileName" title="文件名" width="450" />
 					<e:column field="uploaderName" title="上传人" align="center" width="90" />
 					<e:column field="fileSize" title="大小" align="center" width="80" />
 					<e:column field="downloads" title="下载次数" align="center" hidden="true" width="70" />

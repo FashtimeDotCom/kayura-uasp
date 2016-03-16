@@ -10,6 +10,11 @@
 
 	var $queue = null;
 	var MB = 1024 * 1024, GB = MB * 1024;
+	var icons = ['avi','bmp','bz2','db','doc','docx','exe','gif','jpg','jpge','mov',
+	             'mp3','mp4','mpg','mpp','msi','pdf','png','ppt','pptx','rar','rdp',
+	             'sql','tar','txt','vsd','wps','xls','xlsx','zip','htm','html','mht',
+	             'mhtml','tif','tiff','iso','jar','rp','oom','pdm','psd','xml','xsm',
+	             'wma','wmv','vtx','udl','reg'];
     
 	// 计算 Web 项目路径.
 	var hostPath = win.location.href.substring(0, win.location.href.indexOf(win.location.pathname));
@@ -20,12 +25,28 @@
 		return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 	}
 	
-	juasp.removefile = function (frid){
+	juasp.getIconName = function(postfix){
+		
+		if(!juasp.isEmpty(postfix)){
+			var i = icons.indexOf(postfix.toLowerCase());
+			if(i>=0){
+				return icons[i];
+			} else {
+				return "unknown";
+			}
+		} else {
+			return "unknown";
+		}
+	}
+	
+	juasp.removefile = function (frid, fileName){
 		
 		juasp.post(appPath + '/file/remove.json', 
 				{ id : frid, isBiz : 1 },
 				{ success: function(r) {
-					$("#fc_" + frid).remove();
+					var t = $("#fc_" + frid);
+					t.fadeOut('slow', function(){ t.remove(); });
+					juasp.info("文件 [" + fileName + "] 已经被移除。");
 				}
 		});
 	}
@@ -41,38 +62,45 @@
 
 		var opts = $.data(target, 'uploader').options;
 		var targetId = target.id;
-		var target = $(target);
+		var $target = $(target);
 
 		if ($queue == null) {
 			$queue = $('<div class="webuploader-filequeues-list"></div>');
 			$queue.appendTo("body");
 		}
 
-		var $list = $("<div style='list-style: none;padding: 5px;'></div>");
-		target.after($list);
+		if(opts.showlist) {
+			var $list = $("<div style='list-style: none;padding: 5px;'></div>");
+			$target.after($list);
+		}
 		
 		if(!opts.actions.upload){
-			target.remove();
+			$target.remove();
 		}
 		
 		// 下载文件列表.
-		juasp.post(appPath + '/file/find.json', 
-				{
-					bizId : opts.formData.bizId,
-					category : opts.formData.category,
-					tags : opts.formData.tags
-				},
-				{ success: function(r) {
-					for(var i in r.data){
-						appendFileList(r.data[i]);
+		if(opts.showlist) {
+			
+			juasp.post(appPath + '/file/find.json', 
+					{
+						bizId : opts.formData.bizId,
+						category : opts.formData.category,
+						tags : opts.formData.tags
+					},
+					{ success: function(r) {
+						for(var i in r.data){
+							appendFileList(r.data[i]);
+						}
 					}
-				}
-		});
+			});
+		}
 		
 		var uploader = WebUploader.create($.extend({ 
 			pick : '#' + targetId,
-			formData : $.extend({}, opts.innerOptions.formData, opts.formData)
+			formData : opts.formData
 		}, opts.innerOptions));
+
+        $.data(target, 'uploader', { options: opts, uploader : uploader });
 		
         uploader.on('uploadFinished', function () {
 
@@ -111,59 +139,52 @@
              * Q_EXCEED_SIZE_LIMIT 在设置了Q_EXCEED_SIZE_LIMIT且尝试给uploader添加的文件总大小超出这个值时派送。
              * Q_TYPE_DENIED 当文件类型不满足时触发。
              */
+
+        	if(type == "Q_EXCEED_NUM_LIMIT"){
+    			juasp.errortips("添加文件时超出了本次限制的最大文件数。");
+        	}
         	
-        	var msg = "";
-        	switch (type) {
-			case Q_EXCEED_NUM_LIMIT:
-				msg = "上传的文件数量已经超出.";
-				break;
-			case Q_EXCEED_SIZE_LIMIT:
-				msg = "上传的文件大小已经超出.";
-				break;
-			case Q_TYPE_DENIED:
-				msg = "上传的文件类型不支持.";
-				break;
-			default:
-				msg = "未知错误.";
-				break;
-			}
-        	
-			juasp.info(msg);
         });
         
         uploader.on('uploadAccept', function(o, r){
-        	
-        	if(r.type == juasp.SUCCESS) {
-        		
-        		r.data.isUploader = true;
-        		
-        		appendFileList(r.data);
+
+    		if(opts.showlist) {
+    			if(r.type == juasp.SUCCESS) {
+        			r.data.isUploader = true;
+        			appendFileList(r.data);
+        		} else {
+        			juasp.errortips(r.message);
+            	}
         	}
         });
         
         function appendFileList(data){
         	
-        	var html = '<li id="fc_' + data.frId + '">' ;
+        	var html = '<li id="fc_' + data.frId + '" class="webuploader-fileitems">' ;
         	
         	if(opts.showicon){
-        		html += '<img src="'+ appPath + '/res/images/types/' + data.postfix + '.png" style="margin-right: 10px;">';
+        		html += '<img class="webuploader-fileitem-icon" src="'+ appPath + '/res/images/types/' + juasp.getIconName(data.postfix)+ '.png">';
         	}
         	
-        	html += '<a href="' + appPath + '/file/get?id=' + data.frId;
-        	html += '" title="文件大小: ' + data.fileSize + '; 上传者: ' + data.uploaderName + ';">' + data.fileName + '</a>';
+        	html += '<a href="' + appPath + '/file/get?id=' + data.frId + '" '
+        	html += 'title="文件大小: ' + data.fileSize + '; 上传者: ' + data.uploaderName + ';">' + data.fileName + '</a>';
+        	
+        	if(opts.showinfos){
+        		html += "<span class='webuploader-fileitem-info'>(大小: " + data.fileSize + ", " + data.uploadTime + ")</span>";
+        	}
         	
         	if(opts.actions.remove && data.isUploader) {
-        		html += '<a href="javascript:void(0)" style="margin-left: 10px;" onclick="juasp.removefile(\'' + data.frId + '\')">'; 
-        		html += '<img src="'+ appPath + '/res/easyui/themes/icons/clear.png"></a>';
+        		html += '<a href="javascript:void(0)" onclick="juasp.removefile(\'' + data.frId + '\',\'' + data.fileName + '\')">'; 
+        		html += '<img class="webuploader-fileitem-action-icon" src="'+ appPath + '/res/images/icons/clear.png"></a>';
         	}
         	
         	html += '</li>';
-        	
     		$list.append(html);
         }
 	}
 
 	var webuploader = function(options, param){
+		
 		if (typeof options == 'string'){
 			return webuploader.methods[options](this, param);
 		}
@@ -172,10 +193,11 @@
 		return this.each(function(){
 			var state = $.data(this, 'uploader');
 			if (state){
-				$.extend(state.options, options);
+				$.extend(true, state.options, options);
 			} else {
+				var opts = $.extend(true, {}, webuploader.defaults, options);
 				state = $.data(this, 'uploader', {
-					options: $.extend({}, webuploader.defaults, options)
+					options: opts
 				});
 				init(this);
 			}
@@ -184,11 +206,12 @@
 	
 	// 上传组件支持方法.
 	webuploader.methods = {
-		setFormData: function(target, param){
-			var state = $.data(this, 'uploader');
-			if (state){
+		setFormData: function(jq, param){
+			var state = $.data(jq[0], 'uploader');
+			if (state) {
 				var opts = state.options;
-				opts.formData = $.extend({}, opts.formData, param);
+				opts.formData = $.extend(true, {}, opts.formData, param);
+				state.uploader.options.formData = opts.formData;
 			}
 		}
 	};
@@ -197,6 +220,9 @@
 	webuploader.defaults = {
 		onFinished : function () { },
 		onSuccess : function (file, res) { } ,
+		showlist : false,
+		showicon : true,
+		showinfos : true,
 		actions : {
 			upload : true,
 			remove : true
@@ -210,14 +236,13 @@
         	isEncrypt : 0,		// ● 是否加密文件.
         	tags : ''			// ● 自定义标签,使用逗号间隔.
         },
-		fileQueueId : '',		// 文件上传阵列的区域标签Id.
 		innerOptions : {
 			swf: appPath + '/res/webuploader/Uploader.swf',
 			server: appPath + '/file/upload.json',
 			auto: true, 					// 设置为 true 后，不需要手动调用上传，有文件选择即开始上传。
-	        fileNumLimit: 99,				// 验证文件总数量, 超出则不允许加入队列。
-	        fileSizeLimit: 100 * MB,		// 验证文件总大小是否超出限制, 超出则不允许加入队列。
-	        fileSingleSizeLimit: 50 * MB,	// 验证单个文件大小是否超出限制, 超出则不允许加入队列。
+	        fileNumLimit: 999,				// 验证文件总数量, 超出则不允许加入队列。
+	        fileSizeLimit: 50 * MB,			// 验证文件总大小是否超出限制, 超出则不允许加入队列。
+	        fileSingleSizeLimit: 5 * MB,	// 验证单个文件大小是否超出限制, 超出则不允许加入队列。
 			fileVal : "file",				// 设置文件上传域的name。
 			method: "POST",					// 文件上传方式，POST或者GET。
 			duplicate: true

@@ -3,9 +3,6 @@
 <e:section name="title">文件管理</e:section>
 
 <e:section name="head">
-	<e:resource location="res/uploader" name="webuploader.css" />
-	<e:resource location="res/uploader" name="webuploader.js" />
-
 	<script type="text/javascript">
 	
 		$(function() {
