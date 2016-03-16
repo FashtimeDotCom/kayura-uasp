@@ -5,15 +5,15 @@
 
 <e:section name="head">
 	<e:resource location="res/js" name="webuploader.css" />
-	<e:resource location="res/js" name="webuploader.js" />
+	<e:resource location="res/js" name="webuploader.min.js" />
 	<e:resource location="res/js" name="juasp-uploader.js" />
 	<script type="text/javascript">
 		$(function(){
 			$("#fileUpload1").uploader({
 				showlist : true,
 				showinfos : false,
-				action : {
-					remove : false
+				actions : {
+					remove : true
 				},
 				formData : {
 					category: '合同',

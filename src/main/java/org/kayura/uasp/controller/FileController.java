@@ -15,7 +15,6 @@ import java.net.URLEncoder;
 import java.security.Key;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -115,8 +114,6 @@ public class FileController extends BaseController {
 				// 循环处理上传的文件.
 				if (!file.isEmpty()) {
 					try {
-
-						long a1 = System.currentTimeMillis();
 
 						// 设置上传的文件信息.
 						fu.setSerial(ui.getSerial());

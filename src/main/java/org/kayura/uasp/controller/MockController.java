@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MockController extends BaseController {
 	
+	@SuppressWarnings("unused")
 	private static final Log logger = LogFactory.getLog(MockController.class);
 	
 	public MockController() {

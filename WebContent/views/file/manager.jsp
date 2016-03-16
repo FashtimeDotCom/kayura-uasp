@@ -4,7 +4,7 @@
 
 <e:section name="head">
 	<e:resource location="res/js" name="webuploader.css" />
-	<e:resource location="res/js" name="webuploader.js" />
+	<e:resource location="res/js" name="webuploader.min.js" />
 	<e:resource location="res/js" name="juasp-uploader.js" />
 
 	<script type="text/javascript">
