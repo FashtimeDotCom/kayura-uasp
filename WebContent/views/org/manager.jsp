@@ -9,12 +9,11 @@
 			
 			$('#tv').tree({
 				url : "${root}/org/tree.json",
-				animate: true,
+				queryParams : {
+					id : "NULL"
+				},
 				onClick : function(node) {
 
-				},
-				onBeforeLoad : function(node, data){
-					$(this).tree("collapseAll");
 				},
 				onContextMenu: function(e, node){
 					e.preventDefault();

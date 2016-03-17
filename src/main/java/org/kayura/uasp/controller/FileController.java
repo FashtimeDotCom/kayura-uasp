@@ -132,7 +132,8 @@ public class FileController extends BaseController {
 
 						// 计算文件字节的 MD5 码与存储路径.
 						if (!fu.getAllowChange()) {
-							String rawString = fu.getContentType() + fu.getFileSize() + fu.getIsEncrypt();
+							String rawString = fu.getFileName() + ui.getLastModifiedDate() + fu.getContentType()
+									+ fu.getFileSize() + fu.getIsEncrypt();
 							fu.setMd5(DigestUtils.md5Hex(rawString));
 							// fu.setMd5(DigestUtils.md5Hex(fileContent));
 						}
@@ -219,38 +220,59 @@ public class FileController extends BaseController {
 						byte[] buf = new byte[1024 * 32];
 						int len;
 
-						for (FileDownload fd : fdlst) {
+						try {
+							List<String> fileNames = new ArrayList<String>();
+							for (FileDownload fd : fdlst) {
 
-							String absPath = uploadProvider.convertAbsolutePath(fd.getLogicPath());
-							File srcFile = new File(absPath, fd.getFileId());
+								String absPath = uploadProvider.convertAbsolutePath(fd.getLogicPath());
+								File srcFile = new File(absPath, fd.getFileId());
 
-							if (fd.getIsEncrypted()) {
+								if (fd.getIsEncrypted()) {
 
-								File aesFile = new File(tempPath, srcFile.getName());
-								if (!aesFile.exists()) {
-									byte[] fileContent = FileUtils.readFileToByteArray(srcFile);
-									fileContent = aesDecrypt(fileContent, fd.getSalt());
+									File aesFile = new File(tempPath, srcFile.getName());
+									if (!aesFile.exists()) {
+										byte[] fileContent = FileUtils.readFileToByteArray(srcFile);
+										fileContent = aesDecrypt(fileContent, fd.getSalt());
+									}
+
+									srcFile = aesFile;
 								}
 
-								srcFile = aesFile;
-							}
+								if (srcFile.isFile() && srcFile.exists()) {
 
-							if (srcFile.isFile() && srcFile.exists()) {
+									String fn = fd.getFileName();
+									int count = (int) fileNames.stream().filter(c -> c.equals(fd.getFileName()))
+											.count();
+									if (count > 0) {
+										if (fn.indexOf(".") >= 0) {
+											String onlyName = fn.substring(0, fn.lastIndexOf("."));
+											String onlyPostfix = fn.substring(fn.lastIndexOf(".") + 1);
 
-								ZipEntry entry = new ZipEntry(fd.getFileName());
-								zout.putNextEntry(entry);
+											fn = onlyName + "(" + count + ")." + onlyPostfix;
+										} else {
+											fn = fn + "(" + count + ")";
+										}
+									}
+									fileNames.add(fd.getFileName());
 
-								BufferedInputStream bis = new BufferedInputStream(new FileInputStream(srcFile));
-								while ((len = bis.read(buf)) > 0) {
-									zout.write(buf, 0, len);
+									ZipEntry entry = new ZipEntry(fn);
+									zout.putNextEntry(entry);
+
+									BufferedInputStream bis = new BufferedInputStream(new FileInputStream(srcFile));
+									while ((len = bis.read(buf)) > 0) {
+										zout.write(buf, 0, len);
+									}
+									bis.close();
+									zout.closeEntry();
 								}
-								bis.close();
-								zout.closeEntry();
 							}
+
+							zout.finish();
+							zout.close();
+						} catch (Exception e) {
+							downFile.delete();
+							throw e;
 						}
-
-						zout.finish();
-						zout.close();
 					}
 
 					fileName = "合并下载" + fdlst.size() + "个文件_" + DateUtils.now("yyyyMMddHHmmss") + ".zip";

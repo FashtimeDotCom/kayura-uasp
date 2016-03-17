@@ -33,6 +33,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/org")
 public class OrganizController extends BaseController {
 
+	static final String NULL = "NULL";
+
 	@Autowired
 	private OrganizService organizService;
 
@@ -69,12 +71,13 @@ public class OrganizController extends BaseController {
 				if (r.isSucceed()) {
 					List<OrganizItem> items = r.getData();
 
-					if (StringUtils.isEmpty(id)) {
+					if (StringUtils.isEmpty(id) || NULL.equals(id)) {
 
 						TreeNode root = new TreeNode();
-						root.setId("NULL");
+						root.setId("ORGANIZ");
 						root.setText("所有组织机构");
-						root.setIconCls("icon-book");
+						root.setState(TreeNode.STATE_OPEN);
+						root.setIconCls("icon-organiz");
 						roots.add(root);
 
 						List<OrganizItem> rootItems = items.stream().filter(c -> c.getParentId() == null)
@@ -84,8 +87,20 @@ public class OrganizController extends BaseController {
 							TreeNode n = new TreeNode();
 							n.setId(f.getOrgId());
 							n.setText(f.getDisplayName());
-							n.setState(TreeNode.STATE_OPEN);
-							n.setIconCls("icon-folder");
+							n.setState(TreeNode.STATE_CLOSED);
+
+							switch (f.getOrgType()) {
+							case 1:
+								n.setIconCls("icon-company");
+								break;
+							case 2:
+								n.setIconCls("icon-depart");
+								break;
+							case 3:
+								n.setIconCls("icon-position");
+								break;
+							}
+
 							root.getChildren().add(n);
 
 							appendChildFolders(n, items);
@@ -97,8 +112,20 @@ public class OrganizController extends BaseController {
 							TreeNode n = new TreeNode();
 							n.setId(f.getOrgId());
 							n.setText(f.getDisplayName());
-							n.setState(TreeNode.STATE_OPEN);
-							n.setIconCls("icon-folder");
+							n.setState(TreeNode.STATE_CLOSED);
+
+							switch (f.getOrgType()) {
+							case 1:
+								n.setIconCls("icon-company");
+								break;
+							case 2:
+								n.setIconCls("icon-depart");
+								break;
+							case 3:
+								n.setIconCls("icon-position");
+								break;
+							}
+
 							roots.add(n);
 						}
 					}
@@ -122,7 +149,7 @@ public class OrganizController extends BaseController {
 				TreeNode n = new TreeNode();
 				n.setId(f.getOrgId());
 				n.setText(f.getDisplayName());
-				n.setState(TreeNode.STATE_OPEN);
+				n.setState(TreeNode.STATE_CLOSED);
 				n.setIconCls("icon-folder");
 				node.getChildren().add(n);
 

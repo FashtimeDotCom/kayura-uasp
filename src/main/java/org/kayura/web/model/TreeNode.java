@@ -11,7 +11,7 @@ import java.util.Map;
 public class TreeNode {
 
 	public static final String STATE_OPEN = "open";
-	public static final String STATE_Closed = "closed";
+	public static final String STATE_CLOSED = "closed";
 
 	private String id;
 	private String text;

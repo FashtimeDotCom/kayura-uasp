@@ -122,17 +122,22 @@ public class FileServiceImpl implements FileService {
 			FileInfo fi = fileMapper.getFileInfoById(fr.getFileId());
 			if (fi != null) {
 
-				FileDownload fd = new FileDownload();
-				fd.setFrId(fr.getFrId());
-				fd.setLogicPath(fi.getLogicPath());
-				fd.setFileId(fr.getFileId());
-				fd.setFileName(fr.getFileName());
-				fd.setContentType(fi.getContentType());
-				fd.setIsEncrypted(fi.getIsEncrypted());
-				fd.setSalt(fi.getSalt());
-				fd.setAllowChange(fi.getAllowChange());
+				if (!resultList.stream().anyMatch(
+						c -> c.getFileName().equals(fr.getFileName()) && c.getMd5().equals(fi.getMd5()))) {
 
-				resultList.add(fd);
+					FileDownload fd = new FileDownload();
+					fd.setFrId(fr.getFrId());
+					fd.setLogicPath(fi.getLogicPath());
+					fd.setFileId(fr.getFileId());
+					fd.setFileName(fr.getFileName());
+					fd.setContentType(fi.getContentType());
+					fd.setMd5(fi.getMd5());
+					fd.setIsEncrypted(fi.getIsEncrypted());
+					fd.setSalt(fi.getSalt());
+					fd.setAllowChange(fi.getAllowChange());
+
+					resultList.add(fd);
+				}
 			}
 		}
 

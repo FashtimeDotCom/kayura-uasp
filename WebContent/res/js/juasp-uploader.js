@@ -14,7 +14,7 @@
 	             'mp3','mp4','mpg','mpp','msi','pdf','png','ppt','pptx','rar','rdp',
 	             'sql','tar','txt','vsd','wps','xls','xlsx','zip','htm','html','mht',
 	             'mhtml','tif','tiff','iso','jar','rp','oom','pdm','psd','xml','xsm',
-	             'wma','wmv','vtx','udl','reg','chm'];
+	             'wma','wmv','vtx','udl','reg','chm','ini'];
     
 	// 计算 Web 项目路径.
 	var hostPath = win.location.href.substring(0, win.location.href.indexOf(win.location.pathname));

@@ -15,6 +15,7 @@ public class FileDownload {
 	private String contentType;
 	private byte[] content;
 	private String logicPath;
+	private String md5;
 	private Boolean allowChange;
 	private Boolean isEncrypted;
 	private String salt;
@@ -65,6 +66,20 @@ public class FileDownload {
 
 	public void setLogicPath(String logicPath) {
 		this.logicPath = logicPath;
+	}
+
+	/**
+	 * @return the md5
+	 */
+	public String getMd5() {
+		return md5;
+	}
+
+	/**
+	 * @param md5 the md5 to set
+	 */
+	public void setMd5(String md5) {
+		this.md5 = md5;
 	}
 
 	public Boolean getIsEncrypted() {

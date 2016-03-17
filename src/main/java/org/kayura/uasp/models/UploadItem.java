@@ -23,6 +23,7 @@ public class UploadItem implements Serializable {
 	private Boolean allowChange;
 	private Boolean isEncrypt;
 	private String tags;
+	private String lastModifiedDate;
 
 	public UploadItem() {
 		this.allowChange = false;
@@ -91,6 +92,14 @@ public class UploadItem implements Serializable {
 
 	public void setTags(String tags) {
 		this.tags = tags;
+	}
+
+	public String getLastModifiedDate() {
+		return StringUtils.isEmpty(lastModifiedDate) ? "" : this.lastModifiedDate;
+	}
+
+	public void setLastModifiedDate(String lastModifiedDate) {
+		this.lastModifiedDate = lastModifiedDate;
 	}
 
 }
