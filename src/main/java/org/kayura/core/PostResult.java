@@ -71,7 +71,7 @@ public class PostResult extends Result<Object> {
 		this.setCode(code);
 		this.setMessage(message);
 	}
-	
+
 	public void setResult(Integer code, String message, Object data) {
 
 		this.setCode(code);

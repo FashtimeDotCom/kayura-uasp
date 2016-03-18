@@ -8,10 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kayura.mybatis.type.PageBounds;
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.dao.OrganizMapper;
 import org.kayura.uasp.po.OrganizItem;
 import org.kayura.uasp.service.OrganizService;
+import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +39,26 @@ public class OrganizServiceImpl implements OrganizService {
 		List<OrganizItem> items = organizMapper.findOrgTree(args);
 
 		return new Result<List<OrganizItem>>(Result.SUCCEED, items);
+	}
+
+	@Override
+	public Result<PageList<OrganizItem>> findOrgItems(String tenantId, String parentId, 
+			String keyword, PageParams pageParams) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("tenantId", tenantId);
+
+		if (!StringUtils.isEmpty(parentId)) {
+			args.put("parentId", parentId);
+		}
+		
+		if(!StringUtils.isEmpty(keyword)){
+			args.put("keyword", "%" + keyword + "%");
+		}
+
+		PageList<OrganizItem> items = organizMapper.findOrgItems(args, new PageBounds(pageParams));
+
+		return new Result<PageList<OrganizItem>>(Result.SUCCEED, items);
 	}
 
 }

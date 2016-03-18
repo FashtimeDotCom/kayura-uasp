@@ -20,6 +20,8 @@ public class OrganizItem {
 	private String code;
 	private String displayName;
 	private Integer orgType;
+	private Integer serial;
+	private Integer count;
 
 	public String getOrgId() {
 		return orgId;
@@ -57,8 +59,42 @@ public class OrganizItem {
 		return orgType;
 	}
 
+	public String getOrgTypeName() {
+
+		String orgTypeName = "未知";
+
+		switch (this.orgType) {
+		case 1:
+			orgTypeName = "公司";
+			break;
+		case 2:
+			orgTypeName = "部门";
+			break;
+		case 3:
+			orgTypeName = "岗位";
+			break;
+		}
+		return orgTypeName;
+	}
+
 	public void setOrgType(Integer orgType) {
 		this.orgType = orgType;
+	}
+
+	public Integer getSerial() {
+		return serial;
+	}
+
+	public void setSerial(Integer serial) {
+		this.serial = serial;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public void setCount(Integer count) {
+		this.count = count;
 	}
 
 }

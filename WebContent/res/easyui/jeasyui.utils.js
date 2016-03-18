@@ -30,7 +30,7 @@
 
 	});
 
-	// 重写 jeasyui 默认属性.
+	// 重写 jeasyui.tree 默认属性.
 	
 	$.extend($.fn.tree.defaults, {
 		method : "post",
@@ -38,8 +38,39 @@
 			return _loadFilter(r);
 		}
 	});
+
+	// 扩展 jeasyui.textbox 方法.
 	
-	// 扩展 easyui datagrid.
+	$.extend($.fn.textbox.methods, {
+		addClearBtn: function(jq){
+			return jq.each(function(){
+				var t = $(this);
+				var opts = t.textbox('options');
+				opts.icons = opts.icons || [];
+				opts.icons.unshift({
+					iconCls: "icon-clear",
+					handler: function(e){
+						$(e.data.target).textbox('clear').textbox('textbox').focus();
+						$(this).css('visibility','hidden');
+					}
+				});
+				t.textbox();
+				if (!t.textbox('getText')){
+					t.textbox('getIcon',0).css('visibility','hidden');
+				}
+				t.textbox('textbox').bind('keyup', function(){
+					var icon = t.textbox('getIcon',0);
+					if ($(this).val()){
+						icon.css('visibility','visible');
+					} else {
+						icon.css('visibility','hidden');
+					}
+				});
+			});
+		}
+	});
+	
+	// 扩展 easyui.datagrid 方法.
 
 	$.extend($.fn.datagrid.methods, {
 
@@ -109,10 +140,10 @@
 	function _loadFilter(r) {
 		
 		if(r.type != undefined) {
-			if (r.type == juasp.SUCCESS && r.data) {
+			if (r.type == juasp.SUCCESS && r.data != undefined) {
 				return r.data;
 			} else {
-				juasp.info(r.message);
+				juasp.alert('消息', r.message, 'e');
 			}
 		} else {
 			return r;

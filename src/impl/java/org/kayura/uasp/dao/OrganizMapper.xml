@@ -3,24 +3,40 @@
 <mapper namespace="org.kayura.uasp.dao.OrganizMapper">
 
 	<resultMap id="organizItemMap" type="org.kayura.uasp.po.OrganizItem">
-		<result property="orgId" column="Org_Id" />
+		<id property="orgId" column="Org_Id" />
 		<result property="parentId" column="Parent_Id" />
 		<result property="code" column="Code" />
 		<result property="displayName" column="DisplayName" />
 		<result property="orgType" column="OrgType" />
+		<result property="serial" column="Serial" />
+		<result property="count" column="Count" />
 	</resultMap>
+	
+	<sql id="orgItems_SQL">
+		SELECT c.Company_Id AS Org_Id, c.Parent_Id, c.Code, c.ShortName AS DisplayName, 1 AS OrgType, c.Serial
+		FROM UASP_Companies AS c WHERE c.Tenant_Id = #{tenantId}
+		UNION ALL
+		SELECT d.Department_Id, IFNULL(d.Parent_Id, d.Company_Id), d.Code, d.Name, 2, d.Serial
+		FROM UASP_Departments d WHERE d.Tenant_Id = #{tenantId}
+		UNION ALL
+		SELECT p.Position_Id, p.Department_Id, p.Code, p.Name, 3, p.Serial
+		FROM UASP_Positions p WHERE p.Tenant_Id = #{tenantId}
+	</sql>
 
 	<select id="findOrgTree" parameterType="map" resultMap="organizItemMap">
-		SELECT Org_Id, Parent_Id, Code, DisplayName, OrgType 
+		SELECT Org_Id, Parent_Id, Code, DisplayName, OrgType, Serial, 
+		<choose>
+			<when test="parentId != null">
+		    ((SELECT COUNT(1) FROM UASP_Companies AS x WHERE x.Parent_Id = t.Org_Id) + 
+		     (SELECT COUNT(1) FROM UASP_Departments AS y WHERE y.Parent_Id = t.Org_Id OR y.Company_Id = t.Org_Id) + 
+		     (SELECT COUNT(1) FROM UASP_Positions AS z WHERE z.Department_Id = t.Org_Id)) AS Count
+			</when>
+			<otherwise>
+			0 AS count
+			</otherwise>
+		</choose>
 		FROM (
-			SELECT c.Company_Id AS Org_Id, c.Parent_Id, c.Code, c.ShortName AS DisplayName, 1 AS OrgType
-			FROM UASP_Companies AS c WHERE c.Tenant_Id = #{tenantId}
-			UNION ALL
-			SELECT d.Department_Id, IFNULL(d.Parent_Id, d.Company_Id), d.Code, d.Name, 2
-			FROM UASP_Departments d WHERE d.Tenant_Id = #{tenantId}
-			UNION ALL
-			SELECT p.Position_Id, p.Department_Id, p.Code, p.Name, 3
-			FROM UASP_Positions p WHERE p.Tenant_Id = #{tenantId}
+			<include refid="orgItems_SQL"></include> 
 		) t 
 		<where>
 			<if test="parentId != null">
@@ -30,6 +46,23 @@
 			</choose>
 			</if>
 		</where>
+		ORDER BY Serial, Code
+	</select>
+	
+	<select id="findOrgItems" parameterType="map" resultMap="organizItemMap">
+		SELECT Org_Id, Parent_Id, Code, DisplayName, OrgType, Serial, 0 AS count
+		FROM (
+			<include refid="orgItems_SQL"></include> 
+		) t 
+		<where>
+			<if test="parentId != null">
+				AND ( t.Parent_Id = #{parentId} )
+			</if>
+			<if test="keyword != null">
+				AND ( t.Code LIKE #{keyword} OR t.DisplayName LIKE #{keyword} )
+			</if>
+		</where>
+		ORDER BY OrgType, Serial, Code
 	</select>
 
 </mapper>

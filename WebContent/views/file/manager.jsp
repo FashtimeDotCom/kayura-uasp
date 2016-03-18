@@ -145,20 +145,6 @@
 					});
 					
 					uploader = 1;
-					
-/* 					uploader = WebUploader.create({
-			            swf: '${root}/res/webuploader/Uploader.swf',
-			            server: '${root}/file/upload.json',
-						pick: '#upload',
-						auto: true,
-						formData:{
-							folderId: selectNode.id
-						}
-					});
-					
-			        uploader.on('uploadFinished', function (file, response) {
-						_findFiles(selectNode.id);
-			        }); */
 			        
 				} else {
 					
@@ -290,8 +276,7 @@
 				var ids = [], names = [];
 				$.each(rows, function(index, item) {
 					ids.push(item.frId);
-					names.push("[<span color='blue'>" + item.fileName
-							+ "</span>]");
+					names.push(item.fileName);
 				});
 
 				juasp.confirm("<b>是否确认删除</b> " + names.join(",") + "<b> "

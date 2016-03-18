@@ -1266,6 +1266,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>buttonIcon</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<name>size</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>

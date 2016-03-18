@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.kayura.core.BaseDao;
+import org.kayura.mybatis.type.PageBounds;
+import org.kayura.type.PageList;
 import org.kayura.uasp.po.OrganizItem;
 
 /**
@@ -24,5 +26,14 @@ public interface OrganizMapper extends BaseDao {
 	 * @return
 	 */
 	List<OrganizItem> findOrgTree(Map<String, Object> args);
+
+	/**
+	 * 查询组织机构树型数据.
+	 * 
+	 * @param args [tenantId] 必需, [parentId] 可选值.
+	 * @param pageBounds
+	 * @return
+	 */
+	PageList<OrganizItem> findOrgItems(Map<String, Object> args, PageBounds pageBounds);
 
 }

@@ -9,9 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.OrganizItem;
 import org.kayura.uasp.service.OrganizService;
@@ -50,6 +54,12 @@ public class OrganizController extends BaseController {
 		return mv;
 	}
 
+	/**
+	 * 获取组织机构树型数据.
+	 * 
+	 * @param id 值为 null 或 "" 时，获取所有树型数据。 值为 "NULL" 时，仅获取第一层节点数据。 值为 key 时，获取该
+	 *            key 下级子节点。
+	 */
 	@RequestMapping(value = "/tree", method = RequestMethod.POST)
 	public void orgTree(Map<String, Object> map, String id) {
 
@@ -63,6 +73,8 @@ public class OrganizController extends BaseController {
 				String parentId = id;
 				if (!StringUtils.isEmpty(id)) {
 					parentId = id.toUpperCase();
+				} else {
+					parentId = null;
 				}
 
 				Result<List<OrganizItem>> r = organizService.findOrgTree(user.getTenantId(), parentId);
@@ -74,7 +86,7 @@ public class OrganizController extends BaseController {
 					if (StringUtils.isEmpty(id) || NULL.equals(id)) {
 
 						TreeNode root = new TreeNode();
-						root.setId("ORGANIZ");
+						root.setId("ROOT");
 						root.setText("所有组织机构");
 						root.setState(TreeNode.STATE_OPEN);
 						root.setIconCls("icon-organiz");
@@ -84,49 +96,14 @@ public class OrganizController extends BaseController {
 								.collect(Collectors.toList());
 						for (OrganizItem f : rootItems) {
 
-							TreeNode n = new TreeNode();
-							n.setId(f.getOrgId());
-							n.setText(f.getDisplayName());
-							n.setState(TreeNode.STATE_CLOSED);
-
-							switch (f.getOrgType()) {
-							case 1:
-								n.setIconCls("icon-company");
-								break;
-							case 2:
-								n.setIconCls("icon-depart");
-								break;
-							case 3:
-								n.setIconCls("icon-position");
-								break;
-							}
-
+							TreeNode n = createNode(f);
 							root.getChildren().add(n);
-
 							appendChildFolders(n, items);
 						}
 					} else {
 
 						for (OrganizItem f : items) {
-
-							TreeNode n = new TreeNode();
-							n.setId(f.getOrgId());
-							n.setText(f.getDisplayName());
-							n.setState(TreeNode.STATE_CLOSED);
-
-							switch (f.getOrgType()) {
-							case 1:
-								n.setIconCls("icon-company");
-								break;
-							case 2:
-								n.setIconCls("icon-depart");
-								break;
-							case 3:
-								n.setIconCls("icon-position");
-								break;
-							}
-
-							roots.add(n);
+							roots.add(createNode(f));
 						}
 					}
 				}
@@ -135,6 +112,39 @@ public class OrganizController extends BaseController {
 				ps.setData(roots);
 			}
 		});
+	}
+
+	String getOrgTreeIcon(int orgType) {
+
+		String iconCls = "icon-folder";
+		switch (orgType) {
+		case 1:
+			iconCls = "icon-company";
+			break;
+		case 2:
+			iconCls = "icon-depart";
+			break;
+		case 3:
+			iconCls = "icon-position";
+			break;
+		}
+		return iconCls;
+	}
+
+	TreeNode createNode(OrganizItem item) {
+
+		TreeNode n = new TreeNode();
+		n.setId(item.getOrgId());
+		n.setText(item.getDisplayName());
+		if (item.getCount() == 0) {
+			n.setState(TreeNode.STATE_OPEN);
+		} else {
+			n.setState(TreeNode.STATE_CLOSED);
+		}
+		n.setIconCls(getOrgTreeIcon(item.getOrgType()));
+		n.addAttr("type", item.getOrgType());
+
+		return n;
 	}
 
 	void appendChildFolders(TreeNode node, List<OrganizItem> items) {
@@ -146,16 +156,37 @@ public class OrganizController extends BaseController {
 		if (!childs.isEmpty()) {
 			for (OrganizItem f : childs) {
 
-				TreeNode n = new TreeNode();
-				n.setId(f.getOrgId());
-				n.setText(f.getDisplayName());
-				n.setState(TreeNode.STATE_CLOSED);
-				n.setIconCls("icon-folder");
+				TreeNode n = createNode(f);
 				node.getChildren().add(n);
-
 				appendChildFolders(n, items);
 			}
 		}
 	}
 
+	/**
+	 * 获取组织机构树型数据.
+	 * 
+	 */
+	@RequestMapping(value = "/find", method = RequestMethod.POST)
+	public void findOrgItems(HttpServletRequest req, Map<String, Object> map, String id, String keyword) {
+
+		LoginUser user = this.getLoginUser();
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				PageParams pp = ui.getPageParams(req);
+
+				String parentId = id;
+				if (StringUtils.isEmpty(id)) {
+					parentId = null;
+				}
+
+				Result<PageList<OrganizItem>> r = 
+						organizService.findOrgItems(user.getTenantId(), parentId, keyword, pp);
+				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
+			}
+		});
+	}
 }
