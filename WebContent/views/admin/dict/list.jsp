@@ -30,7 +30,7 @@
 		function findItems(id) {
 			
 			if(dictId == "") {
-
+				
 				$('#tg').datagrid({
 					url: "${root}/admin/dict/load.json",
 					queryParams: {
@@ -51,7 +51,6 @@
 						editDict(row);
 					}
 				});
-				
 			} else {
 
 				$('#tg').datagrid('unselectAll');
@@ -100,7 +99,7 @@
 				}
 				</c:if>
 			} else {
-				juasp.warntips("请选择要编辑的记录。请选择要编辑的记录。");
+				juasp.warntips("请在表格中点击要<b>编辑</b>的记录。");
 			}
 		}
 		
@@ -126,7 +125,7 @@
 				}
 				</c:if>
 			} else {
-				juasp.info("请选择要删除的记录。");
+				juasp.warntips("请在表格中点击要<b>删除</b>的记录。");
 			}
 		}
 	</script>

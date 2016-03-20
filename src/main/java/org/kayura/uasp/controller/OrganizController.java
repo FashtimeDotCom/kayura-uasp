@@ -14,11 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
+import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
+import org.kayura.uasp.po.Company;
 import org.kayura.uasp.po.OrganizItem;
 import org.kayura.uasp.service.OrganizService;
+import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
 import org.kayura.web.model.TreeNode;
@@ -26,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -81,8 +85,8 @@ public class OrganizController extends BaseController {
 				List<TreeNode> roots = new ArrayList<TreeNode>();
 
 				if (r.isSucceed()) {
-					List<OrganizItem> items = r.getData();
 
+					List<OrganizItem> items = r.getData();
 					if (StringUtils.isEmpty(id) || NULL.equals(id)) {
 
 						TreeNode root = new TreeNode();
@@ -90,6 +94,7 @@ public class OrganizController extends BaseController {
 						root.setText("所有组织机构");
 						root.setState(TreeNode.STATE_OPEN);
 						root.setIconCls("icon-organiz");
+						root.addAttr("type", 0);
 						roots.add(root);
 
 						List<OrganizItem> rootItems = items.stream().filter(c -> c.getParentId() == null)
@@ -152,7 +157,6 @@ public class OrganizController extends BaseController {
 		List<OrganizItem> childs = items.stream()
 				.filter(c -> c.getParentId() != null && c.getParentId().equals(node.getId()))
 				.sorted((x, y) -> Integer.compare(y.getOrgType(), x.getOrgType())).collect(Collectors.toList());
-
 		if (!childs.isEmpty()) {
 			for (OrganizItem f : childs) {
 
@@ -183,9 +187,78 @@ public class OrganizController extends BaseController {
 					parentId = null;
 				}
 
-				Result<PageList<OrganizItem>> r = 
-						organizService.findOrgItems(user.getTenantId(), parentId, keyword, pp);
+				Result<PageList<OrganizItem>> r = organizService.findOrgItems(user.getTenantId(), parentId, keyword,
+						pp);
 				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
+			}
+		});
+	}
+
+	@RequestMapping(value = "/company/new", method = RequestMethod.GET)
+	public ModelAndView createCompany(@RequestParam("pid") String parentId, @RequestParam("pname") String parentName) {
+
+		Company company = new Company();
+		company.setParentId(parentId);
+		company.setParentName(parentName);
+
+		ModelAndView mv = this.view("companyedit");
+		mv.addObject("model", company);
+		return mv;
+	}
+
+	@RequestMapping(value = "/company", method = RequestMethod.GET)
+	public ModelAndView editCompany(String id) {
+
+		Result<Company> r = organizService.getCompanyById(id);
+		if (r.isSucceed()) {
+
+			ModelAndView mv = this.view("companyedit");
+			mv.addObject("model", r.getData());
+			return mv;
+		} else {
+			return this.errorPage("编辑公司信息时异常。", r.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/company/save", method = RequestMethod.POST)
+	public void saveCompany(HttpServletRequest req, Map<String, Object> map, Company company) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = null;
+
+				if (StringUtils.isEmpty(company.getCompanyId())) {
+
+					LoginUser user = getLoginUser();
+
+					company.setCompanyId(KeyUtils.newId());
+					company.setTenantId(user.getTenantId());
+					company.setStatus(Company.STATUS_ENABLED);
+
+					r = organizService.insertCompany(company);
+				} else {
+
+					r = organizService.updateCompany(company);
+				}
+
+				if (r != null) {
+					ps.setResult(r);
+				}
+			}
+		});
+	}
+
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public void removeOrgItem(HttpServletRequest req, Map<String, Object> map, String id) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
 			}
 		});
 	}

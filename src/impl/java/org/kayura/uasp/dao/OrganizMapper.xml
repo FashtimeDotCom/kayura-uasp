@@ -9,22 +9,44 @@
 		<result property="displayName" column="DisplayName" />
 		<result property="orgType" column="OrgType" />
 		<result property="serial" column="Serial" />
+		<result property="status" column="Status" />
 		<result property="count" column="Count" />
 	</resultMap>
 	
-	<sql id="orgItems_SQL">
-		SELECT c.Company_Id AS Org_Id, c.Parent_Id, c.Code, c.ShortName AS DisplayName, 1 AS OrgType, c.Serial
+	<resultMap type="org.kayura.uasp.po.Company" id="companyMap">
+		<id property="companyId" column="Company_Id" />
+		<result property="tenantId" column="Tenant_Id" />
+		<result property="parentId" column="Parent_Id" />
+		<result property="parentName" column="ParentName" />
+		<result property="code" column="Code" />
+		<result property="shortName" column="ShortName" />
+		<result property="fullName" column="FullName" />
+		<result property="description" column="Description" />
+		<result property="industryTypeId" column="IndustryTypeId" />
+		<result property="address" column="Address" />
+		<result property="postcode" column="Postcode" />
+		<result property="telephone" column="Telephone" />
+		<result property="email" column="Email" />
+		<result property="fax" column="Fax" />
+		<result property="linkman" column="Linkman" />
+		<result property="estaDate" column="EstaDate" />
+		<result property="serial" column="Serial" />
+		<result property="status" column="Status" />
+	</resultMap>
+	
+	<sql id="orgItems_Sql">
+		SELECT c.Company_Id AS Org_Id, c.Parent_Id, c.Code, c.ShortName AS DisplayName, 1 AS OrgType, c.Serial, c.Status
 		FROM UASP_Companies AS c WHERE c.Tenant_Id = #{tenantId}
 		UNION ALL
-		SELECT d.Department_Id, IFNULL(d.Parent_Id, d.Company_Id), d.Code, d.Name, 2, d.Serial
+		SELECT d.Department_Id, IFNULL(d.Parent_Id, d.Company_Id), d.Code, d.Name, 2, d.Serial, d.Status
 		FROM UASP_Departments d WHERE d.Tenant_Id = #{tenantId}
 		UNION ALL
-		SELECT p.Position_Id, p.Department_Id, p.Code, p.Name, 3, p.Serial
+		SELECT p.Position_Id, p.Department_Id, p.Code, p.Name, 3, p.Serial, p.Status
 		FROM UASP_Positions p WHERE p.Tenant_Id = #{tenantId}
 	</sql>
 
 	<select id="findOrgTree" parameterType="map" resultMap="organizItemMap">
-		SELECT Org_Id, Parent_Id, Code, DisplayName, OrgType, Serial, 
+		SELECT Org_Id, Parent_Id, Code, DisplayName, OrgType, Serial, Status, 
 		<choose>
 			<when test="parentId != null">
 		    ((SELECT COUNT(1) FROM UASP_Companies AS x WHERE x.Parent_Id = t.Org_Id) + 
@@ -36,7 +58,7 @@
 			</otherwise>
 		</choose>
 		FROM (
-			<include refid="orgItems_SQL"></include> 
+			<include refid="orgItems_Sql"></include> 
 		) t 
 		<where>
 			<if test="parentId != null">
@@ -45,14 +67,17 @@
 				<otherwise>( t.Parent_Id = #{parentId} )</otherwise>
 			</choose>
 			</if>
+			<if test="status != null">
+				AND ( t.Status = #{status} )
+			</if>
 		</where>
 		ORDER BY Serial, Code
 	</select>
 	
 	<select id="findOrgItems" parameterType="map" resultMap="organizItemMap">
-		SELECT Org_Id, Parent_Id, Code, DisplayName, OrgType, Serial, 0 AS count
+		SELECT Org_Id, Parent_Id, Code, DisplayName, OrgType, Serial, Status, 0 AS count
 		FROM (
-			<include refid="orgItems_SQL"></include> 
+			<include refid="orgItems_Sql"></include> 
 		) t 
 		<where>
 			<if test="parentId != null">
@@ -61,8 +86,142 @@
 			<if test="keyword != null">
 				AND ( t.Code LIKE #{keyword} OR t.DisplayName LIKE #{keyword} )
 			</if>
+			<if test="status != null">
+				AND ( t.Status = #{status} )
+			</if>
 		</where>
 		ORDER BY OrgType, Serial, Code
 	</select>
+
+	<sql id="companyColumns_Sql">
+		t.Company_Id,
+		t.Parent_Id,
+		t.Tenant_Id,
+		t.`Code`,
+		t.ShortName,
+		t.FullName,
+		t.Description,
+		t.IndustryType_Id,
+		t.Address,
+		t.Postcode,
+		t.Telephone,
+		t.Email,
+		t.Fax,
+		t.Linkman,
+		t.EstaDate,
+		t.Serial,
+		t.`Status`,
+		t.UpdatedTime
+	</sql>
+
+	<select id="getCompanyById" parameterType="string" resultMap="companyMap">
+		SELECT
+			<include refid="companyColumns_Sql"></include>,
+			p.FullName AS ParentName,
+			d.`Name` AS IndustryTypeName
+		FROM uasp_companies AS t
+			INNER JOIN uasp_dictitems AS d ON d.Item_Id = t.IndustryType_Id
+			INNER JOIN uasp_companies AS p ON p.Company_Id = t.Parent_Id
+		WHERE ( t.Company_Id = #{value} )
+	</select>
+
+	<insert id="insertCompany" parameterType="org.kayura.uasp.po.Company">
+		INSERT uasp_companies (
+			Company_Id,
+			Parent_Id,
+			Tenant_Id,
+			`Code`,
+			ShortName,
+			FullName,
+			Description,
+			IndustryType_Id,
+			Address,
+			Postcode,
+			Telephone,
+			Email,
+			Fax,
+			Linkman,
+			EstaDate,
+			Serial,
+			`Status`,
+			UpdatedTime
+		) VALUES (
+			#{companyId},
+			#{parentId},
+			#{tenantId},
+			#{code},
+			#{shortName},
+			#{fullName},
+			#{description},
+			#{industryTypeId},
+			#{address},
+			#{postcode},
+			#{telephone},
+			#{email},
+			#{fax},
+			#{linkman},
+			#{estaDate},
+			#{serial},
+			#{status},
+			#{updatedTime}
+		)
+	</insert>
+	
+	<update id="updateCompany" parameterType="map">
+		UPDATE uasp_companies
+		<set>
+			<if test="code != null">
+				`Code` = #{code},
+			</if>
+			<if test="shortName != null">
+				ShortName = #{shortName},
+			</if>
+			<if test="fullName != null">
+				FullName = #{fullName},
+			</if>
+			<if test="description != null">
+				Description = #{description},
+			</if>
+			<if test="industryTypeId != null">
+				IndustryType_Id = #{industryTypeId},
+			</if>
+			<if test="address != null">
+				Address = #{address},
+			</if>
+			<if test="postcode != null">
+				Postcode = #{postcode},
+			</if>
+			<if test="telephone != null">
+				Telephone = #{telephone},
+			</if>
+			<if test="email != null">
+				Email = #{email},
+			</if>
+			<if test="fax != null">
+				Fax = #{fax},
+			</if>
+			<if test="linkman != null">
+				Linkman = #{linkman},
+			</if>
+			<if test="estaDate != null">
+				EstaDate = #{estaDate},
+			</if>
+			<if test="serial != null">
+				Serial = #{serial},
+			</if>
+			<if test="status != null">
+				Status = #{status},
+			</if>
+			<if test="updatedTime != null">
+				UpdatedTime = #{updatedTime},
+			</if>
+		</set>
+		WHERE ( Company_Id = #{companyId} )
+	</update>
+	
+	<delete id="deleteCompany" parameterType="string">
+		DELETE FROM uasp_companies
+		WHERE ( Company_Id = #{value} )
+	</delete>
 
 </mapper>

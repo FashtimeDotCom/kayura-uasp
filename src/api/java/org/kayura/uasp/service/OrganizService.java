@@ -6,9 +6,11 @@ package org.kayura.uasp.service;
 
 import java.util.List;
 
+import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
+import org.kayura.uasp.po.Company;
 import org.kayura.uasp.po.OrganizItem;
 
 /**
@@ -34,7 +36,15 @@ public interface OrganizService {
 	 * @param pageParams 分页参数信息.
 	 * @return
 	 */
-	Result<PageList<OrganizItem>> findOrgItems(String tenantId, String parentId, 
-			String keyword, PageParams pageParams);
+	Result<PageList<OrganizItem>> findOrgItems(String tenantId, String parentId, String keyword, PageParams pageParams);
 
+	GeneralResult removeOrgItem(String orgId);
+	
+	Result<Company> getCompanyById(String id);
+
+	GeneralResult insertCompany(Company company);
+
+	GeneralResult updateCompany(Company company);
+
+	GeneralResult deleteCompany(String companyId);
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
+import org.kayura.uasp.po.Company;
 import org.kayura.uasp.po.OrganizItem;
 
 /**
@@ -36,4 +37,11 @@ public interface OrganizMapper extends BaseDao {
 	 */
 	PageList<OrganizItem> findOrgItems(Map<String, Object> args, PageBounds pageBounds);
 
+	Company getCompanyById(String id);
+
+	void insertCompany(Company company);
+
+	void updateCompany(Map<String, Object> args);
+	
+	void deleteCompany(String companyId);
 }

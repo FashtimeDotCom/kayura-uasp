@@ -39,6 +39,12 @@
 		}
 	});
 
+	// 重写 jeasyui.messager 默认属性.
+	
+	$.extend($.messager.defaults, {
+		width: 450
+	});
+
 	// 扩展 jeasyui.textbox 方法.
 	
 	$.extend($.fn.textbox.methods, {

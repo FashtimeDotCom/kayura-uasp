@@ -258,11 +258,7 @@
 			function _shareFolder() {
 
 			}
-
-			function _uploadFile() {
-
-			}
-
+			
 			function _downfile() {
 
 				var ids = selectFileIds();
@@ -351,7 +347,6 @@
 				removefolder : _removeFolder,
 				sharefolder : _shareFolder,
 
-				uploadfile : _uploadFile,
 				downfile : _downfile,
 				removefile : _removeFile,
 				movefile : _moveFile,

@@ -533,7 +533,7 @@ juasp = {
 		});
 	}
 
-	/** 绑定方法 * */
+	/** 绑定方法 **/
 
 	juasp.post = _post;
 	juasp.skipUrl = _skipUrl;
@@ -541,7 +541,6 @@ juasp = {
 	juasp.openWin = _openWin;
 	juasp.closeWin = _closeWin;
 	juasp.confirm = _confirm;
-	juasp.info = _infotips;
 	juasp.infotips = _infotips;
 	juasp.warntips = _warntips;
 	juasp.errortips = _errortips;

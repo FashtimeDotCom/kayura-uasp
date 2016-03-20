@@ -22,12 +22,12 @@ public class Company {
 	private String companyId;
 	private String tenantId;
 	private String parentId;
-	private Integer rowType;
+	private String parentName;
 	private String code;
 	private String shortName;
 	private String fullName;
 	private String description;
-	private DictItem tndustry;
+	private String industryTypeId;
 	private String address;
 	private String postcode;
 	private String telephone;
@@ -62,12 +62,12 @@ public class Company {
 		this.parentId = parentId;
 	}
 
-	public Integer getRowType() {
-		return rowType;
+	public String getParentName() {
+		return parentName;
 	}
 
-	public void setRowType(Integer rowType) {
-		this.rowType = rowType;
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 
 	public String getCode() {
@@ -102,12 +102,12 @@ public class Company {
 		this.description = description;
 	}
 
-	public DictItem getTndustry() {
-		return tndustry;
+	public String getIndustryTypeId() {
+		return industryTypeId;
 	}
 
-	public void setTndustry(DictItem tndustry) {
-		this.tndustry = tndustry;
+	public void setIndustryTypeId(String industryTypeId) {
+		this.industryTypeId = industryTypeId;
 	}
 
 	public String getAddress() {

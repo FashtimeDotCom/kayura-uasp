@@ -45,7 +45,7 @@
 				{ id : frid, isBiz : 1 },
 				{ success: function(r) {
 					var t = $("#fc_" + frid);
-					t.fadeOut('slow', function(){ t.remove(); });
+					t.fadeOut('fast', function(){ t.remove(); });
 					juasp.info("文件 [" + fileName + "] 已经被移除。");
 				}
 		});
@@ -119,7 +119,7 @@
         uploader.on('uploadSuccess', function (file, response) {
         	
         	var t = $queue.find("#li_" + file.id);
-        	t.text(file.name + " 上传完成.");
+        	t.html("<span style='color:#A9A9A9'>" + file.name + " 上传完成.</span>");
         	
             setTimeout(function(){
             	t.fadeOut('slow', function(){ t.remove(); });
@@ -128,7 +128,13 @@
         
         uploader.on('uploadProgress', function (file, percentage) {
         	
-        	$queue.find("#li_" + file.id).text(file.name + " 上传中 " + Math.round(percentage * 100) + " %");
+        	var t = $queue.find("#li_" + file.id);
+        	
+        	if(percentage == 1){
+            	t.html("<span style='color:#A9A9A9'>" + file.name + " 上传完成.</span>");
+        	} else {
+            	t.html("<span style='color:#0000FF'>" + file.name + " 上传中 " + Math.round(percentage * 100) + " %</span>");
+        	}
         });
         
         uploader.on('error', function(type){
@@ -241,8 +247,8 @@
 			server: appPath + '/file/upload.json',
 			auto: true, 					// 设置为 true 后，不需要手动调用上传，有文件选择即开始上传。
 	        fileNumLimit: 999,				// 验证文件总数量, 超出则不允许加入队列。
-	        fileSizeLimit: 50 * MB,			// 验证文件总大小是否超出限制, 超出则不允许加入队列。
-	        fileSingleSizeLimit: 5 * MB,	// 验证单个文件大小是否超出限制, 超出则不允许加入队列。
+	        fileSizeLimit: 100 * MB,		// 验证文件总大小是否超出限制, 超出则不允许加入队列。
+	        fileSingleSizeLimit: 20 * MB,	// 验证单个文件大小是否超出限制, 超出则不允许加入队列。
 			fileVal : "file",				// 设置文件上传域的name。
 			method: "POST",					// 文件上传方式，POST或者GET。
 			duplicate: true

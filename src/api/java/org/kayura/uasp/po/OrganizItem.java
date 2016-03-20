@@ -21,6 +21,7 @@ public class OrganizItem {
 	private String displayName;
 	private Integer orgType;
 	private Integer serial;
+	private Integer status;
 	private Integer count;
 
 	public String getOrgId() {
@@ -87,6 +88,14 @@ public class OrganizItem {
 
 	public void setSerial(Integer serial) {
 		this.serial = serial;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public Integer getCount() {

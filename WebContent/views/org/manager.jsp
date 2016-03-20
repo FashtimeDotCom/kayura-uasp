@@ -43,48 +43,110 @@
 					addcompany : false,
 					adddepart : false,
 					addposition : false,
+					remove : false
 				};
+			
+			function _initActions(){
+				
+				actions.addcompany = false;
+				actions.adddepart = false;
+				actions.addposition = false;
+				actions.remove = false;
+			}
+			
+			function _applyActions(_actions){
+
+				$('#mm').menu((_actions.addcompany?'showItem':'hideItem'), $("#mmaddcompany"));
+				$('#mm').menu((_actions.adddepart?'showItem':'hideItem'), $("#mmadddepart"));
+				$('#mm').menu((_actions.addposition?'showItem':'hideItem'), $("#mmaddposition"));
+				$('#mm').menu((_actions.remove?'showItem':'hideItem'), $("#mmremove"));
+
+				$("#tbaddcompany").linkbutton(_actions.addcompany?'enable':'disable');
+				$("#tbadddepart").linkbutton(_actions.adddepart?'enable':'disable');
+				$("#tbaddposition").linkbutton(_actions.addposition?'enable':'disable');
+			}
 
 			function _clickNode(node) {
 
 				selectNode = node;
+				_initActions();
 
+				// 0 根, 1 公司, 2 部门, 3 岗位;
+				var type = node.attributes['type'];
+				if (type == 0) {
+					actions.addcompany = true;
+				} else if (type == 1) {
+					actions.addcompany = true;
+					actions.adddepart = true;
+				} else if (type == 2) {
+					actions.adddepart = true;
+					actions.addposition = true;
+				}
+
+				if (type != 0 && node.children.length == 0) {
+					actions.remove = true;
+				}
+
+				_applyActions(actions);
 				_findItems(node.id);
 			}
-			
-			function _search(value){
-				
+
+			function _search(value) {
+
 				searchvalue = value;
 				_findItems(selectNode.id);
 			}
-			
+
 			function _findItems(nodeId) {
 
 				var id = nodeId;
-				if(nodeId == "ROOT"){
+				if (nodeId == "ROOT") {
 					id = "";
 				}
-				
-				if(isfirst) {
-					
+
+				if (isfirst) {
+
 					$('#tg').datagrid({
 						url : "${root}/org/find.json",
-						queryParams : { "id" : id }
+						queryParams : {
+							"id" : id
+						}
 					});
 				} else {
-	
-					$('#tg').datagrid('load', { "id" : id, "keyword" : searchvalue });
+
+					$('#tg').datagrid('load', {
+						"id" : id,
+						"keyword" : searchvalue
+					});
 					$('#tg').datagrid('unselectAll');
 				}
-				
+
 				isfirst = false;
+			}
+
+			function _addcompany(){
+				
+				var openUrl = "${root}/org/company/new?pid=" + selectNode.id + "&pname=" + selectNode.text;
+				juasp.openWin({
+					url : openUrl,
+					width : "450px",
+					height : "500px",
+					title : "创建公司",
+					onClose : function(r) {
+						if (r.result == 1) {
+							
+						}
+					}
+				});
 			}
 			
 			return {
 				clicknode : _clickNode,
-				search : _search
+				search : _search,
+				
+				addcompany : _addcompany
 			}
-			
+
 		}(window, jQuery));
 	</script>
 </e:section>
@@ -107,9 +169,9 @@
 				</e:columns>
 			</e:datagrid>
 			<div id="tb">
-				<e:linkbutton id="tbaddcompany" disabled="true" iconCls="icon-company" plain="true" text="添加公司" />
-				<e:linkbutton id="tbadddepart" disabled="true" iconCls="icon-depart" plain="true" text="添加部门" />
-				<e:linkbutton id="tbaddposition" disabled="true" iconCls="icon-position" plain="true" text="添加岗位" />
+				<e:linkbutton id="tbaddcompany" onclick="jctx.addcompany()" disabled="true" iconCls="icon-company" plain="true" text="添加公司" />
+				<e:linkbutton id="tbadddepart" onclick="jctx.adddepart()" disabled="true" iconCls="icon-depart" plain="true" text="添加部门" />
+				<e:linkbutton id="tbaddposition" onclick="jctx.addposition()" disabled="true" iconCls="icon-position" plain="true" text="添加岗位" />
 				<div style="float:right;">
 				<e:textbox id="search" prompt="搜索：代码、名称" style="width:250px;height:24px;" />
 				</div>
