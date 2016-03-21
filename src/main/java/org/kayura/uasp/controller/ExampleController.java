@@ -4,21 +4,29 @@
  */
 package org.kayura.uasp.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kayura.core.PostAction;
+import org.kayura.core.PostResult;
 import org.kayura.example.service.ExampleService;
 import org.kayura.example.vo.OrderVo;
+import org.kayura.tags.easyui.types.TreeNode;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
+import org.kayura.type.Result;
+import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/example")
@@ -34,6 +42,64 @@ public class ExampleController extends BaseController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
 		return viewResult("index");
+	}
+
+	/* Jsp Tags */
+
+	@RequestMapping(value = "tags/treedata", method = RequestMethod.POST)
+	public void treeData(Map<String, Object> map) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult r) {
+
+				List<TreeNode> data = makeTreeDate();
+
+				r.setCode(Result.SUCCEED);
+				r.setData(data);
+			}
+		});
+	}
+
+	private List<TreeNode> makeTreeDate() {
+
+		List<TreeNode> nodes = new ArrayList<TreeNode>();
+
+		for (int i = 0; i <= 5; i++) {
+
+			TreeNode n = new TreeNode();
+			n.setId(KeyUtils.newId());
+			n.setText("节点" + i);
+			nodes.add(n);
+
+			for (int j = 0; j <= 5; j++) {
+
+				TreeNode k = new TreeNode();
+				k.setId(KeyUtils.newId());
+				k.setText("节点" + j);
+
+				n.addNode(k);
+			}
+		}
+
+		return nodes;
+	}
+
+	@RequestMapping(value = "tags/tree", method = RequestMethod.GET)
+	public ModelAndView tagTest() {
+
+		ModelAndView mv = this.view("tags/tree");
+
+		List<TreeNode> data = makeTreeDate();
+		mv.addObject("data", data);
+		
+		Map<String, Object> query = new HashMap<String, Object>();
+		query.put("pid", KeyUtils.newId());
+
+		mv.addObject("query", query);
+
+		return mv;
 	}
 
 	/* Tools */
@@ -69,7 +135,7 @@ public class ExampleController extends BaseController {
 	public String generalbasicedit() {
 		return viewResult("general/basicedit");
 	}
-	
+
 	/* EasyUI Example */
 
 	@RequestMapping(value = "easyui/datagrid", method = RequestMethod.GET)

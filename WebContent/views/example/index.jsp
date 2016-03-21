@@ -28,6 +28,12 @@
 						onclick="juasp.openTab('EasyUI-Accordion', '${root}/example/easyui/accordion')">Accordion</a></li>
 				</ul>
 			</e:tab>
+			<e:tab iconCls="icon-ok" title="JSP标签">
+				<ul>
+					<li><a href="###"
+						onclick="juasp.openTab('List-Basic', '${root}/example/tags/tree')">TreeTag</a></li>
+				</ul>
+			</e:tab>
 			<e:tab iconCls="icon-ok" title="常用示例">
 				<ul>
 					<li><a href="###"

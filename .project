@@ -4,7 +4,6 @@
 	<comment></comment>
 	<projects>
 		<project>kayura-bpm</project>
-		<project>kayura-core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

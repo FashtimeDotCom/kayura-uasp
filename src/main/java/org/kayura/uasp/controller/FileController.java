@@ -27,7 +27,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
@@ -57,6 +56,7 @@ import org.kayura.web.BaseController;
 import org.kayura.web.model.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -134,7 +134,7 @@ public class FileController extends BaseController {
 						if (!fu.getAllowChange()) {
 							String rawString = fu.getFileName() + ui.getLastModifiedDate() + fu.getContentType()
 									+ fu.getFileSize() + fu.getIsEncrypt();
-							fu.setMd5(DigestUtils.md5Hex(rawString));
+							fu.setMd5(DigestUtils.md5DigestAsHex(rawString.getBytes()));
 							// fu.setMd5(DigestUtils.md5Hex(fileContent));
 						}
 
@@ -211,7 +211,7 @@ public class FileController extends BaseController {
 					String rawString = String.join("|",
 							fdlst.stream().map(c -> c.getFrId()).collect(Collectors.toList()));
 
-					downFile = new File(tempPath, DigestUtils.md5Hex(rawString) + ".zip");
+					downFile = new File(tempPath, DigestUtils.md5DigestAsHex(rawString.getBytes()) + ".zip");
 					if (!downFile.exists()) {
 
 						OutputStream os = new BufferedOutputStream(new FileOutputStream(downFile));
