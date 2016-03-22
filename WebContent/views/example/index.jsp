@@ -32,6 +32,7 @@
 				<ul>
 					<li><a href="###" onclick="juasp.openTab('TreeTag', '${root}/example/tags/tree')">TreeTag</a></li>
 					<li><a href="###" onclick="juasp.openTab('PanelTag', '${root}/example/tags/panel')">PanelTag</a></li>
+					<li><a href="###" onclick="juasp.openTab('TabsTag', '${root}/example/tags/tabs')">TabsTag</a></li>
 				</ul>
 			</e:tab>
 			<e:tab iconCls="icon-ok" title="常用示例">

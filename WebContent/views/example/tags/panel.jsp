@@ -1,25 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<title>标签测试</title>
-	<k:resources location="res">
-		easyui/themes/${theme}/easyui.css
-		easyui/themes/icon.css
-		js/juasp.css
-		js/jquery.min.js
-		easyui/jquery.easyui.min.js
-		easyui/easyui-lang-zh_CN.js
-		js/juasp-core.js
-		js/juasp-easyui.js
-	</k:resources>
+
+<k:section name="title">Panel 标签</k:section>
+
+<k:section name="head">
 	<k:resource location="res" name="js/juasp-uploader.js"></k:resource>
-</head>
-<k:body full="true" padding="5px">
-	<k:panel title="我是标题" fit="true" iconCls="icon-save" padding="10px" width="400px" height="250px" closable="true"
-		tools='[{iconCls:"icon-add",handler:function(){alert("添加")}},{iconCls:"icon-edit",handler:function(){alert("编辑")}}]'
-		onClose='function(){ alert("close"); }'>
-		<p>我是内容。</p>
-	</k:panel>
-</k:body>
-</html>
+</k:section>
+
+<k:section name="body">
+	<k:layout fit="true">
+		<k:dock region="west" split="true" maxWidth="250" minWidth="120">
+			<k:tree id="tree1" url="${root}/example/tags/treedata.json"></k:tree>
+		</k:dock>
+		<k:dock region="center">
+			<k:panel title="我是标题" fit="true" border="false" iconCls="icon-save">
+				<p>中华人民共和国</p>
+			</k:panel>
+		</k:dock>
+	</k:layout>
+</k:section>
+
+<%@ include file="shared/_simple.jsp"%>
