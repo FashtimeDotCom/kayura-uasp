@@ -87,13 +87,13 @@ public class ExampleController extends BaseController {
 	}
 
 	@RequestMapping(value = "tags/tree", method = RequestMethod.GET)
-	public ModelAndView tagTest() {
+	public ModelAndView treeTagTest() {
 
 		ModelAndView mv = this.view("tags/tree");
 
 		List<TreeNode> data = makeTreeDate();
 		mv.addObject("data", data);
-		
+
 		Map<String, Object> query = new HashMap<String, Object>();
 		query.put("pid", KeyUtils.newId());
 
@@ -102,6 +102,18 @@ public class ExampleController extends BaseController {
 		return mv;
 	}
 
+	@RequestMapping(value = "tags/panel", method = RequestMethod.GET)
+	public ModelAndView panelTagTest() {
+
+		ModelAndView mv = this.view("tags/panel");
+
+		Map<String, Object> query = new HashMap<String, Object>();
+		query.put("pid", KeyUtils.newId());
+
+		mv.addObject("query", query);
+
+		return mv;
+	}
 	/* Tools */
 
 	@RequestMapping(value = "/htmlconvert", method = RequestMethod.GET)

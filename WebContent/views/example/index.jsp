@@ -30,8 +30,8 @@
 			</e:tab>
 			<e:tab iconCls="icon-ok" title="JSP标签">
 				<ul>
-					<li><a href="###"
-						onclick="juasp.openTab('List-Basic', '${root}/example/tags/tree')">TreeTag</a></li>
+					<li><a href="###" onclick="juasp.openTab('TreeTag', '${root}/example/tags/tree')">TreeTag</a></li>
+					<li><a href="###" onclick="juasp.openTab('PanelTag', '${root}/example/tags/panel')">PanelTag</a></li>
 				</ul>
 			</e:tab>
 			<e:tab iconCls="icon-ok" title="常用示例">
