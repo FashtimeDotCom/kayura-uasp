@@ -39,6 +39,70 @@
 		}
 	});
 
+	// 重写 jeasyui.menu 默认属性.
+	
+	function getParentMenu(rootMenu, menu){
+		return findParent(rootMenu);
+
+		function findParent(pmenu){
+			var p = undefined;
+			$(pmenu).find('.menu-item').each(function(){
+				if (!p && this.submenu){
+					if ($(this.submenu)[0] == $(menu)[0]){
+						p = pmenu;
+					} else {
+						p = findParent(this.submenu);
+					}
+				}
+			});
+			return p;
+		}
+	}
+
+	$.extend($.fn.menu.methods, {
+		enableNav: function(jq, rootMenu){
+			var firstItemSelector = '.menu-item:not(.menu-item-disabled):first';
+			var lastItemSelector = '.menu-item:not(.menu-item-disabled):last';
+			return jq.each(function(){
+				var menu = $(this);
+				rootMenu = $(rootMenu).length ? $(rootMenu) : menu;
+				menu.attr('tabindex','0').css('outline','none').unbind('.menu').bind('keydown.menu', function(e){
+					var item = $(this).find('.menu-active');
+					switch(e.keyCode){
+						case 13:  // enter
+							item.trigger('click');
+							break;
+						case 27:  // esc
+							rootMenu.find('.menu-active').trigger('mouseleave');
+							break;
+						case 38:  // up
+							var prev = item.length ? item.prevAll(firstItemSelector) : menu.find(lastItemSelector);
+							prev.trigger('mouseenter');
+							return false;
+						case 40:  // down
+							var next = item.length ? item.nextAll(firstItemSelector) : menu.find(firstItemSelector);
+							next.trigger('mouseenter');
+							return false;
+						case 37:  // left
+							var pmenu = getParentMenu(rootMenu, menu);
+							if (pmenu){
+								item.trigger('mouseleave');
+								pmenu.focus();
+							}
+							return false;
+						case 39:  // right
+							if (item.length && item[0].submenu){
+								$(item[0].submenu).menu('enableNav', rootMenu).find(firstItemSelector).trigger('mouseenter');
+								$(item[0].submenu).focus();
+							}
+							return false;
+					}
+				});
+			});
+		}
+	});
+
+
 	// 重写 jeasyui.messager 默认属性.
 	
 	$.extend($.messager.defaults, {
@@ -79,7 +143,58 @@
 	// 扩展 easyui.datagrid 方法.
 
 	$.extend($.fn.datagrid.methods, {
-
+		editCell : function(jq, param) {
+			return jq.each(function() {
+				var opts = $(this).datagrid('options');
+				var fields = $(this).datagrid('getColumnFields', true)
+						.concat($(this).datagrid('getColumnFields'));
+				for (var i = 0; i < fields.length; i++) {
+					var col = $(this)
+							.datagrid('getColumnOption', fields[i]);
+					col.editor1 = col.editor;
+					if (fields[i] != param.field) {
+						col.editor = null;
+					}
+				}
+				$(this).datagrid('beginEdit', param.index);
+				var ed = $(this).datagrid('getEditor', param);
+				if (ed) {
+					if ($(ed.target).hasClass('textbox-f')) {
+						$(ed.target).textbox('textbox').focus();
+					} else {
+						$(ed.target).focus();
+					}
+				}
+				for (var i = 0; i < fields.length; i++) {
+					var col = $(this)
+							.datagrid('getColumnOption', fields[i]);
+					col.editor = col.editor1;
+				}
+			});
+		},
+		enableCellEditing : function(jq) {
+			return jq.each(function() {
+				var dg = $(this);
+				var opts = dg.datagrid('options');
+				opts.oldOnClickCell = opts.onClickCell;
+				opts.onClickCell = function(index, field) {
+					if (opts.editIndex != undefined) {
+						if (dg.datagrid('validateRow', opts.editIndex)) {
+							dg.datagrid('endEdit', opts.editIndex);
+							opts.editIndex = undefined;
+						} else {
+							return;
+						}
+					}
+					dg.datagrid('selectRow', index).datagrid('editCell', {
+						index : index,
+						field : field
+					});
+					opts.editIndex = index;
+					opts.oldOnClickCell.call(this, index, field);
+				}
+			});
+		}
 	});
 
 	$.extend($.fn.datagrid.defaults, {

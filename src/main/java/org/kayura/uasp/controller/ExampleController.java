@@ -15,6 +15,7 @@ import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.example.service.ExampleService;
 import org.kayura.example.vo.OrderVo;
+import org.kayura.tags.easyui.types.MenuItem;
 import org.kayura.tags.easyui.types.TreeNode;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
@@ -114,7 +115,7 @@ public class ExampleController extends BaseController {
 
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "tags/tabs", method = RequestMethod.GET)
 	public ModelAndView tagsTagTest() {
 
@@ -122,7 +123,37 @@ public class ExampleController extends BaseController {
 
 		return mv;
 	}
-	
+
+	@RequestMapping(value = "tags/base", method = RequestMethod.GET)
+	public ModelAndView baseitemsTagTest() {
+
+		ModelAndView mv = this.view("tags/base");
+
+		List<MenuItem> menus = new ArrayList<MenuItem>();
+
+
+		menus.add(new MenuItem("item1", "Search Item1", "icon-add"));
+		menus.add(MenuItem.SEPMENUITEM);
+		
+		MenuItem m2 = new MenuItem("item2", "Search Item2", "icon-add");
+		m2.addMenu(new MenuItem("item21", "Search Item2-1", "icon-add"));
+		
+		MenuItem item22 = new MenuItem("item22", "点击我", "icon-ok");
+		item22.setOnclick("alert('点我了')");
+		m2.addMenu(item22);
+
+		menus.add(m2);
+		menus.add(MenuItem.SEPMENUITEM);
+
+		MenuItem m3 = new MenuItem("item3", "Search Item3", "icon-home", true);
+		m3.setDisabled(true);
+		menus.add(m3);
+
+		mv.addObject("menus", menus);
+
+		return mv;
+	}
+
 	/* Tools */
 
 	@RequestMapping(value = "/htmlconvert", method = RequestMethod.GET)

@@ -17,10 +17,9 @@
 				onclick="juasp.openTab('Html-Convert', '${root}/example/htmlconvert')">Html语义转换</a></li>
 		</ul>
 	</e:layoutunit>
-	<e:layoutunit region="west" split="true" title="导航栏"
-		style="width: 160px;">
-		<e:accordion fit="true" border="false">
-			<e:tab iconCls="icon-ok" title="EasyUI">
+	<e:layoutunit region="west" split="true" title="导航栏" style="width: 160px;">
+		<e:accordion border="false" multiple="true">
+			<e:tab iconCls="icon-ok" title="EasyUI" collapsed="false" collapsible="false">
 				<ul>
 					<li><a href="###"
 						onclick="juasp.openTab('EasyUI-DataGrid', '${root}/example/easyui/datagrid')">DataGrid</a></li>
@@ -28,14 +27,15 @@
 						onclick="juasp.openTab('EasyUI-Accordion', '${root}/example/easyui/accordion')">Accordion</a></li>
 				</ul>
 			</e:tab>
-			<e:tab iconCls="icon-ok" title="JSP标签">
+			<e:tab iconCls="icon-ok" title="JSP标签" collapsed="false" collapsible="false">
 				<ul>
+					<li><a href="###" onclick="juasp.openTab('BaseTag', '${root}/example/tags/base')">BaseTag</a></li>
 					<li><a href="###" onclick="juasp.openTab('TreeTag', '${root}/example/tags/tree')">TreeTag</a></li>
 					<li><a href="###" onclick="juasp.openTab('PanelTag', '${root}/example/tags/panel')">PanelTag</a></li>
 					<li><a href="###" onclick="juasp.openTab('TabsTag', '${root}/example/tags/tabs')">TabsTag</a></li>
 				</ul>
 			</e:tab>
-			<e:tab iconCls="icon-ok" title="常用示例">
+			<e:tab iconCls="icon-ok" title="常用示例" collapsed="false" collapsible="false">
 				<ul>
 					<li><a href="###"
 						onclick="juasp.openTab('List-Basic', '${root}/example/general/basiclist')">基本列表</a></li>
