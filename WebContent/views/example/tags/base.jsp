@@ -43,7 +43,20 @@
 	<div style="margin: 5px"></div>
 	<k:panel id="panel2" title="弹出式菜单" width="450px" height="auto" padding="10px">
 		<p>点击右键，显示菜单</p>
-		<k:menu id="mm2" style="width:150px" menus="${menus}" onClick="menuHandler" />
+		<k:menu id="mm2" style="width:150px" onClick="menuHandler">
+			<k:menuitem name="new">新建</k:menuitem>
+			<k:submenu text="打开">
+				<k:menuitem name="newword">Word</k:menuitem>
+				<k:menuitem name="newexcel">Excel</k:menuitem>
+				<k:menuitem name="newppt">PowerPoint</k:menuitem>
+			</k:submenu>
+			<k:submenu text="自定菜单" isCustom="true" style="width:250px">
+				<k:linkbutton text="我是按钮" iconCls="icon-add" onClick="alert('中华人民共和国') "/>
+			</k:submenu>
+			<k:menuitem name="save" iconCls="icon-save">保存</k:menuitem>
+			<k:menuitem isSeparator="true" />
+			<k:menuitem name="exit" >退出</k:menuitem>
+		</k:menu>
 	</k:panel>
 	<div style="margin: 5px"></div>
 	<k:panel title="各种按钮" width="450px" height="auto" padding="10px">
@@ -53,7 +66,6 @@
 		<k:linkbutton text="右" toggle="true" group="align"/>
 		<k:menubutton text="我是下拉菜单" iconCls="icon-edit" plain="false" menus="${menus}" />
 		<k:splitbutton text="我是分割菜单" iconCls="icon-edit" plain="false" menus="${menus}" onClick="alert('分割菜单')" />
-		
 	</k:panel>
 </k:section>
 

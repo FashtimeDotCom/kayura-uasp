@@ -275,7 +275,7 @@
 					names.push(item.fileName);
 				});
 
-				juasp.confirm("<b>是否确认删除</b> " + names.join(",") + "<b> "
+				juasp.confirm("<b>是否确认删除</b> 【" + names.join(", ") + "】<b> "
 						+ ids.length + " 个文件。</b>", function(r) {
 					if (r == true) {
 						juasp.post('${root}/file/remove.json', {

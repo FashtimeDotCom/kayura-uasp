@@ -135,7 +135,7 @@ public class ExampleController extends BaseController {
 		menus.add(new MenuItem("item1", "Search Item1", "icon-add"));
 		menus.add(MenuItem.SEPMENUITEM);
 		
-		MenuItem m2 = new MenuItem("item2", "Search Item2", "icon-add");
+		MenuItem m2 = new MenuItem("Search Item2", "icon-add");
 		m2.addMenu(new MenuItem("item21", "Search Item2-1", "icon-add"));
 		
 		MenuItem item22 = new MenuItem("item22", "点击我", "icon-ok");
