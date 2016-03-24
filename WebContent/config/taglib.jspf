@@ -17,6 +17,6 @@
 		}
 	}
 	if (!themeReady) {
-		session.setAttribute("theme", "default");
+		session.setAttribute("theme", "gray");
 	}
 %>

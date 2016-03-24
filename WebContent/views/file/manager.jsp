@@ -393,7 +393,7 @@
 				</e:columns>
 			</e:datagrid>
 			<div id="tb">
-				<e:linkbutton id="upload" disabled="true" iconCls="icon-add" plain="true" text="上传文件" />
+				<e:linkbutton id="upload" disabled="true" iconCls="icon-upload" plain="true" text="上传文件" />
 				<e:linkbutton id="downfile" onclick="jctx.downfile()" disabled="true" iconCls="icon-download" plain="true" text="下载" />
 				<e:linkbutton id="movefile" onclick="jctx.movefile()" disabled="true" iconCls="icon-cut" plain="true" text="移动" />
 				<e:linkbutton id="copyfile" onclick="jctx.copyfile()" disabled="true" iconCls="icon-copy" plain="true" text="复制" />

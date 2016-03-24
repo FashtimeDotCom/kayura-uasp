@@ -71,6 +71,10 @@
 .icon-copy{
 	background:url('icons/copy.png') no-repeat center center;
 }
+.icon-menu{
+	background:url('icons/menu.png') no-repeat center center;
+}
+
 
 .icon-home{
 	background:url('icons/home.png') no-repeat center center;
@@ -118,6 +122,12 @@
 }
 .icon-download{
 	background:url('icons/download.png') no-repeat center center;
+}
+.icon-upload{
+	background:url('icons/upload.png') no-repeat center center;
+}
+.icon-cog{
+	background:url('icons/cog.png') no-repeat center center;
 }
 
 .icon-mini-add{
