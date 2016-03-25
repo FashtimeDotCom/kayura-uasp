@@ -39,6 +39,17 @@
 		}
 	});
 
+	// 重写 jeasyui.validatebox 默认属性.
+	
+	$.extend($.fn.validatebox.defaults.rules, {
+	    equals: {
+	        validator: function(value,param){
+	            return value == $(param[0]).val();    
+	        },
+	        message: 'Field do not match.'   
+	    }
+	});
+	
 	// 重写 jeasyui.menu 默认属性.
 	
 	function getParentMenu(rootMenu, menu){

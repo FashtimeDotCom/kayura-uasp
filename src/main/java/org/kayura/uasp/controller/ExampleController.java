@@ -131,6 +131,14 @@ public class ExampleController extends BaseController {
 
 		return mv;
 	}
+
+	@RequestMapping(value = "tags/form", method = RequestMethod.GET)
+	public ModelAndView formTagTest() {
+
+		ModelAndView mv = this.view("tags/form");
+
+		return mv;
+	}
 	
 	@RequestMapping(value = "tags/base", method = RequestMethod.GET)
 	public ModelAndView baseitemsTagTest() {
