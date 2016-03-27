@@ -113,7 +113,19 @@
 		}
 	});
 
+	// 重写 jeasyui.combobox 默认属性.
 
+	$.extend($.combobox.defaults, {
+		valueField : "value",
+		textField : "lable",
+		groupField : "group",
+		method : "POST",
+		filter : function(q, row) {
+			var opts = $(this).combobox('options');
+			return row[opts.textField].indexOf(q) == 0;
+		}
+	});
+	
 	// 重写 jeasyui.messager 默认属性.
 	
 	$.extend($.messager.defaults, {
