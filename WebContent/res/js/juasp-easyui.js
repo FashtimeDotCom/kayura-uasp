@@ -39,6 +39,16 @@
 		}
 	});
 
+	// 重写 jeasyui.combotree 默认属性.
+	
+	$.extend($.fn.combotree.defaults, {
+		method : "post",
+		loadFilter : function(r) {
+			return _loadFilter(r);
+		}
+	});
+
+	
 	// 重写 jeasyui.validatebox 默认属性.
 	
 	$.extend($.fn.validatebox.defaults.rules, {

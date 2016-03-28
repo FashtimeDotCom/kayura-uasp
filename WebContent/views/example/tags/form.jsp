@@ -38,7 +38,8 @@
 	</k:panel>
 	<div style="height: 5px"></div>
 	<k:panel title="Form 示例" width="100%" padding="10px 30px 10px 30px" collapsible="true">
-	<p>textboxM</p>
+		<k:combotree id="tree1" url="${root}/example/tags/treedata.json" onlyLeafCheck="true" multiple="true" 
+			cascadeCheck="true" panelWidth="250" panelHeight="450"></k:combotree>
 	</k:panel>
 	<style scoped>
 		.textbox{ height:20px; margin:0px; padding:0 2px; box-sizing:content-box; }

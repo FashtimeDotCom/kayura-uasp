@@ -2,11 +2,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><e:renderSection name="title" /></title>
-	<e:resources location="res" theme="${theme}" />
-	<e:renderSection name="head" />
+	<title><k:renderSection name="title" /></title>
+	<k:resources location="res">
+		easyui/themes/${theme}/easyui.css
+		easyui/themes/icon.css
+		js/juasp.css
+		js/jquery.min.js
+		easyui/jquery.easyui.min.js
+		easyui/easyui-lang-zh_CN.js
+		js/juasp-core.js
+		js/juasp-easyui.js
+	</k:resources>
+	<k:renderSection name="head" />
 </head>
-<e:body full="true" style="overflow:hidden;padding: 10px;">
-	<e:renderSection name="body"></e:renderSection>
-</e:body>
+<k:body full="true" padding="5px" >
+	<k:renderSection name="body" />
+</k:body>
 </html>
