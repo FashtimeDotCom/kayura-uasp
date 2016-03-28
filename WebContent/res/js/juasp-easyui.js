@@ -224,6 +224,8 @@
 		nowrap : true,
 		striped : true,
 		method : "POST",
+		rownumbers : true,
+		pagination : true,
 		pageSize : 20,
 		loadFilter : function(r) {
 			return _loadFilter(r);
