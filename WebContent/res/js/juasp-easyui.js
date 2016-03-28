@@ -52,7 +52,7 @@
 	
 	// 重写 jeasyui.menu 默认属性.
 	
-	function getParentMenu(rootMenu, menu){
+	function _getParentMenu(rootMenu, menu){
 		return findParent(rootMenu);
 
 		function findParent(pmenu){
@@ -95,7 +95,7 @@
 							next.trigger('mouseenter');
 							return false;
 						case 37:  // left
-							var pmenu = getParentMenu(rootMenu, menu);
+							var pmenu = _getParentMenu(rootMenu, menu);
 							if (pmenu){
 								item.trigger('mouseleave');
 								pmenu.focus();
@@ -112,10 +112,10 @@
 			});
 		}
 	});
-
+	
 	// 重写 jeasyui.combobox 默认属性.
 
-	$.extend($.combobox.defaults, {
+	$.extend($.fn.combobox.defaults, {
 		valueField : "value",
 		textField : "lable",
 		groupField : "group",
@@ -223,7 +223,7 @@
 	$.extend($.fn.datagrid.defaults, {
 		nowrap : true,
 		striped : true,
-		method : "post",
+		method : "POST",
 		pageSize : 20,
 		loadFilter : function(r) {
 			return _loadFilter(r);

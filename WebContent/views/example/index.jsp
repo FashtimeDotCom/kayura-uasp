@@ -28,7 +28,8 @@
 			<e:tab iconCls="icon-ok" title="JSP标签" collapsed="false" collapsible="false">
 				<ul>
 					<li><a href="###" onclick="juasp.openTab('Base Tag', '${root}/example/tags/base')">BaseTag</a></li>
-					<li><a href="###" onclick="juasp.openTab('Form Tag', '${root}/example/tags/form')">Form Tag</a></li>
+					<li><a href="###" onclick="juasp.openTab('Form Tag', '${root}/example/tags/form')">FormTag</a></li>
+					<li><a href="###" onclick="juasp.openTab('DataGrid Tag', '${root}/example/tags/grid')">DataGridTag</a></li>
 					<li><a href="###" onclick="juasp.openTab('Accordion Tag', '${root}/example/tags/acc')">AccordionTag</a></li>
 					<li><a href="###" onclick="juasp.openTab('Tree Tag', '${root}/example/tags/tree')">TreeTag</a></li>
 					<li><a href="###" onclick="juasp.openTab('Panel Tag', '${root}/example/tags/panel')">PanelTag</a></li>

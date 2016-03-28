@@ -6,6 +6,9 @@ package org.kayura.example.vo;
 
 import java.util.Date;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.kayura.serializer.DateTimeJsonSerializer;
+
 public class OrderVo {
 
 	private Integer id;
@@ -66,6 +69,7 @@ public class OrderVo {
 		this.employeeFirstName = employeeFirstName;
 	}
 
+	@JsonSerialize(using = DateTimeJsonSerializer.class)
 	public Date getOrderDate() {
 		return orderDate;
 	}
@@ -74,6 +78,7 @@ public class OrderVo {
 		this.orderDate = orderDate;
 	}
 
+	@JsonSerialize(using = DateTimeJsonSerializer.class)
 	public Date getRequiredDate() {
 		return requiredDate;
 	}
@@ -82,6 +87,7 @@ public class OrderVo {
 		this.requiredDate = requiredDate;
 	}
 
+	@JsonSerialize(using = DateTimeJsonSerializer.class)
 	public Date getShippedDate() {
 		return shippedDate;
 	}

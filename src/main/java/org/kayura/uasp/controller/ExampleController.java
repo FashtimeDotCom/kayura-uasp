@@ -139,6 +139,14 @@ public class ExampleController extends BaseController {
 
 		return mv;
 	}
+
+	@RequestMapping(value = "tags/grid", method = RequestMethod.GET)
+	public ModelAndView gridTagTest() {
+
+		ModelAndView mv = this.view("tags/grid");
+
+		return mv;
+	}
 	
 	@RequestMapping(value = "tags/base", method = RequestMethod.GET)
 	public ModelAndView baseitemsTagTest() {
