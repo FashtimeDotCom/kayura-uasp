@@ -6,11 +6,13 @@ package org.kayura.example.service;
 
 import java.util.Map;
 
+import org.kayura.example.po.Customer;
 import org.kayura.example.vo.OrderDetailVo;
 import org.kayura.example.vo.OrderVo;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
+import org.kayura.type.Result;
 
 public interface ExampleService {
 
@@ -29,5 +31,7 @@ public interface ExampleService {
 	GeneralResult saveOrUpdateOrderDetail(OrderDetailVo orderDetail);
 
 	GeneralResult deleteOrderDetailById(Integer orderDetailId);
+
+	Result<PageList<Customer>> findCustomers(String keyword, PageParams pageParams);
 
 }

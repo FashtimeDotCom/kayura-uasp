@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.kayura.example.dao.CustomerMapper">
 
-	<resultMap id="BaseResultMap" type="org.kayura.example.po.Customer">
+	<resultMap id="customerMap" type="org.kayura.example.po.Customer">
 		<id column="CustomerID" property="id" />
 		<result column="CompanyName" property="name" />
 		<result column="ContactName" property="contactName" />
@@ -20,8 +20,19 @@
 		CustomerID, CompanyName, ContactName, ContactTitle,
 		Address, City, Region, PostalCode, Country, Phone, Fax
 	</sql>
+	
+	<select id="findByMap" parameterType="map" resultMap="customerMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM example_customers
+		<where>
+			<if test="keyword != null">
+				( CompanyName LIKE #{keyword} || ContactName LIKE #{keyword} )
+			</if>
+		</where>
+	</select>
 
-	<select id="selectByKey" resultMap="BaseResultMap" parameterType="string">
+	<select id="selectByKey" resultMap="customerMap" parameterType="string">
 		select
 		<include refid="Base_Column_List" />
 		from example_customers

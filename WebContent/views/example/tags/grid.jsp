@@ -6,7 +6,7 @@
 </k:section>
 
 <k:section name="body">
-	<k:datagrid id="tg" title="表格" idField="id" fit="true"
+	<k:datagrid id="tg" title="表格" idField="id"
 		queryParams="{name:'fdf'}"
 		url="${root}/example/general/order/find.json" remoteSort="true">
 		<k:column field="ck" checkbox="true" />

@@ -136,6 +136,26 @@
 		}
 	});
 	
+	// 重写 jeasyui.combogrid 默认属性.
+
+	$.extend($.fn.combogrid.defaults, {
+		nowrap : true,
+		striped : true,
+		method : "POST",
+		rownumbers : true,
+		pagination : true,
+		loadFilter : function(r) {
+			return _loadFilter(r);
+		},
+		onHeaderContextMenu: function(e, field){
+			e.preventDefault();
+			if (!this.ctxmenu){
+				this.ctxmenu = _createColumnMenu(this);
+			}
+			this.ctxmenu.menu('show', { left:e.pageX, top:e.pageY });
+		}
+	});
+	
 	// 重写 jeasyui.messager 默认属性.
 	
 	$.extend($.messager.defaults, {

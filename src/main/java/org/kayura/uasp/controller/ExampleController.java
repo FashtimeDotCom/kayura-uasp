@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
+import org.kayura.example.po.Customer;
 import org.kayura.example.service.ExampleService;
 import org.kayura.example.vo.OrderVo;
 import org.kayura.tags.easyui.types.MenuItem;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -147,7 +149,7 @@ public class ExampleController extends BaseController {
 
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "tags/base", method = RequestMethod.GET)
 	public ModelAndView baseitemsTagTest() {
 
@@ -155,13 +157,12 @@ public class ExampleController extends BaseController {
 
 		List<MenuItem> menus = new ArrayList<MenuItem>();
 
-
 		menus.add(new MenuItem("item1", "Search Item1", "icon-add"));
 		menus.add(MenuItem.SEPMENUITEM);
-		
+
 		MenuItem m2 = new MenuItem("Search Item2", "icon-add");
 		m2.addMenu(new MenuItem("item21", "Search Item2-1", "icon-add"));
-		
+
 		MenuItem item22 = new MenuItem("item22", "点击我", "icon-ok");
 		item22.setOnclick("alert('点我了')");
 		m2.addMenu(item22);
@@ -188,7 +189,7 @@ public class ExampleController extends BaseController {
 	/* General Example */
 
 	@RequestMapping(value = "general/order/find.json")
-	public void generalorders(HttpServletRequest req, Map<String, Object> model, String keyword) {
+	public void generalorders(HttpServletRequest req, Map<String, Object> model, @RequestParam("q") String keyword) {
 
 		PageParams pageParams = this.getPageParams(req);
 
@@ -200,6 +201,23 @@ public class ExampleController extends BaseController {
 		PageList<OrderVo> orders = exampleService.findOrders(args, pageParams);
 
 		this.ui.putData(model, orders);
+	}
+
+	@RequestMapping(value = "general/customer/find.json")
+	public void findCustomers(HttpServletRequest req, Map<String, Object> map,
+			@RequestParam(value = "q", required = false) String keyword) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				PageParams pageParams = getPageParams(req);
+
+				Result<PageList<Customer>> r = exampleService.findCustomers(keyword, pageParams);
+				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
+			}
+		});
 	}
 
 	@RequestMapping(value = "general/basiclist", method = RequestMethod.GET)

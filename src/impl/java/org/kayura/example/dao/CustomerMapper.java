@@ -4,20 +4,26 @@
  */
 package org.kayura.example.dao;
 
+import java.util.Map;
+
 import org.kayura.core.BaseDao;
 import org.kayura.example.po.Customer;
+import org.kayura.mybatis.type.PageBounds;
+import org.kayura.type.PageList;
 
 public interface CustomerMapper extends BaseDao {
-	
-    int deleteByKey(String id);
 
-    int insert(Customer record);
+	PageList<Customer> findByMap(Map<String, Object> args, PageBounds pageBounds);
 
-    int insertSelective(Customer record);
+	int deleteByKey(String id);
 
-    Customer selectByKey(String id);
+	int insert(Customer record);
 
-    int updateBySelective(Customer record);
+	int insertSelective(Customer record);
 
-    int updateByKey(Customer record);
+	Customer selectByKey(String id);
+
+	int updateBySelective(Customer record);
+
+	int updateByKey(Customer record);
 }
