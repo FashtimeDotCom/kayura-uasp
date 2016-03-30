@@ -48,6 +48,19 @@
 		}
 	});
 
+	// 重写 jeasyui.form 默认属性.
+	
+/*	$.extend($.fn.form.defaults, {
+		
+	});*/
+
+	// 重写 jeasyui.combotree 默认属性.
+	
+	$.extend($.fn.switchbutton.defaults, {
+		onText : "是",
+		offText : "否",
+		value : "1"
+	});
 	
 	// 重写 jeasyui.validatebox 默认属性.
 	

@@ -1,41 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
-<e:section name="title">Basic DataGrid</e:section>
+<k:section name="title">Basic DataGrid</k:section>
 
-<e:section name="body">
+<k:section name="body">
 	<h2>Cache Editor for DataGrid</h2>
 	<p>This example shows how to cache the editors for datagrid to improve the editing speed.</p>
 	<div style="margin:20px 0;"></div>
 
-	<e:datagrid id="dg" title="Cache Editor for DataGrid"
+	<k:datagrid id="dg" title="Cache Editor for DataGrid"
 		style="width:700px;height:auto" collapsible="true" singleSelect="true"
 		iconCls="icon-edit"
 		url="${root}/res/easyui/jsondata/datagrid_data1.json"
 		onClickRow="onClickRow" method="get" toolbar="#tb">
-		<e:columns>
-			<e:column field="itemid" width="80">Item ID</e:column>
-			<e:column field="productid" width="100"
+		<k:columns>
+			<k:column field="itemid" width="80">Item ID</k:column>
+			<k:column field="productid" width="100"
 				formatter="function(value,row){return row.productname;}"
-				editor="{type:'combobox',options:{valueField:'productid',textField:'productname',method:'get',url:'${root}/res/easyui/jsondata/products.json',required:true}}">Product</e:column>
-			<e:column field="listprice" width="80" align="right"
-				editor="{type:'numberbox',options:{precision:1}}">List Price</e:column>
-			<e:column field="unitcost" width="80" align="right"
-				editor="'numberbox'">Unit Cost</e:column>
-			<e:column field="attr1" width="250" editor="'text'">Attribute</e:column>
-			<e:column field="status" width="60" align="center" halign="center"
-				editor="{type:'checkbox',options:{on:'P',off:''}}">Status</e:column>
-		</e:columns>
-	</e:datagrid>
+				editor="{type:'combobox',options:{valueField:'productid',textField:'productname',method:'get',url:'${root}/res/easyui/jsondata/products.json',required:true}}">Product</k:column>
+			<k:column field="listprice" width="80" align="right"
+				editor="{type:'numberbox',options:{precision:1}}">List Price</k:column>
+			<k:column field="unitcost" width="80" align="right"
+				editor="'numberbox'">Unit Cost</k:column>
+			<k:column field="attr1" width="250" editor="'text'">Attribute</k:column>
+			<k:column field="status" width="60" align="center" halign="center"
+				editor="{type:'checkbox',options:{on:'P',off:''}}">Status</k:column>
+		</k:columns>
+	</k:datagrid>
 
 	<div id="tb" style="height: auto">
-		<e:linkbutton iconCls="icon-save" plain="true" onclick="accept()">Accept</e:linkbutton>
-		<e:linkbutton iconCls="icon-undo" plain="true" onclick="reject()">Reject</e:linkbutton>
-		<e:linkbutton iconCls="icon-search" plain="true" onclick="getChanges()">GetChanges</e:linkbutton>
+		<k:linkbutton iconCls="icon-save" plain="true" onclick="accept()">Accept</k:linkbutton>
+		<k:linkbutton iconCls="icon-undo" plain="true" onclick="reject()">Reject</k:linkbutton>
+		<k:linkbutton iconCls="icon-search" plain="true" onclick="getChanges()">GetChanges</k:linkbutton>
 	</div>
 
-</e:section>
+</k:section>
 
-<e:section name="code">
+<k:section name="code">
 <pre><code class="html">&lt;e:datagrid id="dg" title="Cache Editor for DataGrid"
 	style="width:700px;height:auto" collapsible="true" singleSelect="true"
 	iconCls="icon-edit"
@@ -154,9 +154,9 @@
 	}
 &lt;/script&gt;
 </code></pre>
-</e:section>
+</k:section>
 
-<e:section name="footer">
+<k:section name="footer">
 <script type="text/javascript">
 	(function($){
 		function getCacheContainer(t){
@@ -248,6 +248,6 @@
 		alert(rows.length+' rows are changed!');
 	}
 </script>
-</e:section>
+</k:section>
 
 <%@ include file="/views/shared/_example.jsp" %>

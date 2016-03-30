@@ -2,13 +2,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><e:renderSection name="title" /></title>
-<e:resources location="res" theme="${theme}" />
-<e:renderSection name="head" />
+<title><k:renderSection name="title" /></title>
+	<k:resources location="res">
+		easyui/themes/${theme}/easyui.css
+		easyui/themes/icon.css
+		js/juasp.css
+		js/jquery.min.js
+		easyui/jquery.easyui.min.js
+		easyui/easyui-lang-zh_CN.js
+		js/juasp-core.js
+		js/juasp-easyui.js
+	</k:resources>
+	<k:renderSection name="head" />
 </head>
-<e:body>
-	<e:layoutunit region="center" border="false" style="padding: 3px">
-		<e:renderSection name="body"></e:renderSection>
-	</e:layoutunit>
-</e:body>
+<k:body layout="true">
+	<k:dock region="center" border="false" style="padding: 3px">
+		<k:renderSection name="body"></k:renderSection>
+	</k:dock>
+</k:body>
 </html>

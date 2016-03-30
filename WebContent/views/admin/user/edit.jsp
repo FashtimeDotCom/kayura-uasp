@@ -1,94 +1,91 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<e:section name="title">用户管理</e:section>
+<k:section name="title">用户管理</k:section>
 
-<e:section name="head">
+<k:section name="head">
 	<script type="text/javascript">
-	
-		function submitForm() {
+		jctx = (function() {
 			
-			$('#ff').form('submit', {
-				url : '${root}/admin/user/save.json',
-				onSubmit : function() {
-					return $('#ff').form('validate');
-				},
-				success : function(data) {
-					juasp.closeWin(1);
-				}
-			});
-		}
-		
-		function clearForm() {
-			juasp.closeWin(0);
-		}
+			function _saveClose(){
+				juasp.closeWin(1);
+			}
+			
+			return {
+				saveClose : _saveClose
+			};
+		}());
 	</script>
-</e:section>
+</k:section>
 
-<e:section name="body">
-	<div class="easyui-panel" border="false" style="padding: 10px 30px 10px 30px; ">
-		<form id="ff" class="easyui-form" method="post">
-			<input type="hidden" name="userId" value="${model.userId}" />
-			<table cellpadding="5">
-				<tr>
-					<td>登录名</td>
-					<td><input class="easyui-textbox" name="userName" style="width:180px" value="${model.userName}" data-options="required:true"></input></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>显示名:</td>
-					<td><input class="easyui-textbox" name="displayName" style="width:180px" value="${model.displayName}" data-options="required:true"></input></td>
-					<td></td>
-				</tr>
-				<c:if test="${empty model.userId}">
-				<tr>
-					<td>初始密码:</td>
-					<td><input class="easyui-textbox" name="password" style="width:180px" data-options="required:true"></input></td>
-					<td></td>
-				</tr>
-				</c:if>
-				<tr>
-					<td>电子邮件:</td>
-					<td><input class="easyui-textbox" name="email" style="width:180px" value="${model.email}" data-options="required:true,validType:'email'"></input></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>手机号:</td>
-					<td><input class="easyui-textbox" name="mobileNo" style="width:180px" value="${model.mobileNo}" data-options="required:true,validType:'length[11,11]'"></input></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>关键字:</td>
-					<td><input class="easyui-textbox" name="keyword" style="width:180px" value="${model.keyword}" data-options=""></input></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>过期时间:</td>
-					<td><input class="easyui-textbox" name="expireTime" style="width:180px" value='<fmt:formatDate value="${model.expireTime}" pattern="yyyy-MM-dd"/>' data-options=""></input></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>所属角色:</td>
-					<td><input class="easyui-textbox" name="roles" style="width:180px" value="${model.roles}" data-options="required:true"></input></td>
-					<td>可选：ROOT,ADMIN,USER。默认为USER</td>
-				</tr>
-				<tr>
-					<td>是否启用:</td>
-					<td><input class="easyui-textbox" name="isEnabled" style="width:180px" value="${model.isEnabled}" data-options=""></input></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>是否锁定:</td>
-					<td><input class="easyui-textbox" name="isLocked" style="width:180px" value="${model.isLocked}" data-options=""></input></td>
-					<td></td>
-				</tr>
-			</table>
-		</form>
-		<div style="text-align: center; padding: 5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" style="width: 75px" onclick="submitForm()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" style="width: 75px" onclick="clearForm()">取消</a>
-		</div>
-	</div>
-</e:section>
+<k:section name="body">
+<k:form id="ff" url="${root}/admin/user/save.json" success="function(data){ jctx.saveClose() }">
+<k:hidden id="userId" value="${model.userId}"/>
+<table cellpadding="5">
+	<tr>
+		<td>登录名</td>
+		<td><k:textbox id="userName" width="180px" value="${model.userName}" required="true" /></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>显示名:</td>
+		<td><k:textbox id="displayName" width="180px" value="${model.displayName}" required="true" /></td>
+		<td></td>
+	</tr>
+	<c:if test="${empty model.userId}">
+	<tr>
+		<td>初始密码:</td>
+		<td><k:textbox id="password" width="180px" required="true" /></td>
+		<td></td>
+	</tr>
+	</c:if>
+	<tr>
+		<td>电子邮件:</td>
+		<td><k:textbox id="email" width="180px" value="${model.email}" required="true" validType="email" /></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>手机号:</td>
+		<td><k:textbox id="mobileNo" width="180px" value="${model.mobileNo}" required="true" validType="length[11,11]" /></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>关键字:</td>
+		<td><k:textbox id="keyword" width="180px" value="${model.keyword}" /></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>过期时间:</td>
+		<td><k:databox id="expireTime" width="180px" value="${model.expireTime}" /></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>所属角色:</td>
+		<td><k:combobox id="roles" width="180px" height="auto" value="${model.roles}" multiple="true" required="true">
+				<k:option>ROOT</k:option>
+				<k:option>ADMIN</k:option>
+				<k:option>USER</k:option>
+			</k:combobox>
+		</td>
+		<td>可选：ROOT,ADMIN,USER。默认为USER</td>
+	</tr>
+	<tr>
+		<td>是否启用:</td>
+		<td><k:switchbutton id="isEnabled" checked="${model.isEnabled}" /></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>是否锁定:</td>
+		<td><k:switchbutton id="isLocked" checked="${model.isLocked}" /></td>
+		<td></td>
+	</tr>
+</table>
+</k:form>
+</k:section>
 
-<%@ include file="/views/shared/_editor.jsp"%>
+<k:section name="tool">
+	<k:linkbutton style="width:80px" iconCls="icon-ok" onClick="$('#ff').form('submit')" text="提交" />
+	<k:linkbutton style="width:80px" iconCls="icon-cancel" onClick="juasp.closeWin(0)" text="取消" />
+</k:section>
+
+<%@ include file="/views/shared/_dialog.jsp"%>

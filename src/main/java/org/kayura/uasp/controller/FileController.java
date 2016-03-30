@@ -53,7 +53,7 @@ import org.kayura.utils.KeyUtils;
 import org.kayura.utils.MapUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
-import org.kayura.web.model.TreeNode;
+import org.kayura.tags.easyui.types.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
@@ -483,7 +483,7 @@ public class FileController extends BaseController {
 								n.setText(f.getName());
 								n.setState(TreeNode.STATE_OPEN);
 								n.setIconCls("icon-folder");
-								sysNode.getChildren().add(n);
+								sysNode.addNode(n);
 
 								appendChildFolders(n, folders);
 							}
@@ -493,7 +493,7 @@ public class FileController extends BaseController {
 								nc.setId(FileFolder.NOTCLASSIFIED);
 								nc.setText("未归类");
 								nc.setIconCls("icon-folder");
-								sysNode.getChildren().add(nc);
+								sysNode.addNode(nc);
 							}
 						}
 
@@ -518,7 +518,7 @@ public class FileController extends BaseController {
 								n.setText(f.getName());
 								n.setIconCls("icon-folder");
 								n.setState(TreeNode.STATE_OPEN);
-								myNode.getChildren().add(n);
+								myNode.addNode(n);
 
 								appendChildFolders(n, folders);
 							}
@@ -527,7 +527,7 @@ public class FileController extends BaseController {
 							nc.setId(FileFolder.NOTCLASSIFIED);
 							nc.setText("未归类");
 							nc.setIconCls("icon-folder");
-							myNode.getChildren().add(nc);
+							myNode.addNode(nc);
 
 							// 添加 [我的群组]
 							List<String> groups = folders.stream().filter(c -> c.getGroupId() != null).map(m -> {
@@ -551,7 +551,7 @@ public class FileController extends BaseController {
 									gn.setId(FileFolder.GROUPITEM + NODEID_SPLIT + gid);
 									gn.setText(gname);
 									gn.setIconCls("icon-group");
-									groupNode.getChildren().add(gn);
+									groupNode.addNode(gn);
 
 									List<FileFolder> myGroups = folders.stream().filter(c -> c.getGroupId() != null
 											&& c.getGroupId().equals(gid) && c.getParentId() == null)
@@ -564,7 +564,7 @@ public class FileController extends BaseController {
 										n.setText(f.getName());
 										n.setState(TreeNode.STATE_OPEN);
 										n.setIconCls("icon-folder");
-										gn.getChildren().add(n);
+										gn.addNode(n);
 
 										appendChildFolders(n, folders);
 									}
@@ -595,7 +595,7 @@ public class FileController extends BaseController {
 									gn.setId(FileFolder.SHARER + NODEID_SPLIT + sharerId);
 									gn.setText(sharerName);
 									gn.setIconCls("icon-user");
-									shareNode.getChildren().add(gn);
+									shareNode.addNode(gn);
 
 									List<FileShare> sharelist = shares.stream()
 											.filter(c -> c.getSharerId().equals(sharerId)).collect(Collectors.toList());
@@ -606,7 +606,7 @@ public class FileController extends BaseController {
 										n.setText(f.getFolderName());
 										n.setState(TreeNode.STATE_OPEN);
 										n.setIconCls("icon-folder");
-										gn.getChildren().add(n);
+										gn.addNode(n);
 									}
 								}
 							}
@@ -635,7 +635,7 @@ public class FileController extends BaseController {
 				n.setText(f.getName());
 				n.setState(TreeNode.STATE_OPEN);
 				n.setIconCls("icon-folder");
-				node.getChildren().add(n);
+				node.addNode(n);
 
 				appendChildFolders(n, folders);
 			}

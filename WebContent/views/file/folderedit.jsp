@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
-<e:section name="title">文件夹</e:section>
+<k:section name="title">文件夹</k:section>
 
-<e:section name="head">
+<k:section name="head">
 	<script type="text/javascript">
 	
 		function submitForm() {
@@ -21,9 +21,9 @@
 			juasp.closeWin(0);
 		}
 	</script>
-</e:section>
+</k:section>
 
-<e:section name="body">
+<k:section name="body">
 	<div class="easyui-panel" border="false" style="padding: 10px 40px 10px 40px; ">
 		<form id="ff" class="easyui-form" method="post">
 			<input type="hidden" name="folderId" value="${model.folderId}" />
@@ -56,6 +56,6 @@
 			<a href="javascript:void(0)" class="easyui-linkbutton" style="width: 75px" onclick="clearForm()">取消</a>
 		</div>
 	</div>
-</e:section>
+</k:section>
 
 <%@ include file="/views/shared/_editor.jsp"%>

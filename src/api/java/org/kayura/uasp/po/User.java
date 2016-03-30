@@ -13,7 +13,7 @@ import java.util.Date;
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 8694212758154807425L;
-	
+
 	private String userId;
 	private String tenantId;
 	private String userName;
@@ -130,7 +130,7 @@ public class User implements Serializable {
 	}
 
 	public Boolean getIsEnabled() {
-		return isEnabled;
+		return isEnabled != null ? isEnabled : false;
 	}
 
 	public void setIsEnabled(Boolean isEnabled) {
@@ -138,7 +138,7 @@ public class User implements Serializable {
 	}
 
 	public Boolean getIsLocked() {
-		return isLocked;
+		return isLocked != null ? isLocked : false;
 	}
 
 	public void setIsLocked(Boolean isLocked) {

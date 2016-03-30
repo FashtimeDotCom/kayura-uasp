@@ -19,7 +19,7 @@ import org.kayura.uasp.service.UserService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
-import org.kayura.web.model.TreeNode;
+import org.kayura.tags.easyui.types.TreeNode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -197,10 +197,10 @@ public class AdminController extends BaseController {
 							d.setId(l.getId());
 							d.setText(l.getName());
 
-							n.getChildren().add(d);
+							n.addNode(d);
 						}
 
-						root.getChildren().add(n);
+						root.addNode(n);
 					}
 
 					nodes.add(root);

@@ -2,24 +2,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><e:renderSection name="title"/></title>
-	<e:resources location="res" theme="${theme}" />
-	<e:resource location="res/highlight/styles" name="default.css" />
-	<e:resource location="res/highlight" name="highlight.pack.js" />
+	<title><k:renderSection name="title"/></title>
+	<k:resources location="res">
+		easyui/themes/${theme}/easyui.css
+		easyui/themes/icon.css
+		js/juasp.css
+		js/jquery.min.js
+		easyui/jquery.easyui.min.js
+		easyui/easyui-lang-zh_CN.js
+		js/juasp-core.js
+		js/juasp-easyui.js
+	</k:resources>
+	<k:resource location="res/highlight/styles" name="default.css" />
+	<k:resource location="res/highlight" name="highlight.pack.js" />
 	<script>hljs.initHighlightingOnLoad();</script>
-	<e:renderSection name="head" />
+	<k:renderSection name="head" />
 </head>
 <body style="margin:3px;">
 	<!-- Body -->
-	<e:renderSection name="body" />
+	<k:renderSection name="body" />
 	
 	<!-- Code -->
-	<e:renderSection name="code" />
+	<k:renderSection name="code" />
 	
 	<div style="margin-top: 10px;">
 		Source : <%= request.getRequestURI() %>
 	</div>
 	
-	<e:renderSection name="footer" />
+	<k:renderSection name="footer" />
 </body>
 </html>

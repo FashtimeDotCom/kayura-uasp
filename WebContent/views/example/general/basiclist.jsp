@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
-<e:section name="title">基本列表</e:section>
+<k:section name="title">基本列表</k:section>
 
-<e:section name="head">
+<k:section name="head">
 	<script type="text/javascript">
 
 		var cmenu;
@@ -40,39 +40,39 @@
 		}
 		
 	</script>
-</e:section>
+</k:section>
 
-<e:section name="body">
+<k:section name="body">
 
 	<div id="t1" style="padding: 2px;">
-		<e:linkbutton iconCls="icon-add" onclick="addOrder()" plain="true">创建表单</e:linkbutton>
-		<e:linkbutton iconCls="icon-edit" plain="true">编辑表单</e:linkbutton>
-		<e:linkbutton iconCls="icon-remove" plain="true">删除表单</e:linkbutton>
+		<k:linkbutton iconCls="icon-add" onclick="addOrder()" plain="true">创建表单</k:linkbutton>
+		<k:linkbutton iconCls="icon-edit" plain="true">编辑表单</k:linkbutton>
+		<k:linkbutton iconCls="icon-remove" plain="true">删除表单</k:linkbutton>
 		<div id="q1" style="float: right;">
-		关键字：<e:textbox id="keyword" style="width:220px" prompt="搜索：Order Date,ShipVia,Ship Name" />
-		<e:linkbutton iconCls="icon-search" style="margin-left:5px" plain="true" onclick="search1()">搜索</e:linkbutton>
+		关键字：<k:textbox id="keyword" style="width:220px" prompt="搜索：Order Date,ShipVia,Ship Name" />
+		<k:linkbutton iconCls="icon-search" style="margin-left:5px" plain="true" onclick="search1()">搜索</k:linkbutton>
 		</div>
 	</div>
 	
-	<e:datagrid id="dg" style="width:100%;height:auto;" collapsible="true" rownumbers="true"
+	<k:datagrid id="dg" style="width:100%;height:auto;" collapsible="true" rownumbers="true"
 		pagination="true" pageSize="10"  singleSelect="true" url="" method="get" idField="id" 
 		remoteSort="true" striped="true" toolbar="#t1" fitColumns="true">
-		<e:columns>
-			<e:column field="ck" checkbox="true" />
-			<e:column field="orderDate" width="120" sortable="true">Order Date</e:column>
-			<e:column field="shipViaName" width="120" sortable="true">ShipVia</e:column>
-			<e:column field="shipName" width="200" sortable="true">Ship Name</e:column>
-			<e:column field="shipAddress" width="200" sortable="true">Address</e:column>
-			<e:column field="shipCity" width="120" sortable="true">City</e:column>
-			<e:column field="shipRegion" width="120" sortable="true">Region</e:column>
-			<e:column field="shipPostalCode" width="120" sortable="true">Postal Code</e:column>
-			<e:column field="shipCountry" width="120" sortable="true">Country</e:column>
-		</e:columns>
-	</e:datagrid>
+		<k:columns>
+			<k:column field="ck" checkbox="true" />
+			<k:column field="orderDate" width="120" sortable="true">Order Date</k:column>
+			<k:column field="shipViaName" width="120" sortable="true">ShipVia</k:column>
+			<k:column field="shipName" width="200" sortable="true">Ship Name</k:column>
+			<k:column field="shipAddress" width="200" sortable="true">Address</k:column>
+			<k:column field="shipCity" width="120" sortable="true">City</k:column>
+			<k:column field="shipRegion" width="120" sortable="true">Region</k:column>
+			<k:column field="shipPostalCode" width="120" sortable="true">Postal Code</k:column>
+			<k:column field="shipCountry" width="120" sortable="true">Country</k:column>
+		</k:columns>
+	</k:datagrid>
 
-</e:section>
+</k:section>
 
-<e:section name="code">
+<k:section name="code">
 <pre><code class="html">&lt;e:datagrid title="管理列表" style="width:100%;height:auto;" collapsible="true" pagination="true" pageSize="10" 
 	singleSelect="true" url="${root}/example/general/order/find.json" method="get" idField="id"
 	toolbar="#t1,#q1"&gt;
@@ -108,6 +108,6 @@
 	&lt;e:linkbutton iconCls="icon-search" style="margin-left:5px"&gt;搜索&lt;/e:linkbutton&gt;
 &lt;/div&gt;
 </code></pre>
-</e:section>
+</k:section>
 
 <%@ include file="/views/shared/_example.jsp" %>

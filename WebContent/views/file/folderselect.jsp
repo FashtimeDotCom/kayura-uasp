@@ -1,9 +1,9 @@
 <%@page import="org.kayura.utils.JsonUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
-<e:section name="title">选择文件夹</e:section>
+<k:section name="title">选择文件夹</k:section>
 
-<e:section name="head">
+<k:section name="head">
 	<script type="text/javascript">
 	
 		$(function() {
@@ -52,20 +52,20 @@
 
 		}(window, jQuery));
 	</script>
-</e:section>
+</k:section>
 
-<e:section name="body">
-	<e:layoutunit region="center" border="false" style="padding: 5px">
+<k:section name="body">
+	<k:dock region="center" border="false" style="padding: 5px">
 		<ul id="tv" class="easyui-tree"></ul>
-	</e:layoutunit>
-	<e:layoutunit region="south" border="false" style="height: 35px; padding: 5px;">
+	</k:dock>
+	<k:dock region="south" border="false" style="height: 35px; padding: 5px;">
 		<div style="text-align: right;">
-			<e:linkbutton id='ok' onclick="jctx.confirm();" iconCls="icon-ok"
+			<k:linkbutton id='ok' onclick="jctx.confirm();" iconCls="icon-ok"
 				style="width:75px" text="确认" />
-			<e:linkbutton id='cancel' onclick="juasp.closeWin({result:0});"
+			<k:linkbutton id='cancel' onclick="juasp.closeWin({result:0});"
 				iconCls="icon-cancel" style="width:75px; margin-left: 5px" text="取消" />
 		</div>
-	</e:layoutunit>
-</e:section>
+	</k:dock>
+</k:section>
 
 <%@ include file="/shared/_simple.jsp"%>

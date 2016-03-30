@@ -24,7 +24,7 @@ import org.kayura.uasp.service.OrganizService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
-import org.kayura.web.model.TreeNode;
+import org.kayura.tags.easyui.types.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -102,7 +102,7 @@ public class OrganizController extends BaseController {
 						for (OrganizItem f : rootItems) {
 
 							TreeNode n = createNode(f);
-							root.getChildren().add(n);
+							root.addNode(n);
 							appendChildFolders(n, items);
 						}
 					} else {
@@ -161,7 +161,7 @@ public class OrganizController extends BaseController {
 			for (OrganizItem f : childs) {
 
 				TreeNode n = createNode(f);
-				node.getChildren().add(n);
+				node.addNode(n);
 				appendChildFolders(n, items);
 			}
 		}

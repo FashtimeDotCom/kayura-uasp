@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
-<e:section name="title">基本列表</e:section>
+<k:section name="title">基本列表</k:section>
 
-<e:section name="head">
+<k:section name="head">
 	<script type="text/javascript">
 
 		$(function() {
@@ -17,21 +17,21 @@
 		}
 		
 	</script>
-</e:section>
+</k:section>
 
-<e:section name="body">
+<k:section name="body">
 
 	<p>表单编辑页面</p>
 	<div style="margin:20px 0;"></div>
 
-	<e:linkbutton onclick="closeWindow();">关闭窗口</e:linkbutton>
+	<k:linkbutton onclick="closeWindow();">关闭窗口</k:linkbutton>
 
-</e:section>
+</k:section>
 
-<e:section name="code">
+<k:section name="code">
 <pre><code class="html">
 
 </code></pre>
-</e:section>
+</k:section>
 
 <%@ include file="/views/shared/_example.jsp" %>

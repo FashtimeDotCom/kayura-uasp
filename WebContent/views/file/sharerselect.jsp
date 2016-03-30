@@ -1,9 +1,9 @@
 <%@page import="org.kayura.utils.JsonUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
-<e:section name="title">选择文件夹</e:section>
+<k:section name="title">选择文件夹</k:section>
 
-<e:section name="head">
+<k:section name="head">
 	<script type="text/javascript">
 		$(function() {
 
@@ -27,29 +27,29 @@
 
 		}(window, jQuery));
 	</script>
-</e:section>
+</k:section>
 
-<e:section name="body">
-	<e:layoutunit region="center" border="false" style="padding: 5px">
-		<e:datagrid id="tg" fit="true" rownumbers="true" pagination="true"
+<k:section name="body">
+	<k:dock region="center" border="false" style="padding: 5px">
+		<k:datagrid id="tg" fit="true" rownumbers="true" pagination="true"
 			pageSize="20" singleSelect="true" striped="true" toolbar="#tq" idField="userId">
-			<e:columns>
-				<e:column field="ck" checkbox="true" />
-				<e:column field="displayName" width="120" title="显示名" />
-			</e:columns>
-		</e:datagrid>
+			<k:columns>
+				<k:column field="ck" checkbox="true" />
+				<k:column field="displayName" width="120" title="显示名" />
+			</k:columns>
+		</k:datagrid>
 		<div id="tq" style="padding-left: 8px">
 			关键字：
-			<e:textbox id="keyword" style="width:150px" />
+			<k:textbox id="keyword" style="width:150px" />
 			<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="doSearch()">查询</a>
 		</div>
-	</e:layoutunit>
-	<e:layoutunit region="south" border="false" style="height: 35px; padding: 5px;">
+	</k:dock>
+	<k:dock region="south" border="false" style="height: 35px; padding: 5px;">
 		<div style="text-align: right;">
-			<e:linkbutton id='ok' onclick="jctx.confirm();" iconCls="icon-ok" style="width:75px" text="确认" />
-			<e:linkbutton id='cancel' onclick="juasp.closeWin({result:0});" iconCls="icon-cancel" style="width:75px; margin-left: 5px" text="取消" />
+			<k:linkbutton id='ok' onclick="jctx.confirm();" iconCls="icon-ok" style="width:75px" text="确认" />
+			<k:linkbutton id='cancel' onclick="juasp.closeWin({result:0});" iconCls="icon-cancel" style="width:75px; margin-left: 5px" text="取消" />
 		</div>
-	</e:layoutunit>
-</e:section>
+	</k:dock>
+</k:section>
 
 <%@ include file="/shared/_simple.jsp"%>

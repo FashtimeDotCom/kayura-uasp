@@ -1,50 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
-<e:section name="title">Basic DataGrid</e:section>
+<k:section name="title">Basic DataGrid</k:section>
 
-<e:section name="body">
+<k:section name="body">
 
 	<h2>DataGrid Complex Toolbar</h2>
 	<p>The DataGrid toolbar can be defined from a &lt;div&gt; markup, so you can define the layout of toolbar easily.</p>
 	<div style="margin:20px 0;"></div>
 	
-	<e:datagrid title="DataGrid Complex Toolbar" style="width:700px;height:250px" collapsible="true"
+	<k:datagrid title="DataGrid Complex Toolbar" style="width:700px;height:250px" collapsible="true"
 		singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get"
 		toolbar="#tb" footer="#ft">
-		<e:columns>
-			<e:column field="itemid" width="80">Item ID</e:column>
-			<e:column field="productid" width="100">Product</e:column>
-			<e:column field="listprice" width="80" align="right">List Price</e:column>
-			<e:column field="unitcost" width="80" align="right">Unit Cost</e:column>
-			<e:column field="attr1" width="240">Attribute</e:column>
-			<e:column field="status" width="60" align="center">Status</e:column>
-		</e:columns>
-	</e:datagrid>
+		<k:columns>
+			<k:column field="itemid" width="80">Item ID</k:column>
+			<k:column field="productid" width="100">Product</k:column>
+			<k:column field="listprice" width="80" align="right">List Price</k:column>
+			<k:column field="unitcost" width="80" align="right">Unit Cost</k:column>
+			<k:column field="attr1" width="240">Attribute</k:column>
+			<k:column field="status" width="60" align="center">Status</k:column>
+		</k:columns>
+	</k:datagrid>
 	
 	<div id="tb" style="padding:2px 5px;">
-		Date From: <e:datebox id="fromDate" style="110px" required="true" tipPosition="top"></e:datebox>
-		To: <e:datebox id="toDate" style="110px"></e:datebox>
-		Language: <e:combobox id="" panelHeight="auto" style="width:100px">
-			<e:selectitem label="java" value="java"/>
-			<e:selectitem label="C" value="c"/>
-			<e:selectitem label="Basic" value="basic"/>
-			<e:selectitem label="Perl" value="perl"/>
-			<e:selectitem label="Python" value="python"/>
-		</e:combobox>
-		<e:linkbutton iconCls="icon-search">Search</e:linkbutton>
+		Date From: <k:datebox id="fromDate" style="110px" required="true" tipPosition="top"></k:datebox>
+		To: <k:datebox id="toDate" style="110px"></k:datebox>
+		Language: <k:combobox id="" panelHeight="auto" style="width:100px">
+			<k:selectitem label="java" value="java"/>
+			<k:selectitem label="C" value="c"/>
+			<k:selectitem label="Basic" value="basic"/>
+			<k:selectitem label="Perl" value="perl"/>
+			<k:selectitem label="Python" value="python"/>
+		</k:combobox>
+		<k:linkbutton iconCls="icon-search">Search</k:linkbutton>
 	</div>
 	
 	<div id="ft" style="padding:2px 5px;">
-		<e:linkbutton iconCls="icon-add" plain="true"></e:linkbutton>
-		<e:linkbutton iconCls="icon-edit" plain="true"></e:linkbutton>
-		<e:linkbutton iconCls="icon-save" plain="true"></e:linkbutton>
-		<e:linkbutton iconCls="icon-cut" plain="true"></e:linkbutton>
-		<e:linkbutton iconCls="icon-remove" plain="true"></e:linkbutton>
+		<k:linkbutton iconCls="icon-add" plain="true"></k:linkbutton>
+		<k:linkbutton iconCls="icon-edit" plain="true"></k:linkbutton>
+		<k:linkbutton iconCls="icon-save" plain="true"></k:linkbutton>
+		<k:linkbutton iconCls="icon-cut" plain="true"></k:linkbutton>
+		<k:linkbutton iconCls="icon-remove" plain="true"></k:linkbutton>
 	</div>
 
-</e:section>
+</k:section>
 
-<e:section name="code">
+<k:section name="code">
 <pre><code class="html">&lt;e:datagrid title="DataGrid Complex Toolbar" style="width:700px;height:250px" collapsible="true"
 	singleSelect="true" url="${root}/res/easyui/jsondata/datagrid_data1.json" method="get"
 	toolbar="#tb" footer="#ft"&gt;
@@ -79,6 +79,6 @@
 	&lt;e:linkbutton iconCls="icon-remove" plain="true"&gt;&lt;/e:linkbutton&gt;
 &lt;/div&gt;
 </code></pre>
-</e:section>
+</k:section>
 
 <%@ include file="/views/shared/_example.jsp" %>

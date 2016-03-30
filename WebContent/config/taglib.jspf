@@ -3,7 +3,6 @@
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix='sec' uri='http://www.springframework.org/security/tags'%>
 <%@ taglib prefix="k" uri="http://www.kayura.org/tags/jeasyui"%>
-<%@ taglib prefix="e" uri="/WEB-INF/easyui.tld"%>
 <%
 	session.setAttribute("root", request.getContextPath());
 	Cookie[] cookies = request.getCookies();
@@ -17,6 +16,6 @@
 		}
 	}
 	if (!themeReady) {
-		session.setAttribute("theme", "gray");
+		session.setAttribute("theme", "default");
 	}
 %>

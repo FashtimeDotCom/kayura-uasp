@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
-<e:section name="title">账号管理</e:section>
+<k:section name="title">账号管理</k:section>
 
-<e:section name="head">
+<k:section name="head">
 	<script type="text/javascript">
 	
 		$(document).ready(function() {
@@ -64,36 +64,34 @@
 		}
 		
 	</script>
-</e:section>
+</k:section>
 
-<e:section name="body">
-	<e:datagrid id="tg" fit="true" rownumbers="true" 
+<k:section name="body">
+	<k:datagrid id="tg" fit="true" rownumbers="true" 
 		pagination="true" pageSize="10" singleSelect="true" striped="true"
 		toolbar="#tb,#tq" idField="userId">
-		<e:columns>
-			<e:column field="userName" width="100" title="用户名" />
-			<e:column field="displayName" width="180" title="显示名" />
-			<e:column field="email" width="280" title="电子邮件" />
-			<e:column field="mobileNo" width="340" title="手机号" />
-			<e:column field="status" width="60" align="center" title="状态" />
-		</e:columns>
-	</e:datagrid>
+		<k:column field="userName" width="100" title="用户名" />
+		<k:column field="displayName" width="180" title="显示名" />
+		<k:column field="email" width="280" title="电子邮件" />
+		<k:column field="mobileNo" width="340" title="手机号" />
+		<k:column field="status" width="60" align="center" title="状态" />
+	</k:datagrid>
 	<div id="tb">
-		<e:linkbutton id="add" iconCls="icon-add" plain="true" text="新增账号" onclick="newUser()" />
-		<e:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑账号" onclick="editUser()" />
+		<k:linkbutton id="add" iconCls="icon-add" plain="true" text="新增账号" onClick="newUser()" />
+		<k:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑账号" onClick="editUser()" />
 	</div>
 	<div id="tq" style="padding-left: 8px">
 		关键字：
-		<e:textbox id="keyword" style="width:150px" />
+		<k:textbox id="keyword" style="width:150px" />
 		状态：
-		<e:combobox id="status">
-			<e:selectitem label="所有" value="" />
-			<e:selectitem label="申请中" value="1" />
-			<e:selectitem label="使用中" value="2" />
-			<e:selectitem label="已停用" value="3" />
-		</e:combobox>
-		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" onclick="doSearch()">查询</a>
+		<k:combobox id="status">
+			<k:option label="所有" value="" />
+			<k:option label="申请中" value="1" />
+			<k:option label="使用中" value="2" />
+			<k:option label="已停用" value="3" />
+		</k:combobox>
+		<k:linkbutton text="查询" plain="true" iconCls="icon-search" onClick="doSearch()" />
 	</div>
-</e:section>
+</k:section>
 
 <%@ include file="/shared/_list.jsp"%>

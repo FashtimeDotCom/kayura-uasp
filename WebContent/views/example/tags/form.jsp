@@ -54,7 +54,7 @@
 				<td>ComboGrid：</td>
 				<td>
 					<k:combogrid id="grid1" url="${root}/example/general/customer/find.json" idField="id" textField="name"
-						panelWidth="480" panelHeight="auto" mode="remote" required="true" editable="false"
+						panelWidth="480" panelHeight="auto" mode="remote" required="true"
 						columns="[[{field:'name',title:'Company Name'},{field:'contactName',title:'Contact Name'}]]"></k:combogrid>
 				</td>
 				<td>

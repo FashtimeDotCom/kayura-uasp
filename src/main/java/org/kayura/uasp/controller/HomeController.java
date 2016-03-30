@@ -46,6 +46,7 @@ public class HomeController extends BaseController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Map<String, Object> model) {
 
+		model.put("numUsers", sessionRegistry.getAllPrincipals().size());
 		model.put("loginName", this.getLoginUser().getDisplayName());
 		return view("index", model);
 	}
@@ -119,11 +120,6 @@ public class HomeController extends BaseController {
 		map.put("tid", tid);
 		map.put("runMode", runMode);
 		return viewResult("login");
-	}
-
-	@ModelAttribute("numUsers")
-	public int getNumberOfUsers() {
-		return sessionRegistry.getAllPrincipals().size();
 	}
 
 	@ModelAttribute("activeUsers")

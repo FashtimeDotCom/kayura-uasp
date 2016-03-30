@@ -13,9 +13,16 @@
 		js/juasp-core.js
 		js/juasp-easyui.js
 	</k:resources>
-	<k:renderSection name="head" />
+	<k:renderSection name="head"/>
 </head>
-<k:body layout="true" style="overflow:hidden;">
-	<k:renderSection name="body"></k:renderSection>
+<k:body full="true" padding="5px">
+	<k:layout fit="true">
+		<k:dock region="center" style="padding: 10px 30px 10px 30px;">
+			<k:renderSection name="body"/>
+		</k:dock>
+		<k:dock region="south" border="false" style="text-align:right;padding:5px 0 0;">
+			<k:renderSection name="tool"/>
+		</k:dock>
+	</k:layout>
 </k:body>
 </html>

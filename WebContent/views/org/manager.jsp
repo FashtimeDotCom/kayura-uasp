@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
-<e:section name="title">文件管理</e:section>
+<k:section name="title">文件管理</k:section>
 
-<e:section name="head">
+<k:section name="head">
 	<script type="text/javascript">
 	
 		$(function() {
@@ -149,31 +149,29 @@
 
 		}(window, jQuery));
 	</script>
-</e:section>
+</k:section>
 
-<e:section name="body">
-	<e:layoutunit region="center" border="false" style="padding: 2px;">
-	<e:layout id="ctx" fit="true">
-		<e:layoutunit region="west" split="true" border="true" style="padding: 10px; width: 200px;">
-			<ul id="tv" class="easyui-tree"></ul>
-		</e:layoutunit>
-		<e:layoutunit region="center" border="false">
-			<e:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" singleSelect="true"
+<k:section name="body">
+	<k:dock region="center" border="false" style="padding: 2px;">
+	<k:layout id="ctx" fit="true">
+		<k:dock region="west" split="true" border="true" style="padding: 10px; width: 200px;">
+			<k:tree id="tv" />
+		</k:dock>
+		<k:dock region="center" border="false">
+			<k:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" singleSelect="true"
 				pageSize="10" idField="orgId">
-				<e:columns>
-					<e:column field="ck" checkbox="true" />
-					<e:column field="code" title="组织代码" width="100" />
-					<e:column field="displayName" title="组织名称" width="180" />
-					<e:column field="orgTypeName" title="组织类型" align="center" width="80" />
-					<e:column field="serial" title="排序码" align="center" width="80" />
-				</e:columns>
-			</e:datagrid>
+				<k:column field="ck" checkbox="true" />
+				<k:column field="code" title="组织代码" width="100" />
+				<k:column field="displayName" title="组织名称" width="180" />
+				<k:column field="orgTypeName" title="组织类型" align="center" width="80" />
+				<k:column field="serial" title="排序码" align="center" width="80" />
+			</k:datagrid>
 			<div id="tb">
-				<e:linkbutton id="tbaddcompany" onclick="jctx.addcompany()" disabled="true" iconCls="icon-company" plain="true" text="添加公司" />
-				<e:linkbutton id="tbadddepart" onclick="jctx.adddepart()" disabled="true" iconCls="icon-depart" plain="true" text="添加部门" />
-				<e:linkbutton id="tbaddposition" onclick="jctx.addposition()" disabled="true" iconCls="icon-position" plain="true" text="添加岗位" />
+				<k:linkbutton id="tbaddcompany" onClick="jctx.addcompany()" disabled="true" iconCls="icon-company" plain="true" text="添加公司" />
+				<k:linkbutton id="tbadddepart" onClick="jctx.adddepart()" disabled="true" iconCls="icon-depart" plain="true" text="添加部门" />
+				<k:linkbutton id="tbaddposition" onClick="jctx.addposition()" disabled="true" iconCls="icon-position" plain="true" text="添加岗位" />
 				<div style="float:right;">
-				<e:textbox id="search" prompt="搜索：代码、名称" style="width:250px;height:24px;" />
+				<k:textbox id="search" prompt="搜索：代码、名称" style="width:250px;height:24px;" />
 				</div>
 			</div>
 			<div id="mm" class="easyui-menu" style="width: 120px;">
@@ -185,9 +183,9 @@
 				<div onclick="expand()">展开</div>
 				<div onclick="collapse()">收缩</div>
 			</div>
-		</e:layoutunit>
-	</e:layout>
-	</e:layoutunit>
-</e:section>
+		</k:dock>
+	</k:layout>
+	</k:dock>
+</k:section>
 
 <%@ include file="/views/shared/_simple.jsp"%>
