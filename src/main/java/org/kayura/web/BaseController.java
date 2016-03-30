@@ -29,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class BaseController {
 
-	private static final Log logger = LogFactory.getLog(BaseController.class);
+	protected final Log logger = LogFactory.getLog(this.getClass());
 
 	@Autowired
 	protected UISupport ui;

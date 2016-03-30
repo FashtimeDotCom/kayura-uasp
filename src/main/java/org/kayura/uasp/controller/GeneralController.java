@@ -6,8 +6,6 @@ package org.kayura.uasp.controller;
 
 import org.kayura.web.BaseController;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/gm")
 public class GeneralController extends BaseController {
-
-	@SuppressWarnings("unused")
-	private static final Log logger = LogFactory.getLog(GeneralController.class);
-
 
 	public GeneralController() {
 		this.setViewRootPath("views/general/");

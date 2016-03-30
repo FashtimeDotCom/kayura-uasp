@@ -89,7 +89,10 @@ public class AdminController extends BaseController {
 				Result<PageList<User>> r = userService.findUsers(tenantId, keyword, intStatus, pageParams);
 				ps.setCode(r.getCode());
 				if (r.isSucceed()) {
-					ps.setData(ui.genPageData(r.getData()));
+					PageList<User> users = r.getData();
+					users.forEach(s -> s.setPassword(null));
+					users.forEach(s -> s.setSalt(null));
+					ps.setData(ui.genPageData(users));
 				} else {
 					ps.addMessage(r.getMessage());
 				}

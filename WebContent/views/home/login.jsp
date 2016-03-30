@@ -28,15 +28,12 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 					<img src="${root}/res/images/login/icon1.png" />
 					<div style="padding: 30px 30px 10px 30px">
 						<div style="margin-bottom: 10px">
-							<k:textbox id="u" required="true"
-								missingMessage="请输入用户名." novalidate="true" 
-								style="width:100%;height:30px;padding:8px" iconCls="icon-man"
-								iconWidth="30" prompt="用户名/手机号"
+							<k:textbox id="u" required="true" missingMessage="请输入用户名." novalidate="true" 
+								style="width:100%;height:30px;padding:8px" iconCls="icon-man" iconWidth="30" prompt="用户名/手机号"
 								value="${sessionScope['SPRING_SECURITY_LAST_USERNAME']}"></k:textbox>
 						</div>
 						<div style="margin-bottom: 10px">
-							<k:textbox id="p" type="password" required="true"
-								missingMessage="请输入密码." novalidate="true"
+							<k:textbox id="p" type="password" required="true" missingMessage="请输入密码." novalidate="true"
 								style="width:100%;height:30px;padding:8px" iconCls="icon-lock"
 								iconWidth="30" prompt="确认密码"></k:textbox>
 						</div>
@@ -52,7 +49,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 							<label><input name="rme" type="checkbox" />下次自动登录</label>
 						</div>
 						<div style="margin-bottom: 10px">
-							<k:linkbutton text="进入系统" style="width:100%;height:30px;" onclick="login()"></k:linkbutton>
+							<k:linkbutton text="进入系统" style="width:100%;height:30px;" onClick="login()"></k:linkbutton>
 						</div>
 						<div style="margin-bottom: 20px">
 							<a href="javascript:void(0)">忘记登录密码？</a>
@@ -65,9 +62,9 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 			<div style="float: right; margin: 15px">
 				<c:if test="${runMode == 'dev'}">
 				<a href="${root}/login?tid=DB9611E" style="margin-right: 8px">以业务系统方式登录</a>
-				<a href="http://git.kayura.org" target="_blank" style="margin-right: 8px">GitHub</a>
+				<a href="https://github.com/KayuraTeam" target="_blank" style="margin-right: 8px">Kayura Git</a>
 				<a href="${root}/example/" target="_blank">开发示例库</a>
-				</c:if>				
+				</c:if>
 			</div>
 		</div>
 	</form>

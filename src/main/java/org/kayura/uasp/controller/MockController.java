@@ -4,8 +4,6 @@
  */
 package org.kayura.uasp.controller;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kayura.web.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class MockController extends BaseController {
-	
-	@SuppressWarnings("unused")
-	private static final Log logger = LogFactory.getLog(MockController.class);
-	
+
 	public MockController() {
 		this.setViewRootPath("views/mock/");
 	}
-	
+
 	@RequestMapping(value = "/mock/fileup", method = RequestMethod.GET)
 	public ModelAndView fileUpload() {
 

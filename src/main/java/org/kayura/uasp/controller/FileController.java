@@ -29,8 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
@@ -71,8 +70,6 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class FileController extends BaseController {
-
-	private static final Log logger = LogFactory.getLog(FileController.class);
 
 	@Autowired
 	private FileUploadProvider uploadProvider;
