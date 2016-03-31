@@ -16,7 +16,6 @@
 	<k:renderSection name="head" />
 </head>
 <k:body full="true">
-	<!-- Body -->
 	<k:renderSection name="body"></k:renderSection>
 </k:body>
 </html>

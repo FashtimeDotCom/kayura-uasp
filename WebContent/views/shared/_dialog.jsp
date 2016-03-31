@@ -18,9 +18,11 @@
 <k:body full="true" padding="5px">
 	<k:layout fit="true">
 		<k:dock region="center" style="padding: 10px 30px 10px 30px;">
+			<!-- 编辑内容区域 body -->
 			<k:renderSection name="body"/>
 		</k:dock>
 		<k:dock region="south" border="false" style="text-align:right;padding:5px 0 0;">
+			<!-- 工具栏区域 tool -->
 			<k:renderSection name="tool"/>
 		</k:dock>
 	</k:layout>
