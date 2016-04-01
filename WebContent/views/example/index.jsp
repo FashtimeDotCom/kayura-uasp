@@ -3,9 +3,18 @@
 <html>
 <head>
 <title>统一应用支撑平台-开发示例</title>
-<k:resources location="res" theme="${theme}" />
+	<k:resources location="res">
+		easyui/themes/${theme}/easyui.css
+		easyui/themes/icon.css
+		js/juasp.css
+		js/jquery.min.js
+		easyui/jquery.easyui.min.js
+		easyui/easyui-lang-zh_CN.js
+		js/juasp-core.js
+		js/juasp-easyui.js
+	</k:resources>
 </head>
-<k:body>
+<k:body layout="true">
 	<k:dock region="north" style="height: 60px">
 		<h2 style="padding-left: 10px; float: left;">统一应用支撑平台-开发示例</h2>
 	</k:dock>
@@ -46,8 +55,7 @@
 	</k:dock>
 	<k:dock region="center">
 		<k:tabs id="mainTabs" fit="true" border="false">
-			<k:tabpage id="homePage" title="首页" iconCls="icon-home"
-				style="padding: 0px;overflow:hidden;"></k:tabpage>
+			<k:tabpage id="homePage" title="首页" iconCls="icon-home" style="padding: 0px;overflow:hidden;"></k:tabpage>
 		</k:tabs>
 	</k:dock>
 </k:body>
