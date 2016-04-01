@@ -15,7 +15,7 @@
 	</k:resources>
 	<k:renderSection name="head" />
 </head>
-<k:body full="true" padding="5px" >
+<k:body>
 	<k:renderSection name="body" />
 </k:body>
 </html>

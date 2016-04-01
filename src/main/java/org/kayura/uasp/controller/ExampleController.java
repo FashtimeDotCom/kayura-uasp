@@ -157,7 +157,7 @@ public class ExampleController extends BaseController {
 
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "tags/base", method = RequestMethod.GET)
 	public ModelAndView baseitemsTagTest() {
 
@@ -197,7 +197,8 @@ public class ExampleController extends BaseController {
 	/* General Example */
 
 	@RequestMapping(value = "general/order/find.json")
-	public void generalorders(HttpServletRequest req, Map<String, Object> model, @RequestParam("q") String keyword) {
+	public void generalorders(HttpServletRequest req, Map<String, Object> model,
+			@RequestParam(value = "q", required = false) String keyword) {
 
 		PageParams pageParams = this.getPageParams(req);
 

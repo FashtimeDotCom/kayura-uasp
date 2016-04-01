@@ -3,28 +3,34 @@
 <k:section name="title">基本列表</k:section>
 
 <k:section name="head">
+
 	<script type="text/javascript">
 
 		var cmenu;
-	
+
 		$(function() {
 			$('#dg').datagrid({
 				url : "${root}/example/general/order/find.json",
-				onHeaderContextMenu: function(e, field){
+				onHeaderContextMenu : function(e, field) {
 					e.preventDefault();
-					if (!cmenu){
+					if (!cmenu) {
 						cmenu = jeasyui.createColumnMenu('#dg');
 					}
-					cmenu.menu('show', { left:e.pageX, top:e.pageY });
+					cmenu.menu('show', {
+						left : e.pageX,
+						top : e.pageY
+					});
 				}
 			});
 		});
-		
+
 		function search1() {
-			var kw = $("#keyword").val();			
-			$("#dg").datagrid('reload', { keyword : kw });
+			var kw = $("#keyword").val();
+			$("#dg").datagrid('reload', {
+				keyword : kw
+			});
 		}
-		
+
 		function addOrder() {
 
 			juasp.openWin({
@@ -38,26 +44,22 @@
 				}
 			});
 		}
-		
 	</script>
 </k:section>
 
 <k:section name="body">
-
 	<div id="t1" style="padding: 2px;">
-		<k:linkbutton iconCls="icon-add" onclick="addOrder()" plain="true">创建表单</k:linkbutton>
+		<k:linkbutton iconCls="icon-add" onClick="addOrder()" plain="true" text="创建表单"></k:linkbutton>
 		<k:linkbutton iconCls="icon-edit" plain="true">编辑表单</k:linkbutton>
 		<k:linkbutton iconCls="icon-remove" plain="true">删除表单</k:linkbutton>
 		<div id="q1" style="float: right;">
 		关键字：<k:textbox id="keyword" style="width:220px" prompt="搜索：Order Date,ShipVia,Ship Name" />
-		<k:linkbutton iconCls="icon-search" style="margin-left:5px" plain="true" onclick="search1()">搜索</k:linkbutton>
+		<k:linkbutton iconCls="icon-search" style="margin-left:5px" plain="true" onClick="search1()" text="搜索"></k:linkbutton>
 		</div>
 	</div>
-	
-	<k:datagrid id="dg" style="width:100%;height:auto;" collapsible="true" rownumbers="true"
+	<k:datagrid id="dg" collapsible="true" style="width:100%;height:auto;" rownumbers="true"
 		pagination="true" pageSize="10"  singleSelect="true" url="" method="get" idField="id" 
 		remoteSort="true" striped="true" toolbar="#t1" fitColumns="true">
-		<k:columns>
 			<k:column field="ck" checkbox="true" />
 			<k:column field="orderDate" width="120" sortable="true">Order Date</k:column>
 			<k:column field="shipViaName" width="120" sortable="true">ShipVia</k:column>
@@ -67,13 +69,11 @@
 			<k:column field="shipRegion" width="120" sortable="true">Region</k:column>
 			<k:column field="shipPostalCode" width="120" sortable="true">Postal Code</k:column>
 			<k:column field="shipCountry" width="120" sortable="true">Country</k:column>
-		</k:columns>
 	</k:datagrid>
-
 </k:section>
 
 <k:section name="code">
-<pre><code class="html">&lt;e:datagrid title="管理列表" style="width:100%;height:auto;" collapsible="true" pagination="true" pageSize="10" 
+<pre><code class="html">&lt;k:datagrid title="管理列表" style="width:100%;height:auto;" collapsible="true" pagination="true" pageSize="10" 
 	singleSelect="true" url="${root}/example/general/order/find.json" method="get" idField="id"
 	toolbar="#t1,#q1"&gt;
 	&lt;e:columns&gt;
@@ -85,7 +85,7 @@
 		&lt;e:column field="shipAddress" width="200"&gt;Ship Address&lt;/e:column&gt;
 		&lt;e:column field="shipCity" width="120" &gt;Ship City&lt;/e:column&gt;
 	&lt;/e:columns&gt;
-&lt;/e:datagrid&gt;
+&lt;/k:datagrid&gt;
 
 &lt;div id="t1" style="padding:2px 5px;"&gt;
 	&lt;e:linkbutton iconCls="icon-add" plain="true"&gt;新增&lt;/e:linkbutton&gt;
