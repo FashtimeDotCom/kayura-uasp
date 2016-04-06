@@ -21,10 +21,15 @@ import org.kayura.utils.DateUtils;
 public class FileUploadProviderImpl implements FileUploadProvider {
 
 	private static final Log logger = LogFactory.getLog(FileUploadProviderImpl.class);
+	private static final String FileSeparator;
 
 	private Map<String, String> uploadPaths;
 	private String tempPath;
 	private Long minSpace;
+
+	static {
+		FileSeparator = System.getProperty("file.separator");
+	}
 
 	public FileUploadProviderImpl() {
 		this.uploadPaths = new HashMap<String, String>();
@@ -84,12 +89,12 @@ public class FileUploadProviderImpl implements FileUploadProvider {
 	}
 
 	public String getTempPath() {
-		
+
 		File tp = new File(tempPath);
 		if (!tp.exists()) {
 			tp.mkdirs();
 		}
-		
+
 		return tempPath;
 	}
 
@@ -105,7 +110,7 @@ public class FileUploadProviderImpl implements FileUploadProvider {
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String subPath = format.format(DateUtils.now());
 
-		return dirKey + "\\" + subPath + "\\";
+		return dirKey + FileSeparator + subPath + FileSeparator;
 	}
 
 }

@@ -13,11 +13,11 @@
 	<bean class="org.kayura.web.easyui.EasyUISupport" />
 	<bean class="org.kayura.spring.SpringBeanManager" />
 	<bean id="storageExecutor" class="org.kayura.uasp.executor.FileUploadProviderImpl">
-		<property name="minSpace" value="512000" />
-		<property name="tempPath" value="E:\UploadFiles\Temp\" />
+		<property name="minSpace" value="${fileUpload.minSpace}" />
+		<property name="tempPath" value="${fileUpload.tempPath}" />
 		<property name="uploadPaths">
 			<map>
-				<entry key="{DiskA}" value="E:\UploadFiles"></entry>
+				<entry key="${fileUpload.disk1}" value="${fileUpload.diskPath1}"></entry>
 			</map>
 		</property>
 	</bean>
