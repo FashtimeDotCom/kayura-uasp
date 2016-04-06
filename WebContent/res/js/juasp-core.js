@@ -320,7 +320,7 @@ juasp = {
 		if (tab.tabs('exists', title)) {
 			tab.tabs('select', title);
 		} else {
-			var content = '<iframe name="contentframe" scrolling="auto" frameborder="0" src="'
+			var content = '<iframe name="contentframe" scrolling="no" frameborder="0" src="'
 					+ url + '" style="width:100%;height:100%;"></iframe>';
 			tab.tabs('add', {
 				title : title,

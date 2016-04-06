@@ -18,7 +18,7 @@
 	<script>hljs.initHighlightingOnLoad();</script>
 	<k:renderSection name="head" />
 </head>
-<body style="margin:3px;">
+<k:body>
 	<!-- Body -->
 	<k:renderSection name="body" />
 	
@@ -30,5 +30,5 @@
 	</div>
 	
 	<k:renderSection name="footer" />
-</body>
+</k:body>
 </html>
