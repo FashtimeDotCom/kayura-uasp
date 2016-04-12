@@ -2,7 +2,7 @@
  * Copyright 2015-2016 the original author or authors.
  * HomePage: http://www.kayura.org
  */
-package org.kayura.uasp.executor;
+package org.kayura.uasp.provider;
 
 import java.io.File;
 import java.text.DateFormat;

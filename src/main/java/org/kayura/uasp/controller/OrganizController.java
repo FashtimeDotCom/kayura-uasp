@@ -44,7 +44,10 @@ public class OrganizController extends BaseController {
 	static final String NULL = "NULL";
 
 	@Autowired
-	private OrganizService organizService;
+	private OrganizService writerOrganizService;
+	
+	@Autowired
+	private OrganizService readerOrganizService;
 
 	public OrganizController() {
 		this.setViewRootPath("views/org/");
@@ -81,7 +84,7 @@ public class OrganizController extends BaseController {
 					parentId = null;
 				}
 
-				Result<List<OrganizItem>> r = organizService.findOrgTree(user.getTenantId(), parentId);
+				Result<List<OrganizItem>> r = readerOrganizService.findOrgTree(user.getTenantId(), parentId);
 				List<TreeNode> roots = new ArrayList<TreeNode>();
 
 				if (r.isSucceed()) {
@@ -187,7 +190,7 @@ public class OrganizController extends BaseController {
 					parentId = null;
 				}
 
-				Result<PageList<OrganizItem>> r = organizService.findOrgItems(user.getTenantId(), parentId, keyword,
+				Result<PageList<OrganizItem>> r = readerOrganizService.findOrgItems(user.getTenantId(), parentId, keyword,
 						pp);
 				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
 			}
@@ -209,7 +212,7 @@ public class OrganizController extends BaseController {
 	@RequestMapping(value = "/company", method = RequestMethod.GET)
 	public ModelAndView editCompany(String id) {
 
-		Result<Company> r = organizService.getCompanyById(id);
+		Result<Company> r = readerOrganizService.getCompanyById(id);
 		if (r.isSucceed()) {
 
 			ModelAndView mv = this.view("companyedit");
@@ -238,10 +241,10 @@ public class OrganizController extends BaseController {
 					company.setTenantId(user.getTenantId());
 					company.setStatus(Company.STATUS_ENABLED);
 
-					r = organizService.insertCompany(company);
+					r = writerOrganizService.insertCompany(company);
 				} else {
 
-					r = organizService.updateCompany(company);
+					r = writerOrganizService.updateCompany(company);
 				}
 
 				if (r != null) {

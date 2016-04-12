@@ -49,10 +49,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class AdminController extends BaseController {
 
 	@Autowired
-	private UserService userService;
+	private UserService writerUserService;
 
 	@Autowired
-	private DictService dictService;
+	private UserService readerUserService;
+
+	@Autowired
+	private DictService writerDictService;
+
+	@Autowired
+	private DictService readerDictService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -86,7 +92,7 @@ public class AdminController extends BaseController {
 				String tenantId = getLoginUser().getTenantId();
 				Integer[] intStatus = StringUtils.toInteger(status);
 
-				Result<PageList<User>> r = userService.findUsers(tenantId, keyword, intStatus, pageParams);
+				Result<PageList<User>> r = readerUserService.findUsers(tenantId, keyword, intStatus, pageParams);
 				ps.setCode(r.getCode());
 				if (r.isSucceed()) {
 					PageList<User> users = r.getData();
@@ -115,7 +121,7 @@ public class AdminController extends BaseController {
 	@RequestMapping(value = "user/edit", method = RequestMethod.GET)
 	public String userEdit(HttpServletRequest req, Map<String, Object> map, String id) {
 
-		User user = userService.getUserById(id);
+		User user = readerUserService.getUserById(id);
 		user.setPassword("");
 		map.put("model", user);
 
@@ -141,11 +147,11 @@ public class AdminController extends BaseController {
 					user.setSalt(salt);
 					user.setPassword(hash);
 
-					GeneralResult result = userService.createNewUser(user);
+					GeneralResult result = writerUserService.createNewUser(user);
 					ps.setResult(result);
 				} else {
 
-					GeneralResult result = userService.updateUserInfo(user);
+					GeneralResult result = writerUserService.updateUserInfo(user);
 					ps.setResult(result);
 				}
 			}
@@ -174,7 +180,7 @@ public class AdminController extends BaseController {
 
 				List<TreeNode> nodes = new ArrayList<TreeNode>();
 
-				Result<List<DictDefine>> r = dictService.loadDictDefinces();
+				Result<List<DictDefine>> r = readerDictService.loadDictDefinces();
 				if (r.isSucceed()) {
 					List<DictDefine> list = r.getData();
 
@@ -231,7 +237,7 @@ public class AdminController extends BaseController {
 				} else {
 
 					String tenantId = getLoginUser().getTenantId();
-					Result<PageList<DictItem>> r = dictService.loadDictItems(tenantId, dictId, parentId, pp);
+					Result<PageList<DictItem>> r = readerDictService.loadDictItems(tenantId, dictId, parentId, pp);
 					ps.setCode(r.getCode());
 					if (r.isSucceed()) {
 						ps.setData(ui.genPageData(r.getData()));
@@ -248,7 +254,7 @@ public class AdminController extends BaseController {
 
 		ModelAndView mv;
 
-		Result<DictDefine> r = dictService.getDictDefineById(id);
+		Result<DictDefine> r = readerDictService.getDictDefineById(id);
 		if (r.isSucceed()) {
 
 			mv = this.view("dict/edit");
@@ -260,7 +266,7 @@ public class AdminController extends BaseController {
 			Boolean treeType = r.getData().getDataType() == DictDefine.DATATYPE_TREE;
 			if (treeType && !StringUtils.isEmpty(pid)) {
 
-				Result<DictItem> item = dictService.getDictItemsById(pid);
+				Result<DictItem> item = readerDictService.getDictItemsById(pid);
 				if (item.isSucceed()) {
 					di.setParentId(pid);
 					di.setParentName(item.getData().getDictName());
@@ -282,7 +288,7 @@ public class AdminController extends BaseController {
 
 		ModelAndView mv;
 
-		Result<DictItem> item = dictService.getDictItemsById(id);
+		Result<DictItem> item = readerDictService.getDictItemsById(id);
 		if (item.isSucceed()) {
 
 			mv = this.view("dict/edit");
@@ -311,11 +317,11 @@ public class AdminController extends BaseController {
 					item.setTenantId(user.getTenantId());
 					item.setIsFixed(user.hasAnyRole(LoginUser.ROLE_ROOT));
 
-					r = dictService.createDictItem(item);
+					r = writerDictService.createDictItem(item);
 					ps.setResult(r);
 				} else {
 
-					Result<DictItem> oi = dictService.getDictItemsById(item.getId());
+					Result<DictItem> oi = readerDictService.getDictItemsById(item.getId());
 					if (oi.isSucceed()) {
 
 						if (oi.getData().getIsFixed() && !user.hasAnyRole(LoginUser.ROLE_ROOT)) {
@@ -323,7 +329,7 @@ public class AdminController extends BaseController {
 							ps.setFalied("保留的数据 不允许被修改。");
 						} else {
 
-							r = dictService.updateDictItem(item);
+							r = writerDictService.updateDictItem(item);
 							ps.setResult(r);
 						}
 					}
@@ -340,7 +346,7 @@ public class AdminController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				Result<DictItem> item = dictService.getDictItemsById(id);
+				Result<DictItem> item = readerDictService.getDictItemsById(id);
 				if (item.isSucceed()) {
 
 					if (item.getData().getIsFixed() && !getLoginUser().hasAnyRole(LoginUser.ROLE_ROOT)) {
@@ -349,7 +355,7 @@ public class AdminController extends BaseController {
 						return;
 					}
 
-					GeneralResult r = dictService.deleteDictItem(id);
+					GeneralResult r = writerDictService.deleteDictItem(id);
 					ps.setResult(r);
 				}
 			}

@@ -37,10 +37,10 @@ import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
-import org.kayura.uasp.executor.FileUploadProvider;
 import org.kayura.uasp.models.UploadItem;
 import org.kayura.uasp.po.FileFolder;
 import org.kayura.uasp.po.FileShare;
+import org.kayura.uasp.provider.FileUploadProvider;
 import org.kayura.uasp.service.FileService;
 import org.kayura.uasp.vo.FileContentUpdate;
 import org.kayura.uasp.vo.FileDownload;
@@ -75,7 +75,10 @@ public class FileController extends BaseController {
 	private FileUploadProvider uploadProvider;
 
 	@Autowired
-	private FileService fileService;
+	private FileService writerFileService;
+	
+	@Autowired
+	private FileService readerFileService;
 
 	public FileController() {
 		this.setViewRootPath("views/file/");
@@ -136,7 +139,7 @@ public class FileController extends BaseController {
 						}
 
 						// 保存数据至数据库.
-						Result<FileUploadResult> gr = fileService.upload(fu);
+						Result<FileUploadResult> gr = writerFileService.upload(fu);
 						FileUploadResult ur = gr.getData();
 
 						// 如果没有该文件记录,将保存一份新文件至磁盘.
@@ -186,7 +189,7 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/get", method = RequestMethod.GET)
 	public void getFile(@RequestParam("id") List<String> ids, HttpServletRequest req, HttpServletResponse res) {
 
-		Result<List<FileDownload>> r = fileService.download(ids);
+		Result<List<FileDownload>> r = readerFileService.download(ids);
 		if (r.isSucceed()) {
 
 			List<FileDownload> fdlst = r.getData();
@@ -238,8 +241,7 @@ public class FileController extends BaseController {
 								if (srcFile.isFile() && srcFile.exists()) {
 
 									String fn = fd.getFileName();
-									int count = (int) fileNames.stream().filter(c -> c.equals(fd.getFileName()))
-											.count();
+									int count = (int) fileNames.stream().filter(c -> c.equals(fd.getFileName())).count();
 									if (count > 0) {
 										if (fn.indexOf(".") >= 0) {
 											String onlyName = fn.substring(0, fn.lastIndexOf("."));
@@ -344,7 +346,7 @@ public class FileController extends BaseController {
 						List<String> ids = new ArrayList<String>();
 						ids.add(id);
 
-						Result<List<FileDownload>> rd = fileService.download(ids);
+						Result<List<FileDownload>> rd = readerFileService.download(ids);
 						if (rd.isSucceed()) {
 
 							FileDownload fd = rd.getData().stream().findFirst().get();
@@ -370,7 +372,7 @@ public class FileController extends BaseController {
 									fcu.setFileSize(file.getSize());
 								}
 
-								fileService.updateContent(fcu);
+								writerFileService.updateContent(fcu);
 							} else {
 								r.setFalied("此文件不允许修改。");
 							}
@@ -437,7 +439,7 @@ public class FileController extends BaseController {
 
 					if (id.length() == 32) {
 
-						Result<List<FileFolder>> r = fileService.findChildFolders(id);
+						Result<List<FileFolder>> r = readerFileService.findChildFolders(id);
 						if (r.isSucceed()) {
 
 							List<FileFolder> childFolders = r.getData();
@@ -454,7 +456,7 @@ public class FileController extends BaseController {
 					}
 				} else {
 
-					Result<List<FileFolder>> r = fileService.findFolders(user.getUserId(), user.hasRoot());
+					Result<List<FileFolder>> r = readerFileService.findFolders(user.getUserId(), user.hasRoot());
 					if (r.isSucceed()) {
 
 						List<FileFolder> folders = r.getData();
@@ -569,7 +571,7 @@ public class FileController extends BaseController {
 							}
 
 							// 添加 [同事的分享]
-							List<FileShare> shares = fileService
+							List<FileShare> shares = readerFileService
 									.findFileShares(user.getUserId(), FileShare.SHARETYPES_FOLDER).getData();
 							if (FOLDERTYPE_MANAGE.equals(type) && !shares.isEmpty()) {
 
@@ -672,7 +674,7 @@ public class FileController extends BaseController {
 
 		ModelAndView mv = null;
 
-		Result<FileFolder> r = fileService.getFolderById(id);
+		Result<FileFolder> r = readerFileService.getFolderById(id);
 		if (r.isSucceed()) {
 			mv = this.view("folderedit");
 			mv.addObject("model", r.getData());
@@ -691,7 +693,7 @@ public class FileController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				GeneralResult r = fileService.removeFolder(folderId);
+				GeneralResult r = writerFileService.removeFolder(folderId);
 				ps.setResult(r);
 			}
 		});
@@ -707,7 +709,7 @@ public class FileController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				GeneralResult r = fileService.moveToFolder(ids, folderId, user.getUserId());
+				GeneralResult r = writerFileService.moveToFolder(ids, folderId, user.getUserId());
 				ps.setResult(r);
 			}
 		});
@@ -723,7 +725,7 @@ public class FileController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				GeneralResult r = fileService.copyToFolder(ids, folderId, user.getUserId());
+				GeneralResult r = writerFileService.copyToFolder(ids, folderId, user.getUserId());
 				ps.setResult(r);
 			}
 		});
@@ -746,7 +748,7 @@ public class FileController extends BaseController {
 					model.setCreatorId(user.getUserId());
 				}
 
-				GeneralResult r = fileService.saveFolder(model);
+				GeneralResult r = writerFileService.saveFolder(model);
 				if (r.isSucceed()) {
 					ps.setCode(Result.SUCCEED);
 					ps.setData(MapUtils.make("id", r.get("folderId")));
@@ -776,7 +778,7 @@ public class FileController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				GeneralResult r = fileService.removeFiles(ids, user.getUserId(), isBiz);
+				GeneralResult r = writerFileService.removeFiles(ids, user.getUserId(), isBiz);
 				ps.setResult(r);
 			}
 		});
@@ -811,7 +813,7 @@ public class FileController extends BaseController {
 					if (folderId.startsWith("SHARER" + NODEID_SPLIT)) {
 
 						String sharerId = folderId.split(NODEID_SPLIT)[1];
-						r = fileService.findFilesByShare(sharerId, user.getUserId(), pp);
+						r = readerFileService.findFilesByShare(sharerId, user.getUserId(), pp);
 					} else {
 
 						if (folderId.equals("NOTCLASSIFIED")) {
@@ -821,7 +823,7 @@ public class FileController extends BaseController {
 							id = folderId;
 						}
 
-						r = fileService.findFilesByFolder(id, uploaderId, pp);
+						r = readerFileService.findFilesByFolder(id, uploaderId, pp);
 					}
 
 					if (r.isSucceed()) {
@@ -838,7 +840,7 @@ public class FileController extends BaseController {
 
 				} else if (!StringUtils.isEmpty(bizId)) {
 
-					Result<List<FileListItem>> r = fileService.findFilesByBiz(bizId, category, tags);
+					Result<List<FileListItem>> r = readerFileService.findFilesByBiz(bizId, category, tags);
 
 					if (r.isSucceed()) {
 						List<FileListItem> items = r.getData();
