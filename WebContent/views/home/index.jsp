@@ -13,6 +13,11 @@
 		js/juasp-core.js
 		js/juasp-easyui.js
 	</k:resources>
+	<script type="text/javascript">
+	$(function(){
+		juasp.openTab('首页', '${root}/portal', 'icon-home', false);
+	});
+	</script>
 </head>
 <k:body layout="true">
 	<k:dock region="north" style="height: 60px">
@@ -40,9 +45,6 @@
 	</k:dock>
 	<k:dock region="center">
 		<k:tabs id="mainTabs" fit="true" border="false">
-			<k:tabpage id="homePage" title="首页" iconCls="icon-home" style="padding: 0px;overflow:hidden;">
-				<iframe frameborder="0" style="width:100%;height:100%;" src="" scrolling="auto" name="contentframe"></iframe>
-			</k:tabpage>
 		</k:tabs>
 	</k:dock>
 </k:body>

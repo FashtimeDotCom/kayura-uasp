@@ -7,11 +7,9 @@
 <link rel="stylesheet" type="text/css" href="${root}/res/easyui/themes/icon.css">
 <script type="text/javascript" src="${root}/res/js/jquery.min.js"></script>
 <script type="text/javascript" src="${root}/res/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${root}/res/easyui/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="${root}/res/easyui/plugins/jquery.portal.js"></script>
-<style type="text/css">
-.t-list { padding: 5px; }
-</style>
+<script type="text/javascript" src="${root}/res/easyui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${root}/res/easyui/jquery.portal.js"></script>
+
 <script type="text/javascript">
 	$(function() {
 		$('#pp').portal({
@@ -48,8 +46,7 @@
 	<div region="center" border="false">
 		<div id="pp" style="position: relative">
 			<div style="width: 65%;">
-				<div id="pgrid" title="DataGrid" closable="true"
-					style="height: 200px;">
+				<div id="pgrid" title="任务中心" closable="true" style="height: 200px;">
 					<table class="easyui-datagrid" style="width: 650px; height: auto" method="GET"
 						fit="true" border="false" singleSelect="true" idField="itemid" fitColumns="true"
 						url="${root}/res/easyui/jsondata/datagrid_data.json">
@@ -65,15 +62,13 @@
 						</thead>
 					</table>
 				</div>
-				<div title="Graph" closable="true"
-					style="height: 200px; text-align: center;"></div>
+				<div title="工作" closable="true" style="height: 200px; text-align: center;">
+				</div>
 			</div>
 			<div style="width: 35%;">
-				<div title="Clock"
-					style="text-align: center; background: #f3eeaf; height: 150px; padding: 5px;">
+				<div title="消息提醒" style="text-align: center; height: 150px; padding: 5px;">
 				</div>
-				<div title="Tutorials" collapsible="true" closable="true"
-					style="height: 200px; padding: 5px;">
+				<div title="我的订阅" collapsible="true" closable="true" style="height: 200px; padding: 5px;">
 					<div class="t-list">
 						<a href="http://www.jeasyui.com/tutorial/datagrid/datagrid1.php">Build
 							border layout for Web Pages</a>
@@ -99,9 +94,8 @@
 							XP style left panel</a>
 					</div>
 				</div>
-				<div title="Searching" iconCls="icon-search" closable="true"
-					style="height: 80px; padding: 10px;">
-					<input class="easyui-searchbox">
+				<div title="搜索中心" iconCls="icon-search" closable="true" style="height: 80px; padding: 10px;">
+					<input class="easyui-searchbox" style="width: 80%">
 				</div>
 			</div>
 		</div>

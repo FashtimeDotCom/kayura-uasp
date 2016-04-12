@@ -311,22 +311,25 @@ juasp = {
 	 * @param {String} url 指定打开的链接地址.
 	 * @param {String} icon 选项卡图标(暂不可用).
 	 */
-	function _openTab(title, url, iconCls) {
+	function _openTab(title, url, iconCls, closable) {
 
 		/* 取到选项卡的jquery对象 */
 		var tab = $top("#mainTabs");
-
+		
 		/* 判断指定标题的选项卡是否存在,存在则显示它 */
 		if (tab.tabs('exists', title)) {
 			tab.tabs('select', title);
 		} else {
+			if(_isEmpty(closable)){
+				closable = true;
+			}
 			var content = '<iframe name="contentframe" scrolling="no" frameborder="0" src="'
 					+ url + '" style="width:100%;height:100%;"></iframe>';
 			tab.tabs('add', {
 				title : title,
 				content : content,
 				iconCls : iconCls,
-				closable : true
+				closable : closable
 			});
 			tab.find(".panel-body").last().css("overflow", "hidden");
 		}
