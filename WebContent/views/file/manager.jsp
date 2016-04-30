@@ -31,7 +31,7 @@
 
 			var uploader = null;
 			var isfirst = true;
-			var selectRoot, selectNode;
+			var selectRoot = null, selectNode = null;
 	
 			// 页面的动作状态.
 			var actions = {
@@ -156,6 +156,8 @@
 
 			function _clickNode(root, node) {
 
+				if(selectNode != null && selectNode.id == node.id) return;
+				
 				selectRoot = root;
 				selectNode = node;
 
@@ -400,16 +402,16 @@
 				<k:linkbutton id="sharefile" onClick="jctx.sharefile()" disabled="true" iconCls="icon-share" plain="true" text="分享" />
 				</c:if>
 			</div>
-			<div id="mm" class="easyui-menu" style="width: 120px;">
-				<div id="addfolder" onclick="jctx.createfolder()" data-options="iconCls:'icon-addfolder'">添加</div>
-				<div id="removefolder" onclick="jctx.removefolder()" data-options="iconCls:'icon-remove'">移除</div>
+			<k:menu id="mm" style="width:120px">
+				<k:menuitem id="addfolder" onClick="jctx.createfolder()" iconCls="icon-addfolder">添加</k:menuitem>
+				<k:menuitem id="removefolder" onClick="jctx.removefolder()" iconCls="icon-remove">移除</k:menuitem>
 				<c:if test="${hasRoot == false}">
-				<div id="sharefolder" onclick="jctx.sharefolder()" data-options="iconCls:'icon-share'">分享</div>
+				<k:menuitem id="sharefolder" onClick="jctx.sharefolder()" iconCls="icon-share">分享</k:menuitem>
 				</c:if>
-				<div class="menu-sep"></div>
-				<div onclick="expand()">展开</div>
-				<div onclick="collapse()">收缩</div>
-			</div>
+				<k:menuitem isSeparator="true" />
+				<k:menuitem onClick="expand()">展开</k:menuitem>
+				<k:menuitem onClick="collapse()">收缩</k:menuitem>
+			</k:menu>
 		</k:dock>
 	</k:layout>
 	</k:dock>

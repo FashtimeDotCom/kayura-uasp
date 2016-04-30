@@ -5,16 +5,6 @@
 
 <k:section name="head">
 	<script type="text/javascript">
-	
-		$(function() {
-			$('#tv').tree({
-				url : "${root}/file/folders.json?t=select",
-				animate : true,
-				onClick : function(node) {
-					jctx.buttonState(node.id);
-				}
-			});
-		});
 
 		jctx = (function(win, $) {
 
@@ -55,17 +45,12 @@
 </k:section>
 
 <k:section name="body">
-	<k:dock region="center" border="false" style="padding: 5px">
-		<ul id="tv" class="easyui-tree"></ul>
-	</k:dock>
-	<k:dock region="south" border="false" style="height: 35px; padding: 5px;">
-		<div style="text-align: right;">
-			<k:linkbutton id='ok' onclick="jctx.confirm();" iconCls="icon-ok"
-				style="width:75px" text="确认" />
-			<k:linkbutton id='cancel' onclick="juasp.closeWin({result:0});"
-				iconCls="icon-cancel" style="width:75px; margin-left: 5px" text="取消" />
-		</div>
-	</k:dock>
+	<k:tree id="tv" url="${root}/file/folders.json?t=select" animate="true" onClick="(n)jctx.buttonState(n.id);" />
 </k:section>
 
-<%@ include file="/shared/_simple.jsp"%>
+<k:section name="tool">
+	<k:linkbutton id='ok' onClick="jctx.confirm();" iconCls="icon-ok" style="width:75px" text="确认" />
+	<k:linkbutton id='cancel' onClick="juasp.closeWin({result:0});" iconCls="icon-cancel" style="width:75px;" text="取消" />
+</k:section>
+
+<%@ include file="/views/shared/_dialog.jsp"%>

@@ -23,6 +23,7 @@
 	</mvc:annotation-driven>
 
 	<mvc:resources mapping="/res/**" location="/res/" />
+	<mvc:resources mapping="/views/**/*.js" location="/views/" />
 
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/" />

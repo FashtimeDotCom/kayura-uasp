@@ -18,8 +18,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/gm")
 public class GeneralController extends BaseController {
 
-	public GeneralController() {
-		this.setViewRootPath("views/general/");
-	}
-
 }

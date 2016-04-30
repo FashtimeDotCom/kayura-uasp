@@ -8,9 +8,9 @@
 		function submitForm() {
 			
 			$('#ff').form('submit', {
-				url : '${root}/file/folder/save',
-				success : function(data) {
-					var r = eval('(' + data + ')'); 
+				url : '${root}/file/folder/save.json',
+				success : function(r) {
+					//var r = eval('(' + data + ')'); 
 					var t =  $("#name").textbox("getValue");
 					juasp.closeWin({result: 1, 'id': r.data.id, text: t});
 				}
@@ -24,38 +24,37 @@
 </k:section>
 
 <k:section name="body">
-	<div class="easyui-panel" border="false" style="padding: 10px 40px 10px 40px; ">
-		<form id="ff" class="easyui-form" method="post">
-			<input type="hidden" name="folderId" value="${model.folderId}" />
-			<input type="hidden" name="parentId" value="${model.parentId}" />
-			<input type="hidden" name="groupId" value="${model.groupId}" />
-			<table cellpadding="5">
-				<tr>
-					<td>上级文件夹:</td>
-					<td>${model.parentName}</td>
-				</tr>
-				<tr>
-					<td>文件夹名称:</td>
-					<td><input class="easyui-textbox" id="name" name="name" style="width:180px" value="${model.name}" data-options="required:true,validType:'length[1,32]'"></input></td>
-				</tr>
-				<tr>
-					<td>隐藏的目录:</td>
-					<td>
-					<c:if test="${model.hidden==true}">
-					<input type="checkbox" name="hidden" checked></input>
-					</c:if>
-					<c:if test="${model.hidden==false}">
-					<input type="checkbox" name="hidden"></input>
-					</c:if>
-					</td>
-				</tr>
-			</table>
-		</form>
-		<div style="text-align: center; padding: 5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" style="width: 75px" onclick="submitForm()">提交</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" style="width: 75px" onclick="clearForm()">取消</a>
-		</div>
-	</div>
+	<form id="ff" class="easyui-form" method="post">
+		<input type="hidden" name="folderId" value="${model.folderId}" />
+		<input type="hidden" name="parentId" value="${model.parentId}" />
+		<input type="hidden" name="groupId" value="${model.groupId}" />
+		<table cellpadding="5">
+			<tr>
+				<td>上级文件夹:</td>
+				<td>${model.parentName}</td>
+			</tr>
+			<tr>
+				<td>文件夹名称:</td>
+				<td><input class="easyui-textbox" id="name" name="name" style="width:180px" value="${model.name}" data-options="required:true,validType:'length[1,32]'"></input></td>
+			</tr>
+			<tr>
+				<td>隐藏的目录:</td>
+				<td>
+				<c:if test="${model.hidden==true}">
+				<input type="checkbox" name="hidden" checked></input>
+				</c:if>
+				<c:if test="${model.hidden==false}">
+				<input type="checkbox" name="hidden"></input>
+				</c:if>
+				</td>
+			</tr>
+		</table>
+	</form>
 </k:section>
 
-<%@ include file="/views/shared/_editor.jsp"%>
+<k:section name="tool">
+	<k:linkbutton style="width:75px" iconCls="icon-ok" onClick="submitForm()" text="提交" />
+	<k:linkbutton style="width:75px" iconCls="icon-cancel" onClick="juasp.closeWin(0)" text="取消" />
+</k:section>
+
+<%@ include file="/views/shared/_dialog.jsp"%>

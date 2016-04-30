@@ -18,14 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MockController extends BaseController {
 
-	public MockController() {
-		this.setViewRootPath("views/mock/");
-	}
-
 	@RequestMapping(value = "/mock/fileup", method = RequestMethod.GET)
 	public ModelAndView fileUpload() {
 
-		return this.view("fileup");
+		return this.view("views/mock/fileup");
 	}
 
 }

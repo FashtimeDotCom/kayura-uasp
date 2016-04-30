@@ -49,14 +49,10 @@ public class OrganizController extends BaseController {
 	@Autowired
 	private OrganizService readerOrganizService;
 
-	public OrganizController() {
-		this.setViewRootPath("views/org/");
-	}
-
 	@RequestMapping(value = "/manager", method = RequestMethod.GET)
 	public ModelAndView fileUpload() {
 
-		ModelAndView mv = this.view("manager");
+		ModelAndView mv = this.view("views/org/manager");
 
 		return mv;
 	}
@@ -84,9 +80,9 @@ public class OrganizController extends BaseController {
 					parentId = null;
 				}
 
-				Result<List<OrganizItem>> r = readerOrganizService.findOrgTree(user.getTenantId(), parentId);
 				List<TreeNode> roots = new ArrayList<TreeNode>();
-
+				
+				Result<List<OrganizItem>> r = readerOrganizService.findOrgTree(user.getTenantId(), parentId);
 				if (r.isSucceed()) {
 
 					List<OrganizItem> items = r.getData();
@@ -204,7 +200,7 @@ public class OrganizController extends BaseController {
 		company.setParentId(parentId);
 		company.setParentName(parentName);
 
-		ModelAndView mv = this.view("companyedit");
+		ModelAndView mv = this.view("views/org/companyedit");
 		mv.addObject("model", company);
 		return mv;
 	}
@@ -215,7 +211,7 @@ public class OrganizController extends BaseController {
 		Result<Company> r = readerOrganizService.getCompanyById(id);
 		if (r.isSucceed()) {
 
-			ModelAndView mv = this.view("companyedit");
+			ModelAndView mv = this.view("views/org/companyedit");
 			mv.addObject("model", r.getData());
 			return mv;
 		} else {

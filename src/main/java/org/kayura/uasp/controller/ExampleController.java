@@ -38,13 +38,9 @@ public class ExampleController extends BaseController {
 	@Autowired
 	private ExampleService exampleService;
 
-	public ExampleController() {
-		this.setViewRootPath("views/example/");
-	}
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index() {
-		return viewResult("index");
+		return "views/example/index";
 	}
 
 	/* Jsp Tags */
@@ -92,7 +88,7 @@ public class ExampleController extends BaseController {
 	@RequestMapping(value = "tags/tree", method = RequestMethod.GET)
 	public ModelAndView treeTagTest() {
 
-		ModelAndView mv = this.view("tags/tree");
+		ModelAndView mv = this.view("views/example/tags/tree");
 
 		List<TreeNode> data = makeTreeDate();
 		mv.addObject("data", data);
@@ -108,7 +104,7 @@ public class ExampleController extends BaseController {
 	@RequestMapping(value = "tags/panel", method = RequestMethod.GET)
 	public ModelAndView panelTagTest() {
 
-		ModelAndView mv = this.view("tags/panel");
+		ModelAndView mv = this.view("views/example/tags/panel");
 
 		Map<String, Object> query = new HashMap<String, Object>();
 		query.put("pid", KeyUtils.newId());
@@ -121,7 +117,7 @@ public class ExampleController extends BaseController {
 	@RequestMapping(value = "tags/tabs", method = RequestMethod.GET)
 	public ModelAndView tagsTagTest() {
 
-		ModelAndView mv = this.view("tags/tabs");
+		ModelAndView mv = this.view("views/example/tags/tabs");
 
 		return mv;
 	}
@@ -129,7 +125,7 @@ public class ExampleController extends BaseController {
 	@RequestMapping(value = "tags/acc", method = RequestMethod.GET)
 	public ModelAndView accTagTest() {
 
-		ModelAndView mv = this.view("tags/acc");
+		ModelAndView mv = this.view("views/example/tags/acc");
 
 		return mv;
 	}
@@ -137,7 +133,7 @@ public class ExampleController extends BaseController {
 	@RequestMapping(value = "tags/form", method = RequestMethod.GET)
 	public ModelAndView formTagTest() {
 
-		ModelAndView mv = this.view("tags/form");
+		ModelAndView mv = this.view("views/example/tags/form");
 
 		return mv;
 	}
@@ -145,7 +141,7 @@ public class ExampleController extends BaseController {
 	@RequestMapping(value = "tags/grid", method = RequestMethod.GET)
 	public ModelAndView gridTagTest() {
 
-		ModelAndView mv = this.view("tags/grid");
+		ModelAndView mv = this.view("views/example/tags/grid");
 
 		return mv;
 	}
@@ -153,7 +149,7 @@ public class ExampleController extends BaseController {
 	@RequestMapping(value = "tags/win", method = RequestMethod.GET)
 	public ModelAndView winTagTest() {
 
-		ModelAndView mv = this.view("tags/win");
+		ModelAndView mv = this.view("views/example/tags/win");
 
 		return mv;
 	}
@@ -161,7 +157,7 @@ public class ExampleController extends BaseController {
 	@RequestMapping(value = "tags/base", method = RequestMethod.GET)
 	public ModelAndView baseitemsTagTest() {
 
-		ModelAndView mv = this.view("tags/base");
+		ModelAndView mv = this.view("views/example/tags/base");
 
 		List<MenuItem> menus = new ArrayList<MenuItem>();
 
@@ -191,7 +187,7 @@ public class ExampleController extends BaseController {
 
 	@RequestMapping(value = "/htmlconvert", method = RequestMethod.GET)
 	public String htmlconvert() {
-		return viewResult("htmlconvert");
+		return "views/example/htmlconvert";
 	}
 
 	/* General Example */
@@ -231,54 +227,54 @@ public class ExampleController extends BaseController {
 
 	@RequestMapping(value = "general/basiclist", method = RequestMethod.GET)
 	public String generalbasiclist() {
-		return viewResult("general/basiclist");
+		return "views/example/general/basiclist";
 	}
 
 	@RequestMapping(value = "general/basicedit", method = RequestMethod.GET)
 	public String generalbasicedit() {
-		return viewResult("general/basicedit");
+		return "views/example/general/basicedit";
 	}
 
 	/* EasyUI Example */
 
 	@RequestMapping(value = "easyui/datagrid", method = RequestMethod.GET)
 	public String datagrid() {
-		return viewResult("easyui/datagrid/index");
+		return "views/example/easyui/datagrid/index";
 	}
 
 	@RequestMapping(value = "easyui/datagridbasic", method = RequestMethod.GET)
 	public String datagridbasic() {
-		return viewResult("easyui/datagrid/basic");
+		return "views/example/easyui/datagrid/basic";
 	}
 
 	@RequestMapping(value = "easyui/datagridcacheeditor", method = RequestMethod.GET)
 	public String datagridcacheeditor() {
-		return viewResult("easyui/datagrid/cacheeditor");
+		return "views/example/easyui/datagrid/cacheeditor";
 	}
 
 	@RequestMapping(value = "easyui/datagridcellediting", method = RequestMethod.GET)
 	public String datagridcellediting() {
-		return viewResult("easyui/datagrid/cellediting");
+		return "views/example/easyui/datagrid/cellediting";
 	}
 
 	@RequestMapping(value = "easyui/datagridcellstyle", method = RequestMethod.GET)
 	public String datagridcellstyle() {
-		return viewResult("easyui/datagrid/cellstyle");
+		return "views/example/easyui/datagrid/cellstyle";
 	}
 
 	@RequestMapping(value = "easyui/datagridcheckbox", method = RequestMethod.GET)
 	public String datagridcheckbox() {
-		return viewResult("easyui/datagrid/checkbox");
+		return "views/example/easyui/datagrid/checkbox";
 	}
 
 	@RequestMapping(value = "easyui/datagridcolumngroup", method = RequestMethod.GET)
 	public String datagridcolumngroup() {
-		return viewResult("easyui/datagrid/columngroup");
+		return "views/example/easyui/datagrid/columngroup";
 	}
 
 	@RequestMapping(value = "easyui/datagridcomplextoolbar", method = RequestMethod.GET)
 	public String datagridcomplextoolbar() {
-		return viewResult("easyui/datagrid/complextoolbar");
+		return "views/example/easyui/datagrid/complextoolbar";
 	}
 
 }

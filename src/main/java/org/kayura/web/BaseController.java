@@ -17,7 +17,6 @@ import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
-import org.kayura.utils.PathUtils;
 import org.kayura.web.ui.UISupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,11 +34,6 @@ public class BaseController {
 	protected UISupport ui;
 
 	protected ObjectMapper objectMapper = new ObjectMapper();
-	protected String viewRootPath;
-
-	protected void setViewRootPath(String viewRootPath) {
-		this.viewRootPath = viewRootPath;
-	}
 
 	/***
 	 * 用于从提供请求信息中获取分页信息.
@@ -65,17 +59,6 @@ public class BaseController {
 		ui.putData(model, pageList);
 	}
 
-	/**
-	 * 创建一个视图页的路径.
-	 * 
-	 * @param viewName 视图文件名.
-	 * @return 返回 viewRootPath下的视图名的.
-	 */
-	public String viewResult(String viewName) {
-
-		return PathUtils.merge(viewRootPath, viewName);
-	}
-
 	public ModelAndView errorPage(Exception ex) {
 
 		return errorPage(ex.getMessage(), ex.toString());
@@ -97,7 +80,7 @@ public class BaseController {
 
 	public ModelAndView view(String viewName) {
 
-		return new ModelAndView(PathUtils.merge(viewRootPath, viewName));
+		return new ModelAndView(viewName);
 	}
 
 	public ModelAndView view(String viewName, Map<String, Object> model) {

@@ -9,7 +9,7 @@
 
 <!-- 编辑内容区域 body -->
 <k:section name="body">
-	<k:form id="ff" url="${root}/org/save.json" success="juasp.closeWin(1)">
+	<k:form id="ff" url="${root}/company/save.json" success="juasp.closeWin(1)">
 		<k:hidden id="companyId" value="${model.companyId}"/>
 		<table cellpadding="5">
 			<tr>

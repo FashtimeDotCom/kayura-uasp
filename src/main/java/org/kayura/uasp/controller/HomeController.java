@@ -39,22 +39,18 @@ public class HomeController extends BaseController {
 	@Autowired
 	private SessionRegistry sessionRegistry;
 
-	public HomeController() {
-		this.setViewRootPath("views/home/");
-	}
-
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Map<String, Object> model) {
 
 		model.put("numUsers", sessionRegistry.getAllPrincipals().size());
 		model.put("loginName", this.getLoginUser().getDisplayName());
-		return view("index", model);
+		return view("views/home/index", model);
 	}
 
 	@RequestMapping(value = "/info", method = RequestMethod.GET)
 	public String info() {
 
-		return viewResult("info");
+		return "views/home/info";
 	}
 
 	@RequestMapping(value = "/res/vc", method = RequestMethod.GET)
@@ -84,11 +80,12 @@ public class HomeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(String error, String logout, String expired, String inavlid, String tid,
-			Map<String, Object> map, HttpServletRequest req) {
+	public ModelAndView login(String error, String logout, String expired, String inavlid, String tid,
+			HttpServletRequest req) {
+
+		ModelAndView mv = new ModelAndView("views/home/login");
 
 		HttpSession session = req.getSession(true);
-
 		if (req.getParameterMap().containsKey("tid")) {
 			if (StringUtils.isEmpty(tid)) {
 				session.removeAttribute("tenantId");
@@ -102,24 +99,25 @@ public class HomeController extends BaseController {
 		if (error != null) {
 
 			if (error.equals("1")) {
-				map.put("message", "用户名或密码错误，请重新输入。");
+				mv.addObject("message", "用户名或密码错误，请重新输入。");
 			} else if (error.equals("2")) {
-				map.put("message", "输入的验证码错误。");
+				mv.addObject("message", "输入的验证码错误。");
 			}
 
 			session.setAttribute("needvc", true);
 
 		} else if (logout != null) {
-			map.put("message", "已经成功退出系统。");
+			mv.addObject("message", "已经成功退出系统。");
 		} else if (expired != null) {
-			map.put("message", "您当前的登录已经失效。");
+			mv.addObject("message", "您当前的登录已经失效。");
 		} else if (inavlid != null) {
-			map.put("message", "因您长时间未使用，需重新登录。");
+			mv.addObject("message", "因您长时间未使用，需重新登录。");
 		}
 
-		map.put("tid", tid);
-		map.put("runMode", runMode);
-		return viewResult("login");
+		mv.addObject("tid", tid);
+		mv.addObject("runMode", runMode);
+
+		return mv;
 	}
 
 	@ModelAttribute("activeUsers")
@@ -148,7 +146,7 @@ public class HomeController extends BaseController {
 	@RequestMapping(value = "/portal", method = RequestMethod.GET)
 	public String portal() {
 
-		return viewResult("portal");
+		return "views/home/portal";
 	}
 
 }

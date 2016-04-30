@@ -59,7 +59,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -76,13 +75,9 @@ public class FileController extends BaseController {
 
 	@Autowired
 	private FileService writerFileService;
-	
+
 	@Autowired
 	private FileService readerFileService;
-
-	public FileController() {
-		this.setViewRootPath("views/file/");
-	}
 
 	/**
 	 * 文件上传请求地址.
@@ -180,14 +175,15 @@ public class FileController extends BaseController {
 			}
 		});
 
-		return this.viewResult("upload");
+		return "views/file/upload";
 	}
 
 	/**
 	 * 文件下载请求地址.
 	 */
 	@RequestMapping(value = "/file/get", method = RequestMethod.GET)
-	public void getFile(@RequestParam("id") List<String> ids, HttpServletRequest req, HttpServletResponse res) {
+	public void fileDownload(@RequestParam("id") List<String> ids, @RequestParam("t") String title,
+			HttpServletRequest req, HttpServletResponse res) {
 
 		Result<List<FileDownload>> r = readerFileService.download(ids);
 		if (r.isSucceed()) {
@@ -274,7 +270,11 @@ public class FileController extends BaseController {
 						}
 					}
 
-					fileName = "合并下载" + fdlst.size() + "个文件_" + DateUtils.now("yyyyMMddHHmmss") + ".zip";
+					if (StringUtils.isEmpty(title)) {
+						fileName = "合并下载" + fdlst.size() + "个文件_" + DateUtils.now("yyyyMMddHHmmss") + ".zip";
+					} else {
+						fileName = title + ".zip";
+					}
 					res.setContentType("application/octet-stream");
 
 				} else if (fdlst.size() == 1) {
@@ -392,7 +392,7 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/list", method = RequestMethod.GET)
 	public String fileList(HttpServletRequest req, HttpServletResponse res) {
 
-		return this.viewResult("list");
+		return "views/file/list";
 	}
 
 	// 文件管理模块.
@@ -402,7 +402,7 @@ public class FileController extends BaseController {
 
 		LoginUser u = this.getLoginUser();
 
-		ModelAndView mv = this.view("manager");
+		ModelAndView mv = this.view("views/file/manager");
 		mv.addObject("hasRoot", u.hasRoot());
 		mv.addObject("hasAdmin", u.hasAdmin());
 
@@ -644,7 +644,7 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/folder/new", method = RequestMethod.GET)
 	public ModelAndView createFolder(String pid, String pname) {
 
-		ModelAndView mv = this.view("folderedit");
+		ModelAndView mv = this.view("views/file/folderedit");
 
 		FileFolder model = new FileFolder();
 
@@ -676,7 +676,7 @@ public class FileController extends BaseController {
 
 		Result<FileFolder> r = readerFileService.getFolderById(id);
 		if (r.isSucceed()) {
-			mv = this.view("folderedit");
+			mv = this.view("views/file/folderedit");
 			mv.addObject("model", r.getData());
 		} else {
 			mv = this.errorPage(r.getMessage(), "");
@@ -732,8 +732,7 @@ public class FileController extends BaseController {
 	}
 
 	@RequestMapping(value = "/file/folder/save", method = RequestMethod.POST)
-	@ResponseBody
-	public String saveFolder(Map<String, Object> map, FileFolder model) {
+	public void saveFolder(Map<String, Object> map, FileFolder model) {
 
 		LoginUser user = this.getLoginUser();
 
@@ -757,14 +756,12 @@ public class FileController extends BaseController {
 				}
 			}
 		});
-
-		return json(map);
 	}
 
 	@RequestMapping(value = "/file/folder/select", method = RequestMethod.GET)
 	public ModelAndView selectFolder(String sid) {
 
-		ModelAndView mv = this.view("folderselect");
+		ModelAndView mv = this.view("views/file/folderselect");
 		mv.addObject("sid", sid);
 		return mv;
 	}
