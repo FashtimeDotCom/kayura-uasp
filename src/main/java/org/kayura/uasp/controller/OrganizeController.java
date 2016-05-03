@@ -19,8 +19,9 @@ import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.Company;
-import org.kayura.uasp.po.OrganizItem;
-import org.kayura.uasp.service.OrganizService;
+import org.kayura.uasp.po.Department;
+import org.kayura.uasp.po.OrganizeItem;
+import org.kayura.uasp.service.OrganizeService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
@@ -38,18 +39,17 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @Controller
-@RequestMapping("/org")
-public class OrganizController extends BaseController {
+public class OrganizeController extends BaseController {
 
 	static final String NULL = "NULL";
 
 	@Autowired
-	private OrganizService writerOrganizService;
-	
-	@Autowired
-	private OrganizService readerOrganizService;
+	private OrganizeService writerOrganizeService;
 
-	@RequestMapping(value = "/manager", method = RequestMethod.GET)
+	@Autowired
+	private OrganizeService readerOrganizeService;
+
+	@RequestMapping(value = "/org/manager", method = RequestMethod.GET)
 	public ModelAndView fileUpload() {
 
 		ModelAndView mv = this.view("views/org/manager");
@@ -63,7 +63,7 @@ public class OrganizController extends BaseController {
 	 * @param id 值为 null 或 "" 时，获取所有树型数据。 值为 "NULL" 时，仅获取第一层节点数据。 值为 key 时，获取该
 	 *            key 下级子节点。
 	 */
-	@RequestMapping(value = "/tree", method = RequestMethod.POST)
+	@RequestMapping(value = "/org/tree", method = RequestMethod.POST)
 	public void orgTree(Map<String, Object> map, String id) {
 
 		LoginUser user = this.getLoginUser();
@@ -81,11 +81,11 @@ public class OrganizController extends BaseController {
 				}
 
 				List<TreeNode> roots = new ArrayList<TreeNode>();
-				
-				Result<List<OrganizItem>> r = readerOrganizService.findOrgTree(user.getTenantId(), parentId);
+
+				Result<List<OrganizeItem>> r = readerOrganizeService.findOrgTree(user.getTenantId(), parentId);
 				if (r.isSucceed()) {
 
-					List<OrganizItem> items = r.getData();
+					List<OrganizeItem> items = r.getData();
 					if (StringUtils.isEmpty(id) || NULL.equals(id)) {
 
 						TreeNode root = new TreeNode();
@@ -96,9 +96,9 @@ public class OrganizController extends BaseController {
 						root.addAttr("type", 0);
 						roots.add(root);
 
-						List<OrganizItem> rootItems = items.stream().filter(c -> c.getParentId() == null)
+						List<OrganizeItem> rootItems = items.stream().filter(c -> c.getParentId() == null)
 								.collect(Collectors.toList());
-						for (OrganizItem f : rootItems) {
+						for (OrganizeItem f : rootItems) {
 
 							TreeNode n = createNode(f);
 							root.addNode(n);
@@ -106,7 +106,7 @@ public class OrganizController extends BaseController {
 						}
 					} else {
 
-						for (OrganizItem f : items) {
+						for (OrganizeItem f : items) {
 							roots.add(createNode(f));
 						}
 					}
@@ -135,7 +135,7 @@ public class OrganizController extends BaseController {
 		return iconCls;
 	}
 
-	TreeNode createNode(OrganizItem item) {
+	TreeNode createNode(OrganizeItem item) {
 
 		TreeNode n = new TreeNode();
 		n.setId(item.getOrgId());
@@ -151,13 +151,13 @@ public class OrganizController extends BaseController {
 		return n;
 	}
 
-	void appendChildFolders(TreeNode node, List<OrganizItem> items) {
+	void appendChildFolders(TreeNode node, List<OrganizeItem> items) {
 
-		List<OrganizItem> childs = items.stream()
+		List<OrganizeItem> childs = items.stream()
 				.filter(c -> c.getParentId() != null && c.getParentId().equals(node.getId()))
 				.sorted((x, y) -> Integer.compare(y.getOrgType(), x.getOrgType())).collect(Collectors.toList());
 		if (!childs.isEmpty()) {
-			for (OrganizItem f : childs) {
+			for (OrganizeItem f : childs) {
 
 				TreeNode n = createNode(f);
 				node.addNode(n);
@@ -170,7 +170,7 @@ public class OrganizController extends BaseController {
 	 * 获取组织机构树型数据.
 	 * 
 	 */
-	@RequestMapping(value = "/find", method = RequestMethod.POST)
+	@RequestMapping(value = "/org/find", method = RequestMethod.POST)
 	public void findOrgItems(HttpServletRequest req, Map<String, Object> map, String id, String keyword) {
 
 		LoginUser user = this.getLoginUser();
@@ -186,14 +186,14 @@ public class OrganizController extends BaseController {
 					parentId = null;
 				}
 
-				Result<PageList<OrganizItem>> r = readerOrganizService.findOrgItems(user.getTenantId(), parentId, keyword,
-						pp);
+				Result<PageList<OrganizeItem>> r = readerOrganizeService.findOrgItems(user.getTenantId(), parentId,
+						keyword, pp);
 				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
 			}
 		});
 	}
 
-	@RequestMapping(value = "/company/new", method = RequestMethod.GET)
+	@RequestMapping(value = "/org/company/new", method = RequestMethod.GET)
 	public ModelAndView createCompany(@RequestParam("pid") String parentId, @RequestParam("pname") String parentName) {
 
 		Company company = new Company();
@@ -205,10 +205,10 @@ public class OrganizController extends BaseController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/company", method = RequestMethod.GET)
+	@RequestMapping(value = "/org/company", method = RequestMethod.GET)
 	public ModelAndView editCompany(String id) {
 
-		Result<Company> r = readerOrganizService.getCompanyById(id);
+		Result<Company> r = readerOrganizeService.getCompanyById(id);
 		if (r.isSucceed()) {
 
 			ModelAndView mv = this.view("views/org/companyedit");
@@ -219,7 +219,7 @@ public class OrganizController extends BaseController {
 		}
 	}
 
-	@RequestMapping(value = "/company/save", method = RequestMethod.POST)
+	@RequestMapping(value = "/org/company/save", method = RequestMethod.POST)
 	public void saveCompany(HttpServletRequest req, Map<String, Object> map, Company company) {
 
 		postExecute(map, new PostAction() {
@@ -234,13 +234,13 @@ public class OrganizController extends BaseController {
 					LoginUser user = getLoginUser();
 
 					company.setCompanyId(KeyUtils.newId());
-					company.setTenantId(user.getTenantId());
 					company.setStatus(Company.STATUS_ENABLED);
+					company.setTenantId(user.getTenantId());
 
-					r = writerOrganizService.insertCompany(company);
+					r = writerOrganizeService.insertCompany(company);
 				} else {
 
-					r = writerOrganizService.updateCompany(company);
+					r = writerOrganizeService.updateCompany(company);
 				}
 
 				if (r != null) {
@@ -250,7 +250,48 @@ public class OrganizController extends BaseController {
 		});
 	}
 
-	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	/**
+	 * 显示创建一个部门信息页面.
+	 * @param parentId 新部门的上级ID
+	 * @param type 表示上级ID是什么类型: 1 公司;2 部门;
+	 * @param parentName 上级组织显示名.
+	 * @return 
+	 */
+	@RequestMapping(value = "/org/depart/new", method = RequestMethod.GET)
+	public ModelAndView createDepart(@RequestParam("pid") String parentId, @RequestParam("t") String type,
+			@RequestParam("pname") String parentName) {
+
+		Department department = new Department();
+		department.setParentId(parentId);
+		department.setParentName(parentName);
+
+		ModelAndView mv = this.view("views/org/departedit");
+		mv.addObject("model", department);
+		return mv;
+	}
+
+	/**
+	 * 显示创建一个部门信息页面.
+	 * @param parentId 新部门的上级ID
+	 * @param type 表示上级ID是什么类型: 1 公司;2 部门;
+	 * @param parentName 上级组织显示名.
+	 * @return 
+	 */
+	@RequestMapping(value = "/org/depart", method = RequestMethod.GET)
+	public ModelAndView editDepart(String id) {
+
+		Result<Company> r = readerOrganizeService.getCompanyById(id);
+		if (r.isSucceed()) {
+
+			ModelAndView mv = this.view("views/org/companyedit");
+			mv.addObject("model", r.getData());
+			return mv;
+		} else {
+			return this.errorPage("编辑公司信息时异常。", r.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/org/remove", method = RequestMethod.POST)
 	public void removeOrgItem(HttpServletRequest req, Map<String, Object> map, String id) {
 
 		postExecute(map, new PostAction() {

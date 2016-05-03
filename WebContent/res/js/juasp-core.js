@@ -175,6 +175,10 @@ juasp = {
 
 		return value == undefined || value == null || value == "";
 	}
+	
+	function _isString(value) {
+		return (typeof value == 'string') && value.constructor == String;
+	}
 
 	/** 绑定常用方法至引导对象 * */
 
@@ -187,6 +191,7 @@ juasp = {
 	juasp.addUrlParam = _addUrlParam;
 	juasp.newId = _newId;
 	juasp.isEmpty = _isEmpty;
+	juasp.isString = _isString;
 	juasp.bytesToSize = _bytesToSize;
 
 	juasp.SUCCESS = "success";

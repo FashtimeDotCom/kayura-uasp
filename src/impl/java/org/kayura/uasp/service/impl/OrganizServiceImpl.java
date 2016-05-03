@@ -13,11 +13,12 @@ import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
-import org.kayura.uasp.dao.OrganizMapper;
+import org.kayura.uasp.dao.OrganizeMapper;
 import org.kayura.uasp.po.Company;
-import org.kayura.uasp.po.OrganizItem;
-import org.kayura.uasp.service.OrganizService;
+import org.kayura.uasp.po.OrganizeItem;
+import org.kayura.uasp.service.OrganizeService;
 import org.kayura.utils.DateUtils;
+import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,24 +29,24 @@ import org.springframework.stereotype.Service;
  * @author liangxia@live.com
  */
 @Service
-public class OrganizServiceImpl implements OrganizService {
+public class OrganizServiceImpl implements OrganizeService {
 
 	@Autowired
-	private OrganizMapper organizMapper;
+	private OrganizeMapper organizMapper;
 
-	public Result<List<OrganizItem>> findOrgTree(String tenantId, String parentId) {
+	public Result<List<OrganizeItem>> findOrgTree(String tenantId, String parentId) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("tenantId", tenantId);
 		args.put("parentId", parentId);
 
-		List<OrganizItem> items = organizMapper.findOrgTree(args);
+		List<OrganizeItem> items = organizMapper.findOrgTree(args);
 
-		return new Result<List<OrganizItem>>(Result.SUCCEED, items);
+		return new Result<List<OrganizeItem>>(Result.SUCCEED, items);
 	}
 
 	@Override
-	public Result<PageList<OrganizItem>> findOrgItems(String tenantId, String parentId, String keyword,
+	public Result<PageList<OrganizeItem>> findOrgItems(String tenantId, String parentId, String keyword,
 			PageParams pageParams) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
@@ -59,16 +60,14 @@ public class OrganizServiceImpl implements OrganizService {
 			args.put("keyword", "%" + keyword + "%");
 		}
 
-		PageList<OrganizItem> items = organizMapper.findOrgItems(args, new PageBounds(pageParams));
+		PageList<OrganizeItem> items = organizMapper.findOrgItems(args, new PageBounds(pageParams));
 
-		return new Result<PageList<OrganizItem>>(Result.SUCCEED, items);
+		return new Result<PageList<OrganizeItem>>(Result.SUCCEED, items);
 	}
 
 	@Override
 	public GeneralResult removeOrgItem(String orgId) {
 
-		
-		
 		return null;
 	}
 
@@ -86,8 +85,24 @@ public class OrganizServiceImpl implements OrganizService {
 	@Override
 	public GeneralResult insertCompany(Company company) {
 
+		if (StringUtils.isEmpty(company.getCompanyId())) {
+			company.setCompanyId(KeyUtils.newId());
+		}
+
+		if (company.getStatus() == null) {
+			company.setStatus(Company.STATUS_ENABLED);
+		}
+
+		company.setUpdatedTime(DateUtils.now());
 		organizMapper.insertCompany(company);
-		return Result.succeed();
+
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("id", company.getCompanyId());
+
+		GeneralResult r = Result.succeed();
+		r.setData(data);
+
+		return r;
 	}
 
 	@Override

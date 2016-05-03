@@ -4,13 +4,23 @@
 
 <k:section name="head">
 	<script type="text/javascript">
+	function submitForm() {
+		$('#ff').form('submit', {
+			url : '${root}/org/company/save.json',
+			onlySuccess : function(r){
+				var t = $("#shortName").textbox("getValue");
+				juasp.closeWin({result: 1, 'id': r.data.id, text: t});
+			}
+		});
+	}
 	</script>
 </k:section>
 
 <!-- 编辑内容区域 body -->
 <k:section name="body">
-	<k:form id="ff" url="${root}/company/save.json" success="juasp.closeWin(1)">
+	<k:form id="ff">
 		<k:hidden id="companyId" value="${model.companyId}"/>
+		<k:hidden id="parentId" value="${model.parentId}"/>
 		<table cellpadding="5">
 			<tr>
 				<td>上级公司:</td>
@@ -46,7 +56,7 @@
 
 <!-- 工具栏区域 tool -->
 <k:section name="tool">
-	<k:linkbutton style="width:80px" iconCls="icon-ok" onClick="$('#ff').form('submit')" text="提交" />
+	<k:linkbutton style="width:80px" iconCls="icon-ok" onClick="submitForm()" text="提交" />
 	<k:linkbutton style="width:80px" iconCls="icon-cancel" onClick="juasp.closeWin(0)" text="取消" />
 </k:section>
 

@@ -9,8 +9,7 @@
 			
 			$('#ff').form('submit', {
 				url : '${root}/file/folder/save.json',
-				success : function(r) {
-					//var r = eval('(' + data + ')'); 
+				onlySuccess : function(r) {
 					var t =  $("#name").textbox("getValue");
 					juasp.closeWin({result: 1, 'id': r.data.id, text: t});
 				}

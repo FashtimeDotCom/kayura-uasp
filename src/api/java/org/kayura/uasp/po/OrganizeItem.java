@@ -9,7 +9,7 @@ package org.kayura.uasp.po;
  *
  * @author liangxia@live.com
  */
-public class OrganizItem {
+public class OrganizeItem {
 
 	public static final Integer ORGTYPE_COMPANY = 1;
 	public static final Integer ORGTYPE_DEPART = 2;

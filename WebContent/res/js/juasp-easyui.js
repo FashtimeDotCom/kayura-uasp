@@ -50,9 +50,22 @@
 
 	// 重写 jeasyui.form 默认属性.
 	
-/*	$.extend($.fn.form.defaults, {
-		
-	});*/
+	$.extend($.fn.form.defaults, {
+		success : function(d) {
+			var r = d;
+			if (juasp.isString(d)) {
+				r = eval('(' + d + ')');
+			}
+			if (r.type == juasp.SUCCESS) {
+				this.onlySuccess(r);
+			} else if (r.type == juasp.FAILED){
+				juasp.errortips(r.message);
+			} else {
+				juasp.errortips("提交表单时，发生内部异常。");
+			}
+		},
+		onlySuccess: function(data){}
+	});
 
 	// 重写 jeasyui.combotree 默认属性.
 	

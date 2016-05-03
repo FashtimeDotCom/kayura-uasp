@@ -6,15 +6,14 @@ package org.kayura.uasp.po;
 
 import java.util.Date;
 
+import org.kayura.utils.StringUtils;
+
 /**
  * 组织机构 公司实体类型.
  * 
  * @author liangxia@live.com
  */
 public class Company {
-
-	public static final Integer ROWTYPE_CATEOGRY = 0;
-	public static final Integer ROWTYPE_COMPANY = 1;
 
 	public static final Integer STATUS_DISABLED = 0;
 	public static final Integer STATUS_ENABLED = 1;
@@ -37,6 +36,7 @@ public class Company {
 	private Date estaDate;
 	private Integer serial;
 	private Integer status;
+	private Date updatedTime;
 
 	public String getCompanyId() {
 		return companyId;
@@ -47,7 +47,7 @@ public class Company {
 	}
 
 	public String getTenantId() {
-		return tenantId;
+		return !StringUtils.isEmpty(tenantId) ? this.tenantId : null;
 	}
 
 	public void setTenantId(String tenantId) {
@@ -55,7 +55,7 @@ public class Company {
 	}
 
 	public String getParentId() {
-		return parentId;
+		return !StringUtils.isEmpty(parentId) ? this.parentId : null;
 	}
 
 	public void setParentId(String parentId) {
@@ -180,6 +180,14 @@ public class Company {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 
 }

@@ -2,6 +2,7 @@
 jctx = (function(win, $) {
 	
 	var rootPath = "";
+	var isInit = true;
 	var isfirst = true;
 	var searchvalue = "";
 	var actions = {
@@ -21,9 +22,12 @@ jctx = (function(win, $) {
 				_clickNode(node);
 			},
 			onLoadSuccess : function(node, data){
-				$(this).tree("collapseAll");
-				var root = $(this).tree('find', "ROOT");
-				$(this).tree("expand", root.target);
+				if(isInit) {
+					$(this).tree("collapseAll");
+					var root = $(this).tree('find', "ROOT");
+					$(this).tree("expand", root.target);
+					isInit = false;
+				}
 			},
 			onContextMenu: function(e, node){
 				e.preventDefault();
@@ -120,27 +124,84 @@ jctx = (function(win, $) {
 
 		isfirst = false;
 	}
-
-	function _addcompany(){
+	
+	function _editCompany(id){
 		
-		var openUrl = rootPath + "/org/company/new?pid=" + selectNode.id + "&pname=" + selectNode.text;
+		var url = rootPath + "/org/company";
+		
+		if(juasp.isEmpty(id)) {
+			var pid = "";
+			if(selectNode.id != "ROOT" && selectNode.id.length == 32) {
+				pid = selectNode.id;
+			}
+			url = url + "/new?pid=" + pid + "&pname=" + selectNode.text;
+		} else {
+			url = url + "?id=" + id;
+		}
+
+		$('#tv').tree('expand', selectNode.target);
 		juasp.openWin({
-			url : openUrl,
+			url : url,
 			width : "450px",
 			height : "500px",
-			title : "创建公司",
+			title : "公司信息",
 			onClose : function(r) {
 				if (r.result == 1) {
-					
+					if(juasp.isEmpty(id)) {
+						$('#tv').tree('append', {
+							parent : selectNode.target,
+							data : [ {
+								id : r.id,
+								iconCls : 'icon-company',
+								text : r.text,
+								attributes : { type : 1 },
+								children : []
+							} ]
+						});
+					} else {
+						$('#tv').tree('update', {
+							target : node.target,
+							text : r.text
+						});
+					}
 				}
 			}
 		});
+		
+	}
+
+	function _addCompany(){
+		_editCompany();
+	}
+	
+	function _addDepartment(){
+		
+	}
+	
+	function _edit(){
+		
+		if(selectNode != null){
+			
+			// 0 根节点; 1 公司; 2 部门; 3 岗位;
+			var type = selectNode.attributes.type;
+			var id = selectNode.id;
+			
+			if(type == 1) {
+				_editcompany(id);
+			} else if(type == 2) {
+				
+			} else if (type == 3) {
+				
+			}
+		}
+		
 	}
 	
 	return {
 		init : _init,
 		search : _search,
-		addcompany : _addcompany
+		edit : _edit,
+		addCompany : _addCompany
 	}
 
 }(window, jQuery));

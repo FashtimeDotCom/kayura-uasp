@@ -11,12 +11,12 @@ import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.Company;
-import org.kayura.uasp.po.OrganizItem;
+import org.kayura.uasp.po.OrganizeItem;
 
 /**
  * @author liangxia@live.com
  */
-public interface OrganizService {
+public interface OrganizeService {
 
 	/**
 	 * 查询组织机构树型数据.
@@ -25,7 +25,7 @@ public interface OrganizService {
 	 * @param parentId 可选值为 'NULL', null, 值.
 	 * @return
 	 */
-	Result<List<OrganizItem>> findOrgTree(String tenantId, String parentId);
+	Result<List<OrganizeItem>> findOrgTree(String tenantId, String parentId);
 
 	/**
 	 * 以分页的方式获取组织机构数据.
@@ -36,7 +36,7 @@ public interface OrganizService {
 	 * @param pageParams 分页参数信息.
 	 * @return
 	 */
-	Result<PageList<OrganizItem>> findOrgItems(String tenantId, String parentId, String keyword, PageParams pageParams);
+	Result<PageList<OrganizeItem>> findOrgItems(String tenantId, String parentId, String keyword, PageParams pageParams);
 
 	GeneralResult removeOrgItem(String orgId);
 	

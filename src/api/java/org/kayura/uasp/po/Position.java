@@ -7,27 +7,30 @@ package org.kayura.uasp.po;
 import java.util.Date;
 
 /**
- * Department
+ * Position
  *
  * @author liangxia@live.com
  */
-public class Department {
+public class Position {
 
-	public static final Integer STATUS_DISABLED = 0;
-	public static final Integer STATUS_ENABLED = 1;
-
+	private String positionId;
 	private String departmentId;
-	private String parentId;
-	private String parentName;
-	private String companyId;
-	private String companyName;
 	private String tenantId;
 	private String code;
 	private String name;
+	private Integer level;
 	private String description;
 	private Integer serial;
 	private Integer status;
 	private Date updatedTime;
+
+	public String getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(String positionId) {
+		this.positionId = positionId;
+	}
 
 	public String getDepartmentId() {
 		return departmentId;
@@ -37,12 +40,12 @@ public class Department {
 		this.departmentId = departmentId;
 	}
 
-	public String getParentId() {
-		return parentId;
+	public String getTenantId() {
+		return tenantId;
 	}
 
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 	public String getCode() {
@@ -59,6 +62,14 @@ public class Department {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 
 	public String getDescription() {
@@ -85,44 +96,12 @@ public class Department {
 		this.status = status;
 	}
 
-	public String getParentName() {
-		return parentName;
-	}
-
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
-	}
-
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
 
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
-	}
-
-	public String getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
-	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
-	public String getTenantId() {
-		return tenantId;
-	}
-
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
 	}
 
 }
