@@ -174,8 +174,95 @@ jctx = (function(win, $) {
 		_editCompany();
 	}
 	
-	function _addDepartment(){
+	function _editDepart(id){
 		
+		var url = rootPath + "/org/depart";
+		
+		if(juasp.isEmpty(id)) {
+			var pid = selectNode.id;
+			var type = selectNode.attributes.type;
+			var pname = selectNode.text;
+			url = url + "/new?pid=" + selectNode.id + "&t=" + type + "&pname=" + selectNode.text;
+		} else {
+			url = url + "?id=" + id;
+		}
+
+		$('#tv').tree('expand', selectNode.target);
+		juasp.openWin({
+			url : url,
+			width : "450px",
+			height : "500px",
+			title : "部门信息",
+			onClose : function(r) {
+				if (r.result == 1) {
+					if(juasp.isEmpty(id)) {
+						$('#tv').tree('append', {
+							parent : selectNode.target,
+							data : [ {
+								id : r.id,
+								iconCls : 'icon-position',
+								text : r.text,
+								attributes : { type : 3 },
+								children : []
+							} ]
+						});
+					} else {
+						$('#tv').tree('update', {
+							target : node.target,
+							text : r.text
+						});
+					}
+				}
+			}
+		});
+	}
+
+	function _addDepart(){
+		
+		_editDepart();
+	}
+	
+	function _addPosition(id){
+		
+		var url = rootPath + "/org/position";
+		
+		if(juasp.isEmpty(id)) {
+			var pid = selectNode.id;
+			var type = selectNode.attributes.type;
+			var pname = selectNode.text;
+			url = url + "/new?pid=" + selectNode.id + "&t=" + type + "&pname=" + selectNode.text;
+		} else {
+			url = url + "?id=" + id;
+		}
+
+		$('#tv').tree('expand', selectNode.target);
+		juasp.openWin({
+			url : url,
+			width : "450px",
+			height : "500px",
+			title : "公司信息",
+			onClose : function(r) {
+				if (r.result == 1) {
+					if(juasp.isEmpty(id)) {
+						$('#tv').tree('append', {
+							parent : selectNode.target,
+							data : [ {
+								id : r.id,
+								iconCls : 'icon-depart',
+								text : r.text,
+								attributes : { type : 2 },
+								children : []
+							} ]
+						});
+					} else {
+						$('#tv').tree('update', {
+							target : node.target,
+							text : r.text
+						});
+					}
+				}
+			}
+		});
 	}
 	
 	function _edit(){
@@ -187,9 +274,9 @@ jctx = (function(win, $) {
 			var id = selectNode.id;
 			
 			if(type == 1) {
-				_editcompany(id);
+				_editCompany(id);
 			} else if(type == 2) {
-				
+				_editDepart(id);
 			} else if (type == 3) {
 				
 			}
