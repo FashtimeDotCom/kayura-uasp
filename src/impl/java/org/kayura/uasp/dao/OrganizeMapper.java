@@ -43,7 +43,7 @@ public interface OrganizeMapper extends BaseDao {
 
 	// Company
 
-	Company getCompanyById(String id);
+	List<Company> findCompanies(Map<String, Object> args);
 
 	void insertCompany(Company company);
 
@@ -53,7 +53,7 @@ public interface OrganizeMapper extends BaseDao {
 
 	// Department
 
-	Department getDepartmentById(String id);
+	List<Department> findDepartments(Map<String, Object> args);
 
 	void insertDepartment(Department department);
 
@@ -63,12 +63,12 @@ public interface OrganizeMapper extends BaseDao {
 
 	// Position
 
-	Position getPositionById(String id);
+	List<Position> findPositions(Map<String, Object> args);
 
 	void insertPosition(Position department);
 
 	void updatePosition(Map<String, Object> args);
 
-	void deletePositiont(String positionId);
+	void deletePosition(String positionId);
 
 }

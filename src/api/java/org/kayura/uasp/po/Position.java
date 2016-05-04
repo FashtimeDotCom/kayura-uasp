@@ -15,6 +15,7 @@ public class Position {
 
 	private String positionId;
 	private String departmentId;
+	private String departmentName;
 	private String tenantId;
 	private String code;
 	private String name;
@@ -102,6 +103,14 @@ public class Position {
 
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 
 }

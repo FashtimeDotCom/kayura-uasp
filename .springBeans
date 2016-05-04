@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-	<pluginVersion><![CDATA[3.7.1.201510041102-RELEASE]]></pluginVersion>
+	<pluginVersion><![CDATA[3.7.3.201602250914-RELEASE]]></pluginVersion>
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
+		<config>config/datasource-context.xml</config>
+		<config>config/security-context.xml</config>
 	</configs>
 	<autoconfigs>
+		<config>config/root-context.xml</config>
+		<config>config/servlet-context.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

@@ -74,7 +74,10 @@ public class OrganizServiceImpl implements OrganizeService {
 	@Override
 	public Result<Company> getCompanyById(String id) {
 
-		Company company = organizMapper.getCompanyById(id);
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("companyId", id);
+		
+		Company company = organizMapper.findCompanies(args).stream().findAny().orElse(null);
 		if (company == null) {
 			return new Result<Company>(Result.FAILED, "公司 id: " + id + " 不存在。");
 		}
