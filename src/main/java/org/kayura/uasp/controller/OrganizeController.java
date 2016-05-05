@@ -195,7 +195,7 @@ public class OrganizeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/org/remove", method = RequestMethod.POST)
-	public void removeOrgItem(HttpServletRequest req, Map<String, Object> map, String id,
+	public void removeOrgItem(Map<String, Object> map, String id,
 			@RequestParam("t") Integer type) {
 
 		postExecute(map, new PostAction() {

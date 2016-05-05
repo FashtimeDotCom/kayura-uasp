@@ -128,7 +128,7 @@
 			LEFT JOIN uasp_companies AS p ON p.Company_Id = t.Parent_Id
 		<where>
 			<if test="companyId != null">
-				AND ( t.Company_Id = #{value} )
+				AND ( t.Company_Id = #{companyId} )
 			</if>
 			<if test="_parameter.containsKey('parentId')">
 				<choose>
@@ -356,7 +356,7 @@
 	</insert>
 	
 	<update id="updateDepartment" parameterType="map">
-		UPDATE FROM uasp_departments
+		UPDATE uasp_departments
 		<set>
 			<if test="_parameter.containsKey('parentId')">
 				Parent_Id = #{parentId},

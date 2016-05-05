@@ -85,7 +85,7 @@ public class OrganizServiceImpl implements OrganizeService {
 		case 3:
 			args.put("positionId", orgId);
 			organizMapper.deletePosition(args);
-			break;
+			break; 
 		}
 
 		return Result.succeed();

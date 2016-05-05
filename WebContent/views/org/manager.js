@@ -1,6 +1,7 @@
 
 jctx = (function(win, $) {
 	
+	var selectNode = null;
 	var rootPath = "";
 	var isInit = true;
 	var isfirst = true;
@@ -69,27 +70,30 @@ jctx = (function(win, $) {
 
 	function _clickNode(node) {
 
-		selectNode = node;
-		_initActions();
-
-		// 0 根, 1 公司, 2 部门, 3 岗位;
-		var type = node.attributes['type'];
-		if (type == 0) {
-			actions.addcompany = true;
-		} else if (type == 1) {
-			actions.addcompany = true;
-			actions.adddepart = true;
-		} else if (type == 2) {
-			actions.adddepart = true;
-			actions.addposition = true;
+		if(selectNode != node) {
+			
+			selectNode = node;
+			_initActions();
+	
+			// 0 根, 1 公司, 2 部门, 3 岗位;
+			var type = node.attributes['type'];
+			if (type == 0) {
+				actions.addcompany = true;
+			} else if (type == 1) {
+				actions.addcompany = true;
+				actions.adddepart = true;
+			} else if (type == 2) {
+				actions.adddepart = true;
+				actions.addposition = true;
+			}
+	
+			if (type != 0 && node.children.length == 0) {
+				actions.remove = true;
+			}
+	
+			_applyActions(actions);
+			_findItems(node.id);
 		}
-
-		if (type != 0 && node.children.length == 0) {
-			actions.remove = true;
-		}
-
-		_applyActions(actions);
-		_findItems(node.id);
 	}
 
 	function _search(value) {
@@ -294,9 +298,11 @@ jctx = (function(win, $) {
 					var type = selectNode.attributes.type;
 					var id = selectNode.id;
 					
-					juasp.post(rootPath + "/org/remove", { id: id, t: type }, {
+					juasp.post(rootPath + "/org/remove.json", { id: id, t: type }, {
 						success: function(r){
-							$('#tv').tree('remove', { target : node.target });
+							var parentNode = $('#tv').tree('getParent', selectNode.target);
+							$('#tv').tree('remove', selectNode.target);
+							$('#tv').tree('select', parentNode.target);
 							juasp.infotips(selectNode.text + " 已经被删除。");
 						}
 					});
