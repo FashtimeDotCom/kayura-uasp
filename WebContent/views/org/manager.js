@@ -200,9 +200,9 @@ jctx = (function(win, $) {
 							parent : selectNode.target,
 							data : [ {
 								id : r.id,
-								iconCls : 'icon-position',
+								iconCls : 'icon-depart',
 								text : r.text,
-								attributes : { type : 3 },
+								attributes : { type : 2 },
 								children : []
 							} ]
 						});
@@ -248,9 +248,9 @@ jctx = (function(win, $) {
 							parent : selectNode.target,
 							data : [ {
 								id : r.id,
-								iconCls : 'icon-depart',
+								iconCls : 'icon-position',
 								text : r.text,
-								attributes : { type : 2 },
+								attributes : { type : 3 },
 								children : []
 							} ]
 						});
@@ -284,11 +284,35 @@ jctx = (function(win, $) {
 		
 	}
 	
+	function _removeOrg(){
+
+		if(selectNode != null) {
+			
+			juasp.confirm("是否确认删除 " + selectNode.text + " 项。", function(r){
+				if(r == true){
+					// 0 根节点; 1 公司; 2 部门; 3 岗位;
+					var type = selectNode.attributes.type;
+					var id = selectNode.id;
+					
+					juasp.post(rootPath + "/org/remove", { id: id, t: type }, {
+						success: function(r){
+							$('#tv').tree('remove', { target : node.target });
+							juasp.infotips(selectNode.text + " 已经被删除。");
+						}
+					});
+				}
+			});
+			
+		}
+	}
+	
 	return {
 		init : _init,
 		search : _search,
 		edit : _edit,
-		addCompany : _addCompany
+		removeOrg : _removeOrg,
+		addCompany : _addCompany,
+		addDepart : _addDepart
 	}
 
 }(window, jQuery));

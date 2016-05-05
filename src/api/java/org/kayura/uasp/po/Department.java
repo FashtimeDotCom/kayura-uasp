@@ -6,6 +6,8 @@ package org.kayura.uasp.po;
 
 import java.util.Date;
 
+import org.kayura.utils.StringUtils;
+
 /**
  * Department
  *
@@ -38,7 +40,7 @@ public class Department {
 	}
 
 	public String getParentId() {
-		return parentId;
+		return !StringUtils.isEmpty(parentId) ? this.parentId : null;
 	}
 
 	public void setParentId(String parentId) {
@@ -102,7 +104,7 @@ public class Department {
 	}
 
 	public String getCompanyId() {
-		return companyId;
+		return !StringUtils.isEmpty(companyId) ? this.companyId : null;
 	}
 
 	public void setCompanyId(String companyId) {
@@ -118,7 +120,7 @@ public class Department {
 	}
 
 	public String getTenantId() {
-		return tenantId;
+		return !StringUtils.isEmpty(tenantId) ? this.tenantId : null;
 	}
 
 	public void setTenantId(String tenantId) {

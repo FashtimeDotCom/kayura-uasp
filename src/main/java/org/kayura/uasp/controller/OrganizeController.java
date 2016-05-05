@@ -21,6 +21,7 @@ import org.kayura.type.Result;
 import org.kayura.uasp.po.Company;
 import org.kayura.uasp.po.Department;
 import org.kayura.uasp.po.OrganizeItem;
+import org.kayura.uasp.po.Position;
 import org.kayura.uasp.service.OrganizeService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
@@ -193,6 +194,20 @@ public class OrganizeController extends BaseController {
 		});
 	}
 
+	@RequestMapping(value = "/org/remove", method = RequestMethod.POST)
+	public void removeOrgItem(HttpServletRequest req, Map<String, Object> map, String id,
+			@RequestParam("t") Integer type) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+				GeneralResult r = writerOrganizeService.removeOrgItem(id, type);
+				ps.setResult(r);
+			}
+		});
+	}
+
 	@RequestMapping(value = "/org/company/new", method = RequestMethod.GET)
 	public ModelAndView createCompany(@RequestParam("pid") String parentId, @RequestParam("pname") String parentName) {
 
@@ -252,18 +267,34 @@ public class OrganizeController extends BaseController {
 
 	/**
 	 * 显示创建一个部门信息页面.
+	 * 
 	 * @param parentId 新部门的上级ID
 	 * @param type 表示上级ID是什么类型: 1 公司;2 部门;
 	 * @param parentName 上级组织显示名.
-	 * @return 
+	 * @return
 	 */
 	@RequestMapping(value = "/org/depart/new", method = RequestMethod.GET)
-	public ModelAndView createDepart(@RequestParam("pid") String parentId, @RequestParam("t") String type,
+	public ModelAndView createDepart(@RequestParam("pid") String parentId, @RequestParam("t") Integer type,
 			@RequestParam("pname") String parentName) {
 
 		Department department = new Department();
-		department.setParentId(parentId);
-		department.setParentName(parentName);
+
+		if (type == OrganizeItem.ORGTYPE_COMPANY) {
+
+			department.setCompanyId(parentId);
+			department.setCompanyName(parentName);
+
+		} else if (type == OrganizeItem.ORGTYPE_DEPART) {
+
+			Result<Department> r = readerOrganizeService.getDepartmentById(parentId);
+			if (r.isSucceed()) {
+				department.setCompanyId(r.getData().getCompanyId());
+				department.setCompanyName(r.getData().getCompanyName());
+			}
+
+			department.setParentId(parentId);
+			department.setParentName(parentName);
+		}
 
 		ModelAndView mv = this.view("views/org/departedit");
 		mv.addObject("model", department);
@@ -272,34 +303,91 @@ public class OrganizeController extends BaseController {
 
 	/**
 	 * 显示创建一个部门信息页面.
-	 * @param parentId 新部门的上级ID
-	 * @param type 表示上级ID是什么类型: 1 公司;2 部门;
-	 * @param parentName 上级组织显示名.
-	 * @return 
+	 * 
+	 * @param id 部门ID
+	 * @return
 	 */
 	@RequestMapping(value = "/org/depart", method = RequestMethod.GET)
 	public ModelAndView editDepart(String id) {
 
-		Result<Company> r = readerOrganizeService.getCompanyById(id);
+		Result<Department> r = readerOrganizeService.getDepartmentById(id);
 		if (r.isSucceed()) {
 
-			ModelAndView mv = this.view("views/org/companyedit");
+			ModelAndView mv = this.view("views/org/departedit");
 			mv.addObject("model", r.getData());
 			return mv;
 		} else {
 			return this.errorPage("编辑公司信息时异常。", r.getMessage());
 		}
 	}
-	
-	@RequestMapping(value = "/org/remove", method = RequestMethod.POST)
-	public void removeOrgItem(HttpServletRequest req, Map<String, Object> map, String id) {
+
+	@RequestMapping(value = "/org/depart/save", method = RequestMethod.POST)
+	public void saveDepartment(HttpServletRequest req, Map<String, Object> map, Department department) {
 
 		postExecute(map, new PostAction() {
 
 			@Override
 			public void invoke(PostResult ps) {
 
+				GeneralResult r = null;
+
+				if (StringUtils.isEmpty(department.getDepartmentId())) {
+
+					LoginUser user = getLoginUser();
+
+					department.setDepartmentId(KeyUtils.newId());
+					department.setStatus(Company.STATUS_ENABLED);
+					department.setTenantId(user.getTenantId());
+
+					r = writerOrganizeService.insertDepartment(department);
+				} else {
+
+					r = writerOrganizeService.updateDepartment(department);
+				}
+
+				if (r != null) {
+					ps.setResult(r);
+				}
 			}
 		});
+	}
+
+	/**
+	 * 显示创建一个岗位信息页面.
+	 * 
+	 * @param parentId 新岗位的上级部门Id.
+	 * @param parentName 上级部门显示名.
+	 * @return
+	 */
+	@RequestMapping(value = "/org/position/new", method = RequestMethod.GET)
+	public ModelAndView createPosition(@RequestParam("pid") String parentId, @RequestParam("pname") String parentName) {
+
+		Position position = new Position();
+		position.setDepartmentId(parentId);
+		position.setDepartmentName(parentName);
+
+		ModelAndView mv = this.view("views/org/positionedit");
+		mv.addObject("model", position);
+		return mv;
+	}
+
+	/**
+	 * 显示创建一个部门信息页面.
+	 * 
+	 * @param id 显示的岗位Id.
+	 * @return
+	 */
+	@RequestMapping(value = "/org/position", method = RequestMethod.GET)
+	public ModelAndView editPosition(String id) {
+
+		Result<Position> r = readerOrganizeService.getPositionById(id);
+		if (r.isSucceed()) {
+
+			ModelAndView mv = this.view("views/org/departedit");
+			mv.addObject("model", r.getData());
+			return mv;
+		} else {
+			return this.errorPage("编辑岗位信息时异常。", r.getMessage());
+		}
 	}
 }

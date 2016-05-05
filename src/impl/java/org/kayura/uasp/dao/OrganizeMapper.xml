@@ -130,6 +130,29 @@
 			<if test="companyId != null">
 				AND ( t.Company_Id = #{value} )
 			</if>
+			<if test="_parameter.containsKey('parentId')">
+				<choose>
+					<when test="parentId != null">
+						AND (t.Parent_Id = #{parentId} )
+					</when>
+					<otherwise>
+						AND (t.Parent_Id IS NULL )
+					</otherwise>
+				</choose>
+			</if>
+			<if test="_parameter.containsKey('tenantId')">
+				<choose>
+					<when test="tenantId != null">
+						AND ( t.Tenant_Id = #{tenantId} )
+					</when>
+					<otherwise>
+						AND ( t.Tenant_Id IS NULL )
+					</otherwise>
+				</choose>
+			</if>
+			<if test="status != null">
+				AND ( t.Status IN ( ${status} ) )
+			</if>
 		</where>
 	</select>
 
@@ -229,7 +252,17 @@
 	
 	<delete id="deleteCompany" parameterType="string">
 		DELETE FROM uasp_companies
-		WHERE ( Company_Id = #{value} )
+		<where>
+			<if test="parentId != null">
+				AND ( Parent_Id = #{parentId} )
+			</if>
+			<if test="companyId != null">
+				AND ( Company_Id = #{companyId} )
+			</if>
+			<if test="tenantId != null">
+				AND ( Tenant_Id = #{tenantId} )
+			</if>
+		</where>
 	</delete>
 
 	<!-- Department -->
@@ -254,8 +287,8 @@
 		t.Parent_Id,
 		t.Company_Id,
 		t.Tenant_Id,
-		t.`Code`,
-		t.`Name`,
+		t.Code,
+		t.Name,
 		t.Description,
 		t.Serial,
 		t.Status,
@@ -266,7 +299,7 @@
 		SELECT
 			<include refid="departmentColumns_Sql" />,
 			c.FullName AS CompanyName,
-			d.`Name` AS ParentName
+			d.Name AS ParentName
 		FROM uasp_departments AS t
 			LEFT JOIN uasp_companies AS c ON t.Company_Id = c.Company_Id
 			LEFT JOIN uasp_departments AS d ON t.Parent_Id = d.Department_Id

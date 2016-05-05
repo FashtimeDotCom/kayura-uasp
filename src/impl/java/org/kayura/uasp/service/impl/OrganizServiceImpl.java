@@ -15,10 +15,13 @@ import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.dao.OrganizeMapper;
 import org.kayura.uasp.po.Company;
+import org.kayura.uasp.po.Department;
 import org.kayura.uasp.po.OrganizeItem;
+import org.kayura.uasp.po.Position;
 import org.kayura.uasp.service.OrganizeService;
 import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
+import org.kayura.utils.MapUtils;
 import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,9 +69,26 @@ public class OrganizServiceImpl implements OrganizeService {
 	}
 
 	@Override
-	public GeneralResult removeOrgItem(String orgId) {
+	public GeneralResult removeOrgItem(String orgId, Integer orgType) {
 
-		return null;
+		Map<String, Object> args = new HashMap<String, Object>();
+
+		switch (orgType) {
+		case 1:
+			args.put("companyId", orgId);
+			organizMapper.deleteCompany(args);
+			break;
+		case 2:
+			args.put("departmentId", orgId);
+			organizMapper.deleteDepartment(args);
+			break;
+		case 3:
+			args.put("positionId", orgId);
+			organizMapper.deletePosition(args);
+			break;
+		}
+
+		return Result.succeed();
 	}
 
 	@Override
@@ -76,7 +96,7 @@ public class OrganizServiceImpl implements OrganizeService {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("companyId", id);
-		
+
 		Company company = organizMapper.findCompanies(args).stream().findAny().orElse(null);
 		if (company == null) {
 			return new Result<Company>(Result.FAILED, "公司 id: " + id + " 不存在。");
@@ -137,8 +157,118 @@ public class OrganizServiceImpl implements OrganizeService {
 	@Override
 	public GeneralResult deleteCompany(String companyId) {
 
-		organizMapper.deleteCompany(companyId);
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("companyId", companyId);
+		
+		organizMapper.deleteCompany(args);
 		return Result.succeed();
 	}
 
+	// Department
+
+	public Result<Department> getDepartmentById(String departmentId) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("departmentId", departmentId);
+
+		Department entity = organizMapper.findDepartments(args).stream().findAny().get();
+
+		return new Result<Department>(Result.SUCCEED, entity);
+	}
+
+	public GeneralResult insertDepartment(Department department) {
+
+		if (StringUtils.isEmpty(department.getDepartmentId())) {
+			department.setDepartmentId(KeyUtils.newId());
+		}
+
+		department.setUpdatedTime(DateUtils.now());
+		organizMapper.insertDepartment(department);
+
+		GeneralResult r = Result.succeed();
+		r.setData(MapUtils.make("id", department.getDepartmentId()));
+
+		return r;
+	}
+
+	public GeneralResult updateDepartment(Department department) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("departmentId", department.getDepartmentId());
+		args.put("parentId", department.getParentId());
+		args.put("companyId", department.getCompanyId());
+		args.put("code", department.getCode());
+		args.put("name", department.getName());
+		args.put("description", department.getDescription());
+		args.put("serial", department.getSerial());
+		args.put("status", department.getStatus());
+		args.put("updatedTime", DateUtils.now());
+
+		organizMapper.updateDepartment(args);
+
+		return Result.succeed();
+	}
+
+	public GeneralResult deleteDepartment(String departmentId) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("departmentId", departmentId);
+		
+		organizMapper.deleteDepartment(args);
+		return Result.succeed();
+	}
+
+	// Position
+
+	public Result<Position> getPositionById(String positionId) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("positionId", positionId);
+
+		Position entity = organizMapper.findPositions(args).stream().findAny().get();
+
+		return new Result<Position>(Result.SUCCEED, entity);
+	}
+
+	public GeneralResult insertPosition(Position position) {
+
+		if (StringUtils.isEmpty(position.getPositionId())) {
+			position.setPositionId(KeyUtils.newId());
+		}
+
+		position.setUpdatedTime(DateUtils.now());
+		organizMapper.insertPosition(position);
+
+		GeneralResult r = Result.succeed();
+		r.setData(MapUtils.make("id", position.getPositionId()));
+
+		return r;
+	}
+
+	public GeneralResult updatePosition(Position position) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("positionId", position.getPositionId());
+		args.put("departmentId", position.getDepartmentId());
+		args.put("code", position.getCode());
+		args.put("name", position.getName());
+		args.put("level", position.getLevel());
+		args.put("description", position.getDescription());
+		args.put("serial", position.getSerial());
+		args.put("status", position.getStatus());
+		args.put("updatedTime", DateUtils.now());
+
+		organizMapper.updatePosition(args);
+
+		return Result.succeed();
+	}
+
+	public GeneralResult deletePosition(String positionId) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("positionId", positionId);
+		
+		organizMapper.deletePosition(args);
+		return Result.succeed();
+	}
 }

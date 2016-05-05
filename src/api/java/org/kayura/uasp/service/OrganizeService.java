@@ -11,7 +11,9 @@ import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.Company;
+import org.kayura.uasp.po.Department;
 import org.kayura.uasp.po.OrganizeItem;
+import org.kayura.uasp.po.Position;
 
 /**
  * @author liangxia@live.com
@@ -36,10 +38,13 @@ public interface OrganizeService {
 	 * @param pageParams 分页参数信息.
 	 * @return
 	 */
-	Result<PageList<OrganizeItem>> findOrgItems(String tenantId, String parentId, String keyword, PageParams pageParams);
+	Result<PageList<OrganizeItem>> findOrgItems(String tenantId, String parentId, String keyword,
+			PageParams pageParams);
 
-	GeneralResult removeOrgItem(String orgId);
-	
+	GeneralResult removeOrgItem(String orgId, Integer orgType);
+
+	// Company
+
 	Result<Company> getCompanyById(String id);
 
 	GeneralResult insertCompany(Company company);
@@ -47,4 +52,25 @@ public interface OrganizeService {
 	GeneralResult updateCompany(Company company);
 
 	GeneralResult deleteCompany(String companyId);
+
+	// Department
+
+	Result<Department> getDepartmentById(String departmentId);
+
+	GeneralResult insertDepartment(Department department);
+
+	GeneralResult updateDepartment(Department department);
+
+	GeneralResult deleteDepartment(String departmentId);
+
+	// Position
+
+	Result<Position> getPositionById(String positionId);
+
+	GeneralResult insertPosition(Position position);
+
+	GeneralResult updatePosition(Position position);
+
+	GeneralResult deletePosition(String positionId);
+
 }

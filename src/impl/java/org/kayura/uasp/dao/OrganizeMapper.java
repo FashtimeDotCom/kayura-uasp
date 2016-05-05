@@ -43,13 +43,25 @@ public interface OrganizeMapper extends BaseDao {
 
 	// Company
 
+	/**
+	 * 查询符条件的公司信息.
+	 * @param args 支持的参数：companyId,parentId,tenantId,status.
+	 * @return
+	 */
 	List<Company> findCompanies(Map<String, Object> args);
 
+	/**
+	 * 插入一个公司信息至数据库.
+	 * @param company 数据库实体对象.
+	 */
 	void insertCompany(Company company);
 
+	/**
+	 * 更新一个公司信息至数据库.
+	 */
 	void updateCompany(Map<String, Object> args);
 
-	void deleteCompany(String companyId);
+	void deleteCompany(Map<String, Object> args);
 
 	// Department
 
@@ -59,16 +71,16 @@ public interface OrganizeMapper extends BaseDao {
 
 	void updateDepartment(Map<String, Object> args);
 
-	void deleteDepartment(String departmentId);
+	void deleteDepartment(Map<String, Object> args);
 
 	// Position
 
 	List<Position> findPositions(Map<String, Object> args);
 
-	void insertPosition(Position department);
+	void insertPosition(Position position);
 
 	void updatePosition(Map<String, Object> args);
 
-	void deletePosition(String positionId);
+	void deletePosition(Map<String, Object> args);
 
 }

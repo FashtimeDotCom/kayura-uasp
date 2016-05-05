@@ -7383,8 +7383,8 @@
          * @return {SparkMD5.ArrayBuffer} The instance itself
          */
         SparkMD5.ArrayBuffer.prototype.append = function (arr) {
-            // TODO: we could avoid the concatenation here but the algorithm would be more complex
-            //       if you find yourself needing extra performance, please make a PR.
+            // we could avoid the concatenation here but the algorithm would be more complex
+            // if you find yourself needing extra performance, please make a PR.
             var buff = this._concatArrayBuffer(this._buff, arr),
                 length = buff.length,
                 i;

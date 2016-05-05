@@ -40,7 +40,7 @@
 				<div id="mmaddposition" onclick="jctx.addPosition()" data-options="iconCls:'icon-position'">添加岗位</div>
 				<div class="menu-sep"></div>
 				<div id="mmedit" onclick="jctx.edit()" data-options="iconCls:'icon-edit'">编辑</div>
-				<div id="mmremove" onclick="jctx.remove()" data-options="iconCls:'icon-remove'">删除</div>
+				<div id="mmremove" onclick="jctx.removeOrg()" data-options="iconCls:'icon-remove'">删除</div>
 				<div class="menu-sep"></div>
 				<div onclick="expand()">展开</div>
 				<div onclick="collapse()">收缩</div>
