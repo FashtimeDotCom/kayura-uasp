@@ -51,6 +51,15 @@
 				<td>排序值:</td>
 				<td><k:numberbox id="serial" min="0" precision="0" value="${model.serial}"></k:numberbox></td>
 			</tr>
+			<tr>
+				<td>是否启用:</td>
+				<td>
+					<k:combobox id="status" value="${model.status}" panelHeight="50px">
+						<k:option label="启用" value="1" />
+						<k:option label="禁用" value="0" />
+					</k:combobox>
+				</td>
+			</tr>
 		</table>
 	</k:form>
 </k:section>

@@ -238,7 +238,7 @@ juasp = {
 					if (typeof events.error == 'function') {
 						events.error(result);
 					} else {
-						_info("异常", result.message);
+						_errortips("异常", result.message);
 					}
 					return;
 				}
@@ -248,7 +248,7 @@ juasp = {
 					if (typeof events.success == 'function') {
 						events.success(result);
 					} else {
-						_info("成功", result.message);
+						_errortips("成功", result.message);
 					}
 					return;
 				}
@@ -258,7 +258,7 @@ juasp = {
 					if (typeof events.failure == 'function') {
 						events.failure(result);
 					} else {
-						_info("失败", result.message);
+						_errortips("失败", result.message);
 					}
 					return;
 				}
@@ -267,10 +267,10 @@ juasp = {
 				if (typeof events.unknown == 'function') {
 					events.unknown(result);
 				} else {
-					_info("未知结果", result.message);
+					_errortips("未知结果", result.message);
 				}
 
-				_info("未知的请求结果类型。");
+				_errortips("未知的请求结果类型。");
 				return;
 			},
 			complete : function(xhr, textStatus) {
@@ -325,16 +325,13 @@ juasp = {
 		if (tab.tabs('exists', title)) {
 			tab.tabs('select', title);
 		} else {
-			if(_isEmpty(closable)){
-				closable = true;
-			}
 			var content = '<iframe name="contentframe" scrolling="no" frameborder="0" src="'
 					+ url + '" style="width:100%;height:100%;"></iframe>';
 			tab.tabs('add', {
 				title : title,
 				content : content,
 				iconCls : iconCls,
-				closable : closable
+				closable : closable != undefined ? closable : true
 			});
 			tab.find(".panel-body").last().css("overflow", "hidden");
 		}

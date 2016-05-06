@@ -226,7 +226,7 @@ jctx = (function(win, $) {
 		_editDepart();
 	}
 	
-	function _addPosition(id){
+	function _editPosition(id){
 		
 		var url = rootPath + "/org/position";
 		
@@ -244,7 +244,7 @@ jctx = (function(win, $) {
 			url : url,
 			width : "450px",
 			height : "500px",
-			title : "公司信息",
+			title : "岗位信息",
 			onClose : function(r) {
 				if (r.result == 1) {
 					if(juasp.isEmpty(id)) {
@@ -269,6 +269,11 @@ jctx = (function(win, $) {
 		});
 	}
 	
+
+	function _addPosition(){
+		_editPosition();
+	}
+	
 	function _edit(){
 		
 		if(selectNode != null){
@@ -282,7 +287,7 @@ jctx = (function(win, $) {
 			} else if(type == 2) {
 				_editDepart(id);
 			} else if (type == 3) {
-				
+				_editPosition(id);
 			}
 		}
 		
@@ -318,7 +323,8 @@ jctx = (function(win, $) {
 		edit : _edit,
 		removeOrg : _removeOrg,
 		addCompany : _addCompany,
-		addDepart : _addDepart
+		addDepart : _addDepart,
+		addPosition : _addPosition
 	}
 
 }(window, jQuery));

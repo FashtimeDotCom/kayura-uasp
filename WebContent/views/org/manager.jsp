@@ -35,9 +35,9 @@
 				</div>
 			</div>
 			<div id="mm" class="easyui-menu" style="width: 120px;">
-				<div id="mmaddcompany" onclick="jctx.addCompany()" data-options="iconCls:'icon-company'">添加公司</div>
-				<div id="mmadddepart" onclick="jctx.addDepart()" data-options="iconCls:'icon-depart'">添加部门</div>
 				<div id="mmaddposition" onclick="jctx.addPosition()" data-options="iconCls:'icon-position'">添加岗位</div>
+				<div id="mmadddepart" onclick="jctx.addDepart()" data-options="iconCls:'icon-depart'">添加部门</div>
+				<div id="mmaddcompany" onclick="jctx.addCompany()" data-options="iconCls:'icon-company'">添加公司</div>
 				<div class="menu-sep"></div>
 				<div id="mmedit" onclick="jctx.edit()" data-options="iconCls:'icon-edit'">编辑</div>
 				<div id="mmremove" onclick="jctx.removeOrg()" data-options="iconCls:'icon-remove'">删除</div>

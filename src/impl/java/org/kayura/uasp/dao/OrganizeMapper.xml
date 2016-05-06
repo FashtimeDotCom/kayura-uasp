@@ -387,7 +387,7 @@
 	</update>
 	
 	<delete id="deleteDepartment" parameterType="map">
-		DELETE uasp_departments 
+		DELETE FROM uasp_departments 
 		<where>
 			<if test="departmentId != null">
 				AND ( Department_Id = #{departmentId} )
@@ -482,7 +482,7 @@
 	</insert>
 	
 	<update id="updatePosition" parameterType="map">
-		UPDATE FROM uasp_positions
+		UPDATE uasp_positions
 		<set>
 			<if test="_parameter.containsKey('parentId')">
 				Parent_Id = #{parentId},
@@ -516,7 +516,7 @@
 	</update>
 	
 	<delete id="deletePosition" parameterType="map">
-		DELETE uasp_positions
+		DELETE FROM uasp_positions
 		<where>
 			<if test="positionId != null">
 				AND ( Position_Id = #{positionId} )

@@ -195,8 +195,7 @@ public class OrganizeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/org/remove", method = RequestMethod.POST)
-	public void removeOrgItem(Map<String, Object> map, String id,
-			@RequestParam("t") Integer type) {
+	public void removeOrgItem(Map<String, Object> map, String id, @RequestParam("t") Integer type) {
 
 		postExecute(map, new PostAction() {
 
@@ -383,11 +382,42 @@ public class OrganizeController extends BaseController {
 		Result<Position> r = readerOrganizeService.getPositionById(id);
 		if (r.isSucceed()) {
 
-			ModelAndView mv = this.view("views/org/departedit");
+			ModelAndView mv = this.view("views/org/positionedit");
 			mv.addObject("model", r.getData());
 			return mv;
 		} else {
 			return this.errorPage("编辑岗位信息时异常。", r.getMessage());
 		}
+	}
+
+	@RequestMapping(value = "/org/position/save", method = RequestMethod.POST)
+	public void saveDepartment(HttpServletRequest req, Map<String, Object> map, Position position) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = null;
+
+				if (StringUtils.isEmpty(position.getPositionId())) {
+
+					LoginUser user = getLoginUser();
+
+					position.setPositionId(KeyUtils.newId());
+					position.setStatus(Company.STATUS_ENABLED);
+					position.setTenantId(user.getTenantId());
+
+					r = writerOrganizeService.insertPosition(position);
+				} else {
+
+					r = writerOrganizeService.updatePosition(position);
+				}
+
+				if (r != null) {
+					ps.setResult(r);
+				}
+			}
+		});
 	}
 }

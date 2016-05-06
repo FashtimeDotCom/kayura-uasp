@@ -6,9 +6,9 @@
 	<script type="text/javascript">
 	function submitForm() {
 		$('#ff').form('submit', {
-			url : '${root}/org/company/save.json',
+			url : '${root}/org/position/save.json',
 			onlySuccess : function(r){
-				var t = $("#shortName").textbox("getValue");
+				var t = $("#name").textbox("getValue");
 				juasp.closeWin({result: 1, 'id': r.data.id, text: t});
 			}
 		});
@@ -19,36 +19,51 @@
 <!-- 编辑内容区域 body -->
 <k:section name="body">
 	<k:form id="ff">
-		<k:hidden id="companyId" value="${model.companyId}"/>
-		<k:hidden id="parentId" value="${model.parentId}"/>
+		<k:hidden id="positionId" value="${model.positionId}"/>
+		<k:hidden id="departmentId" value="${model.departmentId}"/>
 		<table cellpadding="5">
 			<tr>
-				<td>上级公司:</td>
-				<td>${model.parentName}</td>
+				<td>所属部门:</td>
+				<td>${model.departmentName}</td>
 			</tr>
 			<tr>
-				<td>公司代码:</td>
+				<td>岗位代码:</td>
 				<td><k:textbox id="code" value="${model.code}" style="width:180px;" validType="length[1,32]" required="true" /></td>
 			</tr>
 			<tr>
-				<td>公司简称:</td>
-				<td><k:textbox id="shortName" value="${model.shortName}" style="width:180px;" validType="length[1,32]" required="true" /></td>
+				<td>岗位名称:</td>
+				<td><k:textbox id="name" value="${model.name}" style="width:180px;" validType="length[1,32]" required="true" /></td>
 			</tr>
 			<tr>
-				<td>公司全称:</td>
-				<td><k:textbox id="fullName" value="${model.fullName}" style="width:250px;" validType="length[1,64]" required="true" /></td>
+				<td>岗位级别:</td>
+				<td><k:combobox id="level"  value="${model.level}">
+					<k:option label="1级" value="1"></k:option>
+					<k:option label="2级" value="2"></k:option>
+					<k:option label="3级" value="3"></k:option>
+					<k:option label="4级" value="4"></k:option>
+					<k:option label="5级" value="5"></k:option>
+					<k:option label="6级" value="6"></k:option>
+					<k:option label="7级" value="7"></k:option>
+					<k:option label="8级" value="8"></k:option>
+					<k:option label="9级" value="9"></k:option>
+				</k:combobox></td>
 			</tr>
 			<tr>
-				<td>公司描述:</td>
+				<td>岗位描述:</td>
 				<td><k:textbox id="description" value="${model.description}" multiline="true" style="height:50px;width:250px;" validType="length[1,512]" /></td>
-			</tr>
-			<tr>
-				<td>行业类型:</td>
-				<td><k:textbox id="tndustryId" value="${model.industryTypeId}" validType="length[1,512]" /></td>
 			</tr>
 			<tr>
 				<td>排序值:</td>
 				<td><k:numberbox id="serial" min="0" precision="0" value="${model.serial}"></k:numberbox></td>
+			</tr>
+			<tr>
+				<td>是否启用:</td>
+				<td>
+					<k:combobox id="status" value="${model.status}" panelHeight="50px">
+						<k:option label="启用" value="1" />
+						<k:option label="禁用" value="0" />
+					</k:combobox>
+				</td>
 			</tr>
 		</table>
 	</k:form>
