@@ -85,7 +85,7 @@ public class OrganizServiceImpl implements OrganizeService {
 		case 3:
 			args.put("positionId", orgId);
 			organizMapper.deletePosition(args);
-			break; 
+			break;
 		}
 
 		return Result.succeed();
@@ -122,7 +122,7 @@ public class OrganizServiceImpl implements OrganizeService {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", company.getCompanyId());
 
-		GeneralResult r = Result.succeed();
+		GeneralResult r = Result.succeed("公司 " + company.getShortName() + " 保存完毕。");
 		r.setData(data);
 
 		return r;
@@ -159,7 +159,7 @@ public class OrganizServiceImpl implements OrganizeService {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("companyId", companyId);
-		
+
 		organizMapper.deleteCompany(args);
 		return Result.succeed();
 	}
@@ -213,7 +213,7 @@ public class OrganizServiceImpl implements OrganizeService {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("departmentId", departmentId);
-		
+
 		organizMapper.deleteDepartment(args);
 		return Result.succeed();
 	}
@@ -267,7 +267,7 @@ public class OrganizServiceImpl implements OrganizeService {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("positionId", positionId);
-		
+
 		organizMapper.deletePosition(args);
 		return Result.succeed();
 	}

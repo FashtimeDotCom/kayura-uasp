@@ -23,7 +23,7 @@
 		</k:dock>
 		<k:dock region="south" border="false" style="text-align:right;padding:5px 0 0;">
 			<!-- 工具栏区域 tool -->
-			<k:renderSection name="tool"/>
+			<k:renderSection name="tool" />
 		</k:dock>
 	</k:layout>
 </k:body>

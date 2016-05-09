@@ -38,6 +38,11 @@ public class Company {
 	private Integer status;
 	private Date updatedTime;
 
+	public Company() {
+		this.serial = 0;
+		this.status = STATUS_ENABLED;
+	}
+
 	public String getCompanyId() {
 		return companyId;
 	}
@@ -167,7 +172,7 @@ public class Company {
 	}
 
 	public Integer getSerial() {
-		return this.serial;
+		return this.serial == null ? 0 : this.serial;
 	}
 
 	public void setSerial(Integer serial) {

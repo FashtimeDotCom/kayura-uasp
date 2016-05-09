@@ -13,6 +13,9 @@ import java.util.Date;
  */
 public class Position {
 
+	public static final Integer STATUS_DISABLED = 0;
+	public static final Integer STATUS_ENABLED = 1;
+
 	private String positionId;
 	private String departmentId;
 	private String departmentName;
@@ -24,6 +27,11 @@ public class Position {
 	private Integer serial;
 	private Integer status;
 	private Date updatedTime;
+
+	public Position() {
+		this.serial = 0;
+		this.status = STATUS_ENABLED;
+	}
 
 	public String getPositionId() {
 		return positionId;
@@ -82,7 +90,7 @@ public class Position {
 	}
 
 	public Integer getSerial() {
-		return serial;
+		return this.serial == null ? 0 : this.serial;
 	}
 
 	public void setSerial(Integer serial) {

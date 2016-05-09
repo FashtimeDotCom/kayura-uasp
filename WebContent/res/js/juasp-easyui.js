@@ -57,11 +57,14 @@
 				r = eval('(' + d + ')');
 			}
 			if (r.type == juasp.SUCCESS) {
+				if(!juasp.isEmpty(r.message)) {
+					juasp.infoTips(r.message);
+				}
 				this.onlySuccess(r);
 			} else if (r.type == juasp.FAILED){
-				juasp.errortips(r.message);
+				juasp.errorTips(r.message);
 			} else {
-				juasp.errortips("提交表单时，发生内部异常。");
+				juasp.errorTips("提交表单时，发生内部异常。");
 			}
 		},
 		onlySuccess: function(data){}

@@ -351,6 +351,10 @@ juasp = {
 
 		var w = $top("<div />");
 		_setCache("wid_" + wid, w);
+		
+		if(opts.events){
+			_setCache("wevents_" + wid, opts.events);
+		}
 
 		w.window({
 			title : opts.title,
@@ -363,9 +367,12 @@ juasp = {
 			minimizable : false,
 			onClose : function(e) {
 				_removeCache("wid_" + wid);
+				_removeCache("wevents_" + wid);
 				if (typeof opts.onClose == 'function') {
 					var result = _getCache("win_result_" + wid, null);
 					opts.onClose(result);
+				} else {
+					_removeCache("win_result_" + wid);
 				}
 			},
 			onOpen : function(e) {
@@ -380,6 +387,16 @@ juasp = {
 		w.window('open');
 	}
 
+	function _getEvents(defaultEvents) {
+		var wid = _getQueryParam("_wid");
+		if (wid != null) {
+			var events = _getCache("wevents_" + wid);
+			return events;
+		} else {
+			return defaultEvents;
+		}
+	}
+	
 	/**
 	 * 关闭当前打开的窗口.
 	 * 
@@ -545,6 +562,7 @@ juasp = {
 	juasp.openTab = _openTab;
 	juasp.openWin = _openWin;
 	juasp.closeWin = _closeWin;
+	juasp.getEvents = _getEvents;
 	juasp.confirm = _confirm;
 	juasp.infoTips = _infoTips;
 	juasp.warnTips = _warnTips;

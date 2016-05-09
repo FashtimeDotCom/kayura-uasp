@@ -31,6 +31,11 @@ public class Department {
 	private Integer status;
 	private Date updatedTime;
 
+	public Department() {
+		this.serial = 0;
+		this.status = STATUS_ENABLED;
+	}
+
 	public String getDepartmentId() {
 		return departmentId;
 	}
@@ -72,7 +77,7 @@ public class Department {
 	}
 
 	public Integer getSerial() {
-		return serial;
+		return this.serial == null ? 0 : this.serial;
 	}
 
 	public void setSerial(Integer serial) {

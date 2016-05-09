@@ -149,26 +149,31 @@ jctx = (function(win, $) {
 			width : "450px",
 			height : "500px",
 			title : "公司信息",
-			onClose : function(r) {
-				if (r.result == 1) {
-					if(juasp.isEmpty(id)) {
-						$('#tv').tree('append', {
-							parent : selectNode.target,
-							data : [ {
-								id : r.id,
-								iconCls : 'icon-company',
-								text : r.text,
-								attributes : { type : 1 },
-								children : []
-							} ]
-						});
-					} else {
-						$('#tv').tree('update', {
-							target : node.target,
-							text : r.text
-						});
+			events :{
+				onSaved : function(r) {
+					if (r.result == 1) {
+						if(juasp.isEmpty(id)) {
+							$('#tv').tree('append', {
+								parent : selectNode.target,
+								data : [ {
+									id : r.id,
+									iconCls : 'icon-company',
+									text : r.text,
+									attributes : { type : 1 },
+									children : []
+								} ]
+							});
+						} else {
+							$('#tv').tree('update', {
+								target : selectNode.target,
+								text : r.text
+							});
+						}
 					}
 				}
+			},
+			onClose : function(r) {
+
 			}
 		});
 		

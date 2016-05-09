@@ -4,15 +4,37 @@
 
 <k:section name="head">
 	<script type="text/javascript">
-	function submitForm() {
-		$('#ff').form('submit', {
-			url : '${root}/org/depart/save.json',
-			onlySuccess : function(r) {
-				var t = $("#name").textbox("getValue");
-				juasp.closeWin({result: 1, 'id': r.data.id, text: t});
-			}
+	
+	var jctx = (function(){
+		
+		var events = juasp.getEvents({
+			onSaved: function(){ }
 		});
-	}
+		
+		function _submitForm() {
+			$('#ff').form('submit', {
+				url : '${root}/org/depart/save.json',
+				onlySuccess : function(r){
+					var t = $("#shortName").textbox("getValue");
+					var data = {result: 1, 'id': r.data.id, text: t};
+					if(events.onSaved){
+						events.onSaved(data);
+					}
+					if($("#autoNew").checked){
+						juasp.closeWin(data);
+					} else {
+						$("#ff").form("reset");
+					}
+				}
+			});
+		}
+		
+		return {
+			submitForm : _submitForm
+		};
+		
+	}());
+	
 	</script>
 </k:section>
 
@@ -66,7 +88,12 @@
 
 <!-- 工具栏区域 tool -->
 <k:section name="tool">
-	<k:linkbutton style="width:80px" iconCls="icon-ok" onClick="submitForm()" text="提交" />
+	<c:if test="${empty model.departmentId}">
+	<div style="float: left; margin-left: 10px;">
+		<label for="autoNew"><input type="checkbox" id="autoNew">提交完成后新增下一条</label>
+	</div>
+	</c:if>
+	<k:linkbutton style="width:80px" iconCls="icon-ok" onClick="jctx.submitForm()" text="提交" /><span />
 	<k:linkbutton style="width:80px" iconCls="icon-cancel" onClick="juasp.closeWin(0)" text="取消" />
 </k:section>
 
