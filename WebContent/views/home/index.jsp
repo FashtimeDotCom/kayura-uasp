@@ -20,8 +20,8 @@
 	</script>
 </head>
 <k:body layout="true">
-	<k:dock region="north" style="height: 60px">
-		<h2 style="padding-left: 10px; float: left;">统一应用支撑平台</h2>
+	<k:dock region="north" style="height: 50px">
+		<h3 style="padding-left: 10px; float: left;">统一应用支撑平台</h3>
 		<div style="padding: 15px; float: right;">
 			欢迎：${loginName} <a href="${root}/logout" style="margin-left: 10px;">注销</a>		
 		</div>
@@ -29,10 +29,28 @@
 	<k:dock region="south" style="height: 35px">
 		共 ${numUsers} 人在线.
 	</k:dock>
-	<k:dock region="west" split="true" title="导航栏"
-		style="width: 160px;">
+	<k:dock region="west" split="true" title="导航栏" style="width: 160px;">
 		<k:accordion fit="true" border="false">
-			<k:sheet iconCls="icon-ok" title="常用模块">
+			<k:sheet collapsed="false" collapsible="false" title="我的工作">
+				<ul>
+					<li><a href="###" onclick="juasp.openTab('首页', '${root}/portal')" >我的主页</a></li>
+					<li><a href="###" onclick="juasp.openTab('账号管理', '${root}/admin/user/list')" >账号管理</a></li>
+					<li><a href="###" onclick="juasp.openTab('数据词典', '${root}/admin/dict/list')" >数据词典</a></li>
+					<li><a href="###" onclick="juasp.openTab('组织机构', '${root}/org/manager')" >组织机构</a></li>
+					<li><a href="###" onclick="juasp.openTab('文件管理', '${root}/file/manager')" >文件管理</a></li>
+					<li><a href="###" onclick="juasp.openTab('文件上传', '${root}/mock/fileup')" >文件上传</a></li>
+				</ul>
+			</k:sheet>
+			<k:sheet collapsed="false" collapsible="false" title="常用功能" tools="[{iconCls:'icon-menu',handler:function(){alert('设置');}}]">
+				<ul>
+					<li><a href="###" onclick="juasp.openTab('账号管理', '${root}/admin/user/list')" >账号管理</a></li>
+					<li><a href="###" onclick="juasp.openTab('数据词典', '${root}/admin/dict/list')" >数据词典</a></li>
+					<li><a href="###" onclick="juasp.openTab('组织机构', '${root}/org/manager')" >组织机构</a></li>
+					<li><a href="###" onclick="juasp.openTab('文件管理', '${root}/file/manager')" >文件管理</a></li>
+					<li><a href="###" onclick="juasp.openTab('文件上传', '${root}/mock/fileup')" >文件上传</a></li>
+				</ul>
+			</k:sheet>
+			<k:sheet collapsed="false" collapsible="false" title="收藏功能" tools="[{iconCls:'icon-menu',handler:function(){alert('设置');}}]">
 				<ul>
 					<li><a href="###" onclick="juasp.openTab('账号管理', '${root}/admin/user/list')" >账号管理</a></li>
 					<li><a href="###" onclick="juasp.openTab('数据词典', '${root}/admin/dict/list')" >数据词典</a></li>

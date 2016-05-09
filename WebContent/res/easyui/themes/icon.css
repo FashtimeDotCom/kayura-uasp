@@ -74,7 +74,12 @@
 .icon-menu{
 	background:url('icons/menu.png') no-repeat center center;
 }
-
+.icon-star{
+	background:url('icons/star.png') no-repeat center center;
+}
+.icon-flag{
+	background:url('icons/flag.png') no-repeat center center;
+}
 
 .icon-home{
 	background:url('icons/home.png') no-repeat center center;

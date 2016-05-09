@@ -24,7 +24,7 @@
 		</javaTypeResolver>
 
 		<javaModelGenerator targetPackage="org.kayura.example.po"
-			targetProject="kayura-uasp\src\impl\java">
+			targetProject="kayura-uasp\src\gen\java">
 			<!-- 是否在当前路径下新加一层schema -->
 			<property name="enableSubPackages" value="false" />
 			<!-- 是否针对string类型的字段在set的时候进行trim调用 -->
@@ -33,14 +33,14 @@
 
 		<!-- 生成mapxml文件 -->
 		<sqlMapGenerator targetPackage="org.kayura.example.dao"
-			targetProject="kayura-uasp\src\impl\java">
+			targetProject="kayura-uasp\src\gen\java">
 			<!-- 是否在当前路径下新加一层schema -->
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 
 		<!-- 生成mapxml对应client，也就是接口dao -->
 		<javaClientGenerator targetPackage="org.kayura.example.dao"
-			targetProject="kayura-uasp\src\impl\java" type="XMLMAPPER">
+			targetProject="kayura-uasp\src\gen\java" type="XMLMAPPER">
 			<!-- 是否在当前路径下新加一层schema -->
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>

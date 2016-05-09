@@ -45,7 +45,7 @@
 					}
 				});
 			} else {
-				juasp.warntips("请在表格中点击要<b>编辑</b>的记录。");
+				juasp.warnTips("请在表格中点击要<b>编辑</b>的记录。");
 			}
 		}
 		

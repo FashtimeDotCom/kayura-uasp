@@ -387,7 +387,7 @@
 				<k:column field="fileName" formatter="jctx.formatterFileName" title="文件名" width="450" />
 				<k:column field="uploaderName" title="上传人" align="center" width="90" />
 				<k:column field="fileSize" title="大小" align="center" width="80" />
-				<k:column field="downloads" title="下载次数" align="center" hidden="true" width="70" />
+				<k:column field="downloads" title="下载次数" align="center" width="70" />
 				<k:column field="allowChange" title="允许更改" hidden="true" width="80" />
 				<k:column field="isEncrypted" title="数据加密" hidden="true" width="80" />
 				<k:column field="uploadTime" title="上传时间" align="center" width="150" />

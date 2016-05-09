@@ -46,7 +46,7 @@
 				{ success: function(r) {
 					var t = $("#fc_" + frid);
 					t.fadeOut('fast', function(){ t.remove(); });
-					juasp.info("文件 [" + fileName + "] 已经被移除。");
+					juasp.infoTips("文件 [" + fileName + "] 已经被移除。");
 				}
 		});
 	}

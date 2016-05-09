@@ -273,7 +273,7 @@ public class AdminController extends BaseController {
 			mv.addObject("model", di);
 		} else {
 
-			mv = this.errorPage(r.getMessage(), "");
+			mv = this.error(r.getMessage(), "");
 		}
 
 		return mv;
@@ -291,7 +291,7 @@ public class AdminController extends BaseController {
 			mv.addObject("model", item.getData());
 		} else {
 
-			mv = this.errorPage(item.getMessage(), "");
+			mv = this.error(item.getMessage(), "");
 		}
 
 		return mv;

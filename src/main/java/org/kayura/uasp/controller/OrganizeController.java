@@ -53,9 +53,7 @@ public class OrganizeController extends BaseController {
 	@RequestMapping(value = "/org/manager", method = RequestMethod.GET)
 	public ModelAndView fileUpload() {
 
-		ModelAndView mv = this.view("views/org/manager");
-
-		return mv;
+		return view("views/org/manager");
 	}
 
 	/**
@@ -214,9 +212,7 @@ public class OrganizeController extends BaseController {
 		company.setParentId(parentId);
 		company.setParentName(parentName);
 
-		ModelAndView mv = this.view("views/org/companyedit");
-		mv.addObject("model", company);
-		return mv;
+		return view("views/org/companyedit", company);
 	}
 
 	@RequestMapping(value = "/org/company", method = RequestMethod.GET)
@@ -225,11 +221,9 @@ public class OrganizeController extends BaseController {
 		Result<Company> r = readerOrganizeService.getCompanyById(id);
 		if (r.isSucceed()) {
 
-			ModelAndView mv = this.view("views/org/companyedit");
-			mv.addObject("model", r.getData());
-			return mv;
+			return view("views/org/companyedit", r.getData());
 		} else {
-			return this.errorPage("编辑公司信息时异常。", r.getMessage());
+			return this.error("编辑公司信息时异常。", r.getMessage());
 		}
 	}
 
@@ -295,9 +289,7 @@ public class OrganizeController extends BaseController {
 			department.setParentName(parentName);
 		}
 
-		ModelAndView mv = this.view("views/org/departedit");
-		mv.addObject("model", department);
-		return mv;
+		return view("views/org/departedit", department);
 	}
 
 	/**
@@ -312,11 +304,10 @@ public class OrganizeController extends BaseController {
 		Result<Department> r = readerOrganizeService.getDepartmentById(id);
 		if (r.isSucceed()) {
 
-			ModelAndView mv = this.view("views/org/departedit");
-			mv.addObject("model", r.getData());
-			return mv;
+			return view("views/org/departedit", r.getData());
+
 		} else {
-			return this.errorPage("编辑公司信息时异常。", r.getMessage());
+			return this.error("编辑公司信息时异常。", r.getMessage());
 		}
 	}
 
@@ -365,9 +356,7 @@ public class OrganizeController extends BaseController {
 		position.setDepartmentId(parentId);
 		position.setDepartmentName(parentName);
 
-		ModelAndView mv = this.view("views/org/positionedit");
-		mv.addObject("model", position);
-		return mv;
+		return view("views/org/positionedit", position);
 	}
 
 	/**
@@ -382,16 +371,14 @@ public class OrganizeController extends BaseController {
 		Result<Position> r = readerOrganizeService.getPositionById(id);
 		if (r.isSucceed()) {
 
-			ModelAndView mv = this.view("views/org/positionedit");
-			mv.addObject("model", r.getData());
-			return mv;
+			return view("views/org/positionedit", r.getData());
 		} else {
-			return this.errorPage("编辑岗位信息时异常。", r.getMessage());
+			return error("编辑岗位信息时异常。", r.getMessage());
 		}
 	}
 
 	@RequestMapping(value = "/org/position/save", method = RequestMethod.POST)
-	public void saveDepartment(HttpServletRequest req, Map<String, Object> map, Position position) {
+	public void savePosition(HttpServletRequest req, Map<String, Object> map, Position position) {
 
 		postExecute(map, new PostAction() {
 

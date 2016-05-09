@@ -3,7 +3,7 @@
 <html>
 <head>
 <title>统一门户</title>
-<link rel="stylesheet" type="text/css" href="${root}/res/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${root}/res/easyui/themes/${theme}/easyui.css">
 <link rel="stylesheet" type="text/css" href="${root}/res/easyui/themes/icon.css">
 <script type="text/javascript" src="${root}/res/js/jquery.min.js"></script>
 <script type="text/javascript" src="${root}/res/easyui/jquery.easyui.min.js"></script>
@@ -16,15 +16,14 @@
 			border : false,
 			fit : true
 		});
-		//add();
+		add();
 	});
 	function add() {
-		for (var i = 0; i < 5; i++) {
+		for (var i = 0; i < 2; i++) {
 			var p = $('<div/>').appendTo('body');
 			p.panel({
 				title : 'Title' + i,
-				content : '<div style="padding:5px;">Content' + (i + 1)
-						+ '</div>',
+				content : '<div style="padding:5px;">Content' + (i + 1) + '</div>',
 				height : 100,
 				closable : true,
 				collapsible : true

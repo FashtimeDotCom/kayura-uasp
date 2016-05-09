@@ -308,7 +308,7 @@ jctx = (function(win, $) {
 							var parentNode = $('#tv').tree('getParent', selectNode.target);
 							$('#tv').tree('remove', selectNode.target);
 							$('#tv').tree('select', parentNode.target);
-							juasp.infotips(selectNode.text + " 已经被删除。");
+							juasp.infoTips(selectNode.text + " 已经被删除。");
 						}
 					});
 				}

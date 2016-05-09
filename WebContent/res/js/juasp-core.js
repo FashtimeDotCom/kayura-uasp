@@ -238,7 +238,7 @@ juasp = {
 					if (typeof events.error == 'function') {
 						events.error(result);
 					} else {
-						_errortips("异常", result.message);
+						_errorTips("异常", result.message);
 					}
 					return;
 				}
@@ -248,7 +248,7 @@ juasp = {
 					if (typeof events.success == 'function') {
 						events.success(result);
 					} else {
-						_errortips("成功", result.message);
+						_infoTips("成功", result.message);
 					}
 					return;
 				}
@@ -258,7 +258,7 @@ juasp = {
 					if (typeof events.failure == 'function') {
 						events.failure(result);
 					} else {
-						_errortips("失败", result.message);
+						_errorTips("失败", result.message);
 					}
 					return;
 				}
@@ -267,10 +267,10 @@ juasp = {
 				if (typeof events.unknown == 'function') {
 					events.unknown(result);
 				} else {
-					_errortips("未知结果", result.message);
+					_errorTips("未知结果", result.message);
 				}
 
-				_errortips("未知的请求结果类型。");
+				_errorTips("未知的请求结果类型。");
 				return;
 			},
 			complete : function(xhr, textStatus) {
@@ -510,17 +510,17 @@ juasp = {
 
 	win.tips = _tips;
 
-	function _infotips(content) {
+	function _infoTips(content) {
 
 		_tips('info', content);
 	}
 
-	function _warntips(content) {
+	function _warnTips(content) {
 
 		_tips('warn', content);
 	}
 
-	function _errortips(content) {
+	function _errorTips(content) {
 
 		_tips('error', content);
 	}
@@ -546,9 +546,9 @@ juasp = {
 	juasp.openWin = _openWin;
 	juasp.closeWin = _closeWin;
 	juasp.confirm = _confirm;
-	juasp.infotips = _infotips;
-	juasp.warntips = _warntips;
-	juasp.errortips = _errortips;
+	juasp.infoTips = _infoTips;
+	juasp.warnTips = _warnTips;
+	juasp.errorTips = _errorTips;
 	juasp.prompt = _prompt;
 	juasp.alert = _alert;
 	juasp.message = _message;

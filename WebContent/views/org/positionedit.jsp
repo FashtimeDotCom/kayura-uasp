@@ -7,7 +7,7 @@
 	function submitForm() {
 		$('#ff').form('submit', {
 			url : '${root}/org/position/save.json',
-			onlySuccess : function(r){
+			onlySuccess : function(r) {
 				var t = $("#name").textbox("getValue");
 				juasp.closeWin({result: 1, 'id': r.data.id, text: t});
 			}
@@ -59,7 +59,7 @@
 			<tr>
 				<td>是否启用:</td>
 				<td>
-					<k:combobox id="status" value="${model.status}" panelHeight="50px">
+					<k:combobox id="status" value="${model.status}"  panelHeight="50px">
 						<k:option label="启用" value="1" />
 						<k:option label="禁用" value="0" />
 					</k:combobox>

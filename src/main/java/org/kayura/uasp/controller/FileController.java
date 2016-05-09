@@ -182,8 +182,9 @@ public class FileController extends BaseController {
 	 * 文件下载请求地址.
 	 */
 	@RequestMapping(value = "/file/get", method = RequestMethod.GET)
-	public void fileDownload(@RequestParam("id") List<String> ids, @RequestParam("t") String title,
-			HttpServletRequest req, HttpServletResponse res) {
+	public void fileDownload(@RequestParam("id") List<String> ids,
+			@RequestParam(value = "t", required = false) String title, HttpServletRequest req,
+			HttpServletResponse res) {
 
 		Result<List<FileDownload>> r = readerFileService.download(ids);
 		if (r.isSucceed()) {
@@ -237,7 +238,8 @@ public class FileController extends BaseController {
 								if (srcFile.isFile() && srcFile.exists()) {
 
 									String fn = fd.getFileName();
-									int count = (int) fileNames.stream().filter(c -> c.equals(fd.getFileName())).count();
+									int count = (int) fileNames.stream().filter(c -> c.equals(fd.getFileName()))
+											.count();
 									if (count > 0) {
 										if (fn.indexOf(".") >= 0) {
 											String onlyName = fn.substring(0, fn.lastIndexOf("."));
@@ -679,7 +681,7 @@ public class FileController extends BaseController {
 			mv = this.view("views/file/folderedit");
 			mv.addObject("model", r.getData());
 		} else {
-			mv = this.errorPage(r.getMessage(), "");
+			mv = this.error(r.getMessage(), "");
 		}
 
 		return mv;

@@ -17,6 +17,7 @@ import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
+import org.kayura.type.Result;
 import org.kayura.web.ui.UISupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,19 +62,26 @@ public class BaseController {
 
 	public ModelAndView errorPage(Exception ex) {
 
-		return errorPage(ex.getMessage(), ex.toString());
+		return error(ex.getMessage(), ex.toString());
 	}
 
-	public ModelAndView errorPage(String message, String details) {
+	public ModelAndView error(Result<?> r) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("message", r.getMessage());
+		return error(map);
+	}
+
+	public ModelAndView error(String message, String details) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("message", message);
 		map.put("details", details);
 
-		return errorPage(map);
+		return error(map);
 	}
 
-	public ModelAndView errorPage(Map<String, Object> map) {
+	public ModelAndView error(Map<String, Object> map) {
 
 		return new ModelAndView("shared/error", map);
 	}
@@ -83,10 +91,10 @@ public class BaseController {
 		return new ModelAndView(viewName);
 	}
 
-	public ModelAndView view(String viewName, Map<String, Object> model) {
+	public ModelAndView view(String viewName, Object model) {
 
 		ModelAndView mv = view(viewName);
-		mv.addAllObjects(model);
+		mv.addObject("model", model);
 
 		return mv;
 	}

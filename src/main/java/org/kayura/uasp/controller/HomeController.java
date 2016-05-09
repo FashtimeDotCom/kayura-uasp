@@ -83,7 +83,7 @@ public class HomeController extends BaseController {
 	public ModelAndView login(String error, String logout, String expired, String inavlid, String tid,
 			HttpServletRequest req) {
 
-		ModelAndView mv = new ModelAndView("views/home/login");
+		ModelAndView mv = this.view("views/home/login");
 
 		HttpSession session = req.getSession(true);
 		if (req.getParameterMap().containsKey("tid")) {
@@ -96,7 +96,7 @@ public class HomeController extends BaseController {
 			tid = (String) session.getAttribute("tenantId");
 		}
 
-		if (error != null) {
+		if (!StringUtils.isEmpty(error)) {
 
 			if (error.equals("1")) {
 				mv.addObject("message", "用户名或密码错误，请重新输入。");
@@ -106,11 +106,11 @@ public class HomeController extends BaseController {
 
 			session.setAttribute("needvc", true);
 
-		} else if (logout != null) {
+		} else if (!StringUtils.isEmpty(logout)) {
 			mv.addObject("message", "已经成功退出系统。");
-		} else if (expired != null) {
+		} else if (!StringUtils.isEmpty(expired)) {
 			mv.addObject("message", "您当前的登录已经失效。");
-		} else if (inavlid != null) {
+		} else if (!StringUtils.isEmpty(inavlid)) {
 			mv.addObject("message", "因您长时间未使用，需重新登录。");
 		}
 
