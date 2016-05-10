@@ -474,8 +474,6 @@ juasp = {
 			icon == "question";
 		} else if (icon == "w") {
 			icon == "warning";
-		} else {
-			icon = "";
 		}
 
 		win.top.$.messager.alert(title, content, icon, fn);

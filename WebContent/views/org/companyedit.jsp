@@ -20,18 +20,18 @@
 					if(events.onSaved){
 						events.onSaved(data);
 					}
-					<c:choose>
-					<c:when test="${empty model.companyId}">
+			<c:choose>
+				<c:when test="${empty model.companyId}">
 					if($("#autoNew").checked){
 						juasp.closeWin(data);
 					} else {
 						$("#ff").form("reset");
 					}
-					</c:when>
-					<c:otherwise>
+				</c:when>
+				<c:otherwise>
 					juasp.closeWin(data);
-					</c:otherwise>
-					</c:choose>
+				</c:otherwise>
+			</c:choose>
 				}
 			});
 		}

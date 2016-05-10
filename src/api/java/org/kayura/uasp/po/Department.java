@@ -6,6 +6,7 @@ package org.kayura.uasp.po;
 
 import java.util.Date;
 
+import org.kayura.uasp.comm.Constants;
 import org.kayura.utils.StringUtils;
 
 /**
@@ -14,9 +15,6 @@ import org.kayura.utils.StringUtils;
  * @author liangxia@live.com
  */
 public class Department {
-
-	public static final Integer STATUS_DISABLED = 0;
-	public static final Integer STATUS_ENABLED = 1;
 
 	private String departmentId;
 	private String parentId;
@@ -33,7 +31,7 @@ public class Department {
 
 	public Department() {
 		this.serial = 0;
-		this.status = STATUS_ENABLED;
+		this.status = Constants.STATUS_ENABLED;
 	}
 
 	public String getDepartmentId() {

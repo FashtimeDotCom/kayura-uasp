@@ -5,6 +5,7 @@
 package org.kayura.uasp.po;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author liangxia@live.com
@@ -13,21 +14,104 @@ public class Employee implements Serializable {
 
 	private static final long serialVersionUID = 4536860694915891927L;
 
-	private String id;
+	private String employeeId;
+	private String tenantId;
+	private String code;
+	private String name;
+	private String sex;
+	private Date birthDay;
+	private String phone;
+	private String mobile;
+	private String email;
+	private Integer status;
+	private Date updatedTime;
 
-	public Employee() {
+	public String getEmployeeId() {
+		return employeeId;
 	}
 
-	public Employee(String id) {
-		this.id = id;
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
 	}
 
-	public String getId() {
-		return id;
+	public String getTenantId() {
+		return tenantId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public Date getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(Date birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 
 }

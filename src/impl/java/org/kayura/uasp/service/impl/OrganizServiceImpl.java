@@ -13,9 +13,12 @@ import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
+import org.kayura.uasp.comm.Constants;
 import org.kayura.uasp.dao.OrganizeMapper;
 import org.kayura.uasp.po.Company;
 import org.kayura.uasp.po.Department;
+import org.kayura.uasp.po.Employee;
+import org.kayura.uasp.po.Identity;
 import org.kayura.uasp.po.OrganizeItem;
 import org.kayura.uasp.po.Position;
 import org.kayura.uasp.service.OrganizeService;
@@ -113,7 +116,7 @@ public class OrganizServiceImpl implements OrganizeService {
 		}
 
 		if (company.getStatus() == null) {
-			company.setStatus(Company.STATUS_ENABLED);
+			company.setStatus(Constants.STATUS_ENABLED);
 		}
 
 		company.setUpdatedTime(DateUtils.now());
@@ -271,4 +274,73 @@ public class OrganizServiceImpl implements OrganizeService {
 		organizMapper.deletePosition(args);
 		return Result.succeed();
 	}
+
+	// Identity
+
+	public Result<Identity> getIdentityById(String identityId) {
+
+		Result<Identity> r = new Result<Identity>();
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("identityId", identityId);
+
+		List<Identity> list = organizMapper.findIdentities(args, null);
+		if (list.isEmpty()) {
+			r.setCode(Result.ERROR);
+			r.setMessage("不存在ID为:" + identityId + "的身份记录.");
+		} else {
+			r.setCode(Result.SUCCEED);
+			r.setData(list.get(0));
+		}
+
+		return r;
+	}
+
+	public GeneralResult insertIdentity(Identity identity) {
+
+		// 若 employee 不为 null 表示同时插入新员工信息.
+		Employee employee = identity.getEmployee();
+		if (employee != null) {
+			if (StringUtils.isEmpty(employee.getEmployeeId())) {
+				employee.setEmployeeId(KeyUtils.newId());
+			}
+			organizMapper.insertEmployee(employee);
+			identity.setEmployeeId(employee.getEmployeeId());
+		}
+
+		// 插入身份信息.
+		organizMapper.insertIdentity(identity);
+
+		return Result.succeed();
+	}
+
+	public GeneralResult updateIdentity(Identity identity) {
+
+		// 若 employee 不为 null 表示同时更新员工信息.
+		Employee employee = identity.getEmployee();
+		if (employee != null) {
+
+			if (!StringUtils.isEmpty(employee.getEmployeeId())) {
+
+				Map<String, Object> args = new HashMap<String, Object>();
+				args.put("employeeId", employee.getEmployeeId());
+				args.put("code", employee.getCode());
+				args.put("name", employee.getName());
+				args.put("sex", employee.getSex());
+				args.put("birthDay", employee.getBirthDay());
+				args.put("phone", employee.getPhone());
+				args.put("mobile", employee.getMobile());
+				args.put("email", employee.getEmail());
+				args.put("status", employee.getStatus());
+				args.put("updatedTime", DateUtils.now());
+
+				organizMapper.updateEmployee(args);
+			}
+		}
+
+		// 插入身份信息.
+		organizMapper.updateIdentity(identity);
+
+		return Result.succeed();
+	}
+
 }

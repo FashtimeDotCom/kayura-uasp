@@ -6,15 +6,14 @@ package org.kayura.uasp.po;
 
 import java.util.Date;
 
+import org.kayura.uasp.comm.Constants;
+
 /**
  * Position
  *
  * @author liangxia@live.com
  */
 public class Position {
-
-	public static final Integer STATUS_DISABLED = 0;
-	public static final Integer STATUS_ENABLED = 1;
 
 	private String positionId;
 	private String departmentId;
@@ -30,7 +29,7 @@ public class Position {
 
 	public Position() {
 		this.serial = 0;
-		this.status = STATUS_ENABLED;
+		this.status = Constants.STATUS_ENABLED;
 	}
 
 	public String getPositionId() {

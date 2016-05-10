@@ -12,6 +12,8 @@ import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
 import org.kayura.uasp.po.Company;
 import org.kayura.uasp.po.Department;
+import org.kayura.uasp.po.Employee;
+import org.kayura.uasp.po.Identity;
 import org.kayura.uasp.po.OrganizeItem;
 import org.kayura.uasp.po.Position;
 
@@ -23,7 +25,7 @@ import org.kayura.uasp.po.Position;
 public interface OrganizeMapper extends BaseDao {
 
 	// Organize
-	
+
 	/**
 	 * 查询组织机构树型数据.
 	 * 
@@ -45,6 +47,7 @@ public interface OrganizeMapper extends BaseDao {
 
 	/**
 	 * 查询符条件的公司信息.
+	 * 
 	 * @param args 支持的参数：companyId,parentId,tenantId,status.
 	 * @return
 	 */
@@ -52,6 +55,7 @@ public interface OrganizeMapper extends BaseDao {
 
 	/**
 	 * 插入一个公司信息至数据库.
+	 * 
 	 * @param company 数据库实体对象.
 	 */
 	void insertCompany(Company company);
@@ -82,5 +86,36 @@ public interface OrganizeMapper extends BaseDao {
 	void updatePosition(Map<String, Object> args);
 
 	void deletePosition(Map<String, Object> args);
+
+	// Identity
+	
+	/**
+	 * 查询符条件的身份信息.
+	 * @param args 支持参数有: identityId, employeeId, departmentId, positionId, companyId
+	 * @return
+	 */
+	PageList<Identity> findIdentities(Map<String, Object> args, PageBounds pageBounds);
+
+	void insertIdentity(Identity identity);
+
+	void updateIdentity(Identity identity);
+
+	void deleteIdentity(Map<String, Object> args);
+	
+	// Employee
+
+	/**
+	 * 查询员工信息列表.
+	 * @param args 支持参数有: tenantId,sex,startBirthDay,endBirthDay,keyword,status,startUpdatedTime,companyId
+	 * 	departmentId,departmentIds,positionId,positionIds
+	 * @return
+	 */
+	PageList<Employee> findEmployees(Map<String, Object> args, PageBounds pageBounds);
+
+	void insertEmployee(Employee employee);
+
+	void updateEmployee(Map<String, Object> args);
+
+	void deleteEmployee(Map<String, Object> args);
 
 }

@@ -12,6 +12,7 @@ import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.Company;
 import org.kayura.uasp.po.Department;
+import org.kayura.uasp.po.Identity;
 import org.kayura.uasp.po.OrganizeItem;
 import org.kayura.uasp.po.Position;
 
@@ -72,5 +73,13 @@ public interface OrganizeService {
 	GeneralResult updatePosition(Position position);
 
 	GeneralResult deletePosition(String positionId);
+	
+	// Identity
+	
+	Result<Identity> getIdentityById(String identityId);
+
+	GeneralResult insertIdentity(Identity identity);
+
+	GeneralResult updateIdentity(Identity identity);
 
 }

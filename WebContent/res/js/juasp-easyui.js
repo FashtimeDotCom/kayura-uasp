@@ -348,7 +348,7 @@
 			if (r.type == juasp.SUCCESS && r.data != undefined) {
 				return r.data;
 			} else {
-				juasp.alert('消息', r.message, 'e');
+				juasp.alert('消息', r.message, 'error');
 			}
 		} else {
 			return r;

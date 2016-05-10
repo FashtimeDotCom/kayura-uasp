@@ -18,8 +18,11 @@ import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
+import org.kayura.uasp.comm.Constants;
 import org.kayura.uasp.po.Company;
 import org.kayura.uasp.po.Department;
+import org.kayura.uasp.po.Employee;
+import org.kayura.uasp.po.Identity;
 import org.kayura.uasp.po.OrganizeItem;
 import org.kayura.uasp.po.Position;
 import org.kayura.uasp.service.OrganizeService;
@@ -242,7 +245,7 @@ public class OrganizeController extends BaseController {
 					LoginUser user = getLoginUser();
 
 					company.setCompanyId(KeyUtils.newId());
-					company.setStatus(Company.STATUS_ENABLED);
+					company.setStatus(Constants.STATUS_ENABLED);
 					company.setTenantId(user.getTenantId());
 
 					r = writerOrganizeService.insertCompany(company);
@@ -326,7 +329,7 @@ public class OrganizeController extends BaseController {
 					LoginUser user = getLoginUser();
 
 					department.setDepartmentId(KeyUtils.newId());
-					department.setStatus(Company.STATUS_ENABLED);
+					department.setStatus(Constants.STATUS_ENABLED);
 					department.setTenantId(user.getTenantId());
 
 					r = writerOrganizeService.insertDepartment(department);
@@ -370,7 +373,6 @@ public class OrganizeController extends BaseController {
 
 		Result<Position> r = readerOrganizeService.getPositionById(id);
 		if (r.isSucceed()) {
-
 			return view("views/org/positionedit", r.getData());
 		} else {
 			return error("编辑岗位信息时异常。", r.getMessage());
@@ -392,13 +394,89 @@ public class OrganizeController extends BaseController {
 					LoginUser user = getLoginUser();
 
 					position.setPositionId(KeyUtils.newId());
-					position.setStatus(Company.STATUS_ENABLED);
+					position.setStatus(Constants.STATUS_ENABLED);
 					position.setTenantId(user.getTenantId());
 
 					r = writerOrganizeService.insertPosition(position);
 				} else {
 
 					r = writerOrganizeService.updatePosition(position);
+				}
+
+				if (r != null) {
+					ps.setResult(r);
+				}
+			}
+		});
+	}
+
+	@RequestMapping(value = "/org/identity/new", method = RequestMethod.GET)
+	public ModelAndView createIdentity(@RequestParam("pid") String parentId, @RequestParam("t") Integer type) {
+
+		Identity model = new Identity();
+
+		if (type == OrganizeItem.ORGTYPE_POSITION) {
+			Result<Position> rp = readerOrganizeService.getPositionById(parentId);
+			if (rp.isSucceed()) {
+				Position position = rp.getData();
+				model.setPositionId(position.getPositionId());
+				model.setPositionName(position.getName());
+				model.setDepartmentId(position.getDepartmentId());
+				model.setDepartmentName(position.getDepartmentName());
+			}
+		} else if (type == OrganizeItem.ORGTYPE_DEPART) {
+			Result<Department> rp = readerOrganizeService.getDepartmentById(parentId);
+			if (rp.isSucceed()) {
+				Department department = rp.getData();
+				model.setDepartmentId(department.getDepartmentId());
+				model.setDepartmentName(department.getName());
+			}
+		} else {
+			return this.error("指定无效的 type 参数。", "");
+		}
+
+		return view("views/org/identityedit", model);
+	}
+
+	@RequestMapping(value = "/org/identity", method = RequestMethod.GET)
+	public ModelAndView editIdentity(String id) {
+
+		Result<Identity> r = readerOrganizeService.getIdentityById(id);
+		if (r.isSucceed()) {
+			return view("views/org/identityedit", r.getData());
+		} else {
+			return error("读取身份信息时异常。", r.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/org/position/save", method = RequestMethod.POST)
+	public void saveIdentity(HttpServletRequest req, Map<String, Object> map, Identity identity, Employee employee) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = null;
+
+				if (StringUtils.isEmpty(identity.getIdentityId())) {
+
+					LoginUser user = getLoginUser();
+
+					identity.setPositionId(KeyUtils.newId());
+					identity.setEmployee(employee);
+
+					if (StringUtils.isEmpty(employee.getEmployeeId())) {
+						employee.setEmployeeId(KeyUtils.newId());
+					}
+
+					employee.setStatus(Constants.STATUS_ENABLED);
+					employee.setTenantId(user.getTenantId());
+
+					r = writerOrganizeService.insertIdentity(identity);
+				} else {
+
+					r = writerOrganizeService.updateIdentity(identity);
 				}
 
 				if (r != null) {

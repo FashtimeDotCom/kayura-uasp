@@ -14,16 +14,23 @@
 			$('#ff').form('submit', {
 				url : '${root}/org/position/save.json',
 				onlySuccess : function(r){
-					var t = $("#shortName").textbox("getValue");
+					var t = $("#name").textbox("getValue");
 					var data = {result: 1, 'id': r.data.id, text: t};
 					if(events.onSaved){
 						events.onSaved(data);
 					}
+			<c:choose>
+				<c:when test="${empty model.positionId}">
 					if($("#autoNew").checked){
 						juasp.closeWin(data);
 					} else {
 						$("#ff").form("reset");
 					}
+				</c:when>
+				<c:otherwise>
+					juasp.closeWin(data);
+				</c:otherwise>
+			</c:choose>
 				}
 			});
 		}

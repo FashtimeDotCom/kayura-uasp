@@ -53,6 +53,7 @@ jctx = (function(win, $) {
 		actions.addcompany = false;
 		actions.adddepart = false;
 		actions.addposition = false;
+		actions.addemployee = false;
 		actions.remove = false;
 	}
 	
@@ -61,11 +62,13 @@ jctx = (function(win, $) {
 		$('#mm').menu((_actions.addcompany?'showItem':'hideItem'), $("#mmaddcompany"));
 		$('#mm').menu((_actions.adddepart?'showItem':'hideItem'), $("#mmadddepart"));
 		$('#mm').menu((_actions.addposition?'showItem':'hideItem'), $("#mmaddposition"));
+		$('#mm').menu((_actions.addemployee?'showItem':'hideItem'), $("#mmaddemployee"));
 		$('#mm').menu((_actions.remove?'showItem':'hideItem'), $("#mmremove"));
 
 		$("#tbaddcompany").linkbutton(_actions.addcompany?'enable':'disable');
 		$("#tbadddepart").linkbutton(_actions.adddepart?'enable':'disable');
 		$("#tbaddposition").linkbutton(_actions.addposition?'enable':'disable');
+		$("#tbaddemployee").linkbutton(_actions.addemployee?'enable':'disable');
 	}
 
 	function _clickNode(node) {
@@ -85,6 +88,9 @@ jctx = (function(win, $) {
 			} else if (type == 2) {
 				actions.adddepart = true;
 				actions.addposition = true;
+				actions.addemployee = true;
+			} else if (type == 3){
+				actions.addemployee = true;
 			}
 	
 			if (type != 0 && node.children.length == 0) {
@@ -202,26 +208,30 @@ jctx = (function(win, $) {
 			width : "450px",
 			height : "500px",
 			title : "部门信息",
-			onClose : function(r) {
-				if (r.result == 1) {
-					if(juasp.isEmpty(id)) {
-						$('#tv').tree('append', {
-							parent : selectNode.target,
-							data : [ {
-								id : r.id,
-								iconCls : 'icon-depart',
-								text : r.text,
-								attributes : { type : 2 },
-								children : []
-							} ]
-						});
-					} else {
-						$('#tv').tree('update', {
-							target : node.target,
-							text : r.text
-						});
+			events :{
+				onSaved : function(r) {
+					if (r.result == 1) {
+						if(juasp.isEmpty(id)) {
+							$('#tv').tree('append', {
+								parent : selectNode.target,
+								data : [ {
+									id : r.id,
+									iconCls : 'icon-depart',
+									text : r.text,
+									attributes : { type : 2 },
+									children : []
+								} ]
+							});
+						} else {
+							$('#tv').tree('update', {
+								target : selectNode.target,
+								text : r.text
+							});
+						}
 					}
 				}
+			},
+			onClose : function(r) {
 			}
 		});
 	}
@@ -250,26 +260,30 @@ jctx = (function(win, $) {
 			width : "450px",
 			height : "500px",
 			title : "岗位信息",
-			onClose : function(r) {
-				if (r.result == 1) {
-					if(juasp.isEmpty(id)) {
-						$('#tv').tree('append', {
-							parent : selectNode.target,
-							data : [ {
-								id : r.id,
-								iconCls : 'icon-position',
-								text : r.text,
-								attributes : { type : 3 },
-								children : []
-							} ]
-						});
-					} else {
-						$('#tv').tree('update', {
-							target : node.target,
-							text : r.text
-						});
+			events :{
+				onSaved : function(r) {
+					if (r.result == 1) {
+						if(juasp.isEmpty(id)) {
+							$('#tv').tree('append', {
+								parent : selectNode.target,
+								data : [ {
+									id : r.id,
+									iconCls : 'icon-position',
+									text : r.text,
+									attributes : { type : 3 },
+									children : []
+								} ]
+							});
+						} else {
+							$('#tv').tree('update', {
+								target : selectNode.target,
+								text : r.text
+							});
+						}
 					}
 				}
+			},
+			onClose : function(r) {
 			}
 		});
 	}
@@ -277,6 +291,14 @@ jctx = (function(win, $) {
 
 	function _addPosition(){
 		_editPosition();
+	}
+	
+	function _editEmployee(id){
+		
+	}
+	
+	function _addEmployee(){
+		_editEmployee();
 	}
 	
 	function _edit(){
@@ -309,7 +331,7 @@ jctx = (function(win, $) {
 					var id = selectNode.id;
 					
 					juasp.post(rootPath + "/org/remove.json", { id: id, t: type }, {
-						success: function(r){
+						success: function(r) {
 							var parentNode = $('#tv').tree('getParent', selectNode.target);
 							$('#tv').tree('remove', selectNode.target);
 							$('#tv').tree('select', parentNode.target);

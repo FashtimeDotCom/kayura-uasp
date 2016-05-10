@@ -14,6 +14,7 @@ public class OrganizeItem {
 	public static final Integer ORGTYPE_COMPANY = 1;
 	public static final Integer ORGTYPE_DEPART = 2;
 	public static final Integer ORGTYPE_POSITION = 3;
+	public static final Integer ORGTYPE_IDENTITY = 4;
 
 	private String orgId;
 	private String parentId;
@@ -73,6 +74,9 @@ public class OrganizeItem {
 			break;
 		case 3:
 			orgTypeName = "岗位";
+			break;
+		case 4:
+			orgTypeName = "员工";
 			break;
 		}
 		return orgTypeName;
