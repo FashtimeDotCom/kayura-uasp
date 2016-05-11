@@ -78,7 +78,7 @@
 			</tr>
 			<tr>
 				<td>出生日期:</td>
-				<td><k:datetimebox id="birthDay" value="${emp.birthDay}" style="width:180px;" /></td>
+				<td><k:databox id="birthDay" value="${emp.birthDay}" style="width:180px;" /></td>
 			</tr>
 			<tr>
 				<td>分机:</td>

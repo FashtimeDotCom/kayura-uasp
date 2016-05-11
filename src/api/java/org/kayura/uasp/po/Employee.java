@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.kayura.serializer.DateTimeJsonSerializer;
+import org.kayura.serializer.DateJsonSerializer;
 
 /**
  * @author liangxia@live.com
@@ -69,7 +69,7 @@ public class Employee implements Serializable {
 		this.sex = sex;
 	}
 
-	@JsonSerialize(using = DateTimeJsonSerializer.class)
+	@JsonSerialize(using = DateJsonSerializer.class)
 	public Date getBirthDay() {
 		return birthDay;
 	}

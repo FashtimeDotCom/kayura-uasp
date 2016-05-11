@@ -94,7 +94,7 @@ public interface OrganizeMapper extends BaseDao {
 	 * @param args 支持参数有: identityId, employeeId, departmentId, positionId, companyId
 	 * @return
 	 */
-	PageList<Identity> findIdentities(Map<String, Object> args, PageBounds pageBounds);
+	List<Identity> findIdentities(Map<String, Object> args);
 
 	void insertIdentity(Identity identity);
 

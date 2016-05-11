@@ -318,7 +318,7 @@ jctx = (function(win, $) {
 			height : "500px",
 			title : "员工身份信息",
 			onClose : function(r) {
-				if (r.result == 1) {
+				if (r == 1) {
 					_findItems(selectNode.id);
 				}
 			}

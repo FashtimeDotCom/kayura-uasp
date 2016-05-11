@@ -546,7 +546,7 @@
 		<result property="positionName" column="PositionName" />
 		<result property="employeeId" column="Employee_Id" />
 		<result property="employeeName" column="EmployeeName" />
-		<association property="employee" column="Employee_Id" columnPrefix="Emp_" resultMap="employeeResultMap" />
+		<association property="employee" columnPrefix="Emp_" resultMap="employeeResultMap" />
 	</resultMap>
 	
 	<select id="findIdentities" parameterType="map" resultMap="identityResultMap">

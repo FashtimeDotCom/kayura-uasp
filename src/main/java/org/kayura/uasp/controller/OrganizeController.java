@@ -57,10 +57,10 @@ public class OrganizeController extends BaseController {
 
 	@Autowired
 	private OrganizeService readerOrganizeService;
-	
+
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
 
@@ -457,7 +457,10 @@ public class OrganizeController extends BaseController {
 
 		Result<Identity> r = readerOrganizeService.getIdentityById(id);
 		if (r.isSucceed()) {
-			return view("views/org/identityedit", r.getData());
+			Identity model = r.getData();
+			ModelAndView mv = view("views/org/identityedit", model);
+			mv.addObject("emp", model.getEmployee());
+			return mv;
 		} else {
 			return error("读取身份信息时异常。", r.getMessage());
 		}
@@ -472,24 +475,22 @@ public class OrganizeController extends BaseController {
 			public void invoke(PostResult ps) {
 
 				GeneralResult r = null;
-
 				if (StringUtils.isEmpty(identity.getIdentityId())) {
 
 					LoginUser user = getLoginUser();
-
 					identity.setIdentityId(KeyUtils.newId());
 					identity.setEmployee(employee);
 
 					if (StringUtils.isEmpty(employee.getEmployeeId())) {
 						employee.setEmployeeId(KeyUtils.newId());
 					}
-
 					employee.setStatus(Constants.STATUS_ENABLED);
 					employee.setTenantId(user.getTenantId());
-
+					
 					r = writerOrganizeService.insertIdentity(identity);
 				} else {
 
+					identity.setEmployee(employee);
 					r = writerOrganizeService.updateIdentity(identity);
 				}
 

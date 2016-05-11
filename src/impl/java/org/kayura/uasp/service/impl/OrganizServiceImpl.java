@@ -283,7 +283,7 @@ public class OrganizServiceImpl implements OrganizeService {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("identityId", identityId);
 
-		List<Identity> list = organizMapper.findIdentities(args, null);
+		List<Identity> list = organizMapper.findIdentities(args);
 		if (list.isEmpty()) {
 			r.setCode(Result.ERROR);
 			r.setMessage("不存在ID为:" + identityId + "的身份记录.");
