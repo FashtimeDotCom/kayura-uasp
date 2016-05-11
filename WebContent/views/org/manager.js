@@ -121,6 +121,11 @@ jctx = (function(win, $) {
 				url : rootPath + "/org/find.json",
 				queryParams : {
 					"id" : id
+				},
+				onDblClickRow : function(index, row){
+					var id = row.orgId;
+					var type = row.orgType;
+					_editOrgItem(id, type);
 				}
 			});
 		} else {
@@ -293,15 +298,39 @@ jctx = (function(win, $) {
 		_editPosition();
 	}
 	
-	function _editEmployee(id){
+	function _editIdentity(id){
+
+		var url = rootPath + "/org/identity";
+		
+		if(juasp.isEmpty(id)) {
+			var pid = selectNode.id;
+			var type = selectNode.attributes.type;
+			var pname = selectNode.text;
+			url = url + "/new?pid=" + selectNode.id + "&t=" + type;
+		} else {
+			url = url + "?id=" + id;
+		}
+
+		$('#tv').tree('expand', selectNode.target);
+		juasp.openWin({
+			url : url,
+			width : "450px",
+			height : "500px",
+			title : "员工身份信息",
+			onClose : function(r) {
+				if (r.result == 1) {
+					_findItems(selectNode.id);
+				}
+			}
+		});
 		
 	}
 	
-	function _addEmployee(){
-		_editEmployee();
+	function _addIdentity(){
+		_editIdentity();
 	}
 	
-	function _edit(){
+	function _editNode(){
 		
 		if(selectNode != null){
 			
@@ -309,15 +338,21 @@ jctx = (function(win, $) {
 			var type = selectNode.attributes.type;
 			var id = selectNode.id;
 			
-			if(type == 1) {
-				_editCompany(id);
-			} else if(type == 2) {
-				_editDepart(id);
-			} else if (type == 3) {
-				_editPosition(id);
-			}
+			_editOrgItem(id, type);
 		}
+	}
+	
+	function _editOrgItem(id, type){
 		
+		if(type == 1) {
+			_editCompany(id);
+		} else if(type == 2) {
+			_editDepart(id);
+		} else if (type == 3) {
+			_editPosition(id);
+		} else if (type == 4) {
+			_editIdentity(id);
+		}
 	}
 	
 	function _removeOrg(){
@@ -347,11 +382,12 @@ jctx = (function(win, $) {
 	return {
 		init : _init,
 		search : _search,
-		edit : _edit,
+		editNode : _editNode,
 		removeOrg : _removeOrg,
 		addCompany : _addCompany,
 		addDepart : _addDepart,
-		addPosition : _addPosition
+		addPosition : _addPosition,
+		addIdentity : _addIdentity
 	}
 
 }(window, jQuery));

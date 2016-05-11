@@ -4,6 +4,8 @@
  */
 package org.kayura.uasp.po;
 
+import org.kayura.utils.StringUtils;
+
 /**
  * Identity
  *
@@ -24,7 +26,7 @@ public class Identity {
 	private Employee employee;
 
 	public String getIdentityId() {
-		return identityId;
+		return StringUtils.isEmpty(identityId) ? null : this.identityId;
 	}
 
 	public void setIdentityId(String identityId) {
@@ -32,7 +34,7 @@ public class Identity {
 	}
 
 	public String getCompanyId() {
-		return companyId;
+		return StringUtils.isEmpty(companyId) ? null : this.companyId;
 	}
 
 	public void setCompanyId(String companyId) {
@@ -48,7 +50,7 @@ public class Identity {
 	}
 
 	public String getDepartmentId() {
-		return departmentId;
+		return StringUtils.isEmpty(departmentId) ? null : this.departmentId;
 	}
 
 	public void setDepartmentId(String departmentId) {
@@ -64,7 +66,7 @@ public class Identity {
 	}
 
 	public String getPositionId() {
-		return positionId;
+		return StringUtils.isEmpty(positionId) ? null : this.positionId;
 	}
 
 	public void setPositionId(String positionId) {

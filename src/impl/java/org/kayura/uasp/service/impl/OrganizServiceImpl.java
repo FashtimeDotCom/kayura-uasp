@@ -303,11 +303,15 @@ public class OrganizServiceImpl implements OrganizeService {
 			if (StringUtils.isEmpty(employee.getEmployeeId())) {
 				employee.setEmployeeId(KeyUtils.newId());
 			}
+			employee.setUpdatedTime(DateUtils.now());
 			organizMapper.insertEmployee(employee);
 			identity.setEmployeeId(employee.getEmployeeId());
 		}
 
 		// 插入身份信息.
+		if (StringUtils.isEmpty(identity.getIdentityId())) {
+			identity.setIdentityId(KeyUtils.newId());
+		}
 		organizMapper.insertIdentity(identity);
 
 		return Result.succeed();

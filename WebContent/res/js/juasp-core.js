@@ -349,7 +349,7 @@ juasp = {
 
 		var wid = _newId();
 
-		var w = $top("<div />");
+		var w = $top("<div/>");
 		_setCache("wid_" + wid, w);
 		
 		if(opts.events){
@@ -374,6 +374,7 @@ juasp = {
 				} else {
 					_removeCache("win_result_" + wid);
 				}
+				$(this).panel('destroy');
 			},
 			onOpen : function(e) {
 				w.css("overflow", "hidden");

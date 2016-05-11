@@ -30,18 +30,18 @@
 				<k:linkbutton id="tbaddcompany" onClick="jctx.addCompany()" disabled="true" iconCls="icon-company" plain="true" text="添加公司" />
 				<k:linkbutton id="tbadddepart" onClick="jctx.addDepart()" disabled="true" iconCls="icon-depart" plain="true" text="添加部门" />
 				<k:linkbutton id="tbaddposition" onClick="jctx.addPosition()" disabled="true" iconCls="icon-position" plain="true" text="添加岗位" />
-				<k:linkbutton id="tbaddemployee" onClick="jctx.addEmployee()" disabled="true" iconCls="icon-user" plain="true" text="添加员工" />
+				<k:linkbutton id="tbaddemployee" onClick="jctx.addIdentity()" disabled="true" iconCls="icon-user" plain="true" text="添加员工" />
 				<div style="float:right;">
 				<k:textbox id="search" prompt="搜索：代码、名称" style="width:250px;height:24px;" />
 				</div>
 			</div>
 			<div id="mm" class="easyui-menu" style="width: 120px;">
 				<div id="mmaddposition" onclick="jctx.addPosition()" data-options="iconCls:'icon-position'">添加岗位</div>
-				<div id="mmaddemployee" onclick="jctx.addEmployee()" data-options="iconCls:'icon-user'">添加员工</div>
+				<div id="mmaddemployee" onclick="jctx.addIdentity()" data-options="iconCls:'icon-user'">添加员工</div>
 				<div id="mmadddepart" onclick="jctx.addDepart()" data-options="iconCls:'icon-depart'">添加部门</div>
 				<div id="mmaddcompany" onclick="jctx.addCompany()" data-options="iconCls:'icon-company'">添加公司</div>
 				<div class="menu-sep"></div>
-				<div id="mmedit" onclick="jctx.edit()" data-options="iconCls:'icon-edit'">编辑</div>
+				<div id="mmedit" onclick="jctx.editNode()" data-options="iconCls:'icon-edit'">编辑</div>
 				<div id="mmremove" onclick="jctx.removeOrg()" data-options="iconCls:'icon-remove'">删除</div>
 				<div class="menu-sep"></div>
 				<div onclick="expand()">展开</div>

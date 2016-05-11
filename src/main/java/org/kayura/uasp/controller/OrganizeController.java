@@ -4,7 +4,9 @@
  */
 package org.kayura.uasp.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,7 +33,10 @@ import org.kayura.utils.StringUtils;
 import org.kayura.web.BaseController;
 import org.kayura.tags.easyui.types.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,6 +57,12 @@ public class OrganizeController extends BaseController {
 
 	@Autowired
 	private OrganizeService readerOrganizeService;
+	
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	}
 
 	@RequestMapping(value = "/org/manager", method = RequestMethod.GET)
 	public ModelAndView fileUpload() {
@@ -414,6 +425,7 @@ public class OrganizeController extends BaseController {
 	public ModelAndView createIdentity(@RequestParam("pid") String parentId, @RequestParam("t") Integer type) {
 
 		Identity model = new Identity();
+		model.setEmployee(new Employee());
 
 		if (type == OrganizeItem.ORGTYPE_POSITION) {
 			Result<Position> rp = readerOrganizeService.getPositionById(parentId);
@@ -435,7 +447,9 @@ public class OrganizeController extends BaseController {
 			return this.error("指定无效的 type 参数。", "");
 		}
 
-		return view("views/org/identityedit", model);
+		ModelAndView mv = view("views/org/identityedit", model);
+		mv.addObject("emp", model.getEmployee());
+		return mv;
 	}
 
 	@RequestMapping(value = "/org/identity", method = RequestMethod.GET)
@@ -449,7 +463,7 @@ public class OrganizeController extends BaseController {
 		}
 	}
 
-	@RequestMapping(value = "/org/position/save", method = RequestMethod.POST)
+	@RequestMapping(value = "/org/identity/save", method = RequestMethod.POST)
 	public void saveIdentity(HttpServletRequest req, Map<String, Object> map, Identity identity, Employee employee) {
 
 		postExecute(map, new PostAction() {
@@ -463,7 +477,7 @@ public class OrganizeController extends BaseController {
 
 					LoginUser user = getLoginUser();
 
-					identity.setPositionId(KeyUtils.newId());
+					identity.setIdentityId(KeyUtils.newId());
 					identity.setEmployee(employee);
 
 					if (StringUtils.isEmpty(employee.getEmployeeId())) {

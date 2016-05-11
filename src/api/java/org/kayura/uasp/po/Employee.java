@@ -7,6 +7,9 @@ package org.kayura.uasp.po;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.kayura.serializer.DateTimeJsonSerializer;
+
 /**
  * @author liangxia@live.com
  */
@@ -66,6 +69,7 @@ public class Employee implements Serializable {
 		this.sex = sex;
 	}
 
+	@JsonSerialize(using = DateTimeJsonSerializer.class)
 	public Date getBirthDay() {
 		return birthDay;
 	}

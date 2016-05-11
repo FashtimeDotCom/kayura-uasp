@@ -272,7 +272,7 @@
 	<!-- Department -->
 
 	<resultMap id="departmentResultMap" type="org.kayura.uasp.po.Department">
-		<result property="departmentId" column="Department_Id" />
+		<id property="departmentId" column="Department_Id" />
 		<result property="parentId" column="Parent_Id" />
 		<result property="parentName" column="ParentName" />
 		<result property="companyId" column="Company_Id" />
@@ -411,7 +411,7 @@
 	<!-- Positions -->
 	
 	<resultMap type="org.kayura.uasp.po.Position" id="positionResultMap">
-		<result property="positionId" column="Position_Id" />
+		<id property="positionId" column="Position_Id" />
 		<result property="departmentId" column="Department_Id" />
 		<result property="departmentName" column="DepartmentName" />
 		<result property="tenantId" column="Tenant_Id" />
@@ -537,7 +537,7 @@
 	<!-- Identity -->
 
 	<resultMap type="org.kayura.uasp.po.Identity" id="identityResultMap">
-		<result property="identityId" column="Identity_Id" />
+		<id property="identityId" column="Identity_Id" />
 		<result property="companyId" column="Company_Id" />
 		<result property="companyName" column="CompanyName" />
 		<result property="departmentId" column="Department_Id" />
@@ -546,7 +546,7 @@
 		<result property="positionName" column="PositionName" />
 		<result property="employeeId" column="Employee_Id" />
 		<result property="employeeName" column="EmployeeName" />
-		<association property="employee" columnPrefix="Emp_" resultMap="employeeResultMap" />
+		<association property="employee" column="Employee_Id" columnPrefix="Emp_" resultMap="employeeResultMap" />
 	</resultMap>
 	
 	<select id="findIdentities" parameterType="map" resultMap="identityResultMap">
@@ -599,13 +599,17 @@
 		INSERT uasp_identities (
 			Identity_Id,
 			Employee_Id,
-			Department_Id,
-			Position_Id
+			Department_Id
+			<if test="positionId != null">
+			,Position_Id
+			</if>
 		) VALUES (
 			#{identityId},
 			#{employeeId},
-			#{departmentId},
-			#{positionId}
+			#{departmentId}
+			<if test="positionId != null">
+			,#{positionId}
+			</if>
 		)
 	</insert>
 	
@@ -628,7 +632,7 @@
 	<!-- Employee -->
 
 	<resultMap type="org.kayura.uasp.po.Employee" id="employeeResultMap">
-		<result property="employeeId" column="Employee_Id" />
+		<id property="employeeId" column="Employee_Id" />
 		<result property="tenantId" column="Tenant_Id" />
 		<result property="code" column="Code" />
 		<result property="name" column="Name" />
