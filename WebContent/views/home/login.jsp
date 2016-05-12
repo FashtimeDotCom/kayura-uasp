@@ -26,7 +26,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 				</div>
 				<div class="login_window">
 					<img src="${root}/res/images/login/icon1.png" />
-					<div style="padding: 30px 30px 10px 30px">
+					<div style="height:270px; padding: 30px 30px 10px 30px">
 						<div style="margin-bottom: 10px">
 							<k:textbox id="u" required="true" missingMessage="请输入用户名." novalidate="true" 
 								style="width:100%;height:30px;padding:8px" iconCls="icon-man" iconWidth="30" prompt="用户名/手机号"
@@ -56,6 +56,9 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 							<a href="javascript:void(0)" style="float: right; margin-right: 5px">自助注册</a>
 						</div>
 						<div id="login-error" style="width: 100%; color: red;">${message}</div>
+					</div>
+					<div style="padding-left: 30px">
+						<%@ include file="_themes.jsp" %>
 					</div>
 				</div>
 			</div>
