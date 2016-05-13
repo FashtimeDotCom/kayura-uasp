@@ -3,13 +3,17 @@
 <html>
 <head>
 <title>统一门户</title>
-<link rel="stylesheet" type="text/css" href="${root}/res/easyui/themes/${theme}/easyui.css">
-<link rel="stylesheet" type="text/css" href="${root}/res/easyui/themes/icon.css">
-<script type="text/javascript" src="${root}/res/js/jquery.min.js"></script>
-<script type="text/javascript" src="${root}/res/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="${root}/res/easyui/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="${root}/res/easyui/jquery.portal.js"></script>
-
+	<k:resource  id="themeLink" location="res" name="easyui/themes/${theme}/easyui.css"/>
+	<k:resources location="res">
+		easyui/themes/icon.css
+		js/juasp.css
+		js/jquery.min.js
+		easyui/jquery.easyui.min.js
+		easyui/easyui-lang-zh_CN.js
+		js/juasp-core.js
+		js/juasp-easyui.js
+		easyui/jquery.portal.js
+	</k:resources>
 <script type="text/javascript">
 	$(function() {
 		$('#pp').portal({

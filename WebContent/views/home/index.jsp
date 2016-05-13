@@ -3,8 +3,9 @@
 <html>
 <head>
 <title>统一应用支撑平台</title>
+	<div id="resContent">
+	<k:resource  id="themeLink" location="res" name="easyui/themes/${theme}/easyui.css"/>
 	<k:resources location="res">
-		easyui/themes/${theme}/easyui.css
 		easyui/themes/icon.css
 		js/juasp.css
 		js/jquery.min.js
@@ -13,8 +14,10 @@
 		js/juasp-core.js
 		js/juasp-easyui.js
 	</k:resources>
+	</div>
 	<script type="text/javascript">
 	$(function(){
+		jeasyui.genThemeList("themeList", "${root}");
 		juasp.openTab('首页', '${root}/portal', 'icon-home', false);
 	});
 	</script>
@@ -28,6 +31,8 @@
 	</k:dock>
 	<k:dock region="south" style="height: 35px">
 		共 ${numUsers} 人在线.
+		<div id="themeList" style="float:right; padding-top: 5px;">
+		</div>
 	</k:dock>
 	<k:dock region="west" split="true" title="导航栏" style="width: 160px;">
 		<k:accordion fit="true" border="false">

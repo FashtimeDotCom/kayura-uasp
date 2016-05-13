@@ -3,8 +3,8 @@
 <html>
 <head>
 	<title><k:renderSection name="title" /></title>
+	<k:resource  id="themeLink" location="res" name="easyui/themes/${theme}/easyui.css"/>
 	<k:resources location="res">
-		easyui/themes/${theme}/easyui.css
 		easyui/themes/icon.css
 		js/juasp.css
 		js/jquery.min.js

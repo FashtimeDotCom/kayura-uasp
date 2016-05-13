@@ -299,8 +299,57 @@
 	});
 	
 	// jeasyui 扩展静态方法.
+	
+	function _changeTheme(theme) {
+		var link = $("#themeLink");
+		if( link != null) {
+			link.attr('href', juasp.root + '/res/easyui/themes/' + theme + '/easyui.css');
+			
+			var ifs = $("iframe");
+			for(var f = 0; f < ifs.length; f++) {
+				var w = ifs[f].contentWindow;
+				if (w && w.changeTheme){
+					w.changeTheme(theme);
+				}
+			}
+		}
+	}
+	
+	win.changeTheme = _changeTheme;
 
-	var jeasyui = {};
+	var jeasyui = {
+
+		genThemeList: function(eid, root) {
+			
+			var themes = [{title:'default',borderColor:'#95B8E7', backgroundColor:'#E0ECFF'},
+			              {title:'bootstrap',borderColor:'#D4D4D4', backgroundColor:'#F2F2F2'},
+			              {title:'cupertino',borderColor:'#AED0EA', backgroundColor:'#d7ebf9'},
+			              {title:'gray',borderColor:'#D3D3D3', backgroundColor:'#f3f3f3'},
+			              {title:'metro',borderColor:'#ddd', backgroundColor:'#ffffff'},
+			              {title:'metro-blue',borderColor:'#c3d9e0', backgroundColor:'#daeef5'},
+			              {title:'metro-gray',borderColor:'#abafb8', backgroundColor:'#c7ccd1'},
+			              {title:'sunny',borderColor:'#494437', backgroundColor:'#feeebd'}];
+			
+			var $div = $("#" + eid);
+			
+			for ( var i in themes) {
+				var t = themes[i];
+				var d = $("<div/>");
+				d.addClass("juasp-theme");
+				d.attr("title", t.title);
+				d.css({ "border-color": t.borderColor, "background-color": t.backgroundColor });
+				d.bind("click", function(){
+					var nt = $(this).attr("title");
+					var ot = juasp.getCookie("theme");
+					if(ot != nt) {
+						juasp.setCookie("theme", nt, 365);
+						_changeTheme(nt);
+					}
+				});
+				$div.append(d);
+			}
+		}
+	};
 
 	/**
 	 * 创建 DataGrid 表格的列控制菜单.

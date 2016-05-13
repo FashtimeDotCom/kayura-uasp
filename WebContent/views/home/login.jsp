@@ -11,6 +11,9 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 .login_imgshow { float: left; width: 600px; height: 416px; overflow: hidden; }
 .login_window { float: left; width: 300px; }
 </style>
+<script type="text/javascript">
+
+</script>
 </k:section>
 
 <k:section name="body">
@@ -57,8 +60,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 						</div>
 						<div id="login-error" style="width: 100%; color: red;">${message}</div>
 					</div>
-					<div style="padding-left: 30px">
-						<%@ include file="_themes.jsp" %>
+					<div id="themeList" style="padding-left: 30px">
 					</div>
 				</div>
 			</div>

@@ -10,13 +10,11 @@ juasp = {
 	siteUrl : "/"
 };
 
-(function($, win) {
+(function($, win, doc) {
 
 	/* 计算站点根路径 */
-	var hostPath = win.location.href.substring(0, win.location.href
-			.indexOf(win.location.pathname));
-	var projectName = win.location.pathname.substring(0, win.location.pathname
-			.substr(1).indexOf('/') + 1);
+	var hostPath = win.location.href.substring(0, win.location.href.indexOf(win.location.pathname));
+	var projectName = win.location.pathname.substring(0, win.location.pathname.substr(1).indexOf('/') + 1);
 	juasp.root = hostPath + projectName;
 
 	/* 如果当前框架是顶层，就创建缓存对象 */
@@ -179,6 +177,28 @@ juasp = {
 	function _isString(value) {
 		return (typeof value == 'string') && value.constructor == String;
 	}
+	
+
+	function _setCookie(c_name, value, expiredays) {
+		var exdate = new Date()
+		exdate.setDate(exdate.getDate() + expiredays)
+		doc.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString())
+	}
+
+	function _getCookie(c_name) {
+		if (doc.cookie.length > 0) {
+			c_start = doc.cookie.indexOf(c_name + "=")
+			if (c_start != -1) {
+				c_start = c_start + c_name.length + 1
+				c_end = doc.cookie.indexOf(";", c_start)
+				if (c_end == -1)
+					c_end = doc.cookie.length
+				return unescape(doc.cookie.substring(c_start, c_end))
+			}
+		}
+		return ""
+	}
+	
 
 	/** 绑定常用方法至引导对象 * */
 
@@ -193,6 +213,9 @@ juasp = {
 	juasp.isEmpty = _isEmpty;
 	juasp.isString = _isString;
 	juasp.bytesToSize = _bytesToSize;
+	
+	juasp.setCookie = _setCookie;
+	juasp.getCookie = _getCookie;
 
 	juasp.SUCCESS = "success";
 	juasp.ERROR = "error";
@@ -570,7 +593,7 @@ juasp = {
 	juasp.alert = _alert;
 	juasp.message = _message;
 
-}(jQuery, window));
+}(jQuery, window, document));
 
 /**
  * 定义一个 Key,Value 的集合类型.

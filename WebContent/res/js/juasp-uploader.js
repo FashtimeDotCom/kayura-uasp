@@ -16,11 +16,6 @@
 	             'mhtml','tif','tiff','iso','jar','rp','oom','pdm','psd','xml','xsm',
 	             'wma','wmv','vtx','udl','reg','chm','ini'];
     
-	// 计算 Web 项目路径.
-	var hostPath = win.location.href.substring(0, win.location.href.indexOf(win.location.pathname));
-	var projectName = win.location.pathname.substring(0, win.location.pathname.substr(1).indexOf('/') + 1);
-	var appPath =  hostPath + projectName;
-	
 	function newid() {
 		return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 	}
@@ -41,7 +36,7 @@
 	
 	juasp.removefile = function (frid, fileName){
 		
-		juasp.post(appPath + '/file/remove.json', 
+		juasp.post(juasp.root + '/file/remove.json', 
 				{ id : frid, isBiz : 1 },
 				{ success: function(r) {
 					var t = $("#fc_" + frid);
@@ -81,7 +76,7 @@
 		// 下载文件列表.
 		if(opts.showlist) {
 			
-			juasp.post(appPath + '/file/find.json', 
+			juasp.post(juasp.root + '/file/find.json', 
 					{
 						bizId : opts.formData.bizId,
 						category : opts.formData.category,
@@ -121,23 +116,23 @@
         	var t = $queue.find("#li_" + file.id);
         	t.html("<span style='color:#A9A9A9'>" + file.name + " 上传完成.</span>");
         	
-            setTimeout(function(){
+            setTimeout(function() {
             	t.fadeOut('slow', function(){ t.remove(); });
-            },3000);
+            }, 3000);
         });
         
         uploader.on('uploadProgress', function (file, percentage) {
         	
         	var t = $queue.find("#li_" + file.id);
         	
-        	if(percentage == 1){
+        	if(percentage == 1) {
             	t.html("<span style='color:#A9A9A9'>" + file.name + " 上传完成.</span>");
         	} else {
             	t.html("<span style='color:#0000FF'>" + file.name + " 上传中 " + Math.round(percentage * 100) + " %</span>");
         	}
         });
         
-        uploader.on('error', function(type){
+        uploader.on('error', function(type) {
         	
             /**
              * type {String} 错误类型。
@@ -152,7 +147,7 @@
         	
         });
         
-        uploader.on('uploadAccept', function(o, r){
+        uploader.on('uploadAccept', function(o, r) {
 
     		if(opts.showlist) {
     			if(r.type == juasp.SUCCESS) {
@@ -169,10 +164,10 @@
         	var html = '<li id="fc_' + data.frId + '" class="webuploader-fileitems">' ;
         	
         	if(opts.showicon){
-        		html += '<img class="webuploader-fileitem-icon" src="'+ appPath + '/res/images/types/' + juasp.getIconName(data.postfix)+ '.png">';
+        		html += '<img class="webuploader-fileitem-icon" src="'+ juasp.root + '/res/images/types/' + juasp.getIconName(data.postfix)+ '.png">';
         	}
         	
-        	html += '<a href="' + appPath + '/file/get?id=' + data.frId + '" '
+        	html += '<a href="' + juasp.root + '/file/get?id=' + data.frId + '" '
         	html += 'title="文件大小: ' + data.fileSize + '; 上传者: ' + data.uploaderName + ';">' + data.fileName + '</a>';
         	
         	if(opts.showinfos){
@@ -181,7 +176,7 @@
         	
         	if(opts.actions.remove && data.isUploader) {
         		html += '<a href="javascript:void(0)" onclick="juasp.removefile(\'' + data.frId + '\',\'' + data.fileName + '\')">'; 
-        		html += '<img class="webuploader-fileitem-action-icon" src="'+ appPath + '/res/images/icons/clear.png"></a>';
+        		html += '<img class="webuploader-fileitem-action-icon" src="'+ juasp.root + '/res/images/icons/clear.png"></a>';
         	}
         	
         	html += '</li>';
@@ -243,8 +238,8 @@
         	tags : ''			// ● 自定义标签,使用逗号间隔.
         },
 		innerOptions : {
-			swf: appPath + '/res/webuploader/Uploader.swf',
-			server: appPath + '/file/upload.json',
+			swf: juasp.root + '/res/webuploader/Uploader.swf',
+			server: juasp.root + '/file/upload.json',
 			auto: true, 					// 设置为 true 后，不需要手动调用上传，有文件选择即开始上传。
 	        fileNumLimit: 999,				// 验证文件总数量, 超出则不允许加入队列。
 	        fileSizeLimit: 100 * MB,		// 验证文件总大小是否超出限制, 超出则不允许加入队列。
