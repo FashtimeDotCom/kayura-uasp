@@ -4,7 +4,7 @@
  * @author liangxia@live.com
  */
 
-(function(win, $) {
+(function(win, $, doc) {
 
 	// 扩展 easyui tree 组件的方法.
 
@@ -299,17 +299,18 @@
 	});
 	
 	// jeasyui 扩展静态方法.
-	
 	function _changeTheme(theme) {
+		
 		var link = $("#themeLink");
-		if( link != null) {
+		if (link != null) {
 			link.attr('href', juasp.root + '/res/easyui/themes/' + theme + '/easyui.css');
-			
+
 			var ifs = $("iframe");
-			for(var f = 0; f < ifs.length; f++) {
-				var w = ifs[f].contentWindow;
-				if (w && w.changeTheme){
+			for (var f = 0; f < ifs.length; f++) {
+				try {
+					var w = ifs[f].contentWindow;
 					w.changeTheme(theme);
+				} catch (e) {
 				}
 			}
 		}
@@ -406,4 +407,4 @@
 
 	win.jeasyui = jeasyui;
 
-}(window, jQuery));
+}(window, jQuery, document));

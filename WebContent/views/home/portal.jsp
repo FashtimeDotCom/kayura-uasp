@@ -12,40 +12,10 @@
 		easyui/easyui-lang-zh_CN.js
 		js/juasp-core.js
 		js/juasp-easyui.js
-		easyui/jquery.portal.js
 	</k:resources>
-<script type="text/javascript">
-	$(function() {
-		$('#pp').portal({
-			border : false,
-			fit : true
-		});
-		add();
-	});
-	function add() {
-		for (var i = 0; i < 2; i++) {
-			var p = $('<div/>').appendTo('body');
-			p.panel({
-				title : 'Title' + i,
-				content : '<div style="padding:5px;">Content' + (i + 1) + '</div>',
-				height : 100,
-				closable : true,
-				collapsible : true
-			});
-			$('#pp').portal('add', {
-				panel : p,
-				columnIndex : i % 2
-			});
-		}
-		$('#pp').portal('resize');
-	}
-	function remove() {
-		$('#pp').portal('remove', $('#pgrid'));
-		$('#pp').portal('resize');
-	}
-</script>
 </head>
 <body class="easyui-layout">
+	<k:resource location="res" name="easyui/jquery.portal.js"/>
 	<div region="center" border="false">
 		<div id="pp" style="position: relative">
 			<div style="width: 65%;">
@@ -65,7 +35,8 @@
 						</thead>
 					</table>
 				</div>
-				<div title="工作" closable="true" style="height: 200px; text-align: center;">
+				<div title="工作任务" closable="true" style="height: auto; text-align: center;">
+					<iframe scrolling="no" frameborder="0" src="${root}/bpm/tasklist" style="width:100%;height:100%;"></iframe>
 				</div>
 			</div>
 			<div style="width: 35%;">
@@ -73,12 +44,14 @@
 				</div>
 				<div title="我的订阅" collapsible="true" closable="true" style="height: 200px; padding: 5px;">
 					<div class="t-list">
-						<a href="http://www.jeasyui.com/tutorial/datagrid/datagrid1.php">Build
-							border layout for Web Pages</a>
+						<a href="http://www.jeasyui.com/tutorial/datagrid/datagrid1.php">
+							Build border layout for Web Pages
+						</a>
 					</div>
 					<div class="t-list">
-						<a href="http://www.jeasyui.com/tutorial/layout/panel.php">Complex
-							layout on Panel</a>
+						<a href="http://www.jeasyui.com/tutorial/layout/panel.php">
+							Complex layout on Panel
+						</a>
 					</div>
 					<div class="t-list">
 						<a href="http://www.jeasyui.com/tutorial/layout/accordion.php">Create
@@ -103,5 +76,35 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$(function() {
+			$('#pp').portal({
+				border : false,
+				fit : true
+			});
+			add();
+		});
+		function add() {
+			for (var i = 0; i < 2; i++) {
+				var p = $('<div/>').appendTo('body');
+				p.panel({
+					title : 'Title' + i,
+					content : '<div style="padding:5px;">Content' + (i + 1) + '</div>',
+					height : 100,
+					closable : true,
+					collapsible : true
+				});
+				$('#pp').portal('add', {
+					panel : p,
+					columnIndex : i % 2
+				});
+			}
+			$('#pp').portal('resize');
+		}
+		function remove() {
+			$('#pp').portal('remove', $('#pgrid'));
+			$('#pp').portal('resize');
+		}
+	</script>
 </body>
 </html>

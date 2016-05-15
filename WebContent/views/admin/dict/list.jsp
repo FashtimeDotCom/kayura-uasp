@@ -1,12 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
 <k:section name="title">数据词典管理</k:section>
-
 <k:section name="head">
+
+</k:section>
+
+<k:section name="body">
+ 	<k:dock region="center" border="false" style="padding: 2px;">
+	<k:layout id="ctx" fit="true"> 
+		<k:dock region="west" split="true" border="true" style="padding: 10px; width: 160px;">
+			<k:tree id="tv" />
+		</k:dock>
+		<k:dock region="center" border="false" >
+			<k:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" 
+				pageSize="10" singleSelect="true" striped="true" idField="itemId" >
+				<k:column field="name" title="词典名" width="200" />
+				<k:column field="value" title="词典值" width="150" />
+				<k:column field="serial" title="排序值" width="150" />
+				<k:column field="isFixedName" title="保留数据" width="80" />
+			</k:datagrid>
+			<div id="tb">
+				<k:linkbutton id="add" iconCls="icon-add" disabled="true" plain="true" text="新增" onClick="newDict()" />
+				<k:linkbutton id="edit" iconCls="icon-edit" disabled="true" plain="true" text="编辑" onClick="editDict()" />
+				<k:linkbutton id="delete" iconCls="icon-remove" disabled="true" plain="true" text="删除" onClick="delDict()" />
+			</div>
+		</k:dock>
+ 	</k:layout>
+	</k:dock>
 	<script type="text/javascript">
 	
 		var dictId = "", id = "";
-		
 		$(function() {
 			
 			$('#tv').tree({
@@ -129,30 +152,6 @@
 			}
 		}
 	</script>
-</k:section>
-
-<k:section name="body">
-	<k:dock region="center" border="false" style="padding: 2px;">
-	<k:layout id="ctx" fit="true">
-		<k:dock region="west" split="true" border="true" style="padding: 10px; width: 160px;">
-			<k:tree id="tv" />
-		</k:dock>
-		<k:dock region="center" border="false" >
-			<k:datagrid id="tg" fit="true" rownumbers="true" toolbar="#tb" pagination="true" 
-				pageSize="10" singleSelect="true" striped="true" idField="itemId" >
-				<k:column field="name" title="词典名" width="200" />
-				<k:column field="value" title="词典值" width="150" />
-				<k:column field="serial" title="排序值" width="150" />
-				<k:column field="isFixedName" width="80" title="保留数据" />
-			</k:datagrid>
-			<div id="tb">
-				<k:linkbutton id="add" iconCls="icon-add" disabled="true" plain="true" text="新增" onClick="newDict()" />
-				<k:linkbutton id="edit" iconCls="icon-edit" disabled="true" plain="true" text="编辑" onClick="editDict()" />
-				<k:linkbutton id="delete" iconCls="icon-remove" disabled="true" plain="true" text="删除" onClick="delDict()" />
-			</div>
-		</k:dock>
-	</k:layout>
-	</k:dock>
 </k:section>
 
 <%@ include file="/views/shared/_simple.jsp"%>

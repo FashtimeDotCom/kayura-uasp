@@ -372,7 +372,7 @@ juasp = {
 
 		var wid = _newId();
 
-		var w = $top("<div/>");
+		var w = $top("<div id='win_" + wid + "' />");
 		_setCache("wid_" + wid, w);
 		
 		if(opts.events){
@@ -390,14 +390,16 @@ juasp = {
 			minimizable : false,
 			onClose : function(e) {
 				_removeCache("wid_" + wid);
-				_removeCache("wevents_" + wid);
+				if(opts.events){
+					_removeCache("wevents_" + wid);
+				}
 				if (typeof opts.onClose == 'function') {
 					var result = _getCache("win_result_" + wid, null);
 					opts.onClose(result);
 				} else {
 					_removeCache("win_result_" + wid);
 				}
-				$(this).panel('destroy');
+				$(this).parent().remove();
 			},
 			onOpen : function(e) {
 				w.css("overflow", "hidden");
