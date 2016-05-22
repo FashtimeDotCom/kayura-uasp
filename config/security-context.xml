@@ -4,31 +4,39 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<http pattern="/**/res/**" security="none" />
 
 	<!-- 配置访问限制规则 -->
-	<http use-expressions="true" entry-point-ref="loginEntryPoint" access-denied-page="/403">
+	<http entry-point-ref="loginEntryPoint">
 		
 		<!-- 定义不需要过滤的请求路径 -->
+		<intercept-url pattern="/res/**" access="permitAll" />
 		<intercept-url pattern="/example/**" access="permitAll" />
-		<intercept-url pattern="/login**" access="permitAll" />
+		<intercept-url pattern="/login" access="permitAll" />
 		<intercept-url pattern="/info" access="permitAll" />
 	
 		<!-- 定义需要授权访问的请求路径 -->
 		<intercept-url pattern="/admin/**" access="hasRole('ADMIN') or hasRole('ROOT')" />
 		<intercept-url pattern="/**" access="hasRole('USER')" />
 
-		<!-- 自动登录配置 -->
- 		<remember-me key="${rememberme.key}" services-ref="rememberMeServices" />
+		<!-- 防止跨站请求伪造攻击 -->
+		<csrf disabled="true"/>
+		<headers>
+			<frame-options disabled="true"/>
+		</headers>
 		
 		<!-- 用户登出配置 -->
 		<logout logout-url="/logout" logout-success-url="/login?logout" invalidate-session="true" />
-
+		
+		<!-- 自动登录配置 -->
+ 		<remember-me key="${rememberme.key}" services-ref="rememberMeServices" />
+		
+		<access-denied-handler error-page="/login?t=denied" />
+		
 		<!-- 用户会话配置 -->
-		<session-management session-fixation-protection="migrateSession" invalid-session-url="/login?inavlid">
-			<concurrency-control max-sessions="1" expired-url="/login?expired"/>
-		</session-management>
+		<session-management session-authentication-strategy-ref="sas"/>
 
+		<custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER" />
+		
 		<!-- 自定义过滤器: 验证码安全过滤器. -->
 		<custom-filter ref="captchaAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
 
@@ -42,9 +50,15 @@
 		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
 		<beans:constructor-arg value="/login" />
 	</beans:bean>
-
+	
+	<beans:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<beans:constructor-arg name="expiredUrl" value="/login?expired" />
+	</beans:bean>
+	
 	<!-- 自定义的租户账号密码验证过滤器定义 -->
 	<beans:bean id="customLoginFilter" class="org.kayura.uasp.security.TenantUserPasswordLoginFilter">
+		<beans:property name="sessionAuthenticationStrategy" ref="sas" />
 		<beans:property name="usernameParameter" value="u" />
 		<beans:property name="passwordParameter" value="p" />
 		<beans:property name="authenticationManager" ref="authenticationManager" />
@@ -55,13 +69,24 @@
 				<beans:property name="defaultFailureUrl" value="/login?error=1" />
 			</beans:bean>
 		</beans:property>
-		<beans:property name="requiresAuthenticationRequestMatcher">
-			<beans:bean
-				class="org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.FilterProcessUrlRequestMatcher">
-				<beans:constructor-arg value="/userlogin" />
-			</beans:bean>
-		</beans:property>
 	</beans:bean>
+	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+					<beans:constructor-arg ref="sessionRegistry"/>
+					<beans:property name="maximumSessions" value="1" />
+					<beans:property name="exceptionIfMaximumExceeded" value="false" />
+				</beans:bean>
+				<beans:bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
+				</beans:bean>
+				<beans:bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+					<beans:constructor-arg ref="sessionRegistry"/>
+				</beans:bean>
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
 	
 	<!-- 使用数据库记录登录 Cookie 信息，随机产生密钥. -->
   	<beans:bean id="rememberMeServices" class="org.kayura.security.PersistentRememberMeServices">

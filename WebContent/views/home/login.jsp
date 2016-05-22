@@ -17,7 +17,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; font-size: 12px; }
 </k:section>
 
 <k:section name="body">
-	<form id="loginForm" action="${root}/userlogin" method="post">
+	<form id="loginForm" action="${root}/login" method="post">
 		<input type="hidden" name="tid" value="${tid}" />
 		<div class="login_negative">
 			<div class="login_header" style="height: 100px; position: relative;">

@@ -58,16 +58,16 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>(2);
 
 		logger.debug("Grant ROLE_USER to this user");
-		authList.add(new SimpleGrantedAuthority("USER"));
+		authList.add(new SimpleGrantedAuthority("ROLE_USER"));
 
 		if (roles.contains("ADMIN")) {
 			logger.debug("Grant ROLE_ADMIN to this user");
-			authList.add(new SimpleGrantedAuthority("ADMIN"));
+			authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
 		
 		if (roles.contains("ROOT")) {
 			logger.debug("Grant ROLE_ROOT to this user");
-			authList.add(new SimpleGrantedAuthority("ROOT"));
+			authList.add(new SimpleGrantedAuthority("ROLE_ROOT"));
 		}
 
 		return authList;

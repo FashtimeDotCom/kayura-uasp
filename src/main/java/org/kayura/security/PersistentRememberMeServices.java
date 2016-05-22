@@ -29,18 +29,13 @@ import org.springframework.util.Assert;
 public class PersistentRememberMeServices extends AbstractRememberMeServices {
 
 	private PersistentTokenRepository tokenRepository;
-	private SecureRandom random;
+	private SecureRandom random = new SecureRandom();
 
 	public static final int DEFAULT_SERIES_LENGTH = 16;
 	public static final int DEFAULT_TOKEN_LENGTH = 16;
 
 	private int seriesLength = DEFAULT_SERIES_LENGTH;
 	private int tokenLength = DEFAULT_TOKEN_LENGTH;
-
-	@Deprecated
-	public PersistentRememberMeServices() {
-		random = new SecureRandom();
-	}
 
 	public PersistentRememberMeServices(String key, UserDetailsService userDetailsService,
 			PersistentTokenRepository tokenRepository) {
