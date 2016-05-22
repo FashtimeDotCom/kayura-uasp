@@ -6,10 +6,10 @@ package org.kayura.serializer;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * FileSizeJsonSerializer
@@ -19,7 +19,7 @@ import org.codehaus.jackson.map.SerializerProvider;
 public class FileSizeJsonSerializer extends JsonSerializer<Long> {
 
 	@Override
-	public void serialize(Long size, JsonGenerator gen, SerializerProvider provider)
+	public void serialize(Long size, JsonGenerator gen, SerializerProvider serializers)
 			throws IOException, JsonProcessingException {
 
 		long kb = 1024;
@@ -40,6 +40,7 @@ public class FileSizeJsonSerializer extends JsonSerializer<Long> {
 			result = String.format("%d B", size);
 
 		gen.writeString(result);
+
 	}
 
 }

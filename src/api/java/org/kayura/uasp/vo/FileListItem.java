@@ -9,7 +9,7 @@ import java.util.Date;
 import org.kayura.serializer.DateTimeJsonSerializer;
 import org.kayura.serializer.FileSizeJsonSerializer;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author liangxia@live.com

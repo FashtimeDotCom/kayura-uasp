@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -80,41 +81,40 @@ public class HomeController extends BaseController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView login(String error, String logout, String expired, String inavlid, String tid,
-			HttpServletRequest req) {
+	public ModelAndView login(@RequestParam(value = "t", required = false) String type,
+			@RequestParam(value = "pin", required = false) String tenantId, HttpServletRequest req) {
 
 		ModelAndView mv = this.view("views/home/login");
 
 		HttpSession session = req.getSession(true);
-		if (req.getParameterMap().containsKey("tid")) {
-			if (StringUtils.isEmpty(tid)) {
+		if (req.getParameterMap().containsKey("pin")) {
+			if (StringUtils.isEmpty(tenantId)) {
 				session.removeAttribute("tenantId");
 			} else {
-				session.setAttribute("tenantId", tid);
+				session.setAttribute("tenantId", tenantId);
 			}
 		} else {
-			tid = (String) session.getAttribute("tenantId");
+			tenantId = (String) session.getAttribute("tenantId");
 		}
 
-		if (!StringUtils.isEmpty(error)) {
+		if (!StringUtils.isEmpty(type)) {
 
-			if (error.equals("1")) {
+			if (type.equals("failure")) {
 				mv.addObject("message", "用户名或密码错误，请重新输入。");
-			} else if (error.equals("2")) {
+			} else if (type.equals("captcha")) {
 				mv.addObject("message", "输入的验证码错误。");
+			} else if (type.equals("logout")) {
+				mv.addObject("message", "已经成功退出系统。");
+			} else if (type.equals("expired")) {
+				mv.addObject("message", "您当前的登录已经失效。");
+			} else if (type.equals("session")) {
+				mv.addObject("message", "因您长时间未使用，需重新登录。");
 			}
-
+			
 			session.setAttribute("needvc", true);
-
-		} else if (!StringUtils.isEmpty(logout)) {
-			mv.addObject("message", "已经成功退出系统。");
-		} else if (!StringUtils.isEmpty(expired)) {
-			mv.addObject("message", "您当前的登录已经失效。");
-		} else if (!StringUtils.isEmpty(inavlid)) {
-			mv.addObject("message", "因您长时间未使用，需重新登录。");
 		}
 
-		mv.addObject("tid", tid);
+		mv.addObject("tid", tenantId);
 		mv.addObject("runMode", runMode);
 
 		return mv;

@@ -7,8 +7,9 @@ package org.kayura.uasp.po;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.kayura.serializer.DateJsonSerializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author liangxia@live.com

@@ -42,13 +42,14 @@
 					<li><a href="###" onclick="juasp.openTab('账号管理', '${root}/admin/user/list')" >账号管理</a></li>
 					<li><a href="###" onclick="juasp.openTab('数据词典', '${root}/admin/dict/list')" >数据词典</a></li>
 					<li><a href="###" onclick="juasp.openTab('组织机构', '${root}/org/manager')" >组织机构</a></li>
+					<li><a href="###" onclick="juasp.openTab('角色配置', '${root}/auth/role')" >角色配置</a></li>
 					<li><a href="###" onclick="juasp.openTab('文件管理', '${root}/file/manager')" >文件管理</a></li>
 					<li><a href="###" onclick="juasp.openTab('文件上传', '${root}/mock/fileup')" >文件上传</a></li>
 				</ul>
 			</k:sheet>
-			<k:sheet collapsed="false" collapsible="false" title="常用功能" tools="[{iconCls:'icon-menu',handler:function(){alert('设置');}}]">
+			<k:sheet collapsed="false" collapsible="false" title="工作流" tools="[{iconCls:'icon-menu',handler:function(){alert('设置');}}]">
 				<ul>
-					<li><a href="###" onclick="juasp.openTab('账号管理', '${root}/admin/user/list')" >账号管理</a></li>
+					<li><a href="###" onclick="juasp.openTab('账号管理', '${root}/bpm/config')" >流程定义</a></li>
 					<li><a href="###" onclick="juasp.openTab('数据词典', '${root}/admin/dict/list')" >数据词典</a></li>
 					<li><a href="###" onclick="juasp.openTab('组织机构', '${root}/org/manager')" >组织机构</a></li>
 					<li><a href="###" onclick="juasp.openTab('文件管理', '${root}/file/manager')" >文件管理</a></li>
@@ -59,9 +60,6 @@
 				<ul>
 					<li><a href="###" onclick="juasp.openTab('账号管理', '${root}/admin/user/list')" >账号管理</a></li>
 					<li><a href="###" onclick="juasp.openTab('数据词典', '${root}/admin/dict/list')" >数据词典</a></li>
-					<li><a href="###" onclick="juasp.openTab('组织机构', '${root}/org/manager')" >组织机构</a></li>
-					<li><a href="###" onclick="juasp.openTab('文件管理', '${root}/file/manager')" >文件管理</a></li>
-					<li><a href="###" onclick="juasp.openTab('文件上传', '${root}/mock/fileup')" >文件上传</a></li>
 				</ul>
 			</k:sheet>
 		</k:accordion>

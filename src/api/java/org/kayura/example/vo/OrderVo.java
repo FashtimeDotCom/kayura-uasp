@@ -6,8 +6,9 @@ package org.kayura.example.vo;
 
 import java.util.Date;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.kayura.serializer.DateTimeJsonSerializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class OrderVo {
 

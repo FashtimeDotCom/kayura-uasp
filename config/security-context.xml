@@ -21,25 +21,24 @@
 		<!-- 防止跨站请求伪造攻击 -->
 		<csrf disabled="true"/>
 		<headers>
-			<frame-options disabled="true"/>
+			<frame-options policy="SAMEORIGIN" />
 		</headers>
 		
 		<!-- 用户登出配置 -->
-		<logout logout-url="/logout" logout-success-url="/login?logout" invalidate-session="true" />
+		<logout logout-url="/logout" logout-success-url="/login?t=logout" />
 		
 		<!-- 自动登录配置 -->
  		<remember-me key="${rememberme.key}" services-ref="rememberMeServices" />
 		
-		<access-denied-handler error-page="/login?t=denied" />
+		<!-- 拒绝访问时的处理配置 -->
+		<access-denied-handler error-page="/403" />
 		
 		<!-- 用户会话配置 -->
-		<session-management session-authentication-strategy-ref="sas"/>
+		<session-management invalid-session-url="/login?t=session" session-authentication-strategy-ref="sas"/>
 
-		<custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER" />
-		
-		<!-- 自定义过滤器: 验证码安全过滤器. -->
 		<custom-filter ref="captchaAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
-
+		<!-- 自定义过滤器: 验证码安全过滤器. -->
+		<custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER" />
 		<!-- 自定义用户验证过滤器,替代了原默认的过滤器：增加对租户的处理 -->
 		<custom-filter ref="customLoginFilter" position="FORM_LOGIN_FILTER" />
 		
@@ -53,7 +52,7 @@
 	
 	<beans:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
 		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
-		<beans:constructor-arg name="expiredUrl" value="/login?expired" />
+		<beans:constructor-arg name="expiredUrl" value="/login?t=expired" />
 	</beans:bean>
 	
 	<!-- 自定义的租户账号密码验证过滤器定义 -->
@@ -66,7 +65,7 @@
 		<beans:property name="authenticationFailureHandler">
 			<beans:bean
 				class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-				<beans:property name="defaultFailureUrl" value="/login?error=1" />
+				<beans:property name="defaultFailureUrl" value="/login?t=failure" />
 			</beans:bean>
 		</beans:property>
 	</beans:bean>
@@ -116,7 +115,7 @@
 		<beans:property name="captchaFieldName" value="vcode"/>
 		<beans:property name="authenticationFailureHandler">
 			<beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-				<beans:property name="defaultFailureUrl" value="/login?error=2"/>
+				<beans:property name="defaultFailureUrl" value="/login?t=captcha"/>
 			</beans:bean>
 		</beans:property>
 	</beans:bean>
