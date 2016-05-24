@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local_mysql
+Source Server         : localhost_mysql
 Source Server Version : 50615
 Source Host           : localhost:3306
 Source Database       : kayura_db
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50615
 File Encoding         : 65001
 
-Date: 2016-03-02 17:20:33
+Date: 2016-05-24 23:15:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -50,10 +50,6 @@ CREATE TABLE `uasp_autologins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of uasp_autologins
--- ----------------------------
-
--- ----------------------------
 -- Table structure for uasp_autonumbers
 -- ----------------------------
 DROP TABLE IF EXISTS `uasp_autonumbers`;
@@ -86,7 +82,6 @@ CREATE TABLE `uasp_companies` (
   `Company_Id` char(32) NOT NULL,
   `Parent_Id` char(32) DEFAULT NULL,
   `Tenant_Id` varchar(32) DEFAULT NULL COMMENT '编号',
-  `RowType` smallint(6) NOT NULL COMMENT '0 分类；1 公司；',
   `Code` varchar(32) NOT NULL,
   `ShortName` varchar(64) NOT NULL,
   `FullName` varchar(1024) DEFAULT NULL,
@@ -99,8 +94,8 @@ CREATE TABLE `uasp_companies` (
   `Fax` varchar(64) DEFAULT NULL,
   `Linkman` varchar(32) DEFAULT NULL,
   `EstaDate` datetime DEFAULT NULL,
-  `Serial` int(11) NOT NULL,
-  `Status` smallint(6) DEFAULT NULL,
+  `Serial` int(11) NOT NULL DEFAULT '0',
+  `Status` smallint(6) NOT NULL DEFAULT '0',
   `UpdatedTime` datetime NOT NULL,
   PRIMARY KEY (`Company_Id`),
   KEY `FK_UASP_Company_Parent_Ref_ID` (`Parent_Id`),
@@ -112,6 +107,8 @@ CREATE TABLE `uasp_companies` (
 -- ----------------------------
 -- Records of uasp_companies
 -- ----------------------------
+INSERT INTO `uasp_companies` VALUES ('1A1BD4C9259D4E05A16B8B6116B2E682', null, 'DB9611E', 'JTJT', '交通集团', '广东省交通集团有限公司', '', null, null, null, null, null, null, null, null, '0', '1', '2016-05-24 20:59:37');
+INSERT INTO `uasp_companies` VALUES ('CB192295EF994D25BA5D8029C5FA69BE', '1A1BD4C9259D4E05A16B8B6116B2E682', 'DB9611E', 'JTJT_DFSW', '东方思维', '广东东方思维科技有限公司', '', null, null, null, null, null, null, null, null, '0', '1', '2016-05-24 21:05:21');
 
 -- ----------------------------
 -- Table structure for uasp_departments
@@ -121,23 +118,30 @@ CREATE TABLE `uasp_departments` (
   `Department_Id` char(32) NOT NULL,
   `Parent_Id` char(32) DEFAULT NULL,
   `Company_Id` char(32) NOT NULL,
-  `RowType` smallint(6) NOT NULL COMMENT '0 分类；1 项；',
+  `Tenant_Id` varchar(32) DEFAULT NULL COMMENT '编号',
   `Code` varchar(32) NOT NULL,
   `Name` varchar(64) NOT NULL,
   `Description` varchar(4096) DEFAULT NULL,
-  `Serial` int(11) DEFAULT NULL,
-  `Status` smallint(6) DEFAULT NULL,
+  `Serial` int(11) NOT NULL DEFAULT '0',
+  `Status` smallint(6) NOT NULL DEFAULT '0',
   `UpdatedTime` datetime NOT NULL,
   PRIMARY KEY (`Department_Id`),
   KEY `FK_UASP_Department_Parent_Ref_ID` (`Parent_Id`),
   KEY `FK_UASP_Department_Ref_Company` (`Company_Id`),
+  KEY `FK_UASP_Department_Ref_Tenant` (`Tenant_Id`),
   CONSTRAINT `FK_UASP_Department_Parent_Ref_ID` FOREIGN KEY (`Parent_Id`) REFERENCES `uasp_departments` (`Department_Id`),
-  CONSTRAINT `FK_UASP_Department_Ref_Company` FOREIGN KEY (`Company_Id`) REFERENCES `uasp_companies` (`Company_Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_UASP_Department_Ref_Company` FOREIGN KEY (`Company_Id`) REFERENCES `uasp_companies` (`Company_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_Department_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uasp_departments
 -- ----------------------------
+INSERT INTO `uasp_departments` VALUES ('CDA6447F75304382959EBCC2C7739459', null, 'CB192295EF994D25BA5D8029C5FA69BE', 'DB9611E', 'JTJT_DFSW_BB', '本部', '', '0', '1', '2016-05-24 21:05:37');
+INSERT INTO `uasp_departments` VALUES ('E1540D75A5C14D68A1B344FC441CFC9A', null, '1A1BD4C9259D4E05A16B8B6116B2E682', 'DB9611E', 'JTJT_BB', '本部', '', '0', '1', '2016-05-24 20:59:54');
+INSERT INTO `uasp_departments` VALUES ('09DF9136E8244A0282A65E04F06D7290', 'CDA6447F75304382959EBCC2C7739459', 'CB192295EF994D25BA5D8029C5FA69BE', 'DB9611E', 'DFSW_CWB', '财务部', '', '0', '1', '2016-05-24 21:05:50');
+INSERT INTO `uasp_departments` VALUES ('C88484A98E6D4EE7A7BB184FFC94CE83', 'CDA6447F75304382959EBCC2C7739459', 'CB192295EF994D25BA5D8029C5FA69BE', 'DB9611E', 'DFSW_JSZX', '技术中心', '', '0', '1', '2016-05-24 21:08:21');
+INSERT INTO `uasp_departments` VALUES ('E2C1213016CE4372A739BE6B5FA21576', 'CDA6447F75304382959EBCC2C7739459', 'CB192295EF994D25BA5D8029C5FA69BE', 'DB9611E', 'DFSW_SCB', '市场部', '', '0', '1', '2016-05-24 21:06:13');
 
 -- ----------------------------
 -- Table structure for uasp_dictitems
@@ -213,6 +217,7 @@ INSERT INTO `uasp_dictitems` VALUES ('F6FE6CC20E7F40B38455342FE3018A78', null, n
 DROP TABLE IF EXISTS `uasp_employees`;
 CREATE TABLE `uasp_employees` (
   `Employee_Id` char(32) NOT NULL,
+  `Tenant_Id` varchar(32) DEFAULT NULL COMMENT '编号',
   `Code` varchar(32) DEFAULT NULL,
   `Name` varchar(64) NOT NULL,
   `Sex` varchar(16) DEFAULT NULL COMMENT '词典',
@@ -222,33 +227,13 @@ CREATE TABLE `uasp_employees` (
   `Email` varchar(1024) DEFAULT NULL,
   `Status` smallint(6) NOT NULL,
   `UpdatedTime` datetime NOT NULL,
-  PRIMARY KEY (`Employee_Id`)
+  PRIMARY KEY (`Employee_Id`),
+  KEY `FK_UASP_Employee_Ref_Tenant` (`Tenant_Id`),
+  CONSTRAINT `FK_UASP_Employee_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uasp_employees
--- ----------------------------
-
--- ----------------------------
--- Table structure for uasp_emppositions
--- ----------------------------
-DROP TABLE IF EXISTS `uasp_emppositions`;
-CREATE TABLE `uasp_emppositions` (
-  `EmpPosition_Id` char(32) NOT NULL,
-  `Department_Id` char(32) DEFAULT NULL,
-  `Position_Id` char(32) DEFAULT NULL,
-  `Employee_Id` char(32) DEFAULT NULL,
-  PRIMARY KEY (`EmpPosition_Id`),
-  KEY `FK_UASP_EmpPosition_Ref_Department` (`Department_Id`),
-  KEY `FK_UASP_EmpPosition_Ref_Employee` (`Employee_Id`),
-  KEY `FK_UASP_EmpPosition_Ref_Position` (`Position_Id`),
-  CONSTRAINT `FK_UASP_EmpPosition_Ref_Department` FOREIGN KEY (`Department_Id`) REFERENCES `uasp_departments` (`Department_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_EmpPosition_Ref_Employee` FOREIGN KEY (`Employee_Id`) REFERENCES `uasp_employees` (`Employee_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_EmpPosition_Ref_Position` FOREIGN KEY (`Position_Id`) REFERENCES `uasp_positions` (`Position_Id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of uasp_emppositions
 -- ----------------------------
 
 -- ----------------------------
@@ -277,15 +262,15 @@ CREATE TABLE `uasp_filefolders` (
 -- ----------------------------
 -- Records of uasp_filefolders
 -- ----------------------------
+INSERT INTO `uasp_filefolders` VALUES ('F732A19CDF7511E58D5F00163E003262', null, null, 'BD817FA7716E11E586C6D8CB8A43F8DD', null, '培训文档', '\0');
+INSERT INTO `uasp_filefolders` VALUES ('B1900536E04011E59888D8CB8A43F8DD', null, 'F732A19CDF7511E58D5F00163E003262', 'BD817FA7716E11E586C6D8CB8A43F8DD', null, '教学视频', '\0');
+INSERT INTO `uasp_filefolders` VALUES ('D8FCD6DBE04011E59888D8CB8A43F8DD', null, 'F732A19CDF7511E58D5F00163E003262', 'BD817FA7716E11E586C6D8CB8A43F8DD', null, '操作手册', '\0');
 INSERT INTO `uasp_filefolders` VALUES ('0B360E55DF8211E58D5F00163E003262', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', null, '个人照片', '\0');
 INSERT INTO `uasp_filefolders` VALUES ('0F2D7BE1E02011E59888D8CB8A43F8DD', 'DB9611E', null, '18C5BD7D457647ECB3F688D4ECF1C0C8', null, '大广高速', '\0');
 INSERT INTO `uasp_filefolders` VALUES ('2E5421CDDF7611E58D5F00163E003262', 'DB9611E', null, '18C5BD7D457647ECB3F688D4ECF1C0C8', null, '工作文档', '\0');
 INSERT INTO `uasp_filefolders` VALUES ('43D97ADADF7611E58D5F00163E003262', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', 'EFA7A76EDF7111E58D5F00163E003262', '招头标', '\0');
 INSERT INTO `uasp_filefolders` VALUES ('72523D23DF7C11E58D5F00163E003262', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', '3FAA7E74DF7C11E58D5F00163E003262', '招头标', '\0');
 INSERT INTO `uasp_filefolders` VALUES ('A8E0231EDF8D11E58FA3D8CB8A43F8DD', 'DB9611E', null, 'ED5591AB52CC489F8A52445CF6125CD8', 'EFA7A76EDF7111E58D5F00163E003262', '合同文件', '\0');
-INSERT INTO `uasp_filefolders` VALUES ('B1900536E04011E59888D8CB8A43F8DD', null, 'F732A19CDF7511E58D5F00163E003262', 'BD817FA7716E11E586C6D8CB8A43F8DD', null, '教学视频', '\0');
-INSERT INTO `uasp_filefolders` VALUES ('D8FCD6DBE04011E59888D8CB8A43F8DD', null, 'F732A19CDF7511E58D5F00163E003262', 'BD817FA7716E11E586C6D8CB8A43F8DD', null, '操作手册', '\0');
-INSERT INTO `uasp_filefolders` VALUES ('F732A19CDF7511E58D5F00163E003262', null, null, 'BD817FA7716E11E586C6D8CB8A43F8DD', null, '培训文档', '\0');
 
 -- ----------------------------
 -- Table structure for uasp_fileinfos
@@ -307,10 +292,17 @@ CREATE TABLE `uasp_fileinfos` (
 -- Records of uasp_fileinfos
 -- ----------------------------
 INSERT INTO `uasp_fileinfos` VALUES ('2525C99402D5485499596CA1BE5FD1E1', '3823760', 'image/jpeg', '{DiskA}\\20160301\\', 'f0955a39207a7477ddc29da7033ce457', '\0', '\0', null);
+INSERT INTO `uasp_fileinfos` VALUES ('508D598327C247CAABF3B18F59E561D3', '1974609', 'application/pdf', '{DiskA}\\20160522\\', '107c8f3697e2bca4df990d1a2789898a', '\0', '\0', null);
 INSERT INTO `uasp_fileinfos` VALUES ('5362C80A155A4D7294CA8362F81D0EC1', '1239040', 'application/msword', '{DiskA}\\20160301\\', '9a52a7126400a031724d5651bc147757', '\0', '\0', null);
 INSERT INTO `uasp_fileinfos` VALUES ('59D2CC56D9D54AC0A48B405233B87E48', '190464', 'application/octet-stream', '{DiskA}\\20160301\\', 'e718c1bcf01ac0fd8fd3f8a98f6a3e33', '\0', '\0', null);
+INSERT INTO `uasp_fileinfos` VALUES ('65D2737FAC8E4F5E85FE292FA9DB46B1', '58368', 'application/vnd.ms-excel', '{DiskA}\\20160522\\', '8fac5bc58399ce20604f4e2d6bb471b5', '\0', '\0', null);
+INSERT INTO `uasp_fileinfos` VALUES ('87F95AB9319E486CAB12C0B1F923FF7F', '2737738', 'application/pdf', '{DiskA}\\20160522\\', '2f77bb1d49db2baf37df606e230b3cb4', '\0', '\0', null);
+INSERT INTO `uasp_fileinfos` VALUES ('959E582E017046319F7F26F09E51AE00', '107', 'application/octet-stream', '{DiskA}\\20160522\\', '9cea42ee3fe28272b7d2c7becedcd67d', '\0', '\0', null);
+INSERT INTO `uasp_fileinfos` VALUES ('A2E0FC89C71B46BFB30159F1F9D7206E', '641', 'application/octet-stream', '{DiskA}\\20160522\\', 'd9ed476a26bdc9e2fa9f87ea2655e8d1', '\0', '\0', null);
 INSERT INTO `uasp_fileinfos` VALUES ('A9737667B1914C7BA28685B64020E970', '439844', 'application/octet-stream', '{DiskA}\\20160301\\', '402d25834a42765139237ad05f4792f9', '\0', '', 'OgkVFJ1wD3z7rvMx0rCOyg==');
 INSERT INTO `uasp_fileinfos` VALUES ('CC1E4A50429C4D2B839CBF1306BD4638', '11264', 'application/vnd.ms-excel', '{DiskA}\\20160301\\', 'e4e63ce98ce9e6c6a23763138c5b675d', '\0', '\0', null);
+INSERT INTO `uasp_fileinfos` VALUES ('CDDDDC3A6CB84BDDAD4B46BC1191A6B6', '565248', 'application/vnd.ms-excel', '{DiskA}\\20160522\\', '508c065b8f1559f9273adbc5e6362587', '\0', '\0', null);
+INSERT INTO `uasp_fileinfos` VALUES ('DF26878045CC40DA8EAF5E1484D82D35', '4936', 'text/xml', '{DiskA}\\20160522\\', 'ad1429497581d315f85b5ff76b79300c', '\0', '\0', null);
 
 -- ----------------------------
 -- Table structure for uasp_filerelations
@@ -321,7 +313,7 @@ CREATE TABLE `uasp_filerelations` (
   `File_Id` char(32) NOT NULL,
   `Tenant_Id` varchar(32) DEFAULT NULL COMMENT '编号',
   `Folder_Id` char(32) DEFAULT NULL,
-  `BizId` varchar(64) NOT NULL,
+  `BizId` varchar(64) DEFAULT NULL,
   `Category` varchar(1024) DEFAULT NULL,
   `FileName` varchar(1024) NOT NULL,
   `Postfix` varchar(32) DEFAULT NULL,
@@ -332,11 +324,11 @@ CREATE TABLE `uasp_filerelations` (
   `Serial` int(11) NOT NULL DEFAULT '0',
   `Tags` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`Fr_Id`),
-  KEY `FK_UASP_FileRelation_Ref_FileFolder` (`Folder_Id`),
   KEY `FK_UASP_FileRelation_Ref_FileInfo` (`File_Id`),
+  KEY `FK_UASP_FileRelation_Ref_Folder` (`Folder_Id`),
   KEY `FK_UASP_FileRelation_Ref_Tenant` (`Tenant_Id`),
-  CONSTRAINT `FK_UASP_FileRelation_Ref_FileFolder` FOREIGN KEY (`Folder_Id`) REFERENCES `uasp_filefolders` (`Folder_Id`) ON DELETE SET NULL,
   CONSTRAINT `FK_UASP_FileRelation_Ref_FileInfo` FOREIGN KEY (`File_Id`) REFERENCES `uasp_fileinfos` (`File_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_FileRelation_Ref_Folder` FOREIGN KEY (`Folder_Id`) REFERENCES `uasp_filefolders` (`Folder_Id`) ON DELETE SET NULL,
   CONSTRAINT `FK_UASP_FileRelation_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -344,8 +336,14 @@ CREATE TABLE `uasp_filerelations` (
 -- Records of uasp_filerelations
 -- ----------------------------
 INSERT INTO `uasp_filerelations` VALUES ('1E83E94063EA4B4497BF9BC60207FF8A', '5362C80A155A4D7294CA8362F81D0EC1', null, null, 'C3CD06B2-1AE5-481F-A3BF-ADC177CD586F', '', '利通企业应用开发平台EADP集成开发手册.doc', 'doc', 'BD817FA7716E11E586C6D8CB8A43F8DD', '根管理员', '2016-03-01 10:09:12', '2', '0', '');
+INSERT INTO `uasp_filerelations` VALUES ('21D8CA024D0F4E53B0F7A324CDFFB4B1', '508D598327C247CAABF3B18F59E561D3', 'DB9611E', null, '8F6528BEEAB411E5AD4E10BF48BBBEC9', '合同', '软件成熟度_CMM.pdf', 'pdf', 'ED5591AB52CC489F8A52445CF6125CD8', null, '2016-05-22 20:51:31', '1', '0', null);
+INSERT INTO `uasp_filerelations` VALUES ('244D0CD2113349488A987ECAE2199285', '87F95AB9319E486CAB12C0B1F923FF7F', 'DB9611E', '0B360E55DF8211E58D5F00163E003262', null, null, '统一建模语言(UML)参考手册——基本概念.pdf', 'pdf', 'ED5591AB52CC489F8A52445CF6125CD8', null, '2016-05-22 19:33:14', '0', '0', null);
 INSERT INTO `uasp_filerelations` VALUES ('27A23C77B50740D4BE57AAD451E12B7A', 'A9737667B1914C7BA28685B64020E970', null, null, 'C3CD06B2-1AE5-481F-A3BF-ADC177CD586F', '', 'kayura_uasp_data.sql', 'sql', 'BD817FA7716E11E586C6D8CB8A43F8DD', '根管理员', '2016-03-01 10:17:19', '0', '0', '');
+INSERT INTO `uasp_filerelations` VALUES ('3CB72C5F3AEC4B3F9BB6D7EEA2AE4699', '65D2737FAC8E4F5E85FE292FA9DB46B1', 'DB9611E', '0B360E55DF8211E58D5F00163E003262', null, null, '隆驰JOQ地图链接及指导.xls', 'xls', 'ED5591AB52CC489F8A52445CF6125CD8', null, '2016-05-22 19:33:21', '0', '0', null);
+INSERT INTO `uasp_filerelations` VALUES ('4A02B887E7C84DE4B53570B28CBE8BFC', 'CDDDDC3A6CB84BDDAD4B46BC1191A6B6', 'DB9611E', null, '8F6528BEEAB411E5AD4E10BF48BBBEC9', '归档', '20151014090412469.xls', 'xls', 'ED5591AB52CC489F8A52445CF6125CD8', null, '2016-05-22 20:51:39', '1', '0', null);
 INSERT INTO `uasp_filerelations` VALUES ('74BAD8838C4C4C639E6693FE4E111205', 'CC1E4A50429C4D2B839CBF1306BD4638', null, null, 'C3CD06B2-1AE5-481F-A3BF-ADC177CD586F', '', '工作流待完善功能.xls', 'xls', 'BD817FA7716E11E586C6D8CB8A43F8DD', '根管理员', '2016-03-01 10:03:55', '7', '0', '');
+INSERT INTO `uasp_filerelations` VALUES ('7A7976D2A6504938B557BD4148066C23', 'DF26878045CC40DA8EAF5E1484D82D35', 'DB9611E', null, '8F6528BEEAB411E5AD4E10BF48BBBEC9', '归档', 'java_codetemplates.xml', 'xml', 'ED5591AB52CC489F8A52445CF6125CD8', null, '2016-05-22 20:52:10', '1', '0', null);
+INSERT INTO `uasp_filerelations` VALUES ('8DDE35DDB3714842B5327C0BE9F55F16', '65D2737FAC8E4F5E85FE292FA9DB46B1', 'DB9611E', null, '8F6528BEEAB411E5AD4E10BF48BBBEC9', '归档', '隆驰JOQ地图链接及指导.xls', 'xls', 'ED5591AB52CC489F8A52445CF6125CD8', null, '2016-05-22 20:51:37', '1', '0', null);
 INSERT INTO `uasp_filerelations` VALUES ('9B997D9AB50349F4A3D818E165A787B6', '59D2CC56D9D54AC0A48B405233B87E48', null, null, 'C3CD06B2-1AE5-481F-A3BF-ADC177CD586F', '', 'serf-1.2.1.tar.bz2', 'bz2', 'BD817FA7716E11E586C6D8CB8A43F8DD', '根管理员', '2016-03-01 10:12:01', '3', '0', '');
 INSERT INTO `uasp_filerelations` VALUES ('A359445F4867461E9378A264706E693E', '2525C99402D5485499596CA1BE5FD1E1', null, null, 'C3CD06B2-1AE5-481F-A3BF-ADC177CD586F', '', 'IMG_20150117_184544.jpg', 'jpg', 'BD817FA7716E11E586C6D8CB8A43F8DD', '根管理员', '2016-03-01 10:11:30', '2', '0', '');
 
@@ -433,6 +431,28 @@ CREATE TABLE `uasp_groupusers` (
 -- Records of uasp_groupusers
 -- ----------------------------
 INSERT INTO `uasp_groupusers` VALUES ('EFA7A76EDF7111E58D5F00163E003262', '18C5BD7D457647ECB3F688D4ECF1C0C8');
+
+-- ----------------------------
+-- Table structure for uasp_identities
+-- ----------------------------
+DROP TABLE IF EXISTS `uasp_identities`;
+CREATE TABLE `uasp_identities` (
+  `Identity_Id` char(32) NOT NULL,
+  `Department_Id` char(32) DEFAULT NULL,
+  `Position_Id` char(32) DEFAULT NULL,
+  `Employee_Id` char(32) DEFAULT NULL,
+  PRIMARY KEY (`Identity_Id`),
+  KEY `FK_UASP_Identity_Ref_Department` (`Department_Id`),
+  KEY `FK_UASP_Identity_Ref_Employee` (`Employee_Id`),
+  KEY `FK_UASP_Identity_Ref_Position` (`Position_Id`),
+  CONSTRAINT `FK_UASP_Identity_Ref_Department` FOREIGN KEY (`Department_Id`) REFERENCES `uasp_departments` (`Department_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_Identity_Ref_Employee` FOREIGN KEY (`Employee_Id`) REFERENCES `uasp_employees` (`Employee_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_Identity_Ref_Position` FOREIGN KEY (`Position_Id`) REFERENCES `uasp_positions` (`Position_Id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of uasp_identities
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for uasp_menuitems
@@ -534,21 +554,29 @@ DROP TABLE IF EXISTS `uasp_positions`;
 CREATE TABLE `uasp_positions` (
   `Position_Id` char(32) NOT NULL,
   `Department_Id` char(32) DEFAULT NULL,
+  `Tenant_Id` varchar(32) DEFAULT NULL COMMENT '编号',
   `Code` varchar(32) DEFAULT NULL,
   `Name` varchar(64) DEFAULT NULL,
-  `Level` int(11) DEFAULT NULL,
+  `Level` int(11) DEFAULT NULL COMMENT '0-9 等级由高至低. 如：0 经理级别, 1 主管级别. 可由业务需要定义.',
   `Description` varchar(4096) DEFAULT NULL,
-  `Serial` int(11) DEFAULT NULL,
-  `Status` smallint(6) DEFAULT NULL,
+  `Serial` int(11) NOT NULL DEFAULT '0',
+  `Status` smallint(6) NOT NULL DEFAULT '0',
   `UpdatedTime` datetime NOT NULL,
   PRIMARY KEY (`Position_Id`),
   KEY `FK_UASP_Position_Ref_Department` (`Department_Id`),
-  CONSTRAINT `FK_UASP_Position_Ref_Department` FOREIGN KEY (`Department_Id`) REFERENCES `uasp_departments` (`Department_Id`) ON DELETE CASCADE
+  KEY `FK_UASP_Position_Ref_Tenant` (`Tenant_Id`),
+  CONSTRAINT `FK_UASP_Position_Ref_Department` FOREIGN KEY (`Department_Id`) REFERENCES `uasp_departments` (`Department_Id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_UASP_Position_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uasp_positions
 -- ----------------------------
+INSERT INTO `uasp_positions` VALUES ('108755A4660F473D8AFB95008E7FD09A', 'C88484A98E6D4EE7A7BB184FFC94CE83', 'DB9611E', 'JSZX_XM', '项目经理', '2', '', '0', '1', '2016-05-24 21:36:10');
+INSERT INTO `uasp_positions` VALUES ('2E23DBEBDF2A4008A3207002863201E8', 'C88484A98E6D4EE7A7BB184FFC94CE83', 'DB9611E', 'JSZX_JL', '部门经理', '1', '', '0', '1', '2016-05-24 21:35:20');
+INSERT INTO `uasp_positions` VALUES ('3F4A8DD0C14F4487B7E1514631719FD8', 'C88484A98E6D4EE7A7BB184FFC94CE83', 'DB9611E', 'JSZX_YG', '部门员工', '3', '', '0', '1', '2016-05-24 21:36:59');
+INSERT INTO `uasp_positions` VALUES ('8FA541F5119D4F07BF77589C309BF7B4', 'C88484A98E6D4EE7A7BB184FFC94CE83', 'DB9611E', 'JSZX_ZG', '部门主管', '1', '', '0', '1', '2016-05-24 21:37:14');
+INSERT INTO `uasp_positions` VALUES ('F3CBD65CD1A840C1A232A63548E965DE', 'C88484A98E6D4EE7A7BB184FFC94CE83', 'DB9611E', 'JSZX_JS', '技术经理', '2', '', '0', '1', '2016-05-24 21:36:34');
 
 -- ----------------------------
 -- Table structure for uasp_profiles
@@ -698,23 +726,6 @@ CREATE TABLE `uasp_tenants` (
 INSERT INTO `uasp_tenants` VALUES ('DB9611E', '开发测试租户', null, null, '2016-03-01 09:33:16', null, '1');
 
 -- ----------------------------
--- Table structure for uasp_useremployee
--- ----------------------------
-DROP TABLE IF EXISTS `uasp_useremployee`;
-CREATE TABLE `uasp_useremployee` (
-  `User_Id` char(32) NOT NULL,
-  `Employee_Id` char(32) NOT NULL,
-  PRIMARY KEY (`User_Id`,`Employee_Id`),
-  KEY `FK_UASP_UserEmployee_Ref_Employee` (`Employee_Id`),
-  CONSTRAINT `FK_UASP_UserEmployee_Ref_Employee` FOREIGN KEY (`Employee_Id`) REFERENCES `uasp_employees` (`Employee_Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_UASP_UserEmployee_Ref_User` FOREIGN KEY (`User_Id`) REFERENCES `uasp_users` (`User_Id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of uasp_useremployee
--- ----------------------------
-
--- ----------------------------
 -- Table structure for uasp_userroles
 -- ----------------------------
 DROP TABLE IF EXISTS `uasp_userroles`;
@@ -753,17 +764,20 @@ CREATE TABLE `uasp_users` (
   `Roles` varchar(128) NOT NULL COMMENT 'USER 员工；ADMIN 业务管理员；ROOT 根管理员；',
   `IsEnabled` bit(1) NOT NULL,
   `IsLocked` bit(1) NOT NULL,
+  `Employee_Id` char(32) DEFAULT NULL,
   PRIMARY KEY (`User_Id`),
+  KEY `FK_UASP_User_Ref_Employee` (`Employee_Id`),
   KEY `FK_UASP_User_Ref_Tenant` (`Tenant_Id`),
+  CONSTRAINT `FK_UASP_User_Ref_Employee` FOREIGN KEY (`Employee_Id`) REFERENCES `uasp_employees` (`Employee_Id`) ON DELETE CASCADE,
   CONSTRAINT `FK_UASP_User_Ref_Tenant` FOREIGN KEY (`Tenant_Id`) REFERENCES `uasp_tenants` (`Tenant_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of uasp_users
 -- ----------------------------
-INSERT INTO `uasp_users` VALUES ('18C5BD7D457647ECB3F688D4ECF1C0C8', 'DB9611E', 'user1', '开发租户1', 'Zi51tN1IIjMslOaf5IAl5A==', '0f0c533e26b7d5183c6ab8f88619d0c9fca109312b226d1acfa0548dc7c5a289', 'user1@kayura.org', '13912345678', '', '2016-03-01 09:36:14', null, 'USER', '', '\0');
-INSERT INTO `uasp_users` VALUES ('BD817FA7716E11E586C6D8CB8A43F8DD', null, 'root', '根管理员', 'DI9JGSpp2M8gQ/tDVUQBuQ==', '18529aa9bc0764394e88e1ceb0c153e6ff621d18f377eb977e299bb66dbab5b0', 'root@kayura.org', '13556090295', 'root', '2015-10-13 13:54:32', null, 'ROOT', '', '\0');
-INSERT INTO `uasp_users` VALUES ('ED5591AB52CC489F8A52445CF6125CD8', 'DB9611E', 'admin', '系统管理员', 'Xwlr0vzshaiErUAisk608Q==', '864b2551ec36a375bcd095a9bb18897d71a7a5e52e76c8947f43c0984ab666dc', 'admin@kayura.org', '13712345678', '', '2016-03-01 09:35:45', null, 'ADMIN', '', '\0');
+INSERT INTO `uasp_users` VALUES ('18C5BD7D457647ECB3F688D4ECF1C0C8', 'DB9611E', 'user1', '开发租户1', 'Zi51tN1IIjMslOaf5IAl5A==', '0f0c533e26b7d5183c6ab8f88619d0c9fca109312b226d1acfa0548dc7c5a289', 'user1@kayura.org', '13912345678', '', '2016-03-01 09:36:14', null, 'USER', '', '\0', null);
+INSERT INTO `uasp_users` VALUES ('BD817FA7716E11E586C6D8CB8A43F8DD', null, 'root', '根管理员', 'DI9JGSpp2M8gQ/tDVUQBuQ==', '18529aa9bc0764394e88e1ceb0c153e6ff621d18f377eb977e299bb66dbab5b0', 'root@kayura.org', '13556090295', 'root', '2015-10-13 13:54:32', null, 'ROOT', '', '\0', null);
+INSERT INTO `uasp_users` VALUES ('ED5591AB52CC489F8A52445CF6125CD8', 'DB9611E', 'admin', '系统管理员', 'Xwlr0vzshaiErUAisk608Q==', '864b2551ec36a375bcd095a9bb18897d71a7a5e52e76c8947f43c0984ab666dc', 'admin@kayura.org', '13712345678', '', '2016-03-01 09:35:45', null, 'ADMIN', '', '\0', null);
 
 -- ----------------------------
 -- Table structure for usap_dictdefine
@@ -785,9 +799,3 @@ CREATE TABLE `usap_dictdefine` (
 INSERT INTO `usap_dictdefine` VALUES ('2A8DDB30D5EF11E58D5F00163E003262', 'Tndustry', '企业类型', '业务', '0', null);
 INSERT INTO `usap_dictdefine` VALUES ('745F9DDCD94411E5943F10BF48BBBEC9', 'Province', '省份', '地域', '0', null);
 INSERT INTO `usap_dictdefine` VALUES ('DBF4DC05D94411E5943F10BF48BBBEC9', 'Country', '国家', '地域', '0', null);
-
--- ----------------------------
--- View structure for uasp_groupusers_union
--- ----------------------------
-DROP VIEW IF EXISTS `uasp_groupusers_union`;
-CREATE VIEW `uasp_groupusers_union` AS select `g`.`Group_Id` AS `Group_Id`,`g`.`User_Id` AS `User_Id` from `uasp_groupusers` `g` union all select `g`.`Group_Id` AS `Group_Id`,`r`.`User_Id` AS `User_Id` from (`uasp_userroles` `r` join `uasp_grouproles` `g` on((`g`.`Role_Id` = `r`.`Role_Id`))) where (not(exists(select 1 from `uasp_groupusers` `c` where ((`c`.`Group_Id` = `g`.`Group_Id`) and (`c`.`User_Id` = `r`.`User_Id`))))) ;
