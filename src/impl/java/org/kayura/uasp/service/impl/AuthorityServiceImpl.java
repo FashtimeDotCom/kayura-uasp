@@ -41,12 +41,9 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public Result<PageList<MenuScheme>> findMenuSchemes(String tenantId, Map<String, Object> args,
-			PageParams pageParams) {
+	public Result<PageList<MenuScheme>> findMenuSchemes(String tenantId, String keyword, PageParams pageParams) {
 
-		if (args == null) {
-			args = new HashMap<String, Object>();
-		}
+		Map<String, Object> args = new HashMap<String, Object>();
 
 		if (StringUtils.isEmpty(tenantId)) {
 			args.put("tenantId", tenantId);
@@ -69,7 +66,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public GeneralResult createMenuScheme(MenuScheme menuScheme) {
 
-		authorityMapper.createMenuScheme(menuScheme);
+		authorityMapper.insertMenuScheme(menuScheme);
 		return Result.succeed();
 	}
 
@@ -95,12 +92,10 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public Result<PageList<MenuItem>> findMenuItems(String tenantId, String parentId, Map<String, Object> args,
+	public Result<PageList<MenuItem>> findMenuItems(String tenantId, String parentId, String keyword,
 			PageParams pageParams) {
 
-		if (args == null) {
-			args = new HashMap<String, Object>();
-		}
+		Map<String, Object> args = new HashMap<String, Object>();
 
 		if (StringUtils.isEmpty(tenantId)) {
 			args.put("tenantId", tenantId);
@@ -127,7 +122,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public GeneralResult createMenuItem(MenuItem menuItem) {
 
-		authorityMapper.createMenuItem(menuItem);
+		authorityMapper.insertMenuItem(menuItem);
 		return Result.succeed();
 	}
 
@@ -153,11 +148,9 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public Result<PageList<Module>> findModules(String parentId, Map<String, Object> args, PageParams pageParams) {
+	public Result<PageList<Module>> findModules(String parentId, String keyword, PageParams pageParams) {
 
-		if (args == null) {
-			args = new HashMap<String, Object>();
-		}
+		Map<String, Object> args = new HashMap<String, Object>();
 
 		if (StringUtils.isEmpty(parentId)) {
 			args.put("parentId", parentId);
@@ -177,7 +170,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public GeneralResult createModule(Module module) {
 
-		authorityMapper.createModule(module);
+		authorityMapper.insertModule(module);
 		return Result.succeed();
 	}
 
@@ -203,14 +196,16 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public Result<PageList<Role>> findRoles(String tenantId, Map<String, Object> args, PageParams pageParams) {
+	public Result<PageList<Role>> findRoles(String tenantId, String keyword, PageParams pageParams) {
 
-		if (args == null) {
-			args = new HashMap<String, Object>();
+		Map<String, Object> args = new HashMap<String, Object>();
+
+		if (!StringUtils.isEmpty(tenantId)) {
+			args.put("tenantId", tenantId);
 		}
 
-		if (StringUtils.isEmpty(tenantId)) {
-			args.put("tenantId", tenantId);
+		if (!StringUtils.isEmpty(keyword)) {
+			args.put("keyword", keyword);
 		}
 
 		PageList<Role> items = authorityMapper.findRoles(args, pageParams);
@@ -227,7 +222,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public GeneralResult createRole(Role role) {
 
-		authorityMapper.createRole(role);
+		authorityMapper.insertRole(role);
 		return Result.succeed();
 	}
 
@@ -269,14 +264,16 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public Result<PageList<Group>> findGroups(String tenantId, Map<String, Object> args, PageParams pageParams) {
+	public Result<PageList<Group>> findGroups(String tenantId, String keyword, PageParams pageParams) {
 
-		if (args == null) {
-			args = new HashMap<String, Object>();
+		Map<String, Object> args = new HashMap<String, Object>();
+
+		if (!StringUtils.isEmpty(tenantId)) {
+			args.put("tenantId", tenantId);
 		}
 
-		if (StringUtils.isEmpty(tenantId)) {
-			args.put("tenantId", tenantId);
+		if (!StringUtils.isEmpty(keyword)) {
+			args.put("keyword", keyword);
 		}
 
 		PageList<Group> items = authorityMapper.findGroups(args, pageParams);
@@ -293,7 +290,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public GeneralResult createGroup(Group group) {
 
-		authorityMapper.createGroup(group);
+		authorityMapper.insertGroup(group);
 		return Result.succeed();
 	}
 

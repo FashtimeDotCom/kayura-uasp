@@ -22,10 +22,10 @@
 					}
 			<c:choose>
 				<c:when test="${empty model.companyId}">
-					if($("#autoNew").checked){
-						juasp.closeWin(data);
-					} else {
+					if($("#autoNew").is(':checked')){
 						$("#ff").form("reset");
+					} else {
+						juasp.closeWin(data);
 					}
 				</c:when>
 				<c:otherwise>
@@ -96,7 +96,7 @@
 <k:section name="tool">
 	<c:if test="${empty model.companyId}">
 	<div style="float: left; margin-left: 10px;">
-		<label for="autoNew"><input type="checkbox" id="autoNew">提交完成后新增下一条</label>
+		<input type="checkbox" id="autoNew">提交完成后新增下一条
 	</div>
 	</c:if>
 	<k:linkbutton style="width:80px" iconCls="icon-ok" onClick="jctx.submitForm()" text="提交" /><span>

@@ -22,10 +22,10 @@
 					}
 			<c:choose>
 				<c:when test="${empty model.departmentId}">
-					if($("#autoNew").checked){
-						juasp.closeWin(data);
-					} else {
+					if($("#autoNew").is(':checked')){
 						$("#ff").form("reset");
+					} else {
+						juasp.closeWin(data);
 					}
 				</c:when>
 				<c:otherwise>

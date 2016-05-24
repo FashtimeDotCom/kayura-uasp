@@ -15,16 +15,16 @@
 				url : '${root}/org/position/save.json',
 				onlySuccess : function(r){
 					var t = $("#name").textbox("getValue");
-					var data = {result: 1, 'id': r.data.id, text: t};
+					var data = { result: 1, 'id': r.data.id, text: t};
 					if(events.onSaved){
 						events.onSaved(data);
 					}
 			<c:choose>
 				<c:when test="${empty model.positionId}">
-					if($("#autoNew").checked){
-						juasp.closeWin(data);
-					} else {
+					if($("#autoNew").is(':checked')){
 						$("#ff").form("reset");
+					} else {
+						juasp.closeWin(data);
 					}
 				</c:when>
 				<c:otherwise>
@@ -64,17 +64,18 @@
 			</tr>
 			<tr>
 				<td>岗位级别:</td>
-				<td><k:combobox id="level"  value="${model.level}">
-					<k:option label="1级" value="1"></k:option>
-					<k:option label="2级" value="2"></k:option>
-					<k:option label="3级" value="3"></k:option>
-					<k:option label="4级" value="4"></k:option>
-					<k:option label="5级" value="5"></k:option>
-					<k:option label="6级" value="6"></k:option>
-					<k:option label="7级" value="7"></k:option>
-					<k:option label="8级" value="8"></k:option>
-					<k:option label="9级" value="9"></k:option>
-				</k:combobox></td>
+				<td><k:combobox id="level" value="${model.level}">
+						<k:option label="1级" value="1"></k:option>
+						<k:option label="2级" value="2"></k:option>
+						<k:option label="3级" value="3"></k:option>
+						<k:option label="4级" value="4"></k:option>
+						<k:option label="5级" value="5"></k:option>
+						<k:option label="6级" value="6"></k:option>
+						<k:option label="7级" value="7"></k:option>
+						<k:option label="8级" value="8"></k:option>
+						<k:option label="9级" value="9"></k:option>
+					</k:combobox>
+				</td>
 			</tr>
 			<tr>
 				<td>岗位描述:</td>

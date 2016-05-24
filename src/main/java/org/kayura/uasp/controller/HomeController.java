@@ -74,12 +74,6 @@ public class HomeController extends BaseController {
 		VerifyCodeUtils.outputImage(w, h, res.getOutputStream(), verifyCode);
 	}
 
-	@RequestMapping(value = "/403", method = RequestMethod.GET)
-	public ModelAndView denied() {
-
-		return view("403");
-	}
-
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "t", required = false) String type,
 			@RequestParam(value = "pin", required = false) String tenantId, HttpServletRequest req) {
@@ -110,7 +104,7 @@ public class HomeController extends BaseController {
 			} else if (type.equals("session")) {
 				mv.addObject("message", "因您长时间未使用，需重新登录。");
 			}
-			
+
 			session.setAttribute("needvc", true);
 		}
 

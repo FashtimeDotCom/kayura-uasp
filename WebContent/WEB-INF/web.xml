@@ -74,7 +74,12 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
+	
+	<error-page>
+    	<error-code>404</error-code>
+    	<location>/error/404</location>
+	</error-page>
+  
 	<jsp-config>
 		<jsp-property-group>
 			<url-pattern>*.jsp</url-pattern>

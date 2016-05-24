@@ -19,10 +19,10 @@
 				onlySuccess : function(r){
 			<c:choose>
 				<c:when test="${empty model.identityId}">
-					if($("#autoNew").checked){
-						juasp.closeWin(1);
-					} else {
+					if($("#autoNew").is(':checked')){
 						$("#ff").form("reset");
+					} else {
+						juasp.closeWin(data);
 					}
 					isSaved = 1;
 				</c:when>

@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.3//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kayura.uasp.dao.AuthorityMapper">
 
+	<!-- Menu SchemeMap -->
+	
 	<resultMap id="menuSchemeMap" type="org.kayura.uasp.po.MenuScheme">
 		<id property="id" column="MenuScheme_Id" />
 		<result property="tenantId" column="Tenant_Id" />
@@ -20,8 +22,6 @@
 		<result property="serial" column="Serial" />
 		<result property="enabled" column="Enabled" />
 	</resultMap>
-	
-	<!-- SchemeMap -->
 	
 	<sql id="menuScheme_Columns">
 		t.MenuScheme_Id, t.Tenant_Id, t.Code, t.Name
@@ -131,7 +131,84 @@
 		</where>
 	</select>
 
+	<!-- Role -->
 
+	<resultMap type="org.kayura.uasp.po.Role" id="roleResultMap">
+		<id property="roleId" column="roleId" />
+		<result property="tenantId" column="tenantId" />
+		<result property="name" column="name" />
+		<result property="enabled" column="enabled" />
+	</resultMap>
 
+	<sql id="roleColumns_Sql">
+		t.Role_Id,
+		t.Tenant_Id,
+		t.Name,
+		t.Enabled
+	</sql>
+	
+	<select id="findRoles" parameterType="map" resultMap="roleResultMap">
+		SELECT <include refid="roleColumns_Sql"></include>
+		FROM uasp_roles AS t
+		<where>
+			<if test="_parameter.containsKey('tenantId')">
+				<choose>
+					<when test="tenantId != null">
+						AND (t.Tenant_Id = #{tenantId} )
+					</when>
+					<otherwise>
+						AND (t.Tenant_Id IS NULL )
+					</otherwise>
+				</choose>
+			</if>
+			<if test="keyword != null">
+				AND ( t.Name LIKE #{keyword} )
+			</if>
+			<if test="enabled != null">
+				AND ( t.Enabled = #{enabled} )
+			</if>
+		</where>
+	</select>
+	
+	<select id="getRoleById" parameterType="string" resultMap="roleResultMap">
+		SELECT <include refid="roleColumns_Sql"></include>
+		FROM uasp_roles AS t
+		WHERE ( t.Role_Id = #{value} )
+	</select>
+	
+	<insert id="createRole" parameterType="org.kayura.uasp.po.Role">
+		INSERT uasp_roles (
+			Role_Id,
+			Tenant_Id,
+			Name,
+			Enabled
+		) VALUES ( 
+			#{roleId},
+			#{tenantId},
+			#{name},
+			#{enabled}
+		 )
+	</insert>
+
+	<update id="updateRole" parameterType="org.kayura.uasp.po.Role">
+		UPDATE uasp_roles
+		SET Name = #{name},
+			Enabled = #{enabled}
+		WHERE ( Role_Id = #{roleId} )
+	</update>
+	
+	<delete id="deleteRole" parameterType="string">
+		DELETE FROM uasp_roles
+		WHERE ( Role_Id = #{roleId} )
+	</delete>
+	
+	<delete id="deleteRoles" parameterType="list">
+		DELETE FROM uasp_roles
+		WHERE Role_Id IN
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
 
 </mapper>

@@ -5,7 +5,6 @@
 package org.kayura.uasp.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
@@ -42,7 +41,7 @@ public interface AuthorityService {
 	 * @param pageParams 分页参数.
 	 * @return 返回分页的菜单方案集合.
 	 */
-	Result<PageList<MenuScheme>> findMenuSchemes(String tenantId, Map<String, Object> args, PageParams pageParams);
+	Result<PageList<MenuScheme>> findMenuSchemes(String tenantId, String keyword, PageParams pageParams);
 
 	Result<MenuScheme> getMenuSchemeById(String menuSchemeId);
 
@@ -56,8 +55,7 @@ public interface AuthorityService {
 
 	// 菜单项（MenuItem）.
 
-	Result<PageList<MenuItem>> findMenuItems(String tenantId, String parentId, Map<String, Object> args,
-			PageParams pageParams);
+	Result<PageList<MenuItem>> findMenuItems(String tenantId, String parentId, String keyword, PageParams pageParams);
 
 	Result<MenuItem> getMenuItemById(String menuItemId);
 
@@ -71,7 +69,7 @@ public interface AuthorityService {
 
 	// 功能模块（Module）.
 
-	Result<PageList<Module>> findModules(String parentId, Map<String, Object> args, PageParams pageParams);
+	Result<PageList<Module>> findModules(String parentId, String keyword, PageParams pageParams);
 
 	Result<Module> getModuleById(String moduleId);
 
@@ -85,7 +83,7 @@ public interface AuthorityService {
 
 	// 角色（Role）.
 
-	Result<PageList<Role>> findRoles(String tenantId, Map<String, Object> args, PageParams pageParams);
+	Result<PageList<Role>> findRoles(String tenantId, String keyword, PageParams pageParams);
 
 	Result<Role> getRoleById(String roleId);
 
@@ -105,7 +103,7 @@ public interface AuthorityService {
 
 	// 组（Group）.
 
-	Result<PageList<Group>> findGroups(String tenantId, Map<String, Object> args, PageParams pageParams);
+	Result<PageList<Group>> findGroups(String tenantId, String keyword, PageParams pageParams);
 
 	Result<Group> getGroupById(String groupId);
 

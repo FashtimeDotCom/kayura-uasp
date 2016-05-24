@@ -4,12 +4,12 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
 	<!-- 配置访问限制规则 -->
 	<http entry-point-ref="loginEntryPoint">
 		
 		<!-- 定义不需要过滤的请求路径 -->
 		<intercept-url pattern="/res/**" access="permitAll" />
+		<intercept-url pattern="/error/**" access="permitAll" />
 		<intercept-url pattern="/example/**" access="permitAll" />
 		<intercept-url pattern="/login" access="permitAll" />
 		<intercept-url pattern="/info" access="permitAll" />
@@ -31,13 +31,14 @@
  		<remember-me key="${rememberme.key}" services-ref="rememberMeServices" />
 		
 		<!-- 拒绝访问时的处理配置 -->
-		<access-denied-handler error-page="/403" />
+		<access-denied-handler error-page="/error/403" />
 		
 		<!-- 用户会话配置 -->
-		<session-management invalid-session-url="/login?t=session" session-authentication-strategy-ref="sas"/>
+		<session-management invalid-session-url="/login?t=session" session-authentication-strategy-ref="sas" />
 
-		<custom-filter ref="captchaAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
 		<!-- 自定义过滤器: 验证码安全过滤器. -->
+		<custom-filter ref="captchaAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
+		<!-- Session 管理过滤器 -->
 		<custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER" />
 		<!-- 自定义用户验证过滤器,替代了原默认的过滤器：增加对租户的处理 -->
 		<custom-filter ref="customLoginFilter" position="FORM_LOGIN_FILTER" />
@@ -69,6 +70,7 @@
 			</beans:bean>
 		</beans:property>
 	</beans:bean>
+	
 	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
 		<beans:constructor-arg>
 			<beans:list>

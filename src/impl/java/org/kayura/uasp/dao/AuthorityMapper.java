@@ -30,7 +30,7 @@ public interface AuthorityMapper {
 
 	MenuScheme getMenuSchemeByMap(Map<String, Object> args);
 
-	void createMenuScheme(MenuScheme menuScheme);
+	void insertMenuScheme(MenuScheme menuScheme);
 
 	void updateMenuScheme(MenuScheme menuScheme);
 
@@ -42,7 +42,7 @@ public interface AuthorityMapper {
 
 	MenuItem getMenuItemByMap(Map<String, Object> args);
 
-	void createMenuItem(MenuItem menuItem);
+	void insertMenuItem(MenuItem menuItem);
 
 	void updateMenuItem(MenuItem menuItem);
 
@@ -56,7 +56,7 @@ public interface AuthorityMapper {
 
 	Module getModuleById(String moduleId);
 
-	void createModule(Module module);
+	void insertModule(Module module);
 
 	void updateModule(Module module);
 
@@ -70,7 +70,7 @@ public interface AuthorityMapper {
 
 	Role getRoleById(String roleId);
 
-	void createRole(Role role);
+	void insertRole(Role role);
 
 	void updateRole(Role role);
 
@@ -90,7 +90,7 @@ public interface AuthorityMapper {
 
 	Group getGroupById(String groupId);
 
-	void createGroup(Group group);
+	void insertGroup(Group group);
 
 	void updateGroup(Group group);
 
