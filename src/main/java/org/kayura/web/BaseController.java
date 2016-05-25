@@ -129,6 +129,7 @@ public class BaseController {
 		}
 
 		model.clear();
+		model.put("success", postResult.isSucceed());
 		model.put("type", postResult.getType());
 		model.put("message", postResult.getMessage());
 		model.put("data", postResult.getData());

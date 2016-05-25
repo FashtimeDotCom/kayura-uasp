@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
@@ -19,6 +20,7 @@ import org.kayura.uasp.po.MenuScheme;
 import org.kayura.uasp.po.Module;
 import org.kayura.uasp.po.Role;
 import org.kayura.uasp.service.AuthorityService;
+import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +51,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 			args.put("tenantId", tenantId);
 		}
 
-		PageList<MenuScheme> items = authorityMapper.findMenuSchemes(args, pageParams);
+		PageList<MenuScheme> items = authorityMapper.findMenuSchemes(args, new PageBounds(pageParams));
 		return new Result<PageList<MenuScheme>>(items);
 	}
 
@@ -78,14 +80,14 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public GeneralResult deleteMenuScheme(String menuSchemeId) {
+	public GeneralResult removeMenuScheme(String menuSchemeId) {
 
 		// authorityMapper.deleteMenuScheme(menuSchemeId);
 		return Result.succeed();
 	}
 
 	@Override
-	public GeneralResult deleteMenuSchemes(List<String> menuSchemeIds) {
+	public GeneralResult removeMenuSchemes(List<String> menuSchemeIds) {
 
 		authorityMapper.deleteMenuSchemes(menuSchemeIds);
 		return Result.succeed();
@@ -105,7 +107,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 			args.put("parentId", parentId);
 		}
 
-		PageList<MenuItem> items = authorityMapper.findMenuItems(args, pageParams);
+		PageList<MenuItem> items = authorityMapper.findMenuItems(args, new PageBounds(pageParams));
 		return new Result<PageList<MenuItem>>(items);
 	}
 
@@ -134,14 +136,14 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public GeneralResult deleteMenuItem(String menuItemId) {
+	public GeneralResult removeMenuItem(String menuItemId) {
 
 		authorityMapper.deleteMenuItem(menuItemId);
 		return Result.succeed();
 	}
 
 	@Override
-	public GeneralResult deleteMenuItems(List<String> menuItemIds) {
+	public GeneralResult removeMenuItems(List<String> menuItemIds) {
 
 		authorityMapper.deleteMenuItems(menuItemIds);
 		return Result.succeed();
@@ -156,7 +158,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 			args.put("parentId", parentId);
 		}
 
-		PageList<Module> items = authorityMapper.findModules(args, pageParams);
+		PageList<Module> items = authorityMapper.findModules(args, new PageBounds(pageParams));
 		return new Result<PageList<Module>>(items);
 	}
 
@@ -182,14 +184,14 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public GeneralResult deleteModule(String moduleId) {
+	public GeneralResult removeModule(String moduleId) {
 
 		authorityMapper.deleteModule(moduleId);
 		return Result.succeed();
 	}
 
 	@Override
-	public GeneralResult deleteModules(List<String> moduleIds) {
+	public GeneralResult removeModules(List<String> moduleIds) {
 
 		authorityMapper.deleteModules(moduleIds);
 		return Result.succeed();
@@ -205,10 +207,10 @@ public class AuthorityServiceImpl implements AuthorityService {
 		}
 
 		if (!StringUtils.isEmpty(keyword)) {
-			args.put("keyword", keyword);
+			args.put("keyword", "%" + keyword + "%");
 		}
 
-		PageList<Role> items = authorityMapper.findRoles(args, pageParams);
+		PageList<Role> items = authorityMapper.findRoles(args, new PageBounds(pageParams));
 		return new Result<PageList<Role>>(items);
 	}
 
@@ -222,6 +224,10 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public GeneralResult createRole(Role role) {
 
+		if (StringUtils.isEmpty(role.getRoleId())) {
+			role.setRoleId(KeyUtils.newId());
+		}
+
 		authorityMapper.insertRole(role);
 		return Result.succeed();
 	}
@@ -234,14 +240,14 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public GeneralResult deleteRole(String roleId) {
+	public GeneralResult removeRole(String roleId) {
 
 		authorityMapper.deleteRole(roleId);
 		return Result.succeed();
 	}
 
 	@Override
-	public GeneralResult deleteRoles(List<String> roleIds) {
+	public GeneralResult removeRoles(List<String> roleIds) {
 
 		authorityMapper.deleteRoles(roleIds);
 		return Result.succeed();
@@ -276,7 +282,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 			args.put("keyword", keyword);
 		}
 
-		PageList<Group> items = authorityMapper.findGroups(args, pageParams);
+		PageList<Group> items = authorityMapper.findGroups(args, new PageBounds(pageParams));
 		return new Result<PageList<Group>>(items);
 	}
 
@@ -302,14 +308,14 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public GeneralResult deleteGroup(String groupId) {
+	public GeneralResult removeGroup(String groupId) {
 
 		authorityMapper.deleteGroup(groupId);
 		return Result.succeed();
 	}
 
 	@Override
-	public GeneralResult deleteGroups(List<String> groupIds) {
+	public GeneralResult removeGroups(List<String> groupIds) {
 
 		authorityMapper.deleteGroups(groupIds);
 		return Result.succeed();

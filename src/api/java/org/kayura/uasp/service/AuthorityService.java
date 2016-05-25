@@ -49,9 +49,9 @@ public interface AuthorityService {
 
 	GeneralResult updateMenuScheme(MenuScheme menuScheme);
 
-	GeneralResult deleteMenuScheme(String menuSchemeId);
+	GeneralResult removeMenuScheme(String menuSchemeId);
 
-	GeneralResult deleteMenuSchemes(List<String> menuSchemeIds);
+	GeneralResult removeMenuSchemes(List<String> menuSchemeIds);
 
 	// 菜单项（MenuItem）.
 
@@ -63,9 +63,9 @@ public interface AuthorityService {
 
 	GeneralResult updateMenuItem(MenuItem menuItem);
 
-	GeneralResult deleteMenuItem(String menuItemId);
+	GeneralResult removeMenuItem(String menuItemId);
 
-	GeneralResult deleteMenuItems(List<String> menuItemIds);
+	GeneralResult removeMenuItems(List<String> menuItemIds);
 
 	// 功能模块（Module）.
 
@@ -77,9 +77,9 @@ public interface AuthorityService {
 
 	GeneralResult updateModule(Module module);
 
-	GeneralResult deleteModule(String moduleId);
+	GeneralResult removeModule(String moduleId);
 
-	GeneralResult deleteModules(List<String> moduleIds);
+	GeneralResult removeModules(List<String> moduleIds);
 
 	// 角色（Role）.
 
@@ -91,9 +91,9 @@ public interface AuthorityService {
 
 	GeneralResult updateRole(Role role);
 
-	GeneralResult deleteRole(String roleId);
+	GeneralResult removeRole(String roleId);
 
-	GeneralResult deleteRoles(List<String> roleIds);
+	GeneralResult removeRoles(List<String> roleIds);
 
 	// 角色模块（RoleModule）.
 
@@ -111,9 +111,9 @@ public interface AuthorityService {
 
 	GeneralResult updateGroup(Group group);
 
-	GeneralResult deleteGroup(String groupId);
+	GeneralResult removeGroup(String groupId);
 
-	GeneralResult deleteGroups(List<String> groupIds);
+	GeneralResult removeGroups(List<String> groupIds);
 
 	// 组角色（GroupRole）.
 

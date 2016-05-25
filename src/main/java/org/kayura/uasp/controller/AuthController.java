@@ -6,10 +6,14 @@ package org.kayura.uasp.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
 import org.kayura.type.GeneralResult;
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.Role;
 import org.kayura.uasp.service.AuthorityService;
@@ -27,7 +31,6 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @Controller
-@RequestMapping("/auth")
 public class AuthController extends BaseController {
 
 	@Autowired
@@ -36,31 +39,48 @@ public class AuthController extends BaseController {
 	@Autowired
 	private AuthorityService writerAuthorityService;
 
-	@RequestMapping(value = "role/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/auth/role/list", method = RequestMethod.GET)
 	public ModelAndView roleList() {
 
-		return view("auth/role-list");
+		return view("views/auth/role-list");
 	}
 
-	@RequestMapping(value = "role/new", method = RequestMethod.GET)
+	@RequestMapping(value = "/auth/role/find", method = RequestMethod.POST)
+	public void findRoles(Map<String, Object> map, HttpServletRequest req, String keyword) {
+
+		LoginUser user = this.getLoginUser();
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				PageParams pageParams = ui.getPageParams(req);
+				Result<PageList<Role>> r = readerAuthorityService.findRoles(user.getTenantId(), keyword, pageParams);
+				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
+			}
+		});
+	}
+
+	@RequestMapping(value = "/auth/role/new", method = RequestMethod.GET)
 	public ModelAndView createRole() {
 
 		Role model = new Role();
-		return view("auth/role-edit", model);
+		model.setEnabled(true);
+		return view("views/auth/role-edit", model);
 	}
 
-	@RequestMapping(value = "role/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/auth/role/edit", method = RequestMethod.GET)
 	public ModelAndView editRole(String id) {
 
 		Result<Role> r = readerAuthorityService.getRoleById(id);
 		if (r.isSucceed()) {
-			return view("auth/role-edit", r.getData());
+			return view("views/auth/role-edit", r.getData());
 		} else {
 			return error(r);
 		}
 	}
 
-	@RequestMapping(value = "saverole", method = RequestMethod.POST)
+	@RequestMapping(value = "/auth/role/save", method = RequestMethod.POST)
 	public void saveRole(Map<String, Object> map, Role model) {
 
 		postExecute(map, new PostAction() {
@@ -83,6 +103,22 @@ public class AuthController extends BaseController {
 					r = writerAuthorityService.updateRole(model);
 				}
 
+				if (r != null) {
+					ps.setResult(r);
+				}
+			}
+		});
+	}
+
+	@RequestMapping(value = "/auth/role/remove", method = RequestMethod.POST)
+	public void removeRole(Map<String, Object> map, String id) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = writerAuthorityService.removeRole(id);
 				if (r != null) {
 					ps.setResult(r);
 				}

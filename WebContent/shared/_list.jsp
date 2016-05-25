@@ -19,5 +19,6 @@
 	<k:dock region="center" border="false" style="padding: 3px">
 		<k:renderSection name="body"></k:renderSection>
 	</k:dock>
+	<k:renderSection name="script" />
 </k:body>
 </html>

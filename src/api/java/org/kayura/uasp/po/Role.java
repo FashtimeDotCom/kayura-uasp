@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class Role implements Serializable {
 
 	private static final long serialVersionUID = -9223330396014265239L;
-	
+
 	private String roleId;
 	private String tenantId;
 	private String name;
@@ -43,7 +43,11 @@ public class Role implements Serializable {
 	}
 
 	public Boolean getEnabled() {
-		return enabled;
+		return enabled != null ? enabled : false;
+	}
+
+	public String getEnabledName() {
+		return getEnabled() ? "启用" : "禁用";
 	}
 
 	public void setEnabled(Boolean enabled) {

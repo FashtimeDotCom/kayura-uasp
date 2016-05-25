@@ -72,7 +72,7 @@ public class AdminController extends BaseController {
 	@RequestMapping(value = "user/list", method = RequestMethod.GET)
 	public String userList() {
 
-		return "views/admin/user/list";
+		return "views/admin/user-list";
 	}
 
 	@RequestMapping(value = { "user/find", "/file/sharer/find" }, method = RequestMethod.POST)
@@ -111,7 +111,7 @@ public class AdminController extends BaseController {
 		user.setIsLocked(false);
 		map.put("model", user);
 
-		return "views/admin/user/edit";
+		return "views/admin/user-edit";
 	}
 
 	@RequestMapping(value = "user/edit", method = RequestMethod.GET)
@@ -121,7 +121,7 @@ public class AdminController extends BaseController {
 		user.setPassword("");
 		map.put("model", user);
 
-		return "views/admin/user/edit";
+		return "views/admin/user-edit";
 	}
 
 	@RequestMapping(value = "user/save", method = RequestMethod.POST)
@@ -160,7 +160,7 @@ public class AdminController extends BaseController {
 	@RequestMapping(value = "/dict/list", method = RequestMethod.GET)
 	public ModelAndView dictList() {
 
-		ModelAndView mv = this.view("views/admin/dict/list");
+		ModelAndView mv = this.view("views/admin/dict-list");
 		mv.addObject("ISROOT", this.getLoginUser().hasRoot());
 
 		return mv;
@@ -253,7 +253,7 @@ public class AdminController extends BaseController {
 		Result<DictDefine> r = readerDictService.getDictDefineById(id);
 		if (r.isSucceed()) {
 
-			mv = this.view("views/admin/dict/edit");
+			mv = this.view("views/admin/dict-edit");
 
 			DictItem di = new DictItem();
 			di.setDictId(id);
@@ -287,7 +287,7 @@ public class AdminController extends BaseController {
 		Result<DictItem> item = readerDictService.getDictItemsById(id);
 		if (item.isSucceed()) {
 
-			mv = this.view("views/admin/dict/edit");
+			mv = this.view("views/admin/dict-edit");
 			mv.addObject("model", item.getData());
 		} else {
 

@@ -21,7 +21,7 @@
 		<property name="fileEncoding" value="UTF-8" />
 		<property name="locations">
 			<list>
-				<value>/WEB-INF/*.properties</value>
+				<value>/config/sys.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -41,7 +41,7 @@
 
 	<!-- 定义 MyBatis数据访问工厂Bean对象 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="configLocation" value="/config/mybatis-config.xml" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="databaseIdProvider" ref="databaseIdProvider" />
 	</bean>

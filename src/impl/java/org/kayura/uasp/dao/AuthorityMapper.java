@@ -7,6 +7,8 @@ package org.kayura.uasp.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.kayura.core.BaseDao;
+import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.uasp.po.Group;
@@ -18,7 +20,7 @@ import org.kayura.uasp.po.Role;
 /**
  * @author liangxia@live.com
  */
-public interface AuthorityMapper {
+public interface AuthorityMapper extends BaseDao {
 
 	// 权限交互接口.
 
@@ -26,7 +28,7 @@ public interface AuthorityMapper {
 
 	// 菜单方案（MenuScheme）.
 
-	PageList<MenuScheme> findMenuSchemes(Map<String, Object> args, PageParams pageParams);
+	PageList<MenuScheme> findMenuSchemes(Map<String, Object> args, PageBounds pageBounds);
 
 	MenuScheme getMenuSchemeByMap(Map<String, Object> args);
 
@@ -38,7 +40,7 @@ public interface AuthorityMapper {
 
 	// 菜单项（MenuItem）.
 
-	PageList<MenuItem> findMenuItems(Map<String, Object> args, PageParams pageParams);
+	PageList<MenuItem> findMenuItems(Map<String, Object> args, PageBounds pageBounds);
 
 	MenuItem getMenuItemByMap(Map<String, Object> args);
 
@@ -52,7 +54,7 @@ public interface AuthorityMapper {
 
 	// 功能模块（Module）.
 
-	PageList<Module> findModules(Map<String, Object> args, PageParams pageParams);
+	PageList<Module> findModules(Map<String, Object> args, PageBounds pageBounds);
 
 	Module getModuleById(String moduleId);
 
@@ -66,7 +68,7 @@ public interface AuthorityMapper {
 
 	// 角色（Role）.
 
-	PageList<Role> findRoles(Map<String, Object> args, PageParams pageParams);
+	PageList<Role> findRoles(Map<String, Object> args, PageBounds pageBounds);
 
 	Role getRoleById(String roleId);
 
@@ -86,7 +88,7 @@ public interface AuthorityMapper {
 
 	// 组（Group）.
 
-	PageList<Group> findGroups(Map<String, Object> args, PageParams pageParams);
+	PageList<Group> findGroups(Map<String, Object> args, PageBounds pageBounds);
 
 	Group getGroupById(String groupId);
 

@@ -5,6 +5,8 @@
 package org.kayura.security;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,6 +23,8 @@ public class LoginUser extends User {
 	public static final String ROLE_ROOT = "ROOT";
 
 	private String userId;
+	private String identityId;
+	private Map<String, Object> identities = new HashMap<String, Object>();
 	private String tenantId;
 	private String salt;
 	private String displayName;
@@ -37,6 +41,14 @@ public class LoginUser extends User {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getIdentityId() {
+		return identityId;
+	}
+
+	public void setIdentityId(String identityId) {
+		this.identityId = identityId;
 	}
 
 	public String getTenantId() {
@@ -63,6 +75,14 @@ public class LoginUser extends User {
 		this.displayName = displayName;
 	}
 
+	public Object getIdentity() {
+		return identities.get(this.identityId);
+	}
+
+	public Object getIdentity(String identityId) {
+		return identities.get(identityId);
+	}
+
 	public boolean hasAnyRole(String... roles) {
 
 		Collection<GrantedAuthority> grantedAuthorityList = getAuthorities();
@@ -77,16 +97,16 @@ public class LoginUser extends User {
 		return false;
 	}
 
-	public Boolean hasRoot(){
+	public Boolean hasRoot() {
 		return hasAnyRole(ROLE_ROOT);
 	}
-	
-	public Boolean hasAdmin(){
+
+	public Boolean hasAdmin() {
 		return hasAnyRole(ROLE_ADMIN);
 	}
-	
-	public Boolean hasUser(){
+
+	public Boolean hasUser() {
 		return hasAnyRole(ROLE_USER);
 	}
-	
+
 }

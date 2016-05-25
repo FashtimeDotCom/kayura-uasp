@@ -52,7 +52,7 @@
 		</where>
 	</select>
 	
-	<select id="createMenuScheme" parameterType="org.kayura.uasp.po.MenuScheme">
+	<insert id="insertMenuScheme" parameterType="org.kayura.uasp.po.MenuScheme">
 		INSERT UASP_MenuSchemes ( 
 			MenuScheme_Id, 
 			Tenant_Id, 
@@ -64,7 +64,7 @@
 			#{code}, 
 			#{name} 
 		) 
-	</select>
+	</insert>
 	
 	<select id="updateMenuScheme" parameterType="org.kayura.uasp.po.MenuScheme">
 		UPDATE UASP_MenuSchemes
@@ -73,13 +73,13 @@
 		WHERE MenuScheme_Id = #{id}
 	</select>
 
-	<select id="deleteMenuSchemes" parameterType="list">
+	<delete id="deleteMenuSchemes" parameterType="list">
 		DELETE FROM UASP_MenuSchemes
 		WHERE MenuScheme_Id IN
 		<foreach collection="list" item="item" open="(" separator="," close=")">
 			#{item}
 		</foreach>
-	</select>
+	</delete>
 	
 	<!-- MenuItem -->
 	
@@ -134,10 +134,10 @@
 	<!-- Role -->
 
 	<resultMap type="org.kayura.uasp.po.Role" id="roleResultMap">
-		<id property="roleId" column="roleId" />
-		<result property="tenantId" column="tenantId" />
-		<result property="name" column="name" />
-		<result property="enabled" column="enabled" />
+		<id property="roleId" column="Role_Id" />
+		<result property="tenantId" column="Tenant_Id" />
+		<result property="name" column="Name" />
+		<result property="enabled" column="Enabled" />
 	</resultMap>
 
 	<sql id="roleColumns_Sql">
@@ -161,10 +161,10 @@
 					</otherwise>
 				</choose>
 			</if>
-			<if test="keyword != null">
+			<if test="_parameter.containsKey('keyword')">
 				AND ( t.Name LIKE #{keyword} )
 			</if>
-			<if test="enabled != null">
+			<if test="_parameter.containsKey('enabled')">
 				AND ( t.Enabled = #{enabled} )
 			</if>
 		</where>
@@ -176,7 +176,7 @@
 		WHERE ( t.Role_Id = #{value} )
 	</select>
 	
-	<insert id="createRole" parameterType="org.kayura.uasp.po.Role">
+	<insert id="insertRole" parameterType="org.kayura.uasp.po.Role">
 		INSERT uasp_roles (
 			Role_Id,
 			Tenant_Id,
