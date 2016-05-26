@@ -4,8 +4,10 @@
  */
 package org.kayura.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +30,7 @@ public class LoginUser extends User {
 	private String tenantId;
 	private String salt;
 	private String displayName;
+	private List<Integer> privileges = new ArrayList<Integer>();
 
 	public LoginUser(String username, String password, boolean enabled, boolean accountNonExpired,
 			boolean credentialsNonExpired, boolean accountNonLocked,
@@ -107,6 +110,31 @@ public class LoginUser extends User {
 
 	public Boolean hasUser() {
 		return hasAnyRole(ROLE_USER);
+	}
+
+	public List<Integer> getPrivileges() {
+		return privileges;
+	}
+
+	public void setPrivileges(List<Integer> privileges) {
+
+		if (privileges != null) {
+			for (Integer i : privileges) {
+				if (!this.privileges.contains(i)) {
+					this.privileges.add(i);
+				}
+			}
+		}
+	}
+
+	public Boolean hasPrivilege(int[] privileges) {
+
+		for (int i : privileges) {
+			if (this.privileges.contains(i)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

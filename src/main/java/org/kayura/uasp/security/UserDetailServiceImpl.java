@@ -24,9 +24,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class UserDetailServiceImpl implements UserDetailsService {
 
 	private static final Log logger = LogFactory.getLog(UserDetailServiceImpl.class);
-	
+
 	private UserService userService;
-	
+
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
@@ -46,6 +46,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			loginUser.setTenantId(user.getTenantId());
 			loginUser.setDisplayName(user.getDisplayName());
 
+			List<Integer> privs = new ArrayList<Integer>();
+			privs.add(PrivilegeMods.User_View);
+			//privs.add(PrivilegeMods.User_Add);
+			privs.add(PrivilegeMods.User_Edit);
+			privs.add(PrivilegeMods.User_Remove);
+
+			loginUser.setPrivileges(privs);
+
 		} catch (Exception e) {
 			logger.error("Error in retrieving user", e);
 		}
@@ -64,7 +72,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			logger.debug("Grant ROLE_ADMIN to this user");
 			authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
-		
+
 		if (roles.contains("ROOT")) {
 			logger.debug("Grant ROLE_ROOT to this user");
 			authList.add(new SimpleGrantedAuthority("ROLE_ROOT"));

@@ -4,7 +4,10 @@
  */
 package org.kayura.uasp.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.kayura.web.BaseController;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,9 +22,19 @@ import org.springframework.web.servlet.ModelAndView;
 public class ErrorController extends BaseController {
 
 	@RequestMapping(value = "/error/403", method = RequestMethod.GET)
-	public ModelAndView denied() {
+	public ModelAndView denied(HttpServletRequest request) {
 
-		return view("views/error/403");
+		ModelAndView mv = view("views/error/403");
+		mv.addObject("type", "failed");
+
+		Object o = request.getSession().getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+		if (o != null && o instanceof RuntimeException) {
+
+			RuntimeException ex = (RuntimeException) o;
+			mv.addObject("message", ex.getMessage());
+		}
+
+		return mv;
 	}
 
 	@RequestMapping(value = "/error/404", method = RequestMethod.GET)

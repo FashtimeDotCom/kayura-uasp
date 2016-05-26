@@ -4,15 +4,16 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!-- 定义不需要过滤的请求路径,定义在这里可以跳过所有过滤器 -->
+	<http pattern="/res/**" security="none" />
+	<http pattern="/error/**" security="none" />
+	<http pattern="/example/**" security="none" />
+
 	<!-- 配置访问限制规则 -->
 	<http entry-point-ref="loginEntryPoint">
 		
-		<!-- 定义不需要过滤的请求路径 -->
-		<intercept-url pattern="/res/**" access="permitAll" />
-		<intercept-url pattern="/error/**" access="permitAll" />
-		<intercept-url pattern="/example/**" access="permitAll" />
-		<intercept-url pattern="/login" access="permitAll" />
-		<intercept-url pattern="/info" access="permitAll" />
+ 		<intercept-url pattern="/login" access="permitAll" />
+ 		<intercept-url pattern="/info" access="permitAll" />
 	
 		<!-- 定义需要授权访问的请求路径 -->
 		<intercept-url pattern="/admin/**" access="hasRole('ADMIN') or hasRole('ROOT')" />
@@ -35,10 +36,11 @@
 
 		<!-- 自定义过滤器: 验证码安全过滤器. -->
 		<custom-filter ref="captchaAuthenticationFilter" before="FORM_LOGIN_FILTER"/>
-		<!-- Session 管理过滤器 -->
-		<custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER" />
+		<custom-filter ref="privilegeFilter" after="FORM_LOGIN_FILTER"/>
 		<!-- 自定义用户验证过滤器,替代了原默认的过滤器：增加对租户的处理 -->
 		<custom-filter ref="customLoginFilter" position="FORM_LOGIN_FILTER" />
+		<!-- Session 管理过滤器 -->
+		<custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER" />
 		
 	</http>
 
@@ -52,6 +54,27 @@
 	<beans:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
 		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
 		<beans:constructor-arg name="expiredUrl" value="/login?t=expired" />
+	</beans:bean>
+	
+	<!-- 用户功能操作权限验证过滤器 -->
+	<beans:bean id="privilegeFilter" class="org.kayura.uasp.security.PrivilegeAuthenticationFilter">
+		<beans:property name="authenticationFailureHandler">
+			<beans:bean
+				class="org.kayura.uasp.security.ExceptionMappingExAuthenticationFailureHandler">
+				<beans:property name="exceptionMappings">
+					<beans:map key-type="java.lang.String" value-type="java.lang.String">
+						<beans:entry 
+							key="org.kayura.uasp.security.NonePrivilegeException" 
+							value="/error/403">
+						</beans:entry>
+						<beans:entry 
+							key="org.kayura.uasp.security.AjaxNonePrivilegeException" 
+							value="/error/403.json">
+						</beans:entry>
+					</beans:map>
+				</beans:property>
+			</beans:bean>
+		</beans:property>
 	</beans:bean>
 	
 	<!-- 自定义的租户账号密码验证过滤器定义 -->

@@ -14,6 +14,8 @@ import org.kayura.type.Result;
 import org.kayura.uasp.po.DictDefine;
 import org.kayura.uasp.po.DictItem;
 import org.kayura.uasp.po.User;
+import org.kayura.uasp.security.Privilege;
+import org.kayura.uasp.security.PrivilegeMods;
 import org.kayura.uasp.service.DictService;
 import org.kayura.uasp.service.UserService;
 import org.kayura.utils.KeyUtils;
@@ -70,12 +72,14 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/list", method = RequestMethod.GET)
+	@Privilege(PrivilegeMods.User_View)
 	public String userList() {
 
 		return "views/admin/user-list";
 	}
 
-	@RequestMapping(value = { "user/find", "/file/sharer/find" }, method = RequestMethod.POST)
+	@RequestMapping(value = "user/find", method = RequestMethod.POST)
+	@Privilege(PrivilegeMods.User_View)
 	public void userFind(HttpServletRequest req, Map<String, Object> map, String keyword, String status) {
 
 		postExecute(map, new PostAction() {
@@ -103,6 +107,7 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/new", method = RequestMethod.GET)
+	@Privilege(PrivilegeMods.User_Add)
 	public String userNew(HttpServletRequest req, Map<String, Object> map, String id) {
 
 		User user = new User();
@@ -115,6 +120,7 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/edit", method = RequestMethod.GET)
+	@Privilege(PrivilegeMods.User_Edit)
 	public String userEdit(HttpServletRequest req, Map<String, Object> map, String id) {
 
 		User user = readerUserService.getUserById(id);
@@ -125,6 +131,7 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/save", method = RequestMethod.POST)
+	@Privilege({ PrivilegeMods.User_Add, PrivilegeMods.User_Edit })
 	public void userSave(Map<String, Object> map, User user) {
 
 		postExecute(map, new PostAction() {
