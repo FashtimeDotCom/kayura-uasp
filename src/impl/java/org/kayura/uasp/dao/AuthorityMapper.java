@@ -10,7 +10,6 @@ import java.util.Map;
 import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
-import org.kayura.type.PageParams;
 import org.kayura.uasp.po.Group;
 import org.kayura.uasp.po.MenuItem;
 import org.kayura.uasp.po.MenuScheme;
