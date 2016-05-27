@@ -65,8 +65,8 @@ public class PrivilegeAuthenticationFilter extends GenericFilterBean {
 				if (pv != null) {
 					int[] privileges = pv.value();
 					if (privileges.length > 0) {
-						LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication()
-								.getPrincipal();
+						
+						LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 						if (!user.hasPrivilege(privileges)) {
 							try {
 								String exmsg = "缺少相应的权限，权限代码：" + StringUtils.join(",", privileges);
@@ -80,6 +80,11 @@ public class PrivilegeAuthenticationFilter extends GenericFilterBean {
 								unsuccessfulAuthentication(request, response, e);
 								return;
 							}
+						}
+
+						if (logger.isDebugEnabled()) {
+							logger.debug(
+									"用户  " + user.getUsername() + " 通过了权限验证。权限代码：" + StringUtils.join(",", privileges));
 						}
 					}
 				}
