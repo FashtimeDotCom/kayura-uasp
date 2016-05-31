@@ -32,7 +32,7 @@
 				<k:linkbutton id="tbaddposition" onClick="jctx.addPosition()" disabled="true" iconCls="icon-position" plain="true" text="添加岗位" />
 				<k:linkbutton id="tbaddemployee" onClick="jctx.addIdentity()" disabled="true" iconCls="icon-user" plain="true" text="添加员工" />
 				<div style="float:right;">
-				<k:textbox id="search" prompt="搜索：代码、名称" style="width:250px;height:24px;" />
+					<k:searchbox id="search" prompt="搜索：组织名称" width="220" height="25" searcher="jctx.search" />
 				</div>
 			</div>
 			<div id="mm" class="easyui-menu" style="width: 120px;">

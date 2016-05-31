@@ -226,7 +226,7 @@ public class OrganizeController extends BaseController {
 		company.setParentId(parentId);
 		company.setParentName(parentName);
 
-		return view("views/org/companyedit", company);
+		return view("views/org/company-edit", company);
 	}
 
 	@RequestMapping(value = "/org/company", method = RequestMethod.GET)
@@ -235,7 +235,7 @@ public class OrganizeController extends BaseController {
 		Result<Company> r = readerOrganizeService.getCompanyById(id);
 		if (r.isSucceed()) {
 
-			return view("views/org/companyedit", r.getData());
+			return view("views/org/company-edit", r.getData());
 		} else {
 			return this.error("编辑公司信息时异常。", r.getMessage());
 		}
@@ -303,7 +303,7 @@ public class OrganizeController extends BaseController {
 			department.setParentName(parentName);
 		}
 
-		return view("views/org/departedit", department);
+		return view("views/org/depart-edit", department);
 	}
 
 	/**
@@ -318,7 +318,7 @@ public class OrganizeController extends BaseController {
 		Result<Department> r = readerOrganizeService.getDepartmentById(id);
 		if (r.isSucceed()) {
 
-			return view("views/org/departedit", r.getData());
+			return view("views/org/depart-edit", r.getData());
 
 		} else {
 			return this.error("编辑公司信息时异常。", r.getMessage());
@@ -370,7 +370,7 @@ public class OrganizeController extends BaseController {
 		position.setDepartmentId(parentId);
 		position.setDepartmentName(parentName);
 
-		return view("views/org/positionedit", position);
+		return view("views/org/position-edit", position);
 	}
 
 	/**
@@ -384,7 +384,7 @@ public class OrganizeController extends BaseController {
 
 		Result<Position> r = readerOrganizeService.getPositionById(id);
 		if (r.isSucceed()) {
-			return view("views/org/positionedit", r.getData());
+			return view("views/org/position-edit", r.getData());
 		} else {
 			return error("编辑岗位信息时异常。", r.getMessage());
 		}
@@ -447,7 +447,7 @@ public class OrganizeController extends BaseController {
 			return this.error("指定无效的 type 参数。", "");
 		}
 
-		ModelAndView mv = view("views/org/identityedit", model);
+		ModelAndView mv = view("views/org/identity-edit", model);
 		mv.addObject("emp", model.getEmployee());
 		return mv;
 	}
@@ -458,7 +458,7 @@ public class OrganizeController extends BaseController {
 		Result<Identity> r = readerOrganizeService.getIdentityById(id);
 		if (r.isSucceed()) {
 			Identity model = r.getData();
-			ModelAndView mv = view("views/org/identityedit", model);
+			ModelAndView mv = view("views/org/identity-edit", model);
 			mv.addObject("emp", model.getEmployee());
 			return mv;
 		} else {

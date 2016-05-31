@@ -83,7 +83,7 @@ public class FileController extends BaseController {
 	 * 文件上传请求地址.
 	 */
 	@RequestMapping(value = "/file/upload", method = RequestMethod.POST)
-	public String fileUpload(MultipartFile file, Map<String, Object> map, UploadItem ui) {
+	public void fileUpload(MultipartFile file, Map<String, Object> map, UploadItem ui) {
 
 		postExecute(map, new PostAction() {
 
@@ -174,8 +174,6 @@ public class FileController extends BaseController {
 				}
 			}
 		});
-
-		return "views/file/upload";
 	}
 
 	/**
@@ -646,7 +644,7 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/folder/new", method = RequestMethod.GET)
 	public ModelAndView createFolder(String pid, String pname) {
 
-		ModelAndView mv = this.view("views/file/folderedit");
+		ModelAndView mv = this.view("views/file/folder-edit");
 
 		FileFolder model = new FileFolder();
 
@@ -678,7 +676,7 @@ public class FileController extends BaseController {
 
 		Result<FileFolder> r = readerFileService.getFolderById(id);
 		if (r.isSucceed()) {
-			mv = this.view("views/file/folderedit");
+			mv = this.view("views/file/folder-edit");
 			mv.addObject("model", r.getData());
 		} else {
 			mv = this.error(r.getMessage(), "");
@@ -763,7 +761,7 @@ public class FileController extends BaseController {
 	@RequestMapping(value = "/file/folder/select", method = RequestMethod.GET)
 	public ModelAndView selectFolder(String sid) {
 
-		ModelAndView mv = this.view("views/file/folderselect");
+		ModelAndView mv = this.view("views/file/folder-select");
 		mv.addObject("sid", sid);
 		return mv;
 	}

@@ -5,7 +5,6 @@ jctx = (function(win, $) {
 	var rootPath = "";
 	var isInit = true;
 	var isfirst = true;
-	var searchvalue = "";
 	var actions = {
 			addcompany : false,
 			adddepart : false,
@@ -37,15 +36,6 @@ jctx = (function(win, $) {
 				$('#mm').menu('show', { left: e.pageX, top: e.pageY });
 			}
 		});
-		
-		$("#search").textbox({
-			iconCls:'icon-search',
-			onChange : function(n, o){
-				_search(n);
-			}
-		});
-		
-		$("#search").textbox('addClearBtn');
 	}
 	
 	function _initActions(){
@@ -102,10 +92,11 @@ jctx = (function(win, $) {
 		}
 	}
 
-	function _search(value) {
-
-		searchvalue = value;
-		_findItems(selectNode.id);
+	function _search(){
+		
+		if(selectNode) {
+			_findItems(selectNode.id);
+		}
 	}
 
 	function _findItems(nodeId) {
@@ -132,7 +123,7 @@ jctx = (function(win, $) {
 
 			$('#tg').datagrid('load', {
 				"id" : id,
-				"keyword" : searchvalue
+				"keyword" : $('#search').searchbox('getValue')
 			});
 			$('#tg').datagrid('unselectAll');
 		}
