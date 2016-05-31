@@ -26,12 +26,12 @@
 		</headers>
 		
 		<!-- 用户登出配置 -->
-		<logout logout-url="/logout" logout-success-url="/login?t=logout" />
+		<logout logout-url="/logout" />
 
 		<!-- 拒绝访问时的处理配置 -->
 		<access-denied-handler error-page="/error/403" />
 		<!-- 用户会话配置 -->
-		<session-management invalid-session-url="/login?t=session" session-authentication-strategy-ref="sas" />
+		<session-management invalid-session-url="/logout" session-authentication-strategy-ref="sas" />
 
 		<!-- 自定义过滤器: 验证码安全过滤器 -->
 		<custom-filter ref="privilegeFilter" after="FORM_LOGIN_FILTER"/>
@@ -47,11 +47,11 @@
 	<!-- 使用了 CAS 单点登录入口 -->
 	<beans:bean id="loginEntryPoint"
 		class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">
-		<beans:property name="loginUrl" value="http://localhost:8880/cas/" />
+		<beans:property name="loginUrl" value="${cas.service.root}login?locale=zh_CN" />
 		<beans:property name="serviceProperties" ref="serviceProperties" />
 	</beans:bean>
 	<beans:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
-		<beans:property name="service" value="http://localhost:8080/kayura-uasp/login/cas" />
+		<beans:property name="service" value="${cas.app.root}login/cas" />
 		<beans:property name="authenticateAllArtifacts" value="true" />
 	</beans:bean>
 	
@@ -76,7 +76,7 @@
 	<beans:bean id="pgtStorage" class="org.jasig.cas.client.proxy.ProxyGrantingTicketStorageImpl" />
 	<beans:bean id="casAuthProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
 		<beans:property name="serviceProperties" ref="serviceProperties" />
-		<beans:property name="key" value="casAuthProviderKey" />
+		<beans:property name="key" value="${cas.authkey}" />
 		<beans:property name="authenticationUserDetailsService">
 			<beans:bean class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
 				<beans:constructor-arg ref="userDetailServiceImpl" />
@@ -84,7 +84,7 @@
 		</beans:property>
 		<beans:property name="ticketValidator">
 			<beans:bean class="org.jasig.cas.client.validation.Cas20ProxyTicketValidator">
-				<beans:constructor-arg value="http://localhost:8880/cas/" />
+				<beans:constructor-arg value="${cas.service.root}" />
 				<beans:property name="acceptAnyProxy" value="true" />
 				<beans:property name="proxyCallbackUrl" value="/login/cas/proxyreceptor" />
 				<beans:property name="proxyGrantingTicketStorage" ref="pgtStorage" />
@@ -111,12 +111,12 @@
 	<!-- 注销服务器端 -->
 	<beans:bean id="requestSingleLogoutFilter"
 		class="org.springframework.security.web.authentication.logout.LogoutFilter">
-		<beans:constructor-arg value="http://localhost:8880/cas/logout?locale=zh_CN" />
+		<beans:constructor-arg value="${cas.service.root}logout?locale=zh_CN" />
 		<beans:constructor-arg>
 			<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
 		</beans:constructor-arg>
 		<beans:property name="filterProcessesUrl" value="/logout" />
-	</beans:bean> 
+	</beans:bean>
    
 	<!-- 用于Session并发控制的过滤器 -->
 	<beans:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
@@ -152,8 +152,6 @@
 					<beans:constructor-arg ref="sessionRegistry"/>
 					<beans:property name="maximumSessions" value="1" />
 					<beans:property name="exceptionIfMaximumExceeded" value="false" />
-				</beans:bean>
-				<beans:bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
 				</beans:bean>
 				<beans:bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
 					<beans:constructor-arg ref="sessionRegistry"/>

@@ -48,7 +48,7 @@ public class PrivilegeAuthenticationFilter extends GenericFilterBean {
 				o = null;
 			}
 		} catch (Exception e) {
-			logger.debug("Authentication request error: " + e.toString());
+			logger.error("Authentication request error: " + e.toString());
 		}
 
 		if (o != null) {
