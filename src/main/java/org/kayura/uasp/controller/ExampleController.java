@@ -23,7 +23,7 @@ import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.BaseController;
+import org.kayura.web.controllers.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

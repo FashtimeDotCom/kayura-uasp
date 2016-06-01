@@ -20,7 +20,7 @@ import org.kayura.uasp.service.DictService;
 import org.kayura.uasp.service.UserService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.BaseController;
+import org.kayura.web.controllers.BaseController;
 import org.kayura.tags.easyui.types.TreeNode;
 
 import java.text.SimpleDateFormat;
@@ -72,14 +72,12 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/list", method = RequestMethod.GET)
-	@Privilege(PrivilegeMods.User_View)
 	public String userList() {
 
 		return "views/admin/user-list";
 	}
 
 	@RequestMapping(value = "user/find", method = RequestMethod.POST)
-	@Privilege(PrivilegeMods.User_View)
 	public void userFind(HttpServletRequest req, Map<String, Object> map, String keyword, String status) {
 
 		postExecute(map, new PostAction() {
@@ -107,7 +105,6 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/new", method = RequestMethod.GET)
-	@Privilege(PrivilegeMods.User_Add)
 	public String userNew(HttpServletRequest req, Map<String, Object> map, String id) {
 
 		User user = new User();
@@ -120,7 +117,6 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/edit", method = RequestMethod.GET)
-	@Privilege(PrivilegeMods.User_Edit)
 	public String userEdit(HttpServletRequest req, Map<String, Object> map, String id) {
 
 		User user = readerUserService.getUserById(id);
@@ -131,7 +127,6 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/save", method = RequestMethod.POST)
-	@Privilege({ PrivilegeMods.User_Add, PrivilegeMods.User_Edit })
 	public void userSave(Map<String, Object> map, User user) {
 
 		postExecute(map, new PostAction() {

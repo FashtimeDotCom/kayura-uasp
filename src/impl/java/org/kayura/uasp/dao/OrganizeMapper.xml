@@ -634,6 +634,7 @@
 	<resultMap type="org.kayura.uasp.po.Employee" id="employeeResultMap">
 		<id property="employeeId" column="Employee_Id" />
 		<result property="tenantId" column="Tenant_Id" />
+		<result property="userId" column="User_Id" />
 		<result property="code" column="Code" />
 		<result property="name" column="Name" />
 		<result property="sex" column="Sex" />
@@ -648,6 +649,7 @@
 	<sql id="employeeColumns_Sql">
 		t.Employee_Id,
 		t.Tenant_Id,
+		t.User_Id,
 		t.Code,
 		t.Name,
 		t.Sex,
@@ -660,12 +662,13 @@
 	</sql>
 	
 	<select id="findEmployees" parameterType="map" resultMap="employeeResultMap">
-		SELECT DISTINCT
-			<include refid="employeeColumns_Sql"></include>
+		SELECT DISTINCT <include refid="employeeColumns_Sql"></include>
 		FROM uasp_employees AS t
-			LEFT JOIN uasp_identities AS i ON i.Employee_Id = t.Employee_Id
-			<if test="companyId != null">
-			LEFT JOIN uasp_departments AS d ON i.Department_Id = d.Department_Id
+			<if test="departmentId != null or departmentIds != null or positionId != null or positionIds != null">
+				LEFT JOIN uasp_identities AS i ON i.Employee_Id = t.Employee_Id
+				<if test="companyId != null">
+				LEFT JOIN uasp_departments AS d ON i.Department_Id = d.Department_Id
+				</if>
 			</if>
 		<where>
 			<if test="tenantId != null">
@@ -712,6 +715,13 @@
 		</where>
 	</select>
 	
+	<select id="getEmployeeById" parameterType="string" resultMap="employeeResultMap">
+		SELECT DISTINCT
+			<include refid="employeeColumns_Sql"></include>
+		FROM uasp_employees t
+		WHERE ( t.Employee_Id = #{value} )
+	</select>
+	
 	<insert id="insertEmployee" parameterType="org.kayura.uasp.po.Employee">
 		INSERT uasp_employees (
 			Employee_Id,
@@ -743,6 +753,16 @@
 	<update id="updateEmployee" parameterType="map">
 		UPDATE uasp_employees
 		<set>
+			<if test="_parameter.containsKey('userId')">
+				<choose>
+					<when test="userId != null">
+						User_Id = #{userId},
+					</when>
+					<otherwise>
+						User_Id = NULL,
+					</otherwise>
+				</choose>
+			</if>
 			<if test="code != null">
 				Code = #{code},
 			</if>

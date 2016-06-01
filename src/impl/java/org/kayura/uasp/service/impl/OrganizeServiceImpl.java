@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
  * @author liangxia@live.com
  */
 @Service
-public class OrganizServiceImpl implements OrganizeService {
+public class OrganizeServiceImpl implements OrganizeService {
 
 	@Autowired
 	private OrganizeMapper organizMapper;
@@ -343,6 +343,68 @@ public class OrganizServiceImpl implements OrganizeService {
 
 		// 插入身份信息.
 		organizMapper.updateIdentity(identity);
+
+		return Result.succeed();
+	}
+
+	@Override
+	public Result<PageList<Employee>> findEmployees(String tenantId, String keyword, PageParams pageParams) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("tenantId", tenantId);
+
+		if (!StringUtils.isEmpty(keyword)) {
+			args.put("keyword", "%" + keyword + "%");
+		}
+
+		PageList<Employee> items = organizMapper.findEmployees(args, new PageBounds(pageParams));
+		return new Result<PageList<Employee>>(Result.SUCCEED, items);
+	}
+
+	@Override
+	public Result<Employee> getEmployeeById(String employeeId) {
+
+		Employee entity = organizMapper.getEmployeeById(employeeId);
+		return new Result<Employee>(Result.SUCCEED, entity);
+	}
+
+	@Override
+	public GeneralResult insertEmployee(Employee employee) {
+
+		if (StringUtils.isEmpty(employee.getEmployeeId())) {
+			employee.setEmployeeId(KeyUtils.newId());
+		}
+		employee.setUpdatedTime(DateUtils.now());
+		organizMapper.insertEmployee(employee);
+
+		return Result.succeed();
+	}
+
+	@Override
+	public GeneralResult updateEmployee(Employee employee) {
+
+		Map<String, Object> args = new HashMap<String, Object>();
+
+		args.put("employeeId", employee.getEmployeeId());
+		args.put("code", employee.getCode());
+		args.put("name", employee.getName());
+		args.put("sex", employee.getSex());
+		args.put("birthDay", employee.getBirthDay());
+		args.put("phone", employee.getPhone());
+		args.put("mobile", employee.getMobile());
+		args.put("email", employee.getEmail());
+		args.put("status", employee.getStatus());
+		args.put("updatedTime", DateUtils.now());
+
+		organizMapper.updateEmployee(args);
+
+		return Result.succeed();
+	}
+
+	@Override
+	public GeneralResult deleteEmployee(String employeeId) {
+
+		organizMapper.deleteEmployee(MapUtils.make("employeeId", employeeId));
 
 		return Result.succeed();
 	}

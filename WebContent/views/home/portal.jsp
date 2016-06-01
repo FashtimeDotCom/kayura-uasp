@@ -36,7 +36,7 @@
 					</table>
 				</div>
 				<div title="工作任务" closable="true" style="height: auto; text-align: center;">
-					<iframe scrolling="no" frameborder="0" src="${root}/bpm/tasklist" style="width:100%;height:100%;"></iframe>
+					<iframe scrolling="no" frameborder="0" src="${root}/bpm/task/list" style="width:100%;height:100%;"></iframe>
 				</div>
 			</div>
 			<div style="width: 35%;">

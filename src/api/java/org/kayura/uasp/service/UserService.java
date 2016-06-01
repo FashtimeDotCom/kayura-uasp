@@ -5,12 +5,15 @@
 package org.kayura.uasp.service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.AutoLogin;
+import org.kayura.uasp.po.Identity;
 import org.kayura.uasp.po.User;
 
 /**
@@ -105,4 +108,19 @@ public interface UserService {
 	 * @param userId 用户Id.
 	 */
 	void removeLoginTokensByUser(String userId);
+
+	/**
+	 * 加载该用户所拥有的权限集合.
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	List<Integer> loadPrivileges(String userId);
+
+	/**
+	 * 加载该用户的组织身份集合.
+	 * @param userId
+	 * @return
+	 */
+	Map<String, Identity> loadIdentities(String userId);
 }

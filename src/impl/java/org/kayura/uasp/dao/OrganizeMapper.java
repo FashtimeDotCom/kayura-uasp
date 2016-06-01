@@ -112,6 +112,8 @@ public interface OrganizeMapper extends BaseDao {
 	 */
 	PageList<Employee> findEmployees(Map<String, Object> args, PageBounds pageBounds);
 
+	Employee getEmployeeById(String employeeId);
+	
 	void insertEmployee(Employee employee);
 
 	void updateEmployee(Map<String, Object> args);

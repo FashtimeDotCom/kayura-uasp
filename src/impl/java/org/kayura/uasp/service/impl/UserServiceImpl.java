@@ -6,6 +6,7 @@ package org.kayura.uasp.service.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.kayura.mybatis.type.PageBounds;
@@ -13,8 +14,10 @@ import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
+import org.kayura.uasp.dao.OrganizeMapper;
 import org.kayura.uasp.dao.UserMapper;
 import org.kayura.uasp.po.AutoLogin;
+import org.kayura.uasp.po.Identity;
 import org.kayura.uasp.po.User;
 import org.kayura.uasp.service.UserService;
 import org.kayura.utils.DateUtils;
@@ -30,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private OrganizeMapper organizeMapper;
 
 	@Override
 	public Result<PageList<User>> findUsers(String tenantId, String keyword, Integer[] status, PageParams pageParams) {
@@ -171,5 +177,17 @@ public class UserServiceImpl implements UserService {
 	public void removeLoginTokensByUser(String userId) {
 
 		userMapper.removeLoginTokensByUser(userId);
+	}
+
+	@Override
+	public List<Integer> loadPrivileges(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, Identity> loadIdentities(String userId) {
+
+		return null;
 	}
 }

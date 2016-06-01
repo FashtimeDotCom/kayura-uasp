@@ -79,11 +79,11 @@ public class LoginUser extends User {
 	}
 
 	public Object getIdentity() {
-		return identities.get(this.identityId);
+		return getIdentities().get(this.identityId);
 	}
 
 	public Object getIdentity(String identityId) {
-		return identities.get(identityId);
+		return getIdentities().get(identityId);
 	}
 
 	public boolean hasAnyRole(String... roles) {
@@ -135,6 +135,14 @@ public class LoginUser extends User {
 			}
 		}
 		return false;
+	}
+
+	public Map<String, Object> getIdentities() {
+		return identities;
+	}
+
+	public void setIdentities(Map<String, Object> identities) {
+		this.identities = identities;
 	}
 
 }

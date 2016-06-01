@@ -90,6 +90,11 @@
 				<beans:property name="defaultFailureUrl" value="/login?t=failure" />
 			</beans:bean>
 		</beans:property>
+		<beans:property name="authenticationSuccessHandler" ref="loginSuccessHandler" />
+	</beans:bean>
+	
+	<beans:bean id="loginSuccessHandler" class="org.kayura.uasp.security.LoadUserInfoAuthenticationSuccessHandler">
+		
 	</beans:bean>
 	
 	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">

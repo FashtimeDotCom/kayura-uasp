@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.kayura.utils.StringUtils;
-import org.kayura.web.BaseController;
+import org.kayura.web.controllers.BaseController;
 import org.kayura.web.util.VerifyCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

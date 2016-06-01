@@ -12,6 +12,7 @@ import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.Company;
 import org.kayura.uasp.po.Department;
+import org.kayura.uasp.po.Employee;
 import org.kayura.uasp.po.Identity;
 import org.kayura.uasp.po.OrganizeItem;
 import org.kayura.uasp.po.Position;
@@ -24,8 +25,10 @@ public interface OrganizeService {
 	/**
 	 * 查询组织机构树型数据.
 	 * 
-	 * @param tenantId 租户Id,必需.
-	 * @param parentId 可选值为 'NULL', null, 值.
+	 * @param tenantId
+	 *            租户Id,必需.
+	 * @param parentId
+	 *            可选值为 'NULL', null, 值.
 	 * @return
 	 */
 	Result<List<OrganizeItem>> findOrgTree(String tenantId, String parentId);
@@ -33,10 +36,14 @@ public interface OrganizeService {
 	/**
 	 * 以分页的方式获取组织机构数据.
 	 * 
-	 * @param tenantId 租户Id,必需.
-	 * @param parentId 可选值.
-	 * @param keyword 搜索关键字.
-	 * @param pageParams 分页参数信息.
+	 * @param tenantId
+	 *            租户Id,必需.
+	 * @param parentId
+	 *            可选值.
+	 * @param keyword
+	 *            搜索关键字.
+	 * @param pageParams
+	 *            分页参数信息.
 	 * @return
 	 */
 	Result<PageList<OrganizeItem>> findOrgItems(String tenantId, String parentId, String keyword,
@@ -73,13 +80,25 @@ public interface OrganizeService {
 	GeneralResult updatePosition(Position position);
 
 	GeneralResult deletePosition(String positionId);
-	
+
 	// Identity
-	
+
 	Result<Identity> getIdentityById(String identityId);
 
 	GeneralResult insertIdentity(Identity identity);
 
 	GeneralResult updateIdentity(Identity identity);
+
+	// Employee
+
+	Result<PageList<Employee>> findEmployees(String tenantId, String keyword, PageParams pageParams);
+
+	Result<Employee> getEmployeeById(String employeeId);
+
+	GeneralResult insertEmployee(Employee employee);
+
+	GeneralResult updateEmployee(Employee employee);
+
+	GeneralResult deleteEmployee(String employeeId);
 
 }

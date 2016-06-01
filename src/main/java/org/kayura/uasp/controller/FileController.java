@@ -51,7 +51,7 @@ import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.MapUtils;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.BaseController;
+import org.kayura.web.controllers.BaseController;
 import org.kayura.tags.easyui.types.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

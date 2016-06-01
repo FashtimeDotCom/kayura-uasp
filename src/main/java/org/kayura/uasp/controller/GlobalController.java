@@ -6,7 +6,7 @@ package org.kayura.uasp.controller;
 
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
-import org.kayura.web.BaseController;
+import org.kayura.web.controllers.BaseController;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;

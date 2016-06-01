@@ -38,21 +38,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 		try {
 			User user = userService.getUserByUserName(username);
 
-			loginUser = new LoginUser(username, user.getPassword(), user.getIsEnabled(), true, true, true,
+			loginUser = new LoginUser(user.getUserName(), user.getPassword(), user.getIsEnabled(), true, true, true,
 					getAuthorities(user.getRoles()));
 
 			loginUser.setSalt(user.getSalt());
 			loginUser.setUserId(user.getUserId());
 			loginUser.setTenantId(user.getTenantId());
 			loginUser.setDisplayName(user.getDisplayName());
-
-			List<Integer> privs = new ArrayList<Integer>();
-			privs.add(PrivilegeMods.User_View);
-			//privs.add(PrivilegeMods.User_Add);
-			privs.add(PrivilegeMods.User_Edit);
-			privs.add(PrivilegeMods.User_Remove);
-
-			loginUser.setPrivileges(privs);
 
 		} catch (Exception e) {
 			logger.error("Error in retrieving user", e);

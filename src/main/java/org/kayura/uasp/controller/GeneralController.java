@@ -4,8 +4,7 @@
  */
 package org.kayura.uasp.controller;
 
-import org.kayura.web.BaseController;
-
+import org.kayura.web.controllers.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

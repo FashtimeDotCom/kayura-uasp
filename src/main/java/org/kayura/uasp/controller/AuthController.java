@@ -18,7 +18,7 @@ import org.kayura.type.Result;
 import org.kayura.uasp.po.Role;
 import org.kayura.uasp.service.AuthorityService;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.BaseController;
+import org.kayura.web.controllers.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

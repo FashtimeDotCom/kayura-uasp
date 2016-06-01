@@ -30,7 +30,7 @@ import org.kayura.uasp.po.Position;
 import org.kayura.uasp.service.OrganizeService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.BaseController;
+import org.kayura.web.controllers.BaseController;
 import org.kayura.tags.easyui.types.TreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -48,7 +48,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @Controller
-public class OrganizeController extends BaseController {
+public class OrgController extends BaseController {
 
 	static final String NULL = "NULL";
 
@@ -73,7 +73,8 @@ public class OrganizeController extends BaseController {
 	/**
 	 * 获取组织机构树型数据.
 	 * 
-	 * @param id 值为 null 或 "" 时，获取所有树型数据。 值为 "NULL" 时，仅获取第一层节点数据。 值为 key 时，获取该
+	 * @param id
+	 *            值为 null 或 "" 时，获取所有树型数据。 值为 "NULL" 时，仅获取第一层节点数据。 值为 key 时，获取该
 	 *            key 下级子节点。
 	 */
 	@RequestMapping(value = "/org/tree", method = RequestMethod.POST)
@@ -275,9 +276,12 @@ public class OrganizeController extends BaseController {
 	/**
 	 * 显示创建一个部门信息页面.
 	 * 
-	 * @param parentId 新部门的上级ID
-	 * @param type 表示上级ID是什么类型: 1 公司;2 部门;
-	 * @param parentName 上级组织显示名.
+	 * @param parentId
+	 *            新部门的上级ID
+	 * @param type
+	 *            表示上级ID是什么类型: 1 公司;2 部门;
+	 * @param parentName
+	 *            上级组织显示名.
 	 * @return
 	 */
 	@RequestMapping(value = "/org/depart/new", method = RequestMethod.GET)
@@ -309,7 +313,8 @@ public class OrganizeController extends BaseController {
 	/**
 	 * 显示创建一个部门信息页面.
 	 * 
-	 * @param id 部门ID
+	 * @param id
+	 *            部门ID
 	 * @return
 	 */
 	@RequestMapping(value = "/org/depart", method = RequestMethod.GET)
@@ -359,8 +364,10 @@ public class OrganizeController extends BaseController {
 	/**
 	 * 显示创建一个岗位信息页面.
 	 * 
-	 * @param parentId 新岗位的上级部门Id.
-	 * @param parentName 上级部门显示名.
+	 * @param parentId
+	 *            新岗位的上级部门Id.
+	 * @param parentName
+	 *            上级部门显示名.
 	 * @return
 	 */
 	@RequestMapping(value = "/org/position/new", method = RequestMethod.GET)
@@ -376,7 +383,8 @@ public class OrganizeController extends BaseController {
 	/**
 	 * 显示创建一个部门信息页面.
 	 * 
-	 * @param id 显示的岗位Id.
+	 * @param id
+	 *            显示的岗位Id.
 	 * @return
 	 */
 	@RequestMapping(value = "/org/position", method = RequestMethod.GET)
@@ -486,12 +494,84 @@ public class OrganizeController extends BaseController {
 					}
 					employee.setStatus(Constants.STATUS_ENABLED);
 					employee.setTenantId(user.getTenantId());
-					
+
 					r = writerOrganizeService.insertIdentity(identity);
 				} else {
 
 					identity.setEmployee(employee);
 					r = writerOrganizeService.updateIdentity(identity);
+				}
+
+				if (r != null) {
+					ps.setResult(r);
+				}
+			}
+		});
+	}
+
+	@RequestMapping(value = "/org/employee/list", method = RequestMethod.GET)
+	public ModelAndView employeeList() {
+
+		return view("/views/org/employee-list");
+	}
+
+	@RequestMapping(value = "/org/employee/find", method = RequestMethod.POST)
+	public void findEmployees(HttpServletRequest req, Map<String, Object> map, String keyword) {
+
+		LoginUser user = this.getLoginUser();
+		postExecute(map, new PostAction() {
+			@Override
+			public void invoke(PostResult ps) {
+
+				PageParams pp = ui.getPageParams(req);
+				Result<PageList<Employee>> r = readerOrganizeService.findEmployees(user.getTenantId(), keyword, pp);
+				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
+			}
+		});
+	}
+
+	@RequestMapping(value = "/org/employee/new", method = RequestMethod.GET)
+	public ModelAndView createEmployee() {
+
+		Employee employee = new Employee();
+		employee.setStatus(Constants.STATUS_ENABLED);
+		return view("/views/org/employee-edit", employee);
+	}
+
+	@RequestMapping(value = "/org/employee/edit", method = RequestMethod.GET)
+	public ModelAndView editEmployee(String id) {
+
+		Result<Employee> r = readerOrganizeService.getEmployeeById(id);
+		if (r.isSucceed()) {
+			Employee model = r.getData();
+			ModelAndView mv = view("views/org/employee-edit", model);
+			mv.addObject("emp", model);
+			return mv;
+		} else {
+			return error("读取员工信息异常。", r.getMessage());
+		}
+	}
+
+	@RequestMapping(value = "/org/employee/save", method = RequestMethod.POST)
+	public void saveEmployee(HttpServletRequest req, Map<String, Object> map, Employee employee) {
+
+		LoginUser user = this.getLoginUser();
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				GeneralResult r = null;
+				if (StringUtils.isEmpty(employee.getEmployeeId())) {
+
+					employee.setEmployeeId(KeyUtils.newId());
+					employee.setStatus(Constants.STATUS_ENABLED);
+					employee.setTenantId(user.getTenantId());
+
+					r = writerOrganizeService.insertEmployee(employee);
+				} else {
+
+					r = writerOrganizeService.updateEmployee(employee);
 				}
 
 				if (r != null) {

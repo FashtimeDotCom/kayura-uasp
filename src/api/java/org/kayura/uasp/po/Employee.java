@@ -20,9 +20,10 @@ public class Employee implements Serializable {
 
 	private String employeeId;
 	private String tenantId;
+	private String userId;
 	private String code;
 	private String name;
-	private String sex;
+	private Integer sex;
 	private Date birthDay;
 	private String phone;
 	private String mobile;
@@ -46,6 +47,14 @@ public class Employee implements Serializable {
 		this.tenantId = tenantId;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 	public String getCode() {
 		return code;
 	}
@@ -62,12 +71,17 @@ public class Employee implements Serializable {
 		this.name = name;
 	}
 
-	public String getSex() {
+	public Integer getSex() {
 		return sex;
 	}
 
-	public void setSex(String sex) {
+	public void setSex(Integer sex) {
 		this.sex = sex;
+	}
+
+	public String getSexName() {
+
+		return this.sex != null ? (this.sex == 1 ? "男" : "女") : "";
 	}
 
 	@JsonSerialize(using = DateJsonSerializer.class)
@@ -105,6 +119,10 @@ public class Employee implements Serializable {
 
 	public Integer getStatus() {
 		return status;
+	}
+
+	public String getStatusName() {
+		return status != null && status == 1 ? "已启用" : "";
 	}
 
 	public void setStatus(Integer status) {
