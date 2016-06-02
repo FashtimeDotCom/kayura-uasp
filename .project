@@ -4,6 +4,9 @@
 	<comment></comment>
 	<projects>
 		<project>kayura-bpm</project>
+		<project>kayura-core</project>
+		<project>kayura-tags</project>
+		<project>kayura-activiti</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
