@@ -51,14 +51,65 @@
 				});
 			}
 			
+			function _edit(){
+				
+				var row = $('#tg').datagrid("getSelected");
+				if(row != null){
+					
+					juasp.openWin({
+						url: "${root}/bpm/process/edit?id=" + row.id,
+						width: "1250px",
+						height: "700px",
+						title: "编辑流程",
+						maximized: true,
+						onClose : function(result){
+							if(result == 1){
+		
+							}
+						}
+					});
+				}
+			}
+			
+			function _start(){
+				
+				var row = $('#tg').datagrid("getSelected");
+				if(row != null){
+					
+					juasp.openWin({
+						url: "${root}/bpm/process/form/start?id=" + row.id,
+						width: "550px",
+						height: "600px",
+						title: "启动流程",
+						onClose : function(result){
+							if(result == 1){
+		
+							}
+						}
+					});
+				}
+			}
+			
 			return {
 				
 				init: _init,
 				deploy: _deploy,
-				search: _search
+				edit: _edit,
+				search: _search,
+				start: _start
 			};
 			
 		}(jQuery, window));
+		
+		function formaterProcess(value, row, index){
+			
+			return "<a href='${root}/bpm/process/res?t=1&id=" + row.id + "' target='_blank'>"+row.resourceName + "</a>";
+		}
+		
+		function formaterDiagram(value, row, index){
+
+			return "<a href='${root}/bpm/process/res?t=2&id=" + row.id + "' target='_blank'>"+row.diagramResourceName + "</a>";
+		}
 		
 	</script>
 </k:section>
@@ -71,12 +122,14 @@
 		<k:column field="name" width="240" title="流程名称" />
 		<k:column field="category" width="180" title="流程分类" />
 		<k:column field="version" width="180" title="版本号" />
-		<k:column field="resourceName" width="180" title="流程名" />
-		<k:column field="diagramResourceName" width="180" title="流图名" />
+		<k:column field="resourceName" width="180" title="流程名" formatter="formaterProcess" />
+		<k:column field="diagramResourceName" width="180" title="流图名" formatter="formaterDiagram" />
 		<k:column field="suspended" width="80" title="暂停" />
 	</k:datagrid>
 	<div id="tb">
 		<k:linkbutton id="deploy" iconCls="icon-add" plain="true" text="上传流程" onClick="jctx.deploy()" />
+		<k:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑流程" onClick="jctx.edit()" />
+		<k:linkbutton id="deploy" iconCls="icon-add" plain="true" text="启动流程" onClick="jctx.start()" />
 		<div style="float: right;">
 			<k:searchbox id="search" prompt="搜索：流程名称" width="220" height="25" searcher="jctx.search" />
 		</div>
