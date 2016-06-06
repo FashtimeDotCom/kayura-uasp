@@ -30,7 +30,7 @@ public class LoginUser extends User {
 	private String tenantId;
 	private String salt;
 	private String displayName;
-	private List<Integer> privileges = new ArrayList<Integer>();
+	private List<String> privileges = new ArrayList<String>();
 
 	public LoginUser(String username, String password, boolean enabled, boolean accountNonExpired,
 			boolean credentialsNonExpired, boolean accountNonLocked,
@@ -112,14 +112,14 @@ public class LoginUser extends User {
 		return hasAnyRole(ROLE_USER);
 	}
 
-	public List<Integer> getPrivileges() {
+	public List<String> getPrivileges() {
 		return privileges;
 	}
 
-	public void setPrivileges(List<Integer> privileges) {
+	public void setPrivileges(List<String> privileges) {
 
 		if (privileges != null) {
-			for (Integer i : privileges) {
+			for (String i : privileges) {
 				if (!this.privileges.contains(i)) {
 					this.privileges.add(i);
 				}
@@ -127,9 +127,9 @@ public class LoginUser extends User {
 		}
 	}
 
-	public Boolean hasPrivilege(int[] privileges) {
+	public Boolean hasPrivilege(String[] privileges) {
 
-		for (int i : privileges) {
+		for (String i : privileges) {
 			if (this.privileges.contains(i)) {
 				return true;
 			}

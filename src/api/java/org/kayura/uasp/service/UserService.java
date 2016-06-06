@@ -6,7 +6,6 @@ package org.kayura.uasp.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
@@ -115,12 +114,12 @@ public interface UserService {
 	 * @param userId
 	 * @return
 	 */
-	List<Integer> loadPrivileges(String userId);
+	List<String> loadPrivileges(String userId);
 
 	/**
 	 * 加载该用户的组织身份集合.
 	 * @param userId
 	 * @return
 	 */
-	Map<String, Identity> loadIdentities(String userId);
+	List<Identity> loadIdentities(String userId);
 }

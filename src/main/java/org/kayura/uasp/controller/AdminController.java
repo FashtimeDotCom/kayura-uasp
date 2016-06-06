@@ -4,25 +4,6 @@
  */
 package org.kayura.uasp.controller;
 
-import org.kayura.core.PostAction;
-import org.kayura.core.PostResult;
-import org.kayura.security.LoginUser;
-import org.kayura.type.GeneralResult;
-import org.kayura.type.PageList;
-import org.kayura.type.PageParams;
-import org.kayura.type.Result;
-import org.kayura.uasp.po.DictDefine;
-import org.kayura.uasp.po.DictItem;
-import org.kayura.uasp.po.User;
-import org.kayura.uasp.security.Privilege;
-import org.kayura.uasp.security.PrivilegeMods;
-import org.kayura.uasp.service.DictService;
-import org.kayura.uasp.service.UserService;
-import org.kayura.utils.KeyUtils;
-import org.kayura.utils.StringUtils;
-import org.kayura.web.controllers.BaseController;
-import org.kayura.tags.easyui.types.TreeNode;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +13,22 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kayura.core.PostAction;
+import org.kayura.core.PostResult;
+import org.kayura.security.LoginUser;
+import org.kayura.tags.easyui.types.TreeNode;
+import org.kayura.type.GeneralResult;
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
+import org.kayura.type.Result;
+import org.kayura.uasp.po.DictDefine;
+import org.kayura.uasp.po.DictItem;
+import org.kayura.uasp.po.User;
+import org.kayura.uasp.service.DictService;
+import org.kayura.uasp.service.UserService;
+import org.kayura.utils.KeyUtils;
+import org.kayura.utils.StringUtils;
+import org.kayura.web.controllers.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.authentication.encoding.PasswordEncoder;

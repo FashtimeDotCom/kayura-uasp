@@ -63,7 +63,7 @@ public class PrivilegeAuthenticationFilter extends GenericFilterBean {
 				}
 
 				if (pv != null) {
-					int[] privileges = pv.value();
+					String[] privileges = pv.value();
 					if (privileges.length > 0) {
 						
 						LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

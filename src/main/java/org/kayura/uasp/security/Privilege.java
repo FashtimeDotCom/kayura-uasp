@@ -15,6 +15,6 @@ public @interface Privilege {
 	 * 需要的权限项.
 	 * @return
 	 */
-	public int[] value() default {};
+	public String[] value() default {};
 
 }

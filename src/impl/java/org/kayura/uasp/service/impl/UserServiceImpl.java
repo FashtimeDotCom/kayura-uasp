@@ -180,13 +180,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<Integer> loadPrivileges(String userId) {
+	public List<String> loadPrivileges(String userId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, Identity> loadIdentities(String userId) {
+	public List<Identity> loadIdentities(String userId) {
 
 		return null;
 	}

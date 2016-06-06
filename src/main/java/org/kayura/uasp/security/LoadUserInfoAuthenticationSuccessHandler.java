@@ -1,7 +1,6 @@
 package org.kayura.uasp.security;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kayura.security.LoginUser;
 import org.kayura.uasp.po.Identity;
-import org.kayura.uasp.service.OrganizeService;
 import org.kayura.uasp.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -41,12 +39,18 @@ public class LoadUserInfoAuthenticationSuccessHandler extends SimpleUrlAuthentic
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 
 		LoginUser user = (LoginUser) authentication.getPrincipal();
+		
 		// 加载权限
-		List<Integer> privileges = userService.loadPrivileges(user.getUserId());
+		List<String> privileges = userService.loadPrivileges(user.getUserId());
 		user.setPrivileges(privileges);
+		
 		// 加载身份
-		Map<String, Identity> identities = userService.loadIdentities(user.getUserId());
-		user.setIdentities(new HashMap<String, Object>(identities));
+		List<Identity> identityList = userService.loadIdentities(user.getUserId());
+		Map<String, Object> identityMap = new HashMap<String, Object>();
+		for (Identity i : identityList) {
+			identityMap.put(i.getIdentityId(), i);
+		}
+		user.setIdentities(identityMap);
 
 		// 跳回目标地址.
 		if (savedRequest == null) {
