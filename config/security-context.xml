@@ -94,7 +94,7 @@
 	</beans:bean>
 	
 	<beans:bean id="loginSuccessHandler" class="org.kayura.uasp.security.LoadUserInfoAuthenticationSuccessHandler">
-		
+		<beans:property name="userService" ref="userServiceImpl" />
 	</beans:bean>
 	
 	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">

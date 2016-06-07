@@ -9,6 +9,7 @@
 	<configs>
 		<config>config/datasource-context.xml</config>
 		<config>config/security-context.xml</config>
+		<config>config/activiti-context.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>config/root-context.xml</config>

@@ -13,29 +13,16 @@
 		js/juasp-core.js
 		js/juasp-easyui.js
 	</k:resources>
+	<style type="text/css">
+	.panel-body { border-top-width: 0; overflow: hidden; padding: 0; }
+</style>
 </head>
 <body class="easyui-layout">
 	<k:resource location="res" name="easyui/jquery.portal.js"/>
 	<div region="center" border="false">
 		<div id="pp" style="position: relative">
 			<div style="width: 65%;">
-				<div id="pgrid" title="任务中心" closable="true" style="height: 200px;">
-					<table class="easyui-datagrid" style="width: 650px; height: auto" method="GET"
-						fit="true" border="false" singleSelect="true" idField="itemid" fitColumns="true"
-						url="${root}/res/easyui/jsondata/datagrid_data.json">
-						<thead>
-							<tr>
-								<th field="itemid" width="60">Item ID</th>
-								<th field="productid" width="60">Product ID</th>
-								<th field="listprice" width="80" align="right">List Price</th>
-								<th field="unitcost" width="80" align="right">Unit Cost</th>
-								<th field="attr1" width="120">Attribute</th>
-								<th field="status" width="50" align="center">Status</th>
-							</tr>
-						</thead>
-					</table>
-				</div>
-				<div title="工作任务" closable="true" style="height: auto; text-align: center;">
+				<div title="工作任务" closable="true" style="height: 300px;">
 					<iframe scrolling="no" frameborder="0" src="${root}/bpm/task/list" style="width:100%;height:100%;"></iframe>
 				</div>
 			</div>

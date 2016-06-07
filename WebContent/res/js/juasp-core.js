@@ -261,7 +261,7 @@ juasp = {
 					if (typeof events.error == 'function') {
 						events.error(result);
 					} else {
-						_errorTips("异常", result.message);
+						_errorTips(result.message);
 					}
 					return;
 				}
@@ -271,7 +271,7 @@ juasp = {
 					if (typeof events.success == 'function') {
 						events.success(result);
 					} else {
-						_infoTips("成功", result.message);
+						_infoTips(result.message);
 					}
 					return;
 				}
@@ -281,7 +281,7 @@ juasp = {
 					if (typeof events.failure == 'function') {
 						events.failure(result);
 					} else {
-						_errorTips("失败", result.message);
+						_errorTips(result.message);
 					}
 					return;
 				}
@@ -290,7 +290,7 @@ juasp = {
 				if (typeof events.unknown == 'function') {
 					events.unknown(result);
 				} else {
-					_errorTips("未知结果", result.message);
+					_errorTips(result.message);
 				}
 
 				_errorTips("未知的请求结果类型。");

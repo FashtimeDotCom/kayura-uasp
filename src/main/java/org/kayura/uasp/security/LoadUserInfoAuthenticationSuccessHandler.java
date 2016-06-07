@@ -39,18 +39,22 @@ public class LoadUserInfoAuthenticationSuccessHandler extends SimpleUrlAuthentic
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 
 		LoginUser user = (LoginUser) authentication.getPrincipal();
-		
+
 		// 加载权限
 		List<String> privileges = userService.loadPrivileges(user.getUserId());
-		user.setPrivileges(privileges);
-		
+		if (privileges != null) {
+			user.setPrivileges(privileges);
+		}
+
 		// 加载身份
 		List<Identity> identityList = userService.loadIdentities(user.getUserId());
-		Map<String, Object> identityMap = new HashMap<String, Object>();
-		for (Identity i : identityList) {
-			identityMap.put(i.getIdentityId(), i);
+		if (identityList != null) {
+			Map<String, Object> identityMap = new HashMap<String, Object>();
+			for (Identity i : identityList) {
+				identityMap.put(i.getIdentityId(), i);
+			}
+			user.setIdentities(identityMap);
 		}
-		user.setIdentities(identityMap);
 
 		// 跳回目标地址.
 		if (savedRequest == null) {

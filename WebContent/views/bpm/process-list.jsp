@@ -71,6 +71,29 @@
 				}
 			}
 			
+			function _remove(){
+				
+				var rows = $('#tg').datagrid("getSelections");
+				if(rows != null){
+					
+					var ids = [], names = [];
+					$.each(rows, function(index, item) {
+						ids.push(item.deploymentId);
+						names.push(item.name + ":" + item.version);
+					});
+
+					juasp.confirm("<b>是否确认流程</b> 【" + names.join(", ") + "】<b> "
+							+ ids.length + " 个文件。</b>", function(r) {
+						if (r == true) {
+							juasp.post('${root}/bpm/process/remove.json', 
+									{ ids : ids.join(",") },
+									{ success : function(r) { _search(); } }
+							);
+						}
+					});
+				}
+			}
+			
 			function _start(){
 				
 				var row = $('#tg').datagrid("getSelected");
@@ -95,6 +118,7 @@
 				init: _init,
 				deploy: _deploy,
 				edit: _edit,
+				remove: _remove,
 				search: _search,
 				start: _start
 			};
@@ -129,6 +153,7 @@
 	<div id="tb">
 		<k:linkbutton id="deploy" iconCls="icon-add" plain="true" text="上传流程" onClick="jctx.deploy()" />
 		<k:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑流程" onClick="jctx.edit()" />
+		<k:linkbutton id="remove" iconCls="icon-remove" plain="true" text="删除流程" onClick="jctx.remove()" />
 		<k:linkbutton id="deploy" iconCls="icon-add" plain="true" text="启动流程" onClick="jctx.start()" />
 		<div style="float: right;">
 			<k:searchbox id="search" prompt="搜索：流程名称" width="220" height="25" searcher="jctx.search" />

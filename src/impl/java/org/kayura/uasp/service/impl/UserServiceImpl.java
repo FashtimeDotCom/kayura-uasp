@@ -181,7 +181,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<String> loadPrivileges(String userId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

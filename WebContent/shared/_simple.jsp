@@ -16,7 +16,7 @@
 	</div>
 	<k:renderSection name="head" />
 </head>
-<k:body layout="true">
+<k:body layout="true" full="true">
 	<!-- Body -->
 	<k:renderSection name="body"></k:renderSection>
 </k:body>

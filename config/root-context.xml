@@ -9,6 +9,7 @@
 	<context:component-scan base-package="org.kayura" />
 
 	<import resource="datasource-context.xml" />
+	<import resource="activiti-context.xml" />
 	<import resource="security-context.xml" />
 
 	<bean class="org.kayura.web.easyui.EasyUISupport" />
@@ -18,7 +19,7 @@
 		<property name="tempPath" value="${fileUpload.tempPath}" />
 		<property name="uploadPaths">
 			<map>
-				<entry key="${fileUpload.disk1}" value="${fileUpload.diskPath1}"></entry>
+				<entry key="${fileUpload.disk1}" value="${fileUpload.diskPath1}" />
 			</map>
 		</property>
 	</bean>
