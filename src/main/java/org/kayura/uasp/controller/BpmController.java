@@ -26,7 +26,6 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.io.FilenameUtils;
 import org.kayura.activiti.convert.VoConvert;
-import org.kayura.activiti.vo.FormPropertyVo;
 import org.kayura.activiti.vo.ProcessDefinitionVo;
 import org.kayura.activiti.vo.TaskVo;
 import org.kayura.core.PostAction;
@@ -36,8 +35,8 @@ import org.kayura.tags.types.FormAttribute;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Paginator;
+import org.kayura.utils.KeyUtils;
 import org.kayura.web.controllers.ActivitiController;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,7 +57,10 @@ public class BpmController extends ActivitiController {
 	@RequestMapping(value = "/task/list", method = RequestMethod.GET)
 	public ModelAndView taskList() {
 
-		return view("views/bpm/task-list");
+		ModelAndView mv = view("views/bpm/task-list");
+		String jsid = "j_" + KeyUtils.randomA(8);
+		mv.addObject("jsid", jsid);
+		return mv;
 	}
 
 	@RequestMapping(value = "/task/find", method = RequestMethod.POST)
@@ -154,13 +156,19 @@ public class BpmController extends ActivitiController {
 		return props;
 	}
 
-	@RequestMapping(value = "/process/list", method = RequestMethod.GET)
+	@RequestMapping(value = "/proc/list", method = RequestMethod.GET)
 	public ModelAndView processList() {
 
-		return view("views/bpm/process-list");
+		return view("views/bpm/proc-list");
 	}
 
-	@RequestMapping(value = "/process/find", method = RequestMethod.POST)
+	@RequestMapping(value = "/proc/inst", method = RequestMethod.GET)
+	public ModelAndView processInst(){
+
+		return view("views/bpm/proc-inst");
+	}
+
+	@RequestMapping(value = "/proc/find", method = RequestMethod.POST)
 	public void findProcessList(Map<String, Object> map, HttpServletRequest req, String keyword) {
 
 		postExecute(map, new PostAction() {
@@ -177,7 +185,7 @@ public class BpmController extends ActivitiController {
 		});
 	}
 
-	@RequestMapping(value = "/process/remove", method = RequestMethod.POST)
+	@RequestMapping(value = "/proc/remove", method = RequestMethod.POST)
 	public void deleteProcess(Map<String, Object> map, HttpServletRequest req, String ids) {
 
 		postExecute(map, new PostAction() {
@@ -192,7 +200,7 @@ public class BpmController extends ActivitiController {
 		});
 	}
 
-	@RequestMapping(value = "/process/deploy", method = RequestMethod.POST)
+	@RequestMapping(value = "/proc/deploy", method = RequestMethod.POST)
 	public void deploy(Map<String, Object> map, MultipartFile file) {
 
 		postExecute(map, new PostAction() {
@@ -222,15 +230,15 @@ public class BpmController extends ActivitiController {
 		});
 	}
 
-	@RequestMapping(value = "/process/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/proc/edit", method = RequestMethod.GET)
 	public ModelAndView editProcess(String id) {
 
-		ModelAndView mv = view("views/bpm/process-edit");
+		ModelAndView mv = view("views/bpm/proc-edit");
 		mv.addObject("id", id);
 		return mv;
 	}
 
-	@RequestMapping(value = "/process/res")
+	@RequestMapping(value = "/proc/res")
 	@ResponseBody
 	public void importProcess(HttpServletResponse response, String id, @RequestParam("t") Integer resType)
 			throws IOException {
@@ -249,7 +257,7 @@ public class BpmController extends ActivitiController {
 		}
 	}
 
-	@RequestMapping(value = "/process/form/start", method = RequestMethod.GET)
+	@RequestMapping(value = "/proc/form/start", method = RequestMethod.GET)
 	public ModelAndView startForm(String id) {
 
 		StartFormData formData = formService.getStartFormData(id);
@@ -262,7 +270,7 @@ public class BpmController extends ActivitiController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/process/start", method = RequestMethod.POST)
+	@RequestMapping(value = "/proc/start", method = RequestMethod.POST)
 	public void startProcess(Map<String, Object> map, HttpServletRequest request, String processDefinitionId) {
 
 		LoginUser user = this.getLoginUser();

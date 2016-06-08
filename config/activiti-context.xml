@@ -13,15 +13,9 @@
     <property name="enableDatabaseEventLogging" value="true" />
     <property name="customFormTypes">
       <list>
-      	<bean class="org.kayura.activiti.form.DateTimeFormType">
-      		<constructor-arg name="datePattern" value="YYYY-MM-dd hh:ss:mm" />
-      	</bean>
-      	<bean class="org.kayura.activiti.form.TimeFormType">
-      		<constructor-arg name="datePattern" value="hh:ss:mm" />
-      	</bean>
-      	<bean class="org.kayura.activiti.form.DateFormType">
-      		<constructor-arg name="datePattern" value="YYYY-MM-dd" />
-      	</bean>
+      	<bean class="org.kayura.activiti.form.DateTimeFormType" />
+      	<bean class="org.kayura.activiti.form.TimeFormType" />
+      	<bean class="org.kayura.activiti.form.DateFormType" />
       	<bean class="org.kayura.activiti.form.TextFormType" /> 
       </list>
     </property>

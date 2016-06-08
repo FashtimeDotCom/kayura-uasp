@@ -17,7 +17,7 @@
 			function _init() {
 				
 				$('#tg').datagrid({
-					url: "${root}/bpm/process/find.json",
+					url: "${root}/bpm/proc/find.json",
 					queryParams: {
 						keyword : $('#search').val()
 					},
@@ -31,7 +31,7 @@
 				
 				$("#deploy").uploader({
 					innerOptions : {
-						server: '${root}/bpm/process/deploy.json',
+						server: '${root}/bpm/proc/deploy.json',
 					},
 					onFinished : function (){
 						_search();
@@ -57,7 +57,7 @@
 				if(row != null){
 					
 					juasp.openWin({
-						url: "${root}/bpm/process/edit?id=" + row.id,
+						url: "${root}/bpm/proc/edit?id=" + row.id,
 						width: "1250px",
 						height: "700px",
 						title: "编辑流程",
@@ -82,14 +82,14 @@
 						names.push(item.name + ":" + item.version);
 					});
 
-					juasp.confirm("<b>是否确认流程</b> 【" + names.join(", ") + "】<b> "
-							+ ids.length + " 个文件。</b>", function(r) {
-						if (r == true) {
-							juasp.post('${root}/bpm/process/remove.json', 
-									{ ids : ids.join(",") },
-									{ success : function(r) { _search(); } }
-							);
-						}
+					juasp.confirm("<b>是否确认流程</b> 【" + names.join(", ") + "】<b> " + ids.length + " 个文件。</b>", 
+						function(r) {
+							if (r == true) {
+								juasp.post('${root}/bpm/proc/remove.json', 
+										{ ids : ids.join(",") },
+										{ success : function(r) { _search(); } }
+								);
+							}
 					});
 				}
 			}
@@ -100,7 +100,7 @@
 				if(row != null){
 					
 					juasp.openWin({
-						url: "${root}/bpm/process/form/start?id=" + row.id,
+						url: "${root}/bpm/proc/form/start?id=" + row.id,
 						width: "550px",
 						height: "600px",
 						title: "启动流程",
@@ -127,12 +127,12 @@
 		
 		function formaterProcess(value, row, index){
 			
-			return "<a href='${root}/bpm/process/res?t=1&id=" + row.id + "' target='_blank'>"+row.resourceName + "</a>";
+			return "<a href='${root}/bpm/proc/res?t=1&id=" + row.id + "' target='_blank'>"+row.resourceName + "</a>";
 		}
 		
 		function formaterDiagram(value, row, index){
 
-			return "<a href='${root}/bpm/process/res?t=2&id=" + row.id + "' target='_blank'>"+row.diagramResourceName + "</a>";
+			return "<a href='${root}/bpm/proc/res?t=2&id=" + row.id + "' target='_blank'>"+row.diagramResourceName + "</a>";
 		}
 		
 	</script>

@@ -50,11 +50,8 @@
 			</k:sheet>
 			<k:sheet collapsed="false" collapsible="false" title="工作流" tools="[{iconCls:'icon-menu',handler:function(){alert('设置');}}]">
 				<ul>
-					<li><a href="###" onclick="juasp.openTab('流程定义', '${root}/bpm/process/list')" >流程定义</a></li>
-					<li><a href="###" onclick="juasp.openTab('数据词典', '${root}/admin/dict/list')" >数据词典</a></li>
-					<li><a href="###" onclick="juasp.openTab('组织机构', '${root}/org/manager')" >组织机构</a></li>
-					<li><a href="###" onclick="juasp.openTab('文件管理', '${root}/file/manager')" >文件管理</a></li>
-					<li><a href="###" onclick="juasp.openTab('文件上传', '${root}/mock/fileup')" >文件上传</a></li>
+					<li><a href="###" onclick="juasp.openTab('流程定义', '${root}/bpm/proc/list')" >流程定义</a></li>
+					<li><a href="###" onclick="juasp.openTab('实例监控', '${root}/bpm/proc/inst')" >实例监控</a></li>
 				</ul>
 			</k:sheet>
 			<k:sheet collapsed="false" collapsible="false" title="收藏功能" tools="[{iconCls:'icon-menu',handler:function(){alert('设置');}}]">

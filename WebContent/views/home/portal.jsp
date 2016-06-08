@@ -7,23 +7,27 @@
 	<k:resources location="res">
 		easyui/themes/icon.css
 		js/juasp.css
-		js/jquery.min.js
+		js/jquery.src.js
 		easyui/jquery.easyui.min.js
 		easyui/easyui-lang-zh_CN.js
 		js/juasp-core.js
 		js/juasp-easyui.js
 	</k:resources>
 	<style type="text/css">
-	.panel-body { border-top-width: 0; overflow: hidden; padding: 0; }
-</style>
+		.panel-body { border-top-width: 0; overflow: hidden; padding: 0; }
+	</style>
+	<script type="text/javascript">
+		$(function(){
+			//$("#tasklist").attr('src', "${root}/bpm/task/list");
+		});
+	</script>
 </head>
 <body class="easyui-layout">
 	<k:resource location="res" name="easyui/jquery.portal.js"/>
 	<div region="center" border="false">
 		<div id="pp" style="position: relative">
 			<div style="width: 65%;">
-				<div title="工作任务" closable="true" style="height: 300px;">
-					<iframe scrolling="no" frameborder="0" src="${root}/bpm/task/list" style="width:100%;height:100%;"></iframe>
+				<div title="工作任务" closable="true" style="height: 300px;" data-options="href:'${root}/bpm/task/list'">
 				</div>
 			</div>
 			<div style="width: 35%;">
