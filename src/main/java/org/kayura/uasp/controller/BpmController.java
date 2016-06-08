@@ -25,6 +25,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.kayura.activiti.convert.VoConvert;
 import org.kayura.activiti.vo.ProcessDefinitionVo;
 import org.kayura.activiti.vo.TaskVo;
@@ -58,8 +59,7 @@ public class BpmController extends ActivitiController {
 	public ModelAndView taskList() {
 
 		ModelAndView mv = view("views/bpm/task-list");
-		String jsid = "j_" + KeyUtils.randomA(8);
-		mv.addObject("jsid", jsid);
+		mv.addObject("jsid", RandomStringUtils.randomAlphabetic(4));
 		return mv;
 	}
 
@@ -163,7 +163,7 @@ public class BpmController extends ActivitiController {
 	}
 
 	@RequestMapping(value = "/proc/inst", method = RequestMethod.GET)
-	public ModelAndView processInst(){
+	public ModelAndView processInst() {
 
 		return view("views/bpm/proc-inst");
 	}

@@ -66,9 +66,9 @@
 		function _formaterActions(value, row, index){
 			
  			if(juasp.isEmpty(row.assignee)){
-				return "<a href='###' onclick=\"${jsid}.taskclaim('"+ row.id + "')\" >签收</a>";
+				return "<a href='###' onclick=\"jtasklist.taskclaim('"+ row.id + "')\" >签收</a>";
 			} else {
-				return "<a href='###' onclick=\"${jsid}.taskread('"+ row.id + "')\" >处理</a>";
+				return "<a href='###' onclick=\"jtasklist.taskread('"+ row.id + "')\" >处理</a>";
 			}
 		}
 		

@@ -27,8 +27,6 @@
 	<div region="center" border="false">
 		<div id="pp" style="position: relative">
 			<div style="width: 65%;">
-				<div title="工作任务" closable="true" style="height: 300px;" data-options="href:'${root}/bpm/task/list'">
-				</div>
 			</div>
 			<div style="width: 35%;">
 				<div title="消息提醒" style="text-align: center; height: 150px; padding: 5px;">
@@ -76,6 +74,22 @@
 			add();
 		});
 		function add() {
+			
+			// <div title="工作任务" closable="true" style="height: 300px;" data-options="href:'${root}/bpm/task/list'"></div>
+			
+			var taskPanel = $('<div/>').appendTo('body');
+			taskPanel.panel({
+				title : '工作任务',
+				href:'${root}/bpm/task/list',
+				height : "300px",
+				closable : true,
+				collapsible : true
+			});
+			$('#pp').portal('add', {
+				panel : taskPanel,
+				columnIndex : 0
+			});
+			
 			for (var i = 0; i < 2; i++) {
 				var p = $('<div/>').appendTo('body');
 				p.panel({
