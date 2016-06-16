@@ -93,7 +93,7 @@ public class AdminController extends BaseController {
 					PageList<User> users = r.getData();
 					users.forEach(s -> s.setPassword(null));
 					users.forEach(s -> s.setSalt(null));
-					ps.setData(ui.genPageData(users));
+					ps.setData(ui.putData(users));
 				} else {
 					ps.addMessage(r.getMessage());
 				}
@@ -228,14 +228,14 @@ public class AdminController extends BaseController {
 
 					PageList<DictItem> list = new PageList<DictItem>(pp);
 					ps.setCode(Result.SUCCEED);
-					ps.setData(ui.genPageData(list));
+					ps.setData(ui.putData(list));
 				} else {
 
 					String tenantId = getLoginUser().getTenantId();
 					Result<PageList<DictItem>> r = readerDictService.loadDictItems(tenantId, dictId, parentId, pp);
 					ps.setCode(r.getCode());
 					if (r.isSucceed()) {
-						ps.setData(ui.genPageData(r.getData()));
+						ps.setData(ui.putData(r.getData()));
 					} else {
 						ps.addMessage(r.getMessage());
 					}

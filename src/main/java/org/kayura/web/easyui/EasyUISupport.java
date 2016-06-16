@@ -45,16 +45,18 @@ public class EasyUISupport implements UISupport {
 	}
 
 	@Override
-	public void putData(Map<String, Object> map, PageList<?> pageList) {
+	public Map<String, Object> putData(Map<String, Object> map, PageList<?> pageList) {
 
 		// {"total":"28","rows":[{}] }
 
 		map.put("total", pageList.getTotalCount());
 		map.put("rows", pageList);
+
+		return map;
 	}
 
 	@Override
-	public Map<String, Object> genPageData(PageList<?> pageList) {
+	public Map<String, Object> putData(PageList<?> pageList) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		putData(map, pageList);

@@ -14,7 +14,16 @@
 		
 		var jctx = (function($, win){
 			
+			var selectedNode = null;
+			
 			function _init() {
+				
+				$('#tv').tree({
+					url : "${root}/bpm/biz/navtree.json",
+					onClick : function(node) {
+						_clickNode(node);
+					}
+				});
 				
 				$('#tg').datagrid({
 					url: "${root}/bpm/proc/find.json",
@@ -29,9 +38,9 @@
 					}
 				});
 				
-				$("#deploy").uploader({
+				$("#import").uploader({
 					innerOptions : {
-						server: '${root}/bpm/proc/deploy.json',
+						server: '${root}/bpm/proc/import.json',
 					},
 					onFinished : function (){
 						_search();
@@ -39,15 +48,26 @@
 				});
 			}
 			
-			function _deploy(){
+			function _clickNode(node){
 				
-
+				selectedNode = node;
+				_search();
 			}
 			
 			function _search(){
 				
+				var key = "", type="";
+				if(selectedNode != null){
+					key = selectedNode.attributes['key'];
+					type = selectedNode.attributes['type'];
+				}
+				
+				$("#import").uploader("setFormData", { "key" : key });
+						
 				$('#tg').datagrid('load', {
-					keyword : $('#search').val()
+					"key" : key,
+					"t" : type,
+					"keyword" : $('#search').val()
 				});
 			}
 			
@@ -56,8 +76,10 @@
 				var row = $('#tg').datagrid("getSelected");
 				if(row != null){
 					
-					juasp.openWin({
-						url: "${root}/bpm/proc/edit?id=" + row.id,
+					win.open("${root}/modeler?modelId=" + row.id);
+					
+/* 					juasp.openWin({
+						url: "${root}//bpm/model?id=" + row.id,
 						width: "1250px",
 						height: "700px",
 						title: "编辑流程",
@@ -67,7 +89,7 @@
 		
 							}
 						}
-					});
+					}); */
 				}
 			}
 			
@@ -116,7 +138,6 @@
 			return {
 				
 				init: _init,
-				deploy: _deploy,
 				edit: _edit,
 				remove: _remove,
 				search: _search,
@@ -139,26 +160,33 @@
 </k:section>
 
 <k:section name="body">
-	<k:datagrid id="tg" fit="true" rownumbers="true"
-		pagination="true" pageSize="10" singleSelect="true" striped="true"
-		toolbar="#tb" idField="id">
-		<k:column field="ck" checkbox="true" />
-		<k:column field="name" width="240" title="流程名称" />
-		<k:column field="category" width="180" title="流程分类" />
-		<k:column field="version" width="180" title="版本号" />
-		<k:column field="resourceName" width="180" title="流程名" formatter="formaterProcess" />
-		<k:column field="diagramResourceName" width="180" title="流图名" formatter="formaterDiagram" />
-		<k:column field="suspended" width="80" title="暂停" />
-	</k:datagrid>
-	<div id="tb">
-		<k:linkbutton id="deploy" iconCls="icon-add" plain="true" text="上传流程" onClick="jctx.deploy()" />
-		<k:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑流程" onClick="jctx.edit()" />
-		<k:linkbutton id="remove" iconCls="icon-remove" plain="true" text="删除流程" onClick="jctx.remove()" />
-		<k:linkbutton id="deploy" iconCls="icon-add" plain="true" text="启动流程" onClick="jctx.start()" />
-		<div style="float: right;">
-			<k:searchbox id="search" prompt="搜索：流程名称" width="220" height="25" searcher="jctx.search" />
-		</div>
-	</div>
+	<k:dock region="center" border="false" style="padding: 2px;">
+	<k:layout id="ctx" fit="true">
+		<k:dock region="west" split="true" border="true" style="padding: 10px; width: 200px;">
+			<k:tree id="tv" />
+		</k:dock>
+		<k:dock region="center" border="false">
+			<k:datagrid id="tg" fit="true" rownumbers="true"
+				pagination="true" pageSize="10" singleSelect="true" striped="true"
+				toolbar="#tb" idField="id">
+				<k:column field="ck" checkbox="true" />
+				<k:column field="name" title="流程名称" />
+				<k:column field="key" title="流程键" />
+				<k:column field="category" title="流程类别" />
+				<k:column field="version" title="版本号" />
+			</k:datagrid>
+			<div id="tb">
+				<k:linkbutton id="import" iconCls="icon-add" plain="true" text="导入流程" />
+				<k:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑流程" onClick="jctx.edit()" />
+				<k:linkbutton id="remove" iconCls="icon-remove" plain="true" text="删除流程" onClick="jctx.remove()" />
+				<k:linkbutton id="deploy" iconCls="icon-add" plain="true" text="启动流程" onClick="jctx.start()" />
+				<div style="float: right;">
+					<k:searchbox id="search" prompt="搜索：流程名称" width="220" height="25" searcher="jctx.search" />
+				</div>
+			</div>
+		</k:dock>
+	</k:layout>
+	</k:dock>
 </k:section>
 
-<%@ include file="/shared/_list.jsp"%>
+<%@ include file="/views/shared/_simple.jsp"%>

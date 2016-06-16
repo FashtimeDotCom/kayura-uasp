@@ -56,7 +56,7 @@ public class AuthController extends BaseController {
 
 				PageParams pageParams = ui.getPageParams(req);
 				Result<PageList<Role>> r = readerAuthorityService.findRoles(user.getTenantId(), keyword, pageParams);
-				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
+				ps.setResult(r.getCode(), r.getMessage(), ui.putData(r.getData()));
 			}
 		});
 	}

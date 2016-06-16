@@ -32,7 +32,7 @@ public interface UISupport {
 	 * @param model
 	 * @param pageList
 	 */
-	void putData(Map<String, Object> model, PageList<?> pageList);
+	Map<String, Object> putData(Map<String, Object> model, PageList<?> pageList);
 	
 	/**
 	 * 创建一个分页的数据包.
@@ -40,5 +40,5 @@ public interface UISupport {
 	 * @param pageList
 	 * @return
 	 */
-	Map<String, Object> genPageData(PageList<?> pageList);
+	Map<String, Object> putData(PageList<?> pageList);
 }

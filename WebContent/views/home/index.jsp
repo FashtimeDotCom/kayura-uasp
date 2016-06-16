@@ -50,6 +50,7 @@
 			</k:sheet>
 			<k:sheet collapsed="false" collapsible="false" title="工作流" tools="[{iconCls:'icon-menu',handler:function(){alert('设置');}}]">
 				<ul>
+					<li><a href="###" onclick="juasp.openTab('表单定义', '${root}/bpm/biz/list')" >表单定义</a></li>
 					<li><a href="###" onclick="juasp.openTab('流程定义', '${root}/bpm/proc/list')" >流程定义</a></li>
 					<li><a href="###" onclick="juasp.openTab('实例监控', '${root}/bpm/proc/inst')" >实例监控</a></li>
 				</ul>

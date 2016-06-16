@@ -202,7 +202,7 @@ public class OrgController extends BaseController {
 
 				Result<PageList<OrganizeItem>> r = readerOrganizeService.findOrgItems(user.getTenantId(), parentId,
 						keyword, pp);
-				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
+				ps.setResult(r.getCode(), r.getMessage(), ui.putData(r.getData()));
 			}
 		});
 	}
@@ -525,7 +525,7 @@ public class OrgController extends BaseController {
 
 				PageParams pp = ui.getPageParams(req);
 				Result<PageList<Employee>> r = readerOrganizeService.findEmployees(user.getTenantId(), keyword, pp);
-				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
+				ps.setResult(r.getCode(), r.getMessage(), ui.putData(r.getData()));
 			}
 		});
 	}

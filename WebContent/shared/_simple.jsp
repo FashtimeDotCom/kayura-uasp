@@ -13,7 +13,6 @@
 		js/juasp-core.js
 		js/juasp-easyui.js
 	</k:resources>
-	</div>
 	<k:renderSection name="head" />
 </head>
 <k:body layout="true" full="true">

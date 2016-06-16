@@ -6,6 +6,7 @@
 
 	<!-- 定义不需要过滤的请求路径,定义在这里可以跳过所有过滤器 -->
 	<http pattern="/res/**" security="none" />
+	<http pattern="/editor-app/**" security="none" />
 	<http pattern="/error/**" security="none" />
 	<http pattern="/example/**" security="none" />
 

@@ -23,6 +23,7 @@
 	</mvc:annotation-driven>
 
 	<mvc:resources mapping="/res/**" location="/res/" />
+	<mvc:resources mapping="/editor-app/**" location="/res/activiti/editor-app/" />
 	<mvc:resources mapping="/views/**/*.js" location="/views/" />
 
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -45,6 +46,6 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 
-	<context:component-scan base-package="org.kayura.*.controller" />
+	<context:component-scan base-package="org.kayura.*.controller,org.kayura.activiti.rest.editor" />
 
 </beans:beans>

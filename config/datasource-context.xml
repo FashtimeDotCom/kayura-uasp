@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- 扫描指定包内继承自BaseDao的接口，并创建SpringBean对象. -->
-	<mybatis-spring:scan base-package="org.kayura"
+	<mybatis-spring:scan base-package="org.kayura.example.dao,org.kayura.uasp.dao"
 		factory-ref="sqlSessionFactory" marker-interface="org.kayura.core.BaseDao" />
 
 	<!-- 引用外部属性定义文件. -->

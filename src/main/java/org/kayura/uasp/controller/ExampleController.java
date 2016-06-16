@@ -220,7 +220,7 @@ public class ExampleController extends BaseController {
 				PageParams pageParams = getPageParams(req);
 
 				Result<PageList<Customer>> r = exampleService.findCustomers(keyword, pageParams);
-				ps.setResult(r.getCode(), r.getMessage(), ui.genPageData(r.getData()));
+				ps.setResult(r.getCode(), r.getMessage(), ui.putData(r.getData()));
 			}
 		});
 	}

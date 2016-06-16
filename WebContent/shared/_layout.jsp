@@ -17,5 +17,6 @@
 </head>
 <k:body full="true">
 	<k:renderSection name="body"></k:renderSection>
+	<k:renderSection name="script" />
 </k:body>
 </html>

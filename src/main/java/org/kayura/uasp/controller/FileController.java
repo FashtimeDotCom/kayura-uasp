@@ -829,7 +829,7 @@ public class FileController extends BaseController {
 						for (FileListItem i : items.getRows()) {
 							i.setIsUploader(user.getUserId().equals(i.getUploaderId()));
 						}
-						ps.setData(ui.genPageData(items));
+						ps.setData(ui.putData(items));
 					} else {
 						ps.setCode(r.getCode());
 						ps.addMessage(r.getMessage());
@@ -853,7 +853,7 @@ public class FileController extends BaseController {
 
 					PageList<FileListItem> items = new PageList<FileListItem>(pp);
 					ps.setCode(Result.SUCCEED);
-					ps.setData(ui.genPageData(items));
+					ps.setData(ui.putData(items));
 				}
 			}
 

@@ -27,7 +27,5 @@
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/kayura-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kayura-tags"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

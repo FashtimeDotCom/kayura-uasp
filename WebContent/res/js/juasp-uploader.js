@@ -154,7 +154,11 @@
         			r.data.isUploader = true;
         			appendFileList(r.data);
         		} else {
-        			juasp.errortips(r.message);
+        			juasp.errorTips(r.message);
+            	}
+        	} else {
+    			if(r.type != juasp.SUCCESS) {
+        			juasp.errorTips(r.message);
             	}
         	}
         });
