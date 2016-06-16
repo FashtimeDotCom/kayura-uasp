@@ -29,12 +29,6 @@
 					url: "${root}/bpm/proc/find.json",
 					queryParams: {
 						keyword : $('#search').val()
-					},
-					rowStyler: function(index, row){
-						
-					},
-					onDblClickRow : function(idx, row){
-						
 					}
 				});
 				
@@ -63,7 +57,8 @@
 				}
 				
 				$("#import").uploader("setFormData", { "key" : key });
-						
+
+				$('#tg').datagrid('unselectAll');
 				$('#tg').datagrid('load', {
 					"key" : key,
 					"t" : type,
@@ -71,36 +66,63 @@
 				});
 			}
 			
+			function _create(){
+				
+				var key = "";
+				if(selectedNode != null){
+					key = selectedNode.attributes['key'];
+				}
+				
+				juasp.openWin({
+					url: "${root}/bpm/proc/new?key=" + key,
+					width: "450px",
+					height: "300px",
+					title: "创建新流程",
+					onClose : function(r){
+						if(r.result == 1){
+							_search();
+							win.open("${root}/modeler?modelId=" + r.id);
+						}
+					}
+				});
+			}
+			
 			function _edit(){
 				
 				var row = $('#tg').datagrid("getSelected");
 				if(row != null){
-					
 					win.open("${root}/modeler?modelId=" + row.id);
-					
-/* 					juasp.openWin({
-						url: "${root}//bpm/model?id=" + row.id,
-						width: "1250px",
-						height: "700px",
-						title: "编辑流程",
-						maximized: true,
-						onClose : function(result){
-							if(result == 1){
-		
+				}
+			}
+			
+			function _deploy(){
+				
+				var row = $('#tg').datagrid("getSelected");
+				if(row != null){
+					juasp.confirm("<b>是否确认将该流程</b> 【" + row.name + " 】个布署为运行状态。</b>", 
+							function(r) {
+								if (r == true) {
+									juasp.post('${root}/bpm/proc/deploy.json', 
+											{ "modelId" : row.id },
+											{ success : function(r) {
+												juasp.infoTips("流程布署成功。");
+												_search(); 
+											  }
+											}
+									);
 							}
-						}
-					}); */
+					});
 				}
 			}
 			
 			function _remove(){
 				
 				var rows = $('#tg').datagrid("getSelections");
-				if(rows != null){
+				if(rows != null && rows.length > 0){
 					
 					var ids = [], names = [];
 					$.each(rows, function(index, item) {
-						ids.push(item.deploymentId);
+						ids.push(item.id);
 						names.push(item.name + ":" + item.version);
 					});
 
@@ -135,26 +157,43 @@
 				}
 			}
 			
+			function _formaterProcess(value, row, index){
+				
+				var status = "";
+				if(selectedNode != null){
+					status = selectedNode.attributes['type'];
+				}
+				
+				return "<a href='${root}/bpm/proc/res?s=" + status + "&t=1&id=" + row.id + "' target='_blank'>流程图XML</a>";					
+			}
+			
+			function _formaterDiagram(value, row, index){
+
+				var status = "";
+				if(selectedNode != null){
+					status = selectedNode.attributes['type'];
+				}
+				
+				return "<a href='${root}/bpm/proc/res?s=" + status + "&t=2&id=" + row.id + "' target='_blank'>图像PNG</a>";
+			}
+			
 			return {
 				
 				init: _init,
+				create: _create,
 				edit: _edit,
 				remove: _remove,
 				search: _search,
-				start: _start
+				deploy: _deploy,
+				start: _start,
+				
+				formaterProcess: _formaterProcess,
+				formaterDiagram: _formaterDiagram
 			};
 			
 		}(jQuery, window));
 		
-		function formaterProcess(value, row, index){
-			
-			return "<a href='${root}/bpm/proc/res?t=1&id=" + row.id + "' target='_blank'>"+row.resourceName + "</a>";
-		}
-		
-		function formaterDiagram(value, row, index){
 
-			return "<a href='${root}/bpm/proc/res?t=2&id=" + row.id + "' target='_blank'>"+row.diagramResourceName + "</a>";
-		}
 		
 	</script>
 </k:section>
@@ -174,12 +213,15 @@
 				<k:column field="key" title="流程键" />
 				<k:column field="category" title="流程类别" />
 				<k:column field="version" title="版本号" />
+				<k:column field="resourceName" title="流程定义" formatter="jctx.formaterProcess" />
+				<k:column field="diagramResourceName" title="流程图像" formatter="jctx.formaterDiagram" />
 			</k:datagrid>
 			<div id="tb">
 				<k:linkbutton id="import" iconCls="icon-add" plain="true" text="导入流程" />
+				<k:linkbutton id="create" iconCls="icon-add" plain="true" text="创建流程" onClick="jctx.create()" />
 				<k:linkbutton id="edit" iconCls="icon-edit" plain="true" text="编辑流程" onClick="jctx.edit()" />
 				<k:linkbutton id="remove" iconCls="icon-remove" plain="true" text="删除流程" onClick="jctx.remove()" />
-				<k:linkbutton id="deploy" iconCls="icon-add" plain="true" text="启动流程" onClick="jctx.start()" />
+				<k:linkbutton id="deploy" iconCls="icon-add" plain="true" text="布署流程" onClick="jctx.deploy()" />
 				<div style="float: right;">
 					<k:searchbox id="search" prompt="搜索：流程名称" width="220" height="25" searcher="jctx.search" />
 				</div>

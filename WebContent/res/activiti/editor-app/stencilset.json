@@ -48,7 +48,7 @@
     "properties" : [ {
       "id" : "process_author",
       "type" : "String",
-      "title" : "流程作者",
+      "title" : "作者",
       "value" : "",
       "description" : "流程定义的作者.",
       "popular" : true
@@ -58,9 +58,9 @@
     "properties" : [ {
       "id" : "process_version",
       "type" : "String",
-      "title" : "流程版本号",
+      "title" : "版本号",
       "value" : "",
-      "description" : "文档版本的标识。",
+      "description" : "该流程文档版本的标识。",
       "popular" : true
     } ]
   }, {
@@ -98,7 +98,7 @@
     "properties" : [ {
       "id" : "executionlisteners",
       "type" : "multiplecomplex",
-      "title" : "执行事件监听器",
+      "title" : "执行监听器",
       "value" : "",
       "description" : "活动、流程、流程跳转，开始、结事事件的监听器.",
       "popular" : true
@@ -561,7 +561,7 @@
       "type" : "Boolean",
       "title" : "取消活动",
       "value" : "true",
-      "description" : "Should the activity be cancelled",
+      "description" : "用于取消的活动.",
       "popular" : true,
       "refToView" : [ "frame", "frame2" ]
     } ]
@@ -570,9 +570,9 @@
     "properties" : [ {
       "id" : "initiator",
       "type" : "String",
-      "title" : "初始化器",
+      "title" : "发起人",
       "value" : "",
-      "description" : "Initiator of the process.",
+      "description" : "流程发起人.",
       "popular" : true
     } ]
   }, {
@@ -582,7 +582,7 @@
       "type" : "String",
       "title" : "文本",
       "value" : "",
-      "description" : "The text of the text annotation.",
+      "description" : "文本注释.",
       "popular" : true,
       "refToView" : "text"
     } ]

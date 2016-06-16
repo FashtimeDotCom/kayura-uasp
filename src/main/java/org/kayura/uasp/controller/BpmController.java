@@ -62,6 +62,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -408,7 +409,7 @@ public class BpmController extends ActivitiController {
 
 				String[] idList = ids.split(",");
 				for (String id : idList) {
-					repositoryService.deleteDeployment(id, true);
+					repositoryService.deleteModel(id);
 				}
 			}
 		});
@@ -474,12 +475,62 @@ public class BpmController extends ActivitiController {
 		});
 	}
 
-	@RequestMapping(value = "/bpm/proc/deploy", method = RequestMethod.POST)
-	public void deploy(Map<String, Object> map, MultipartFile file) {
+	@RequestMapping(value = "/bpm/proc/new", method = RequestMethod.GET)
+	public ModelAndView createModel(String key) {
+
+		ModelAndView mv = view("views/bpm/proc-new");
+		mv.addObject("key", key);
+		return mv;
+	}
+
+	@RequestMapping(value = "/bpm/proc/new", method = RequestMethod.POST)
+	public void saveNewModel(Map<String, Object> map, String key, String name, String desc) {
 
 		LoginUser user = this.getLoginUser();
 		postExecute(map, new PostAction() {
 
+			@SuppressWarnings("deprecation")
+			@Override
+			public void invoke(PostResult ps) {
+
+				try {
+					ObjectMapper objectMapper = new ObjectMapper();
+					ObjectNode editorNode = objectMapper.createObjectNode();
+					editorNode.put("id", "canvas");
+					editorNode.put("resourceId", "canvas");
+					ObjectNode stencilSetNode = objectMapper.createObjectNode();
+					stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");
+					editorNode.put("stencilset", stencilSetNode);
+
+					Model model = repositoryService.newModel();
+
+					ObjectNode metaInfo = new ObjectMapper().createObjectNode();
+					metaInfo.put("name", name);
+					metaInfo.put("revision", 1);
+					metaInfo.put("description", desc);
+					model.setMetaInfo(metaInfo.toString());
+
+					model.setName(name);
+					model.setTenantId(user.getTenantId());
+					model.setKey(key);
+
+					repositoryService.saveModel(model);
+					repositoryService.addModelEditorSource(model.getId(), editorNode.toString().getBytes("utf-8"));
+
+					ps.setData(model.getId());
+
+				} catch (Exception ex) {
+					ps.setException(ex);
+				}
+			}
+		});
+	}
+
+	@RequestMapping(value = "/bpm/proc/upload", method = RequestMethod.POST)
+	public void uploadProcess(Map<String, Object> map, MultipartFile file) {
+
+		LoginUser user = this.getLoginUser();
+		postExecute(map, new PostAction() {
 			@Override
 			public void invoke(PostResult ps) {
 
@@ -506,32 +557,84 @@ public class BpmController extends ActivitiController {
 		});
 	}
 
-	@RequestMapping(value = "/bpm/proc/edit", method = RequestMethod.GET)
-	public ModelAndView editProcess(String id) {
-
-		ModelAndView mv = view("views/bpm/proc-edit");
-		mv.addObject("id", id);
-		return mv;
-	}
-
-	@RequestMapping(value = "/bpm/proc/res")
-	@ResponseBody
-	public void importProcess(HttpServletResponse response, String id, @RequestParam("t") Integer resType)
-			throws IOException {
+	@RequestMapping(value = "/bpm/proc/deploy", method = RequestMethod.POST)
+	public void deployProcess(Map<String, Object> map, String modelId) {
 
 		LoginUser user = this.getLoginUser();
-		ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
-				.processDefinitionTenantId(user.getTenantId()).processDefinitionId(id).singleResult();
-		String resName = pd.getResourceName();
-		if (resType == 2) {
-			resName = pd.getDiagramResourceName();
-		}
-		InputStream stream = repositoryService.getResourceAsStream(pd.getDeploymentId(), resName);
+		postExecute(map, new PostAction() {
+			@Override
+			public void invoke(PostResult ps) {
 
-		byte[] buffer = new byte[4096];
-		int bytesRead = -1;
-		while ((bytesRead = stream.read(buffer)) != -1) {
-			response.getOutputStream().write(buffer, 0, bytesRead);
+				try {
+					Model modelNode = repositoryService.getModel(modelId);
+
+					byte[] extra = repositoryService.getModelEditorSourceExtra(modelId);
+					ByteArrayInputStream extraSteam = new ByteArrayInputStream(extra);
+
+					JsonNode jsonNode = new ObjectMapper().readTree(repositoryService.getModelEditorSource(modelId));
+					BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(jsonNode);
+
+					String processName = modelNode.getName() + ".bpmn20.xml";
+					String pngName = modelNode.getName() + ".png";
+
+					repositoryService.createDeployment().name(modelNode.getName()).tenantId(user.getTenantId())
+							.addInputStream(pngName, extraSteam).addBpmnModel(processName, bpmnModel).deploy();
+				} catch (Exception ex) {
+					ps.setException(ex);
+				}
+			}
+		});
+	}
+
+	/**
+	 * 
+	 * @param response
+	 * @param id
+	 * @param status
+	 *            状态：0 设计；1 发布；2 挂起；
+	 * @param resType
+	 *            资源类型：1 流程；2 图型;
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/bpm/proc/res")
+	@ResponseBody
+	public void viewProcess(HttpServletResponse response, String id, @RequestParam("s") Integer status,
+			@RequestParam("t") Integer resType) throws IOException {
+		try {
+			LoginUser user = this.getLoginUser();
+			if (status == 1 || status == 2) {
+
+				ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+						.processDefinitionTenantId(user.getTenantId()).processDefinitionId(id).singleResult();
+				String resName = pd.getResourceName();
+				if (resType == 2) {
+					resName = pd.getDiagramResourceName();
+				}
+				InputStream stream = repositoryService.getResourceAsStream(pd.getDeploymentId(), resName);
+
+				byte[] buffer = new byte[4096];
+				int bytesRead = -1;
+				while ((bytesRead = stream.read(buffer)) != -1) {
+					response.getOutputStream().write(buffer, 0, bytesRead);
+				}
+			} else if (status == 0) {
+
+				Model model = repositoryService.getModel(id);
+				byte[] buffer = null;
+				if (model.hasEditorSource() && resType == 1) {
+					JsonNode jsonNode = new ObjectMapper().readTree(repositoryService.getModelEditorSource(id));
+					BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(jsonNode);
+					BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
+					buffer = bpmnXMLConverter.convertToXML(bpmnModel);
+				} else if (model.hasEditorSourceExtra() && resType == 2) {
+					buffer = repositoryService.getModelEditorSourceExtra(id);
+				}
+				if (buffer != null) {
+					response.getOutputStream().write(buffer);
+				}
+			}
+		} catch (Exception ex) {
+			logger.error("显示资源内容时发生异常。", ex);
 		}
 	}
 

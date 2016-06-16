@@ -9,6 +9,8 @@
   	<property name="databaseSchemaUpdate" value="true" />
   	<property name="jobExecutorActivate" value="true" />
     <property name="enableDatabaseEventLogging" value="true" />
+    <property name="activityFontName" value="宋体" />
+    <property name="labelFontName" value="宋体" />
     <property name="customFormTypes">
       <list>
       	<bean class="org.kayura.activiti.form.DateTimeFormType" />
