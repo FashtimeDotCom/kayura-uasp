@@ -248,23 +248,19 @@ public class BpmController extends ActivitiController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				try {
-					PageParams pp = ui.getPageParams(req);
+				PageParams pp = ui.getPageParams(req);
+				TaskQuery taskQuery = taskService.createTaskQuery().taskTenantId(user.getTenantId())
+						.taskCandidateOrAssigned(user.getUsername());
 
-					TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(user.getUsername())
-							.taskNameLike("%" + keyword + "%");
-
-					long count = taskQuery.count();
-					List<Task> list = taskQuery.listPage(pp.getOffset(), pp.getLimit());
-
-					PageList<TaskVo> pageList = new PageList<TaskVo>(TaskVo.fromTasks(list), new Paginator(count));
-					ps.setData(ui.putData(pageList));
-
-				} catch (Exception ex) {
-					
-					logger.error(ex);
-					ps.setException(ex);
+				if (StringUtils.isNotEmpty(keyword)) {
+					taskQuery.taskNameLike("%" + keyword + "%");
 				}
+
+				long count = taskQuery.count();
+				List<Task> list = taskQuery.listPage(pp.getOffset(), pp.getLimit());
+
+				PageList<TaskVo> pageList = new PageList<TaskVo>(TaskVo.fromTasks(list), new Paginator(count));
+				ps.setData(ui.putData(pageList));
 			}
 		});
 	}
