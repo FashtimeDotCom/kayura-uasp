@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper userMapper;
 	
+	@SuppressWarnings("unused")
 	@Autowired
 	private OrganizeMapper organizeMapper;
 

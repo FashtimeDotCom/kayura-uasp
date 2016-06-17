@@ -240,7 +240,7 @@ public class BpmController extends ActivitiController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/task/find", method = RequestMethod.POST)
+	@RequestMapping(value = "/bpm/task/find", method = RequestMethod.POST)
 	public void findTaskList(Map<String, Object> map, HttpServletRequest req, String keyword) {
 
 		LoginUser user = this.getLoginUser();
@@ -248,16 +248,23 @@ public class BpmController extends ActivitiController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				PageParams pp = ui.getPageParams(req);
+				try {
+					PageParams pp = ui.getPageParams(req);
 
-				TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(user.getUsername())
-						.taskNameLike("%" + keyword + "%");
+					TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(user.getUsername())
+							.taskNameLike("%" + keyword + "%");
 
-				long count = taskQuery.count();
-				List<Task> list = taskQuery.listPage(pp.getOffset(), pp.getLimit());
+					long count = taskQuery.count();
+					List<Task> list = taskQuery.listPage(pp.getOffset(), pp.getLimit());
 
-				PageList<TaskVo> pageList = new PageList<TaskVo>(TaskVo.fromTasks(list), new Paginator(count));
-				ps.setData(ui.putData(pageList));
+					PageList<TaskVo> pageList = new PageList<TaskVo>(TaskVo.fromTasks(list), new Paginator(count));
+					ps.setData(ui.putData(pageList));
+
+				} catch (Exception ex) {
+					
+					logger.error(ex);
+					ps.setException(ex);
+				}
 			}
 		});
 	}
