@@ -535,7 +535,7 @@
 	</delete>
 	
 	<!-- Identity -->
-
+	
 	<resultMap type="org.kayura.uasp.po.Identity" id="identityResultMap">
 		<id property="identityId" column="Identity_Id" />
 		<result property="companyId" column="Company_Id" />
@@ -546,10 +546,51 @@
 		<result property="positionName" column="PositionName" />
 		<result property="employeeId" column="Employee_Id" />
 		<result property="employeeName" column="EmployeeName" />
+	</resultMap>
+
+	<resultMap type="org.kayura.uasp.po.Identity" id="identityFullResultMap" extends="identityResultMap">
 		<association property="employee" columnPrefix="Emp_" resultMap="employeeResultMap" />
 	</resultMap>
 	
 	<select id="findIdentities" parameterType="map" resultMap="identityResultMap">
+		SELECT
+			t.Identity_Id,
+			t.Employee_Id,
+			e.Name AS EmployeeName,
+			c.Company_Id,
+			c.FullName AS CompanyName,
+			t.Department_Id,
+			d.Name AS DepartmentName,
+			t.Position_Id,
+			p.Name AS PositionName
+		FROM uasp_identities AS t
+			INNER JOIN uasp_departments AS d ON t.Department_Id = d.Department_Id
+			LEFT JOIN uasp_positions AS p ON t.Position_Id = p.Position_Id
+			INNER JOIN uasp_employees AS e ON t.Employee_Id = e.Employee_Id
+			INNER JOIN uasp_companies AS c ON d.Company_Id = c.Company_Id
+		<where>
+			<if test="identityId != null">
+				AND ( t.Identity_Id = #{identityId} )
+			</if>
+			<if test="employeeId != null">
+				AND ( t.Employee_Id = #{employeeId} )
+			</if>
+			<if test="userId != null">
+				AND ( e.User_Id = #{userId} )
+			</if>
+			<if test="departmentId != null">
+				AND ( t.Department_Id = #{departmentId} )
+			</if>
+			<if test="positionId != null">
+				AND ( t.Position_Id = #{positionId} )
+			</if>
+			<if test="companyId != null">
+				AND ( c.Company_Id = #{companyId} )
+			</if>
+		</where>
+	</select>
+	
+	<select id="getIdentityById" parameterType="string" resultMap="identityFullResultMap">
 		SELECT
 			t.Identity_Id,
 			t.Employee_Id,
@@ -576,23 +617,7 @@
 			LEFT JOIN uasp_positions AS p ON t.Position_Id = p.Position_Id
 			INNER JOIN uasp_employees AS e ON t.Employee_Id = e.Employee_Id
 			INNER JOIN uasp_companies AS c ON d.Company_Id = c.Company_Id
-		<where>
-			<if test="identityId != null">
-				AND ( t.Identity_Id = #{identityId} )
-			</if>
-			<if test="employeeId != null">
-				AND ( t.Employee_Id = #{employeeId} )
-			</if>
-			<if test="departmentId != null">
-				AND ( t.Department_Id = #{departmentId} )
-			</if>
-			<if test="positionId != null">
-				AND ( t.Position_Id = #{positionId} )
-			</if>
-			<if test="companyId != null">
-				AND ( c.Company_Id = #{companyId} )
-			</if>
-		</where>
+		WHERE ( t.Identity_Id = #{value} )			
 	</select>
 	
 	<insert id="insertIdentity" parameterType="org.kayura.uasp.po.Identity">

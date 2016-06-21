@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.kayura.core.PostAction;
+import org.kayura.core.PostResult;
+import org.kayura.security.LoginUser;
+import org.kayura.uasp.po.Identity;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.controllers.BaseController;
 import org.kayura.web.util.VerifyCodeUtils;
@@ -43,9 +47,34 @@ public class HomeController extends BaseController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, Map<String, Object> model) throws Exception {
 
+		LoginUser user = this.getLoginUser();
+		Identity identity = (Identity) user.getAliveIdentity();
+
 		model.put("numUsers", sessionRegistry.getAllPrincipals().size());
-		model.put("loginName", this.getLoginUser().getDisplayName());
+		model.put("loginName", user.getDisplayName());
+		model.put("identityId", identity.getIdentityId());
+		model.put("identityName", identity.getDisplayName());
+		model.put("identities", user.getIdentities());
+
 		return view("views/home/index", model);
+	}
+
+	@RequestMapping(value = "/identity/set", method = RequestMethod.POST)
+	public void switchIdentity(Map<String, Object> map, @RequestParam("i") String identityId) {
+
+		LoginUser user = this.getLoginUser();
+
+		this.postExecute(map, new PostAction() {
+			@Override
+			public void invoke(PostResult ps) {
+
+				if (user.getIdentities().containsKey(identityId)) {
+					user.setIdentityId(identityId);
+				} else {
+					ps.setError("切换的身份ID不存在。");
+				}
+			}
+		});
 	}
 
 	@RequestMapping(value = "/info", method = RequestMethod.GET)

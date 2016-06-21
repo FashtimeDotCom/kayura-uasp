@@ -51,7 +51,10 @@ public class LoginUser extends User {
 	}
 
 	public void setIdentityId(String identityId) {
-		this.identityId = identityId;
+		
+		if (this.identities.containsKey(identityId)) {
+			this.identityId = identityId;
+		}
 	}
 
 	public String getTenantId() {
@@ -76,14 +79,6 @@ public class LoginUser extends User {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
-	}
-
-	public Object getIdentity() {
-		return getIdentities().get(this.identityId);
-	}
-
-	public Object getIdentity(String identityId) {
-		return getIdentities().get(identityId);
 	}
 
 	public boolean hasAnyRole(String... roles) {
@@ -135,6 +130,10 @@ public class LoginUser extends User {
 			}
 		}
 		return false;
+	}
+
+	public Object getAliveIdentity() {
+		return this.identities.get(this.identityId);
 	}
 
 	public Map<String, Object> getIdentities() {

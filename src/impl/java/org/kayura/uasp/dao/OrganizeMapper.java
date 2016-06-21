@@ -95,6 +95,8 @@ public interface OrganizeMapper extends BaseDao {
 	 * @return
 	 */
 	List<Identity> findIdentities(Map<String, Object> args);
+	
+	Identity getIdentityById(String identityId);
 
 	void insertIdentity(Identity identity);
 

@@ -33,8 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserMapper userMapper;
-	
-	@SuppressWarnings("unused")
+
 	@Autowired
 	private OrganizeMapper organizeMapper;
 
@@ -188,6 +187,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<Identity> loadIdentities(String userId) {
 
-		return null;
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("userId", userId);
+		List<Identity> list = organizeMapper.findIdentities(args);
+		return list;
 	}
 }

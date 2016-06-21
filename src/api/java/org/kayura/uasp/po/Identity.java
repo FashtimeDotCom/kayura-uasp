@@ -25,6 +25,15 @@ public class Identity {
 
 	private Employee employee;
 
+	public String getDisplayName() {
+
+		String displayName = this.departmentName;
+		if (StringUtils.isNotEmpty(this.positionName)) {
+			displayName = displayName + ">" + this.positionName;
+		}
+		return displayName;
+	}
+
 	public String getIdentityId() {
 		return StringUtils.isEmpty(identityId) ? null : this.identityId;
 	}

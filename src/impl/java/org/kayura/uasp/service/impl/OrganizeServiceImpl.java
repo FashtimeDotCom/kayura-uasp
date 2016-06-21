@@ -280,16 +280,14 @@ public class OrganizeServiceImpl implements OrganizeService {
 	public Result<Identity> getIdentityById(String identityId) {
 
 		Result<Identity> r = new Result<Identity>();
-		Map<String, Object> args = new HashMap<String, Object>();
-		args.put("identityId", identityId);
-
-		List<Identity> list = organizMapper.findIdentities(args);
-		if (list.isEmpty()) {
+		
+		Identity entity = organizMapper.getIdentityById(identityId);
+		if (entity != null) {
 			r.setCode(Result.ERROR);
 			r.setMessage("不存在ID为:" + identityId + "的身份记录.");
 		} else {
 			r.setCode(Result.SUCCEED);
-			r.setData(list.get(0));
+			r.setData(entity);
 		}
 
 		return r;

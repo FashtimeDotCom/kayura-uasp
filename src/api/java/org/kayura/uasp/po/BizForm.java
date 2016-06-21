@@ -86,7 +86,7 @@ public class BizForm implements Serializable {
 
 	public String getTypeName() {
 
-		return (type == 0 ? "业务表单" : (type == 1 ? "自定义表单" : (type == 2 ? "自动表单" : "未知")));
+		return (type == 0 ? "业务表单" : (type == 1 ? "定制表单" : (type == 2 ? "自动表单" : "未知")));
 	}
 
 	public void setType(Integer type) {

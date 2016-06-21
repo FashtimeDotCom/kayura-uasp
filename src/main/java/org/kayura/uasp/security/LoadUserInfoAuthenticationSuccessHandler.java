@@ -26,7 +26,6 @@ public class LoadUserInfoAuthenticationSuccessHandler extends SimpleUrlAuthentic
 	protected final Log logger = LogFactory.getLog(this.getClass());
 
 	private RequestCache requestCache = new HttpSessionRequestCache();
-
 	private UserService userService;
 
 	public void setUserService(UserService userService) {
@@ -42,9 +41,7 @@ public class LoadUserInfoAuthenticationSuccessHandler extends SimpleUrlAuthentic
 
 		// 加载权限
 		List<String> privileges = userService.loadPrivileges(user.getUserId());
-		if (privileges != null) {
-			user.setPrivileges(privileges);
-		}
+		user.setPrivileges(privileges);
 
 		// 加载身份
 		List<Identity> identityList = userService.loadIdentities(user.getUserId());
@@ -54,20 +51,19 @@ public class LoadUserInfoAuthenticationSuccessHandler extends SimpleUrlAuthentic
 				identityMap.put(i.getIdentityId(), i);
 			}
 			user.setIdentities(identityMap);
+			user.setIdentityId(identityList.get(0).getIdentityId());
 		}
 
-		// 跳回目标地址.
 		if (savedRequest == null) {
 			super.onAuthenticationSuccess(request, response, authentication);
-
 			return;
 		}
+		
 		String targetUrlParameter = getTargetUrlParameter();
 		if (isAlwaysUseDefaultTargetUrl()
 				|| (targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter)))) {
 			requestCache.removeRequest(request, response);
 			super.onAuthenticationSuccess(request, response, authentication);
-
 			return;
 		}
 

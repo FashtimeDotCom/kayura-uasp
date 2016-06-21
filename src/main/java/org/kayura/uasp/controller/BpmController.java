@@ -250,7 +250,7 @@ public class BpmController extends ActivitiController {
 
 				PageParams pp = ui.getPageParams(req);
 				TaskQuery taskQuery = taskService.createTaskQuery().taskTenantId(user.getTenantId())
-						.taskCandidateOrAssigned(user.getUsername());
+						.taskCandidateOrAssigned(user.getIdentityId());
 
 				if (StringUtils.isNotEmpty(keyword)) {
 					taskQuery.taskNameLike("%" + keyword + "%");
@@ -272,7 +272,7 @@ public class BpmController extends ActivitiController {
 		postExecute(map, new PostAction() {
 			@Override
 			public void invoke(PostResult ps) {
-				taskService.claim(id, user.getUsername());
+				taskService.claim(id, user.getIdentityId());
 			}
 		});
 	}
@@ -310,7 +310,7 @@ public class BpmController extends ActivitiController {
 					}
 				}
 
-				identityService.setAuthenticatedUserId(user.getUsername());
+				identityService.setAuthenticatedUserId(user.getIdentityId());
 				formService.submitTaskFormData(id, formValues);
 			}
 		});
@@ -404,7 +404,8 @@ public class BpmController extends ActivitiController {
 	}
 
 	@RequestMapping(value = "/bpm/proc/remove", method = RequestMethod.POST)
-	public void deleteProcess(Map<String, Object> map, HttpServletRequest req, String ids) {
+	public void deleteProcess(Map<String, Object> map, HttpServletRequest req,
+			@RequestParam("t") Integer type, String ids) {
 
 		postExecute(map, new PostAction() {
 			@Override
@@ -412,7 +413,11 @@ public class BpmController extends ActivitiController {
 
 				String[] idList = ids.split(",");
 				for (String id : idList) {
-					repositoryService.deleteModel(id);
+					if (type == 0) {
+						repositoryService.deleteModel(id);
+					} else {
+						repositoryService.deleteDeployment(id, true);
+					}
 				}
 			}
 		});
@@ -674,7 +679,7 @@ public class BpmController extends ActivitiController {
 					}
 				}
 
-				identityService.setAuthenticatedUserId(user.getUsername());
+				identityService.setAuthenticatedUserId(user.getIdentityId());
 				formService.submitStartFormData(processDefinitionId, formValues);
 			}
 		});
