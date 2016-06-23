@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
+import org.kayura.uasp.Urls;
 import org.kayura.uasp.po.Identity;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.controllers.BaseController;
@@ -44,22 +45,27 @@ public class HomeController extends BaseController {
 	@Autowired
 	private SessionRegistry sessionRegistry;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = Urls.HOME, method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, Map<String, Object> model) throws Exception {
 
 		LoginUser user = this.getLoginUser();
-		Identity identity = (Identity) user.getAliveIdentity();
 
 		model.put("numUsers", sessionRegistry.getAllPrincipals().size());
 		model.put("loginName", user.getDisplayName());
-		model.put("identityId", identity.getIdentityId());
-		model.put("identityName", identity.getDisplayName());
-		model.put("identities", user.getIdentities());
+
+		if (user.getIdentities().size() > 0) {
+			Identity identity = (Identity) user.getAliveIdentity();
+			model.put("identityId", identity.getIdentityId());
+			model.put("identityName", identity.getDisplayName());
+			model.put("identities", user.getIdentities());
+		} else {
+			model.put("identityName", "无");
+		}
 
 		return view("views/home/index", model);
 	}
 
-	@RequestMapping(value = "/identity/set", method = RequestMethod.POST)
+	@RequestMapping(value = Urls.SETID, method = RequestMethod.POST)
 	public void switchIdentity(Map<String, Object> map, @RequestParam("i") String identityId) {
 
 		LoginUser user = this.getLoginUser();
@@ -77,14 +83,8 @@ public class HomeController extends BaseController {
 		});
 	}
 
-	@RequestMapping(value = "/info", method = RequestMethod.GET)
-	public String info() {
-
-		return "views/home/info";
-	}
-
-	@RequestMapping(value = "/res/vc", method = RequestMethod.GET)
-	public void AuthImage(HttpServletRequest req, HttpServletResponse res) throws IOException {
+	@RequestMapping(value = Urls.VERIFY_CODE, method = RequestMethod.GET)
+	public void authImage(HttpServletRequest req, HttpServletResponse res) throws IOException {
 
 		res.setHeader("Pragma", "No-cache");
 		res.setHeader("Cache-Control", "no-cache");
@@ -103,7 +103,7 @@ public class HomeController extends BaseController {
 		VerifyCodeUtils.outputImage(w, h, res.getOutputStream(), verifyCode);
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = Urls.LOGIN, method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "t", required = false) String type,
 			@RequestParam(value = "pin", required = false) String tenantId, HttpServletRequest req) {
 
@@ -166,7 +166,7 @@ public class HomeController extends BaseController {
 		return lastActivityDates;
 	}
 
-	@RequestMapping(value = "/portal", method = RequestMethod.GET)
+	@RequestMapping(value = Urls.PORTAL, method = RequestMethod.GET)
 	public String portal() {
 
 		return "views/home/portal";

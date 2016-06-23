@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kayura.utils.KeyUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -47,11 +48,11 @@ public class LoginUser extends User {
 	}
 
 	public String getIdentityId() {
-		return identityId;
+		return identityId != null ? identityId : KeyUtils.newId();
 	}
 
 	public void setIdentityId(String identityId) {
-		
+
 		if (this.identities.containsKey(identityId)) {
 			this.identityId = identityId;
 		}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/java">
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
@@ -26,7 +26,7 @@
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/kayura-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kayura-tags"/>
-	<classpathentry kind="src" path="src/test/java">
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>

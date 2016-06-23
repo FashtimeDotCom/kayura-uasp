@@ -509,6 +509,38 @@ public class OrgController extends BaseController {
 		});
 	}
 
+	@RequestMapping(value = "/org/identity/import", method = RequestMethod.POST)
+	public void importIdentityForEmployee(Map<String, Object> map, 
+			@RequestParam("pid") String parentId,
+			@RequestParam("t") Integer type, 
+			@RequestParam("empid") String employeeId) {
+
+		postExecute(map, new PostAction() {
+
+			@Override
+			public void invoke(PostResult ps) {
+
+				Identity identity = new Identity();
+				identity.setIdentityId(KeyUtils.newId());
+				identity.setEmployeeId(employeeId);
+				
+				if (type == OrganizeItem.ORGTYPE_POSITION) {
+					Result<Position> rp = readerOrganizeService.getPositionById(parentId);
+					if (rp.isSucceed()) {
+						Position position = rp.getData();
+						identity.setPositionId(position.getPositionId());
+						identity.setDepartmentId(position.getDepartmentId());
+					}
+				} else if (type == OrganizeItem.ORGTYPE_DEPART) {
+					identity.setDepartmentId(parentId);
+				}
+				
+				GeneralResult r = writerOrganizeService.insertIdentity(identity);
+				ps.setResult(r);
+			}
+		});
+	}
+
 	@RequestMapping(value = "/org/employee/list", method = RequestMethod.GET)
 	public ModelAndView employeeList() {
 
@@ -579,5 +611,12 @@ public class OrgController extends BaseController {
 				}
 			}
 		});
+	}
+
+	@RequestMapping(value = "/org/employee/select", method = RequestMethod.GET)
+	public ModelAndView selectEmployee() {
+
+		ModelAndView mv = view("views/org/select_employee");
+		return mv;
 	}
 }

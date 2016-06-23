@@ -1,6 +1,7 @@
 package org.kayura.uasp.security;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kayura.security.LoginUser;
 import org.kayura.uasp.po.Identity;
 import org.kayura.uasp.service.UserService;
+import org.kayura.utils.KeyUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -45,20 +47,28 @@ public class LoadUserInfoAuthenticationSuccessHandler extends SimpleUrlAuthentic
 
 		// 加载身份
 		List<Identity> identityList = userService.loadIdentities(user.getUserId());
-		if (identityList != null) {
-			Map<String, Object> identityMap = new HashMap<String, Object>();
-			for (Identity i : identityList) {
-				identityMap.put(i.getIdentityId(), i);
-			}
-			user.setIdentities(identityMap);
-			user.setIdentityId(identityList.get(0).getIdentityId());
+		if (identityList != null && identityList.size() == 0) {
+			
+			Identity anonymousId = new Identity();
+			anonymousId.setIdentityId(KeyUtils.newId());
+			anonymousId.setDepartmentName("无所属部门");
+			
+			identityList = new ArrayList<Identity>();
+			identityList.add(anonymousId);
 		}
+
+		Map<String, Object> identityMap = new HashMap<String, Object>();
+		for (Identity i : identityList) {
+			identityMap.put(i.getIdentityId(), i);
+		}
+		user.setIdentities(identityMap);
+		user.setIdentityId(identityList.get(0).getIdentityId());
 
 		if (savedRequest == null) {
 			super.onAuthenticationSuccess(request, response, authentication);
 			return;
 		}
-		
+
 		String targetUrlParameter = getTargetUrlParameter();
 		if (isAlwaysUseDefaultTargetUrl()
 				|| (targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter)))) {
