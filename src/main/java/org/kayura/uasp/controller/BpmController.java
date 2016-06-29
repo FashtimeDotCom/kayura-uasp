@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,10 @@ import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.identity.Group;
+import org.activiti.engine.identity.GroupQuery;
+import org.activiti.engine.identity.User;
+import org.activiti.engine.identity.UserQuery;
 import org.activiti.engine.repository.DeploymentBuilder;
 import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ModelQuery;
@@ -37,6 +42,9 @@ import org.activiti.engine.task.TaskQuery;
 import org.activiti.explorer.util.XmlUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.kayura.activiti.expression.AssignmenteExpr;
+import org.kayura.activiti.service.ActivitiService;
+import org.kayura.activiti.vo.AssignItemVo;
 import org.kayura.activiti.vo.BpmModelVo;
 import org.kayura.activiti.vo.TaskVo;
 import org.kayura.core.PostAction;
@@ -79,6 +87,12 @@ public class BpmController extends ActivitiController {
 
 	@Autowired
 	private BpmService writerBpmService;
+
+	@Autowired
+	private ActivitiService activitiService;
+
+	@Autowired
+	private AssignmenteExpr assignmenteExpr;
 
 	@RequestMapping(value = "/modeler", method = RequestMethod.GET)
 	public ModelAndView modeler() {
@@ -404,8 +418,8 @@ public class BpmController extends ActivitiController {
 	}
 
 	@RequestMapping(value = "/bpm/proc/remove", method = RequestMethod.POST)
-	public void deleteProcess(Map<String, Object> map, HttpServletRequest req,
-			@RequestParam("t") Integer type, String ids) {
+	public void deleteProcess(Map<String, Object> map, HttpServletRequest req, @RequestParam("t") Integer type,
+			String ids) {
 
 		postExecute(map, new PostAction() {
 			@Override
@@ -684,4 +698,127 @@ public class BpmController extends ActivitiController {
 			}
 		});
 	}
+
+	/**
+	 * @param types
+	 *            D 部门, P 岗位, G 群组, R 角色, T 表达式分类, E 表达式。使用 , 分隔.
+	 * @param keyword
+	 *            过滤名称关键字.
+	 */
+	@RequestMapping(value = "/bpm/group/find", method = RequestMethod.GET)
+	public void findGroups(Map<String, Object> map, HttpServletRequest req, String type, String keyword) {
+
+		postExecute(map, new PostAction() {
+			@Override
+			public void invoke(PostResult ps) {
+
+				List<AssignItemVo> voItems = new ArrayList<AssignItemVo>();
+
+				if (type.equals("T")) {
+
+					voItems.add(new AssignItemVo("EXPRESSION", "内部表达式", "T"));
+				} else if (type.equals("E")) {
+
+					HashMap<String, String> exprs = assignmenteExpr.getItems();
+					for (String key : exprs.keySet()) {
+						AssignItemVo assign = new AssignItemVo();
+						assign.setValue("${" + key + "}");
+						assign.setName(exprs.get(key) + "（" + assign.getValue() + "）");
+						assign.setType("T");
+						voItems.add(assign);
+					}
+				} else {
+					GroupQuery query = identityService.createGroupQuery().groupType(type);
+					if (StringUtils.isNotEmpty(keyword)) {
+						query.groupNameLike("%" + keyword + "%");
+					}
+					List<Group> list = query.list();
+					voItems = convertAssignGroup(list);
+				}
+				ps.setData(voItems);
+			}
+		});
+	}
+
+	@RequestMapping(value = "/bpm/user/find", method = RequestMethod.GET)
+	public void findUsers(Map<String, Object> map, HttpServletRequest req, String gid, String keyword) {
+
+		postExecute(map, new PostAction() {
+			@Override
+			public void invoke(PostResult ps) {
+
+				List<AssignItemVo> voItems;
+
+				if (gid.equals("EXPRESSION")) {
+					voItems = new ArrayList<AssignItemVo>();
+					HashMap<String, String> exprs = assignmenteExpr.getItems();
+					for (String key : exprs.keySet()) {
+						AssignItemVo assign = new AssignItemVo();
+						assign.setValue("${" + key + "}");
+						assign.setName(exprs.get(key) + "（" + assign.getValue() + "）");
+						assign.setType("T");
+						voItems.add(assign);
+					}
+				} else {
+					UserQuery query = identityService.createUserQuery().memberOfGroup(gid);
+					if (StringUtils.isNotEmpty(keyword)) {
+						query.userFullNameLike("%" + keyword + "%");
+					}
+					List<User> list = query.list();
+					voItems = convertAssignUser(list);
+				}
+
+				ps.setData(voItems);
+			}
+		});
+	}
+
+	private List<AssignItemVo> convertAssignGroup(List<Group> list) {
+		List<AssignItemVo> items = new ArrayList<AssignItemVo>();
+		for (Group g : list) {
+			items.add(new AssignItemVo(g.getId(), g.getName(), g.getType()));
+		}
+		return items;
+	}
+
+	private List<AssignItemVo> convertAssignUser(List<User> list) {
+		List<AssignItemVo> items = new ArrayList<AssignItemVo>();
+		for (User u : list) {
+			items.add(new AssignItemVo(u.getId(), u.getLastName() + "（" + u.getFirstName() + "）", "U"));
+		}
+		return items;
+	}
+
+	/**
+	 * 用于返回指派候选者的显示名与类型.
+	 * 
+	 * @param ids
+	 *            指派者Id集,或为用户/群组/特殊表达式.
+	 * @param type
+	 *            U 用户; G 群组;
+	 */
+	@RequestMapping(value = "/bpm/assign/find", method = RequestMethod.GET)
+	public void findAssignItems(Map<String, Object> map, HttpServletRequest req, String ids,
+			@RequestParam("t") String type) {
+
+		postExecute(map, new PostAction() {
+			@Override
+			public void invoke(PostResult ps) {
+
+				List<String> idList = Arrays.asList(ids.split(","));
+
+				List<AssignItemVo> list;
+				if (type.equals("U")) {
+					list = activitiService.loadAssignUsersByIds(idList);
+				} else if (type.equals("G")) {
+					list = activitiService.loadAssignGroupsByIds(idList);
+				} else {
+					list = new ArrayList<AssignItemVo>();
+				}
+
+				ps.setData(list);
+			}
+		});
+	}
+
 }
