@@ -36,9 +36,10 @@ public class PostResult extends Result<Object> {
 		return exception;
 	}
 
-	public void setException(Exception exception) {
+	public void setException(Exception ex) {
 		this.setCode(ERROR);
-		this.exception = exception;
+		this.setMessage(ex.getMessage());
+		this.exception = ex;
 	}
 
 	public void setError(String message, Exception exception) {
