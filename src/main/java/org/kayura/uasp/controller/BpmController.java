@@ -23,7 +23,6 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.editor.language.json.converter.BpmnJsonConverter;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
@@ -42,7 +41,8 @@ import org.activiti.engine.task.TaskQuery;
 import org.activiti.explorer.util.XmlUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.kayura.activiti.expression.AssignmenteExpr;
+import org.kayura.activiti.editor.json.converter.BpmnJsonExConverter;
+import org.kayura.activiti.expression.AssignmenteExpression;
 import org.kayura.activiti.service.ActivitiService;
 import org.kayura.activiti.vo.AssignItemVo;
 import org.kayura.activiti.vo.BpmModelVo;
@@ -92,7 +92,7 @@ public class BpmController extends ActivitiController {
 	private ActivitiService activitiService;
 
 	@Autowired
-	private AssignmenteExpr assignmenteExpr;
+	private AssignmenteExpression assignmenteExpr;
 
 	@RequestMapping(value = "/modeler", method = RequestMethod.GET)
 	public ModelAndView modeler() {
@@ -481,7 +481,7 @@ public class BpmController extends ActivitiController {
 
 								repositoryService.saveModel(model);
 
-								ObjectNode editorNode = new BpmnJsonConverter().convertToJson(bpmnModel);
+								ObjectNode editorNode = new BpmnJsonExConverter().convertToJson(bpmnModel);
 
 								repositoryService.addModelEditorSource(model.getId(),
 										editorNode.toString().getBytes("utf-8"));
@@ -594,7 +594,7 @@ public class BpmController extends ActivitiController {
 					ByteArrayInputStream extraSteam = new ByteArrayInputStream(extra);
 
 					JsonNode jsonNode = new ObjectMapper().readTree(repositoryService.getModelEditorSource(modelId));
-					BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(jsonNode);
+					BpmnModel bpmnModel = new BpmnJsonExConverter().convertToBpmnModel(jsonNode);
 
 					String processName = modelNode.getName() + ".bpmn20.xml";
 					String pngName = modelNode.getName() + ".png";
@@ -645,7 +645,7 @@ public class BpmController extends ActivitiController {
 				byte[] buffer = null;
 				if (model.hasEditorSource() && resType == 1) {
 					JsonNode jsonNode = new ObjectMapper().readTree(repositoryService.getModelEditorSource(id));
-					BpmnModel bpmnModel = new BpmnJsonConverter().convertToBpmnModel(jsonNode);
+					BpmnModel bpmnModel = new BpmnJsonExConverter().convertToBpmnModel(jsonNode);
 					BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
 					buffer = bpmnXMLConverter.convertToXML(bpmnModel);
 				} else if (model.hasEditorSourceExtra() && resType == 2) {
