@@ -17,7 +17,7 @@ import org.kayura.example.po.Customer;
 import org.kayura.example.service.ExampleService;
 import org.kayura.example.vo.OrderVo;
 import org.kayura.tags.easyui.types.MenuItem;
-import org.kayura.tags.easyui.types.TreeNode;
+import org.kayura.tags.easyui.types.EuTreeNode;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
@@ -53,7 +53,7 @@ public class ExampleController extends BaseController {
 			@Override
 			public void invoke(PostResult r) {
 
-				List<TreeNode> data = makeTreeDate();
+				List<EuTreeNode> data = makeTreeDate();
 
 				r.setCode(Result.SUCCEED);
 				r.setData(data);
@@ -61,20 +61,20 @@ public class ExampleController extends BaseController {
 		});
 	}
 
-	private List<TreeNode> makeTreeDate() {
+	private List<EuTreeNode> makeTreeDate() {
 
-		List<TreeNode> nodes = new ArrayList<TreeNode>();
+		List<EuTreeNode> nodes = new ArrayList<EuTreeNode>();
 
 		for (int i = 0; i <= 5; i++) {
 
-			TreeNode n = new TreeNode();
+			EuTreeNode n = new EuTreeNode();
 			n.setId(KeyUtils.newId());
 			n.setText("节点" + i);
 			nodes.add(n);
 
 			for (int j = 0; j <= 5; j++) {
 
-				TreeNode k = new TreeNode();
+				EuTreeNode k = new EuTreeNode();
 				k.setId(KeyUtils.newId());
 				k.setText("节点" + j);
 
@@ -90,7 +90,7 @@ public class ExampleController extends BaseController {
 
 		ModelAndView mv = this.view("views/example/tags/tree");
 
-		List<TreeNode> data = makeTreeDate();
+		List<EuTreeNode> data = makeTreeDate();
 		mv.addObject("data", data);
 
 		Map<String, Object> query = new HashMap<String, Object>();

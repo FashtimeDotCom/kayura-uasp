@@ -52,7 +52,7 @@ import org.kayura.utils.KeyUtils;
 import org.kayura.utils.MapUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.controllers.BaseController;
-import org.kayura.tags.easyui.types.TreeNode;
+import org.kayura.tags.easyui.types.EuTreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
@@ -433,7 +433,7 @@ public class FileController extends BaseController {
 					type = t.toUpperCase();
 				}
 
-				List<TreeNode> rootNode = new ArrayList<TreeNode>();
+				List<EuTreeNode> rootNode = new ArrayList<EuTreeNode>();
 
 				if (!StringUtils.isEmpty(id)) {
 
@@ -445,10 +445,10 @@ public class FileController extends BaseController {
 							List<FileFolder> childFolders = r.getData();
 							for (FileFolder f : childFolders) {
 
-								TreeNode n = new TreeNode();
+								EuTreeNode n = new EuTreeNode();
 								n.setId(f.getFolderId());
 								n.setText(f.getName());
-								n.setState(TreeNode.STATE_OPEN);
+								n.setState(EuTreeNode.STATE_OPEN);
 								n.setIconCls("icon-folder");
 								rootNode.add(n);
 							}
@@ -469,7 +469,7 @@ public class FileController extends BaseController {
 						if (FOLDERTYPE_MANAGE.equals(type) && (user.hasRoot() || !sysFolders.isEmpty())
 								|| (FOLDERTYPE_SELECT.equals(type) && user.hasRoot())) {
 
-							TreeNode sysNode = new TreeNode();
+							EuTreeNode sysNode = new EuTreeNode();
 							sysNode.setId(FileFolder.SYSFOLDER);
 							sysNode.setText("系统文件夹");
 							sysNode.setIconCls("icon-book");
@@ -477,10 +477,10 @@ public class FileController extends BaseController {
 
 							for (FileFolder f : sysFolders) {
 
-								TreeNode n = new TreeNode();
+								EuTreeNode n = new EuTreeNode();
 								n.setId(f.getFolderId());
 								n.setText(f.getName());
-								n.setState(TreeNode.STATE_OPEN);
+								n.setState(EuTreeNode.STATE_OPEN);
 								n.setIconCls("icon-folder");
 								sysNode.addNode(n);
 
@@ -488,7 +488,7 @@ public class FileController extends BaseController {
 							}
 
 							if (user.hasRoot()) {
-								TreeNode nc = new TreeNode();
+								EuTreeNode nc = new EuTreeNode();
 								nc.setId(FileFolder.NOTCLASSIFIED);
 								nc.setText("未归类");
 								nc.setIconCls("icon-folder");
@@ -504,7 +504,7 @@ public class FileController extends BaseController {
 											&& c.getGroupId() == null && c.getParentId() == null)
 									.collect(Collectors.toList());
 
-							TreeNode myNode = new TreeNode();
+							EuTreeNode myNode = new EuTreeNode();
 							myNode.setId(FileFolder.MYFOLDER);
 							myNode.setText("我的文件夹");
 							myNode.setIconCls("icon-book");
@@ -512,17 +512,17 @@ public class FileController extends BaseController {
 
 							for (FileFolder f : myFolders) {
 
-								TreeNode n = new TreeNode();
+								EuTreeNode n = new EuTreeNode();
 								n.setId(f.getFolderId());
 								n.setText(f.getName());
 								n.setIconCls("icon-folder");
-								n.setState(TreeNode.STATE_OPEN);
+								n.setState(EuTreeNode.STATE_OPEN);
 								myNode.addNode(n);
 
 								appendChildFolders(n, folders);
 							}
 
-							TreeNode nc = new TreeNode();
+							EuTreeNode nc = new EuTreeNode();
 							nc.setId(FileFolder.NOTCLASSIFIED);
 							nc.setText("未归类");
 							nc.setIconCls("icon-folder");
@@ -535,7 +535,7 @@ public class FileController extends BaseController {
 
 							if (!groups.isEmpty()) {
 
-								TreeNode groupNode = new TreeNode();
+								EuTreeNode groupNode = new EuTreeNode();
 								groupNode.setId(FileFolder.MYGROUP);
 								groupNode.setText("我的群组");
 								groupNode.setIconCls("icon-book");
@@ -546,7 +546,7 @@ public class FileController extends BaseController {
 									String gid = g.split("#")[0];
 									String gname = g.split("#")[1];
 
-									TreeNode gn = new TreeNode();
+									EuTreeNode gn = new EuTreeNode();
 									gn.setId(FileFolder.GROUPITEM + NODEID_SPLIT + gid);
 									gn.setText(gname);
 									gn.setIconCls("icon-group");
@@ -558,10 +558,10 @@ public class FileController extends BaseController {
 
 									for (FileFolder f : myGroups) {
 
-										TreeNode n = new TreeNode();
+										EuTreeNode n = new EuTreeNode();
 										n.setId(f.getFolderId());
 										n.setText(f.getName());
-										n.setState(TreeNode.STATE_OPEN);
+										n.setState(EuTreeNode.STATE_OPEN);
 										n.setIconCls("icon-folder");
 										gn.addNode(n);
 
@@ -579,7 +579,7 @@ public class FileController extends BaseController {
 									return m.getSharerId() + "#" + m.getSharerName();
 								}).distinct().collect(Collectors.toList());
 
-								TreeNode shareNode = new TreeNode();
+								EuTreeNode shareNode = new EuTreeNode();
 								shareNode.setId(FileFolder.MYSHARE);
 								shareNode.setText("同事的分享");
 								shareNode.setIconCls("icon-book");
@@ -590,7 +590,7 @@ public class FileController extends BaseController {
 									String sharerId = s.split("#")[0];
 									String sharerName = s.split("#")[1];
 
-									TreeNode gn = new TreeNode();
+									EuTreeNode gn = new EuTreeNode();
 									gn.setId(FileFolder.SHARER + NODEID_SPLIT + sharerId);
 									gn.setText(sharerName);
 									gn.setIconCls("icon-user");
@@ -600,10 +600,10 @@ public class FileController extends BaseController {
 											.filter(c -> c.getSharerId().equals(sharerId)).collect(Collectors.toList());
 									for (FileShare f : sharelist) {
 
-										TreeNode n = new TreeNode();
+										EuTreeNode n = new EuTreeNode();
 										n.setId(f.getFolderId());
 										n.setText(f.getFolderName());
-										n.setState(TreeNode.STATE_OPEN);
+										n.setState(EuTreeNode.STATE_OPEN);
 										n.setIconCls("icon-folder");
 										gn.addNode(n);
 									}
@@ -620,7 +620,7 @@ public class FileController extends BaseController {
 
 	}
 
-	void appendChildFolders(TreeNode node, List<FileFolder> folders) {
+	void appendChildFolders(EuTreeNode node, List<FileFolder> folders) {
 
 		List<FileFolder> childs = folders.stream()
 				.filter(c -> c.getParentId() != null && c.getParentId().equals(node.getId()))
@@ -629,10 +629,10 @@ public class FileController extends BaseController {
 
 			for (FileFolder f : childs) {
 
-				TreeNode n = new TreeNode();
+				EuTreeNode n = new EuTreeNode();
 				n.setId(f.getFolderId());
 				n.setText(f.getName());
-				n.setState(TreeNode.STATE_OPEN);
+				n.setState(EuTreeNode.STATE_OPEN);
 				n.setIconCls("icon-folder");
 				node.addNode(n);
 

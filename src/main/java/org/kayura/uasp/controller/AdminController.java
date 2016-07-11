@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
-import org.kayura.tags.easyui.types.TreeNode;
+import org.kayura.tags.easyui.types.EuTreeNode;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
@@ -173,7 +173,7 @@ public class AdminController extends BaseController {
 			@Override
 			public void invoke(PostResult ps) {
 
-				List<TreeNode> nodes = new ArrayList<TreeNode>();
+				List<EuTreeNode> nodes = new ArrayList<EuTreeNode>();
 
 				Result<List<DictDefine>> r = readerDictService.loadDictDefinces();
 				if (r.isSucceed()) {
@@ -182,13 +182,13 @@ public class AdminController extends BaseController {
 					List<String> categories = list.stream().map(c -> c.getCatetory()).distinct()
 							.collect(Collectors.toList());
 
-					TreeNode root = new TreeNode();
+					EuTreeNode root = new EuTreeNode();
 					root.setId("ROOT");
 					root.setText("数据词典");
 
 					for (String c : categories) {
 
-						TreeNode n = new TreeNode();
+						EuTreeNode n = new EuTreeNode();
 						n.setId("CATEGORY");
 						n.setText(c);
 
@@ -197,7 +197,7 @@ public class AdminController extends BaseController {
 
 						for (DictDefine l : l2) {
 
-							TreeNode d = new TreeNode();
+							EuTreeNode d = new EuTreeNode();
 							d.setId(l.getId());
 							d.setText(l.getName());
 

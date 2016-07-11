@@ -31,7 +31,7 @@ import org.kayura.uasp.service.OrganizeService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
 import org.kayura.web.controllers.BaseController;
-import org.kayura.tags.easyui.types.TreeNode;
+import org.kayura.tags.easyui.types.EuTreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -94,7 +94,7 @@ public class OrgController extends BaseController {
 					parentId = null;
 				}
 
-				List<TreeNode> roots = new ArrayList<TreeNode>();
+				List<EuTreeNode> roots = new ArrayList<EuTreeNode>();
 
 				Result<List<OrganizeItem>> r = readerOrganizeService.findOrgTree(user.getTenantId(), parentId);
 				if (r.isSucceed()) {
@@ -102,10 +102,10 @@ public class OrgController extends BaseController {
 					List<OrganizeItem> items = r.getData();
 					if (StringUtils.isEmpty(id) || NULL.equals(id)) {
 
-						TreeNode root = new TreeNode();
+						EuTreeNode root = new EuTreeNode();
 						root.setId("ROOT");
 						root.setText("所有组织机构");
-						root.setState(TreeNode.STATE_OPEN);
+						root.setState(EuTreeNode.STATE_OPEN);
 						root.setIconCls("icon-organiz");
 						root.addAttr("type", 0);
 						roots.add(root);
@@ -114,7 +114,7 @@ public class OrgController extends BaseController {
 								.collect(Collectors.toList());
 						for (OrganizeItem f : rootItems) {
 
-							TreeNode n = createNode(f);
+							EuTreeNode n = createNode(f);
 							root.addNode(n);
 							appendChildFolders(n, items);
 						}
@@ -149,15 +149,15 @@ public class OrgController extends BaseController {
 		return iconCls;
 	}
 
-	TreeNode createNode(OrganizeItem item) {
+	EuTreeNode createNode(OrganizeItem item) {
 
-		TreeNode n = new TreeNode();
+		EuTreeNode n = new EuTreeNode();
 		n.setId(item.getOrgId());
 		n.setText(item.getDisplayName());
 		if (item.getCount() == 0) {
-			n.setState(TreeNode.STATE_OPEN);
+			n.setState(EuTreeNode.STATE_OPEN);
 		} else {
-			n.setState(TreeNode.STATE_CLOSED);
+			n.setState(EuTreeNode.STATE_CLOSED);
 		}
 		n.setIconCls(getOrgTreeIcon(item.getOrgType()));
 		n.addAttr("type", item.getOrgType());
@@ -165,7 +165,7 @@ public class OrgController extends BaseController {
 		return n;
 	}
 
-	void appendChildFolders(TreeNode node, List<OrganizeItem> items) {
+	void appendChildFolders(EuTreeNode node, List<OrganizeItem> items) {
 
 		List<OrganizeItem> childs = items.stream()
 				.filter(c -> c.getParentId() != null && c.getParentId().equals(node.getId()))
@@ -173,7 +173,7 @@ public class OrgController extends BaseController {
 		if (!childs.isEmpty()) {
 			for (OrganizeItem f : childs) {
 
-				TreeNode n = createNode(f);
+				EuTreeNode n = createNode(f);
 				node.addNode(n);
 				appendChildFolders(n, items);
 			}
