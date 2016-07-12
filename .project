@@ -3,9 +3,6 @@
 	<name>kayura-uasp</name>
 	<comment></comment>
 	<projects>
-		<project>kayura-activiti</project>
-		<project>kayura-core</project>
-		<project>kayura-tags</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
