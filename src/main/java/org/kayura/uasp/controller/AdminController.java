@@ -24,6 +24,8 @@ import org.kayura.type.Result;
 import org.kayura.uasp.po.DictDefine;
 import org.kayura.uasp.po.DictItem;
 import org.kayura.uasp.po.User;
+import org.kayura.uasp.security.Privilege;
+import org.kayura.uasp.security.PrivilegeMods;
 import org.kayura.uasp.service.DictService;
 import org.kayura.uasp.service.UserService;
 import org.kayura.utils.KeyUtils;
@@ -69,12 +71,14 @@ public class AdminController extends BaseController {
 	}
 
 	@RequestMapping(value = "user/list", method = RequestMethod.GET)
+	@Privilege(PrivilegeMods.User_View)
 	public String userList() {
 
 		return "views/admin/user-list";
 	}
 
 	@RequestMapping(value = "user/find", method = RequestMethod.POST)
+	@Privilege(PrivilegeMods.User_View)
 	public void userFind(HttpServletRequest req, Map<String, Object> map, String keyword, String status) {
 
 		postExecute(map, new PostAction() {

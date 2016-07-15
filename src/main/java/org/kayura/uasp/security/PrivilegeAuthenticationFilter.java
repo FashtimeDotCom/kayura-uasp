@@ -2,8 +2,10 @@ package org.kayura.uasp.security;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Enumeration;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -21,6 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -28,6 +31,32 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 public class PrivilegeAuthenticationFilter extends GenericFilterBean {
 
 	private AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
+
+	protected HandlerExecutionChain getHandlerExecution(HttpServletRequest request) throws Exception {
+
+		WebApplicationContext appContext = WebApplicationContextUtils
+				.getRequiredWebApplicationContext(request.getServletContext());
+		HandlerMapping bean = appContext.getBean(RequestMappingHandlerMapping.class);
+		HandlerExecutionChain handler = bean.getHandler(request);
+
+		if (handler == null) {
+			ServletContext servletContext = request.getServletContext();
+			Enumeration<?> attrNameEnum = servletContext.getAttributeNames();
+			while (attrNameEnum.hasMoreElements()) {
+				String attrName = (String) attrNameEnum.nextElement();
+				if (attrName.startsWith(FrameworkServlet.SERVLET_CONTEXT_PREFIX)) {
+					appContext = (WebApplicationContext) servletContext.getAttribute(attrName);
+					bean = appContext.getBean(RequestMappingHandlerMapping.class);
+					handler = bean.getHandler(request);
+					if (handler != null) {
+						break;
+					}
+				}
+			}
+		}
+
+		return handler;
+	}
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
@@ -38,15 +67,16 @@ public class PrivilegeAuthenticationFilter extends GenericFilterBean {
 
 		Object o = null;
 		try {
-			WebApplicationContext applicationContext = WebApplicationContextUtils
-					.getRequiredWebApplicationContext(request.getServletContext());
-			HandlerMapping bean = applicationContext.getBean(RequestMappingHandlerMapping.class);
-			HandlerExecutionChain handler = bean.getHandler((HttpServletRequest) request);
+			HandlerExecutionChain handler = getHandlerExecution(request);
 			if (handler != null) {
 				o = handler.getHandler();
 			} else {
 				o = null;
 			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("Request Url: " + request.getRequestURL());
+			}
+
 		} catch (Exception e) {
 			logger.error("Authentication request error: " + e.toString());
 		}
@@ -65,8 +95,9 @@ public class PrivilegeAuthenticationFilter extends GenericFilterBean {
 				if (pv != null) {
 					String[] privileges = pv.value();
 					if (privileges.length > 0) {
-						
-						LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+						LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication()
+								.getPrincipal();
 						if (!user.hasPrivilege(privileges)) {
 							try {
 								String exmsg = "缺少相应的权限，权限代码：" + StringUtils.join(",", privileges);
