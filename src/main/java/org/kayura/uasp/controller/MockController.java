@@ -4,6 +4,7 @@
  */
 package org.kayura.uasp.controller;
 
+import org.kayura.uasp.service.MockOrderService;
 import org.kayura.web.controllers.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +18,16 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class MockController extends BaseController {
+	
+	private MockOrderService mockOrderService;
 
 	@RequestMapping(value = "/mock/fileup", method = RequestMethod.GET)
 	public ModelAndView fileUpload() {
 
 		return this.view("views/mock/fileup");
 	}
+	
+	
+	
 
 }
