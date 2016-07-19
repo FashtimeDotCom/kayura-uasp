@@ -7,7 +7,6 @@ package org.kayura.uasp.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
 import org.kayura.uasp.po.Group;
@@ -15,11 +14,13 @@ import org.kayura.uasp.po.MenuItem;
 import org.kayura.uasp.po.MenuScheme;
 import org.kayura.uasp.po.Module;
 import org.kayura.uasp.po.Role;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author liangxia@live.com
  */
-public interface AuthorityMapper extends BaseDao {
+@Repository
+public interface AuthorityMapper {
 
 	// 权限交互接口.
 

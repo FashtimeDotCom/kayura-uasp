@@ -12,15 +12,18 @@
 		<result property="updateTime" column="UpdateTime" />
 	</resultMap>
 	
+	<sql id="mockOrder_Columns">
+		t.Order_Id,
+		t.Tenant_Id,
+		t.Code,
+		t.Title,
+		t.CreateTime,
+		t.Author,
+		t.UpdateTime
+	</sql>
+	
 	<select id="selectMockOrders" parameterType="map" resultMap="mockOrderMap">
-		SELECT
-			t.Order_Id,
-			t.Tenant_Id,
-			t.Code,
-			t.Title,
-			t.CreateTime,
-			t.Author,
-			t.UpdateTime
+		SELECT	<include refid="mockOrder_Columns" />
 		FROM uasp_mockorders AS t
 		<where>
 			<if test="tenantId != null">
@@ -31,6 +34,16 @@
 			</if>
 			<if test="author != null">
 				AND ( t.Author = #{author} )
+			</if>
+		</where>
+	</select>
+	
+	<select id="getMockOrderByMap" parameterType="map" resultMap="mockOrderMap">
+		SELECT <include refid="mockOrder_Columns" />
+		FROM uasp_mockorders AS t
+		<where>
+			<if test="orderId != null">
+				AND ( t.Order_Id = #{orderId} )
 			</if>
 		</where>
 	</select>

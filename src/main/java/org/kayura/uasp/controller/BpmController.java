@@ -79,6 +79,14 @@ public class BpmController extends ActivitiController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/bpm/task/center", method = RequestMethod.GET)
+	public ModelAndView taskCenter() {
+
+		ModelAndView mv = view("views/bpm/task-center");
+		mv.addObject("userId", this.getLoginUser().getIdentityId());
+		return mv;
+	}
+
 	@RequestMapping(value = "/bpm/task/list", method = RequestMethod.GET)
 	public ModelAndView taskList() {
 

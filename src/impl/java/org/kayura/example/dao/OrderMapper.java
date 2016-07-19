@@ -6,12 +6,13 @@ package org.kayura.example.dao;
 
 import java.util.Map;
 
-import org.kayura.core.BaseDao;
 import org.kayura.example.po.Order;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
+import org.springframework.stereotype.Repository;
 
-public interface OrderMapper extends BaseDao {
+@Repository
+public interface OrderMapper {
 	
     int deleteByKey(Integer id);
 

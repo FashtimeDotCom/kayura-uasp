@@ -7,7 +7,6 @@ package org.kayura.uasp.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
 import org.kayura.uasp.po.FileFolder;
@@ -15,11 +14,13 @@ import org.kayura.uasp.po.FileInfo;
 import org.kayura.uasp.po.FileRelation;
 import org.kayura.uasp.po.FileShare;
 import org.kayura.uasp.vo.FileListItem;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author liangxia@live.com
  */
-public interface FileMapper extends BaseDao {
+@Repository
+public interface FileMapper {
 
 	// FileInfo
 

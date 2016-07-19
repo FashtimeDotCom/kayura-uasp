@@ -1,17 +1,21 @@
 package org.kayura.uasp.service;
 
+import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
+import org.kayura.type.Result;
 import org.kayura.uasp.po.MockOrder;
 
 public interface MockOrderService {
 
-	PageList<MockOrder> selectMockOrders(String teanantId, String keyword, PageParams pageParams);
+	Result<PageList<MockOrder>> selectMockOrders(String teanantId, String keyword, PageParams pageParams);
 
-	void createMockOrder(MockOrder mockOrder);
+	Result<MockOrder> getMockOrderById(String orderId);
+	
+	GeneralResult createMockOrder(MockOrder mockOrder);
 
-	void updateMockOrder(MockOrder mockOrder);
+	GeneralResult updateMockOrder(MockOrder mockOrder);
 
-	void deleteMockOrder(String orderId);
+	GeneralResult deleteMockOrder(String orderId);
 
 }

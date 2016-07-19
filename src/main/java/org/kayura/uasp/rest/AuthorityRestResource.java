@@ -4,8 +4,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kayura.core.PostAction;
-import org.kayura.core.PostResult;
 import org.kayura.security.LoginUser;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
@@ -18,29 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@SuppressWarnings("unused")
 @RestController
-@RequestMapping("/api")
-public class AuthRestResource extends RestResource {
+public class AuthorityRestResource extends RestResource {
 
 	@Autowired
-	private AuthorityService readerAuthorityService;
-
-	@Autowired
-	private AuthorityService writerAuthorityService;
+	private AuthorityService authorityService;
 
 	@RequestMapping(value = "roles/find", method = RequestMethod.GET)
-	public void findRoles(Map<String, Object> map, HttpServletRequest req, String keyword) {
+	public Map<String, Object> findRoles(HttpServletRequest req, String keyword) {
 
 		LoginUser user = this.getLoginUser();
-		postExecute(map, new PostAction() {
-			@Override
-			public void invoke(PostResult ps) {
-				PageParams pageParams = ui.getPageParams(req);
-				Result<PageList<Role>> r = readerAuthorityService.findRoles(user.getTenantId(), keyword, pageParams);
-				ps.setResult(r.getCode(), r.getMessage(), ui.putData(r.getData()));
-			}
-		});
+		PageParams pageParams = ui.getPageParams(req);
+		Result<PageList<Role>> r = authorityService.findRoles(user.getTenantId(), keyword, pageParams);
+		return result(r.getCode(), r.getMessage(), ui.putData(r.getData()));
 	}
 
 }

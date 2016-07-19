@@ -1,9 +1,8 @@
 package org.kayura.uasp.dao;
 
-import org.kayura.core.BaseDao;
+import org.springframework.stereotype.Repository;
 
-public interface BpmMapper extends BaseDao {
-
-
+@Repository
+public interface BpmMapper {
 
 }

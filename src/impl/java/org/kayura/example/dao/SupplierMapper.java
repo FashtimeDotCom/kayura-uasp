@@ -4,10 +4,11 @@
  */
 package org.kayura.example.dao;
 
-import org.kayura.core.BaseDao;
 import org.kayura.example.po.Supplier;
+import org.springframework.stereotype.Repository;
 
-public interface SupplierMapper extends BaseDao {
+@Repository
+public interface SupplierMapper {
 
 	int deleteByKey(Integer id);
 

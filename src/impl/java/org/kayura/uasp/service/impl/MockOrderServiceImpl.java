@@ -1,13 +1,17 @@
 package org.kayura.uasp.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
+import org.kayura.utils.MapUtils;
 import org.kayura.utils.StringUtils;
+import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
+import org.kayura.type.Result;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.uasp.po.MockOrder;
 import org.kayura.uasp.dao.MockOrderMapper;
@@ -23,7 +27,7 @@ public class MockOrderServiceImpl implements MockOrderService {
 	private MockOrderMapper mockOrderMapper;
 
 	@Override
-	public PageList<MockOrder> selectMockOrders(String tenantId, String keyword, PageParams pageParams) {
+	public Result<PageList<MockOrder>> selectMockOrders(String tenantId, String keyword, PageParams pageParams) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 
@@ -35,35 +39,50 @@ public class MockOrderServiceImpl implements MockOrderService {
 			args.put("keyword", keyword);
 		}
 
-		return mockOrderMapper.selectMockOrders(args, new PageBounds(pageParams));
+		PageList<MockOrder> orders = mockOrderMapper.selectMockOrders(args, new PageBounds(pageParams));
+		return Result.succeed(orders);
 	}
 
 	@Override
-	public void createMockOrder(MockOrder mockOrder) {
+	public Result<MockOrder> getMockOrderById(String orderId) {
+
+		Map<String, Object> args = MapUtils.make("orderId", orderId);
+		MockOrder order = mockOrderMapper.getMockOrderByMap(args);
+
+		return Result.succeed(order);
+	}
+
+	@Override
+	public GeneralResult createMockOrder(MockOrder mockOrder) {
 
 		if (StringUtils.isEmpty(mockOrder.getOrderId())) {
 			mockOrder.setOrderId(KeyUtils.newId());
 		}
 
+		Date now = DateUtils.now();
+
 		if (mockOrder.getCreateTime() == null) {
-			mockOrder.setCreateTime(DateUtils.now());
+			mockOrder.setCreateTime(now);
 		}
 
-		mockOrder.setUpdateTime(mockOrder.getCreateTime());
-
+		mockOrder.setUpdateTime(now);
 		mockOrderMapper.insertMockOrder(mockOrder);
+
+		return Result.succeed();
 	}
 
 	@Override
-	public void updateMockOrder(MockOrder mockOrder) {
+	public GeneralResult updateMockOrder(MockOrder mockOrder) {
 
 		mockOrder.setUpdateTime(DateUtils.now());
 		mockOrderMapper.updateMockOrder(mockOrder);
+
+		return Result.succeed();
 	}
 
 	@Override
-	public void deleteMockOrder(String orderId) {
+	public GeneralResult deleteMockOrder(String orderId) {
 		mockOrderMapper.deleteMockOrder(orderId);
+		return Result.succeed();
 	}
-
 }

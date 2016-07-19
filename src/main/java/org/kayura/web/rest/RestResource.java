@@ -1,17 +1,22 @@
 package org.kayura.web.rest;
 
+import org.kayura.core.PostAction;
+import org.kayura.core.PostResult;
+import org.kayura.security.LoginUser;
+import org.kayura.type.PageList;
+import org.kayura.type.PageParams;
+import org.kayura.type.Result;
+import org.kayura.utils.StringUtils;
+import org.kayura.web.ui.UISupport;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kayura.core.PostAction;
-import org.kayura.core.PostResult;
-import org.kayura.security.LoginUser;
-import org.kayura.type.PageList;
-import org.kayura.type.PageParams;
-import org.kayura.web.ui.UISupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -24,7 +29,8 @@ public abstract class RestResource {
 	@Autowired
 	protected UISupport ui;
 
-	protected ObjectMapper objectMapper = new ObjectMapper();
+	@Autowired
+	protected ObjectMapper objectMapper;
 
 	public PageParams getPageParams(HttpServletRequest req) {
 		return ui.getPageParams(req);
@@ -32,6 +38,49 @@ public abstract class RestResource {
 
 	public void putData(Map<String, Object> model, PageList<?> pageList) {
 		ui.putData(model, pageList);
+	}
+
+	public Map<String, Object> result(Integer code, String message, Object data) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (code == Result.SUCCEED) {
+
+			map.put("success", true);
+		} else {
+
+			String type = "";
+			if (code == Result.SUCCEED) {
+				type = "success";
+			} else if (code == Result.FAILED) {
+				type = "failed";
+			} else if (code == Result.ERROR) {
+				type = "error";
+			}
+
+			map.put("success", false);
+			map.put("type", type);
+		}
+
+		if (StringUtils.isNotEmpty(message)) {
+			map.put("message", message);
+		}
+
+		if (data != null) {
+			map.put("data", data);
+		}
+
+		return map;
+	}
+
+	public Map<String, Object> error(String message) {
+
+		return result(Result.ERROR, message, null);
+	}
+
+	public Map<String, Object> success(String message, Object data) {
+
+		return result(Result.SUCCEED, message, data);
 	}
 
 	public void postExecute(Map<String, Object> model, PostAction postAction) {

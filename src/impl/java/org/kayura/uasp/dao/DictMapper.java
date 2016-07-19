@@ -7,18 +7,19 @@ package org.kayura.uasp.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
 import org.kayura.uasp.po.DictDefine;
 import org.kayura.uasp.po.DictItem;
+import org.springframework.stereotype.Repository;
 
 /**
  * DictMapper
  *
  * @author liangxia@live.com
  */
-public interface DictMapper extends BaseDao {
+@Repository
+public interface DictMapper {
 
 	DictDefine getDictDefineById(String dictId);
 	

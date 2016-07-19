@@ -4,10 +4,11 @@
  */
 package org.kayura.example.dao;
 
-import org.kayura.core.BaseDao;
 import org.kayura.example.po.Category;
+import org.springframework.stereotype.Repository;
 
-public interface CategoryMapper extends BaseDao {
+@Repository
+public interface CategoryMapper {
 
 	int insert(Category record);
 

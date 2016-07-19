@@ -7,7 +7,6 @@ package org.kayura.uasp.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.kayura.core.BaseDao;
 import org.kayura.mybatis.type.PageBounds;
 import org.kayura.type.PageList;
 import org.kayura.uasp.po.Company;
@@ -16,13 +15,15 @@ import org.kayura.uasp.po.Employee;
 import org.kayura.uasp.po.Identity;
 import org.kayura.uasp.po.OrganizeItem;
 import org.kayura.uasp.po.Position;
+import org.springframework.stereotype.Repository;
 
 /**
  * OrganizMapper
  *
  * @author liangxia@live.com
  */
-public interface OrganizeMapper extends BaseDao {
+@Repository
+public interface OrganizeMapper {
 
 	// Organize
 
