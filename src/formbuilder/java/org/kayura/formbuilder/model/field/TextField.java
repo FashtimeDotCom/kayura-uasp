@@ -1,6 +1,6 @@
 package org.kayura.formbuilder.model.field;
 
-public class TextFiled extends LableField {
+public class TextField extends LableField {
 
 	private String placeholder;
 

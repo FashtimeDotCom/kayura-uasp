@@ -1,5 +1,6 @@
 package org.kayura.formbuilder.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FormModel {
@@ -10,6 +11,10 @@ public class FormModel {
 	private String icon;
 	private String creator;
 	private List<FormField> items;
+
+	public FormModel() {
+		this.items = new ArrayList<FormField>();
+	}
 
 	public String getFormId() {
 		return formId;
@@ -59,4 +64,7 @@ public class FormModel {
 		this.items = items;
 	}
 
+	public void addField(FormField formField) {
+		this.items.add(formField);
+	}
 }

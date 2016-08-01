@@ -1,26 +1,15 @@
 package org.kayura.formbuilder.model.field;
 
-import org.kayura.formbuilder.model.FormField;
+public class NumberField extends TextField {
 
-public class NumberField extends FormField {
+	private String unit;
 
-	private String lable;
-	private String placeholder;
-
-	public String getLable() {
-		return lable;
+	public String getUnit() {
+		return unit;
 	}
 
-	public void setLable(String lable) {
-		this.lable = lable;
-	}
-
-	public String getPlaceholder() {
-		return placeholder;
-	}
-
-	public void setPlaceholder(String placeholder) {
-		this.placeholder = placeholder;
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 
 }
