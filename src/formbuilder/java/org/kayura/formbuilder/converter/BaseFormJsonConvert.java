@@ -28,13 +28,13 @@ public abstract class BaseFormJsonConvert implements EditorJsonConstants {
 			formField.setDescription(description);
 		}
 
-		JsonNode fieldOptionsNode = elementNode.get(EDITOR_PROP_FIELDOPTIONS);
-		if (fieldOptionsNode != null) {
-			convertOptionsToModel(formField, fieldOptionsNode);
+		JsonNode fieldOptionNode = elementNode.get(EDITOR_PROP_FIELDOPTIONS);
+		if (fieldOptionNode != null) {
+			convertOptionsToModel(formField, fieldOptionNode);
 		}
 	}
 
-	public void convertOptionsToModel(FormField formField, JsonNode optionsNode) {
+	public void convertOptionsToModel(FormField formField, JsonNode optionNode) {
 
 	}
 
@@ -48,5 +48,13 @@ public abstract class BaseFormJsonConvert implements EditorJsonConstants {
 
 	protected static Boolean getValueAsBoolean(String name, JsonNode objectNode) {
 		return FormJsonConverterUtil.getValueAsBoolean(name, objectNode);
+	}
+
+	protected static Integer getValueAsInteger(String name, JsonNode objectNode) {
+		return FormJsonConverterUtil.getValueAsInteger(name, objectNode);
+	}
+
+	protected static Double getValueAsDouble(String name, JsonNode objectNode) {
+		return FormJsonConverterUtil.getValueAsDouble(name, objectNode);
 	}
 }

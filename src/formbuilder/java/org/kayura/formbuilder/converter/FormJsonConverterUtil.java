@@ -31,7 +31,7 @@ public class FormJsonConverterUtil implements EditorJsonConstants {
 
 	public static String getPlaceHolder(JsonNode objectNode) {
 
-		return getValueAsString(EDITOR_INPUT_PLACEHOLDER, objectNode);
+		return getValueAsString(EDITOR_PROP_PLACEHOLDER, objectNode);
 	}
 
 	protected static String getValueAsString(String name, JsonNode objectNode) {
@@ -52,4 +52,21 @@ public class FormJsonConverterUtil implements EditorJsonConstants {
 		return propertyValue;
 	}
 
+	protected static Integer getValueAsInteger(String name, JsonNode objectNode) {
+		Integer propertyValue = null;
+		JsonNode propertyNode = objectNode.get(name);
+		if (propertyNode != null && propertyNode.isNull() == false) {
+			propertyValue = propertyNode.asInt();
+		}
+		return propertyValue;
+	}
+
+	protected static Double getValueAsDouble(String name, JsonNode objectNode) {
+		Double propertyValue = null;
+		JsonNode propertyNode = objectNode.get(name);
+		if (propertyNode != null && propertyNode.isNull() == false) {
+			propertyValue = propertyNode.asDouble();
+		}
+		return propertyValue;
+	}
 }

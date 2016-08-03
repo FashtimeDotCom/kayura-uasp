@@ -5,7 +5,7 @@ import org.kayura.formbuilder.model.field.SelectField;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class SelectFieldJsonConvert extends TextFieldJsonConvert {
+public class SelectFieldJsonConvert extends InputFieldJsonConvert {
 
 	@Override
 	public FormField makeFormField() {
@@ -20,21 +20,25 @@ public class SelectFieldJsonConvert extends TextFieldJsonConvert {
 	@Override
 	public void convertToModel(FormField formField, JsonNode elementNode) {
 		super.convertToModel(formField, elementNode);
+		formField.setFieldType(FormField.TYPE_SELECT);
+	}
+
+	@Override
+	public void convertOptionsToModel(FormField formField, JsonNode optionNode) {
+		super.convertOptionsToModel(formField, optionNode);
 
 		SelectField selectField = (SelectField) formField;
 
-		JsonNode optionsArray = elementNode.get(EDITOR_OPTIONS);
+		JsonNode optionsArray = optionNode.get(EDITOR_OPTIONS);
 		if (optionsArray != null) {
-			for (JsonNode optionNode : optionsArray) {
+			for (JsonNode jsonNode : optionsArray) {
 
-				String lable = getValueAsString(EDITOR_OPTION_LABEL, optionNode);
-				String value = getValueAsString(EDITOR_OPTION_VALUE, optionNode);
-				Boolean checked = getValueAsBoolean(EDITOR_OPTION_CHECKED, optionNode);
+				String lable = getValueAsString(EDITOR_OPTION_LABEL, jsonNode);
+				String value = getValueAsString(EDITOR_OPTION_VALUE, jsonNode);
+				Boolean checked = getValueAsBoolean(EDITOR_OPTION_CHECKED, jsonNode);
 
 				selectField.addOption(lable, value, checked);
 			}
 		}
-
-		selectField.setFieldType(FormField.TYPE_SELECT);
 	}
 }

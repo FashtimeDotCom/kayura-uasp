@@ -3,7 +3,32 @@ package org.kayura.formbuilder.model.field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectField extends TextField {
+/**
+ * 单项选择
+ * 
+ * @author liangxia@live.com
+ * 
+ * <pre>
+ * {
+ *     "cid":"c86",
+ *     "label":"分类类型",
+ *     "field_type":"select",
+ *     "required":true,
+ *     "name":"selectType",
+ *     "description":"请选择其中一项",
+ *     "field_options":{
+ *         "options":[
+ *             {"label":"选项1","checked":false,"value":"v1"},
+ *             {"label":"选项2","checked":false,"value":"v2"}
+ *         ],
+ *         "include_other_option":false
+ *     }
+ * }
+ * 
+ * </pre>
+ *
+ */
+public class SelectField extends InputField {
 
 	private List<Option> options;
 
