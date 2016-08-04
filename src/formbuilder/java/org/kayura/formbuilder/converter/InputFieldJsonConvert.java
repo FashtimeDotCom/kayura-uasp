@@ -5,7 +5,7 @@ import org.kayura.formbuilder.model.field.InputField;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public abstract class InputFieldJsonConvert extends LableFieldJsonConvert {
+public abstract class InputFieldJsonConvert extends LabelFieldJsonConvert {
 
 	@Override
 	public abstract FormField makeFormField();

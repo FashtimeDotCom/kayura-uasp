@@ -5,7 +5,24 @@ import org.kayura.formbuilder.model.field.PhotoField;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class PhotoFieldJsonConvert extends LableFieldJsonConvert {
+/**
+ * 
+ * @author liangxia@live.com
+ *
+ * <pre>
+ * {
+ *     "cid":"c21",
+ *     "name":"photo",
+ *     "description":"请选择图片",
+ *     "label":"图片",
+ *     "field_type":"photo",
+ *     "required":false,
+ *     "field_options":{
+ *     }
+ * }
+ * </pre>
+ */
+public class PhotoFieldJsonConvert extends LabelFieldJsonConvert {
 
 	@Override
 	public FormField makeFormField() {

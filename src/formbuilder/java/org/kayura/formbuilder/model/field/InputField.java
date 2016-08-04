@@ -1,6 +1,6 @@
 package org.kayura.formbuilder.model.field;
 
-public abstract class InputField extends LableField {
+public abstract class InputField extends LabelField {
 
 	private Boolean required;
 

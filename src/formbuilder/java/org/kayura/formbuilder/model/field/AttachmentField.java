@@ -1,5 +1,5 @@
 package org.kayura.formbuilder.model.field;
 
-public class AttachmentField extends LableField {
+public class AttachmentField extends LabelField {
 
 }

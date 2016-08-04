@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kayura.formbuilder.model.FormField;
 
-public class TableField extends LableField {
+public class TableField extends LabelField {
 
 	private String actionName;
 	private List<FormField> children;

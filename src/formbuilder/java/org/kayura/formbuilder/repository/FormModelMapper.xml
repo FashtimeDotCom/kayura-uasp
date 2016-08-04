@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kayura.formbuilder.repository.FormModelMapper">
+
+	<resultMap type="org.kayura.formbuilder.model.FormModel" id="formModelMap">
+		<id property="modelId" column="Model_Id" />
+		<result property="tenantId" column="Tenant_Id" />
+		<result property="formKey" column="FormKey" />
+		<result property="code" column="Code" />
+		<result property="title" column="Title" />
+		<result property="description" column="Description" />
+		<result property="icon" column="Icon" />
+		<result property="creator" column="Creator" />
+		<result property="raw" column="Raw" />
+		<result property="items" column="Items" typeHandler="jsonTypeHandler" />
+		<result property="version" column="Version"/>
+		<result property="status" column="Status" />
+	</resultMap>
+
+	<select id="selectFormModels" parameterType="map" resultMap="formModelMap">
+		SELECT 
+			t.Model_Id,
+			t.Tenant_Id,
+			t.FormKey,
+			t.Code,
+			t.Title,
+			t.Description,
+			t.Icon,
+			t.Creator,
+			t.Version,
+			t.Status
+		FROM uasp_formmodels AS t
+		<where>
+			<if test="tenantId != null">
+				AND ( t.Tenant_Id = #{tenantId} )
+			</if>
+			<if test="formKey != null">
+				AND ( t.FormKey = #{formKey} )
+			</if>
+			<if test="status != null">
+				AND ( t.Status = #{status} )
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectFormModelByMaxVersion" parameterType="map" resultType="int" >
+		SELECT IFNULL(Max(Version), 0) AS Version FROM uasp_formmodels
+		WHERE ( t.Status = 1 )
+			<if test="tenantId != null">
+				AND ( t.Tenant_Id = #{tenantId} )
+			</if>
+			<if test="formKey != null">
+				AND ( t.FormKey = #{formKey} )
+			</if>
+			<if test="code != null">
+				AND ( t.Code LIKE #{code} )
+			</if>
+			<if test="status != null">
+				AND ( t.Status = 1 )
+			</if>
+	</select>
+	
+	<select id="selectFormModelInfo" parameterType="map" resultMap="formModelMap">
+		SELECT 
+			t.Model_Id,
+			t.Tenant_Id,
+			t.FormKey,
+			t.Code,
+			t.Title,
+			t.Description,
+			t.Icon,
+			t.Creator,
+			t.Version,
+			t.Status
+		FROM uasp_formmodels AS t
+		<where>
+			<if test="modelId != null">
+				AND ( t.Model_Id = #{modelId} )
+			</if>
+			<if test="formKey != null">
+				AND ( t.FormKey = #{formKey} )
+			</if>
+			<if test="code != null">
+				AND ( t.Code LIKE #{code} )
+			</if>
+			<if test="status != null">
+				AND ( t.Status = #{status} )
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectFormModel" parameterType="map" resultMap="formModelMap">
+		SELECT 
+			t.Model_Id,
+			t.Tenant_Id,
+			t.FormKey,
+			t.Code,
+			t.Title,
+			t.Description,
+			t.Icon,
+			t.Creator,
+			t.Raw,
+			t.Items,
+			t.Version,
+			t.Status
+		FROM uasp_formmodels AS t
+		<where>
+			<if test="modelId != null">
+				AND ( t.Model_Id = #{modelId} )
+			</if>
+			<if test="formKey != null">
+				AND ( t.FormKey = #{formKey} )
+			</if>
+			<if test="code != null">
+				AND ( t.Code LIKE #{code} )
+			</if>
+			<if test="status != null">
+				AND ( t.Status = #{status} )
+			</if>
+		</where>
+		ORDER BY t.Version DESC
+		LIMIT 1
+	</select>
+
+	<insert id="insertFormModel" parameterType="org.kayura.formbuilder.model.FormModel">
+		INSERT INTO uasp_formmodels (
+			Model_Id,
+			Tenant_Id,
+			Code,
+			FormKey,
+			Title,
+			Description,
+			Icon,
+			Creator,
+			Raw,
+			Items,
+			Version,
+			Status
+		) VALUES (
+			#{modelId},
+			#{tenantId},
+			#{code},
+			#{formKey},
+			#{title},
+			#{description},
+			#{icon},
+			#{creator},
+			#{raw},
+			#{items,typeHandler=jsonTypeHandler},
+			#{version},
+			#{status}
+		)
+	</insert>
+	
+	<update id="updateFormModel" parameterType="map">
+		UPDATE uasp_formmodels
+		<set>
+			<if test="code != null">Code = #{code},</if>
+			<if test="title != null">Title = #{title},</if>
+			<if test="description != null">Description = #{description},</if>
+			<if test="icon != null">Icon = #{icon},</if>
+			<if test="creator != null">Creator = #{creator},</if>
+			<if test="raw != null">raw = #{raw},</if>
+			<if test="items != null">Items = #{items,typeHandler=jsonTypeHandler},</if>
+			<if test="status != null">Status = #{status},</if>
+		</set>
+		WHERE Model_Id = #{modelId}
+	</update>
+	
+	<delete id="deleteFormModel" parameterType="map">
+		DELETE FROM uasp_formmodels
+		<where>
+			<if test="modelId != null">
+				AND ( Model_Id = #{modelId} )
+			</if>
+			<if test="formKey != null">
+				AND ( FormKey = #{formKey} )
+			</if>
+			<if test="startFormKey != null">
+				AND ( FormKey LIKE #{startFormKey} )
+			</if>
+			<if test="status != null">
+				AND ( Status = #{status} )
+			</if>
+		</where>
+	</delete>
+
+</mapper>

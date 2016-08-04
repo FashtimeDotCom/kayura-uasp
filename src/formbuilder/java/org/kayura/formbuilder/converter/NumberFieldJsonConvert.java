@@ -6,7 +6,31 @@ import org.kayura.formbuilder.model.field.NumberField;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class NumberFieldJsonConvert extends LableFieldJsonConvert {
+/**
+ * 数字字段转换器
+ * 
+ * @author liangxia@live.com
+ *
+ * <pre>
+ * JSON 格式
+ * {
+ *     "cid":"c59",
+ *     "label":"数字",
+ *     "field_type":"number",
+ *     "name":"amount",
+ *     "description":"请输入数量"
+ *     "required":true,
+ *     "field_options":{
+ *         "min":"1",
+ *         "max":"200",
+ *         "units":"公斤",
+ *         "integer_only":false
+ *     }
+ * }
+ * </pre>
+ * 
+ */
+public class NumberFieldJsonConvert extends InputFieldJsonConvert {
 
 	@Override
 	public FormField makeFormField() {

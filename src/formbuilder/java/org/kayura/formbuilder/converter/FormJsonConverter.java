@@ -17,7 +17,7 @@ public class FormJsonConverter implements EditorJsonConstants {
 
 	public FormJsonConverter() {
 		jsonConverters = new ArrayList<BaseFormJsonConvert>();
-		jsonConverters.add(new LableFieldJsonConvert());
+		jsonConverters.add(new LabelFieldJsonConvert());
 		jsonConverters.add(new TextFieldJsonConvert());
 		jsonConverters.add(new TextAreaFieldJsonConvert());
 		jsonConverters.add(new DateFieldJsonConvert());
@@ -28,6 +28,8 @@ public class FormJsonConverter implements EditorJsonConstants {
 		jsonConverters.add(new MultiSelectFieldJsonConvert());
 		jsonConverters.add(new PhotoFieldJsonConvert());
 		jsonConverters.add(new AttachmentFieldJsonConvert());
+		jsonConverters.add(new StartTableFieldJsonConvert());
+		jsonConverters.add(new EndTableFieldJsonConvert());
 	}
 
 	public ObjectNode convertToJson(FormModel model) {
@@ -40,26 +42,40 @@ public class FormJsonConverter implements EditorJsonConstants {
 		FormModel formModel = new FormModel();
 		JsonNode fieldsArray = modelNode.get(EDITOR_FIELDS);
 		if (fieldsArray != null) {
+
+			FormField tableField = null;
 			for (JsonNode fieldNode : fieldsArray) {
 				String fieldType = FormJsonConverterUtil.getFieldType(fieldNode);
 				if (StringUtils.isNotEmpty(fieldType)) {
 
-					FormField tableField = null;
 					for (BaseFormJsonConvert converter : this.jsonConverters) {
 
-						if (converter.getFieldType().equalsIgnoreCase(EDITOR_FIELDTYPE_TABLE_START)) {
+						if (fieldType.equalsIgnoreCase(EDITOR_FIELDTYPE_TABLE_START)) {
 
-							tableField = converter.makeFormField();
-							converter.convertToModel(tableField, fieldNode);
-							formModel.addField(tableField);
-						} else if (converter.getFieldType().equalsIgnoreCase(EDITOR_FIELDTYPE_TABLE_END)) {
+							if (converter.getFieldType().equalsIgnoreCase(EDITOR_FIELDTYPE_TABLE_START)) {
 
-							tableField = null;
+								tableField = converter.makeFormField();
+								converter.convertToModel(tableField, fieldNode);
+								formModel.addField(tableField);
+								break;
+							}
+						} else if (fieldType.equalsIgnoreCase(EDITOR_FIELDTYPE_TABLE_END)) {
+
+							if (converter.getFieldType().equalsIgnoreCase(EDITOR_FIELDTYPE_TABLE_END)) {
+
+								converter.convertToModel(tableField, fieldNode);
+								tableField = null;
+								break;
+							}
+							
 						} else if (tableField != null) {
 
-							FormField formField = converter.makeFormField();
-							converter.convertToModel(formField, fieldNode);
-							((TableField) tableField).addChildren(formField);
+							if (converter.getFieldType().equalsIgnoreCase(fieldType)) {
+								FormField formField = converter.makeFormField();
+								converter.convertToModel(formField, fieldNode);
+								((TableField) tableField).addChildren(formField);
+								break;
+							}
 						} else {
 
 							if (converter.getFieldType().equalsIgnoreCase(fieldType)) {

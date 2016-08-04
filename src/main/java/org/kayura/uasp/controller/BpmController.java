@@ -79,6 +79,14 @@ public class BpmController extends ActivitiController {
 		return mv;
 	}
 
+	@RequestMapping(value = "/bpm/form/list", method = RequestMethod.GET)
+	public ModelAndView formBuilderList(){
+		
+		ModelAndView mv = view("views/formbuilder/form-list");
+		mv.addObject("tenantId", this.getLoginUser().getTenantId());
+		return mv;
+	}
+
 	@RequestMapping(value = "/bpm/task/center", method = RequestMethod.GET)
 	public ModelAndView taskCenter() {
 

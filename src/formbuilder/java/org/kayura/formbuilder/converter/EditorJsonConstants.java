@@ -9,7 +9,7 @@ package org.kayura.formbuilder.converter;
 public interface EditorJsonConstants {
 
 	// 字段类型
-	final String EDITOR_FIELDTYPE_LABLE = "lable";
+	final String EDITOR_FIELDTYPE_LABEL = "label";
 	final String EDITOR_FIELDTYPE_TEXT = "text";
 	final String EDITOR_FIELDTYPE_TEXTAREA = "textarea";
 	final String EDITOR_FIELDTYPE_DATE = "date";
@@ -42,8 +42,9 @@ public interface EditorJsonConstants {
 	final String EDITOR_PROP_MINLENGTH = "minlength";
 	final String EDITOR_PROP_MAXLENGTH = "maxlength";
 	
-	final String EDITOR_PROP_STARTLABLE = "start_lable";
-	final String EDITOR_PROP_ENDLABLE = "end_lable";
+	final String EDITOR_PROP_STARTLABEL = "start_label";
+	final String EDITOR_PROP_ENDLABEL = "end_label";
+	final String EDITOR_PROP_ACTION_NAME = "action_name";
 
 	final String EDITOR_PROP_FORMAT = "format";
 	final String EDITOR_PROP_MAX = "max";

@@ -1,13 +1,35 @@
 package org.kayura.formbuilder.converter;
 
+import org.apache.commons.lang.StringUtils;
 import org.kayura.formbuilder.model.FormField;
 import org.kayura.formbuilder.model.field.TextField;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class TextFieldJsonConvert extends LableFieldJsonConvert {
+/**
+ * 文本字段转换器
+ * 
+ * @author liangxia@live.com
+ *
+ * <pre>
+ * {
+ * 		"cid":"组件Id",
+ * 		"name":"名称",
+ * 		"label":"标签",
+ * 		"placeholder": "备注信息",
+ * 		"description":"123"
+ * 		"field_type":"text",
+ * 		"required":true,
+ * 		"field_options":{
+ * 			"minlength":"1",
+ * 			"maxlength":"12",
+ * 			"length_units": "words"
+ * 		}
+ * }
+ * </pre>
+ * 
+ */
+public class TextFieldJsonConvert extends InputFieldJsonConvert {
 
 	@Override
 	public FormField makeFormField() {

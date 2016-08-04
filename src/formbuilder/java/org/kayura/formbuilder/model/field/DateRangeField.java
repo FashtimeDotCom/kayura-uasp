@@ -2,51 +2,23 @@ package org.kayura.formbuilder.model.field;
 
 public class DateRangeField extends DateField {
 
-	private String endLable;
-	private String placeholder;
-	private String format;
-	private String unit;
+	private String startLabel;
+	private String endLabel;
 
-	public String getEndLable() {
-		return endLable;
+	public String getStartLabel() {
+		return startLabel;
 	}
 
-	public void setEndLable(String endLable) {
-		this.endLable = endLable;
+	public void setStartLabel(String startLabel) {
+		this.startLabel = startLabel;
 	}
 
-	public void setStartLable(String lable) {
-
-		this.setLable(lable);
+	public String getEndLabel() {
+		return endLabel;
 	}
 
-	public String getStartLable() {
-
-		return this.getLable();
-	}
-
-	public String getPlaceholder() {
-		return placeholder;
-	}
-
-	public void setPlaceholder(String placeholder) {
-		this.placeholder = placeholder;
-	}
-
-	public String getFormat() {
-		return format;
-	}
-
-	public void setFormat(String format) {
-		this.format = format;
-	}
-
-	public String getUnit() {
-		return unit;
-	}
-
-	public void setUnit(String unit) {
-		this.unit = unit;
+	public void setEndLabel(String endLabel) {
+		this.endLabel = endLabel;
 	}
 
 }

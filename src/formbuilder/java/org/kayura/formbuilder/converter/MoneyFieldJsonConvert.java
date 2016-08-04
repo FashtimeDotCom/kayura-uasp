@@ -6,7 +6,27 @@ import org.kayura.formbuilder.model.field.MoneyField;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class MoneyFieldJsonConvert extends LableFieldJsonConvert {
+/**
+ * 金额字段转换器
+ * 
+ * @author liangxia@live.com
+ *
+ * <pre>
+ * {
+ *     "cid":"c68",
+ *     "label":"金额",
+ *     "required":true,
+ *     "name":"money",
+ *     "description":"请输入金额",
+ *     "field_type":"money",
+ *     "field_options":{
+ *         "units":"元"
+ *     }
+ * }
+ * </pre>
+ * 
+ */
+public class MoneyFieldJsonConvert extends LabelFieldJsonConvert {
 
 	@Override
 	public FormField makeFormField() {

@@ -1,27 +1,26 @@
 package org.kayura.formbuilder.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FormModel {
 
-	private String formId;
+	public static final Integer STATUS_DESIGN = 0;
+	public static final Integer STATUS_RUN = 1;
+	public static final Integer STATUS_INVALID = 2;
+
+	private String modelId;
+	private String tenantId;
+	private String formKey;
+	private String code;
 	private String title;
 	private String description;
 	private String icon;
 	private String creator;
-	private List<FormField> items;
+	private String raw;
+	private FormFieldList items;
+	private Integer version;
+	private Integer status;
 
 	public FormModel() {
-		this.items = new ArrayList<FormField>();
-	}
-
-	public String getFormId() {
-		return formId;
-	}
-
-	public void setFormId(String formId) {
-		this.formId = formId;
+		this.items = new FormFieldList();
 	}
 
 	public String getTitle() {
@@ -56,15 +55,71 @@ public class FormModel {
 		this.creator = creator;
 	}
 
-	public List<FormField> getItems() {
+	public FormFieldList getItems() {
 		return items;
 	}
 
-	public void setItems(List<FormField> items) {
+	public void setItems(FormFieldList items) {
 		this.items = items;
 	}
 
 	public void addField(FormField formField) {
 		this.items.add(formField);
+	}
+
+	public String getRaw() {
+		return raw;
+	}
+
+	public void setRaw(String raw) {
+		this.raw = raw;
+	}
+
+	public String getFormKey() {
+		return formKey;
+	}
+
+	public void setFormKey(String formKey) {
+		this.formKey = formKey;
+	}
+
+	public String getModelId() {
+		return modelId;
+	}
+
+	public void setModelId(String modelId) {
+		this.modelId = modelId;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }

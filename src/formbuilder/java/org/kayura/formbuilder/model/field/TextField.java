@@ -4,24 +4,8 @@ package org.kayura.formbuilder.model.field;
  * 
  * @author liangxia@live.com
  * 
- * <pre>
- * {
- * 		"cid":"组件Id",
- * 		"name":"名称",
- * 		"label":"标签",
- * 		"placeholder": "备注信息",
- * 		"description":"123"
- * 		"field_type":"text",
- * 		"required":true,
- * 		"field_options":{
- * 			"minlength":"1",
- * 			"maxlength":"12",
- * 			"length_units": "words"
- * 		}
- * }
- * </pre>
  */
-public class TextField extends LableField {
+public class TextField extends InputField {
 
 	private String placeHolder;
 	private Integer minLength;

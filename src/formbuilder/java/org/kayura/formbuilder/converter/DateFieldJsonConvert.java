@@ -6,7 +6,25 @@ import org.kayura.formbuilder.model.field.DateField;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class DateFieldJsonConvert extends LableFieldJsonConvert {
+/**
+ * 日期字段转换器.
+ * 
+ * @author liangxia@live.com
+ * <pre>
+ * {
+ *     "cid":"c5",
+ *     "name":"beginTime",
+ *     "description":"请输入开始时间",
+ *     "label":"开始时间",
+ *     "field_type":"date",
+ *     "required":true,
+ *     "field_options":{
+ *         "format":"yyyy-MM-dd"
+ *     }
+ * }
+ * </pre>
+ */
+public class DateFieldJsonConvert extends InputFieldJsonConvert {
 
 	@Override
 	public FormField makeFormField() {
@@ -22,24 +40,19 @@ public class DateFieldJsonConvert extends LableFieldJsonConvert {
 	public void convertToModel(FormField formField, JsonNode elementNode) {
 
 		super.convertToModel(formField, elementNode);
+		formField.setFieldType(FormField.TYPE_DATE);
+	}
+
+	@Override
+	public void convertOptionsToModel(FormField formField, JsonNode optionNode) {
+		super.convertOptionsToModel(formField, optionNode);
 
 		DateField dateField = (DateField) formField;
 
-		String format = getValueAsString(EDITOR_PROP_FORMAT, elementNode);
+		String format = getValueAsString(EDITOR_PROP_FORMAT, optionNode);
 		if (StringUtils.isNotEmpty(format)) {
 			dateField.setFormat(format);
 		}
 
-		String unit = getValueAsString(EDITOR_PROP_UNIT, elementNode);
-		if (StringUtils.isNotEmpty(unit)) {
-			dateField.setUnit(unit);
-		}
-
-		String placeholder = FormJsonConverterUtil.getPlaceHolder(elementNode);
-		if (StringUtils.isNotEmpty(placeholder)) {
-			dateField.setPlaceholder(placeholder);
-		}
-
-		dateField.setFieldType(FormField.TYPE_DATE);
 	}
 }

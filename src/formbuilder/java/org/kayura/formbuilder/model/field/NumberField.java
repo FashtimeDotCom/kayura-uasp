@@ -4,25 +4,9 @@ package org.kayura.formbuilder.model.field;
  * 数字格式字段.
  * 
  * @author liangxia@live.com
- * <pre>
- * JSON 格式
- * {
- *     "cid":"c59",
- *     "label":"数字",
- *     "field_type":"number",
- *     "name":"amount",
- *     "description":"请输入数量"
- *     "required":true,
- *     "field_options":{
- *         "min":"1",
- *         "max":"200",
- *         "units":"公斤",
- *         "integer_only":false
- *     }
- * }
- * </pre>
+ * 
  */
-public class NumberField extends LableField {
+public class NumberField extends InputField {
 
 	private Integer min;
 	private Integer max;

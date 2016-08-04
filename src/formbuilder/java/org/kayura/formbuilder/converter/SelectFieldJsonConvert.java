@@ -5,6 +5,30 @@ import org.kayura.formbuilder.model.field.SelectField;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+/**
+ * 选择项转换器
+ * 
+ * @author liangxia@live.com
+ *
+ * <pre>
+ * {
+ *     "cid":"c86",
+ *     "label":"分类类型",
+ *     "field_type":"select",
+ *     "required":true,
+ *     "name":"selectType",
+ *     "description":"请选择其中一项",
+ *     "field_options":{
+ *         "options":[
+ *             {"label":"选项1","checked":false,"value":"v1"},
+ *             {"label":"选项2","checked":false,"value":"v2"}
+ *         ],
+ *         "include_other_option":false
+ *     }
+ * }
+ * </pre>
+ * 
+ */
 public class SelectFieldJsonConvert extends InputFieldJsonConvert {
 
 	@Override

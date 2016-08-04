@@ -6,6 +6,28 @@ import org.kayura.formbuilder.model.field.DateRangeField;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+/**
+ * 时段字段转换器.
+ * 
+ * @author liangxia@live.com
+ *
+ *         <pre>
+ * {
+ *     "cid":"c6",
+ *     "name":"字段名",
+ *     "description":"描述",
+ *     "label":"标题",
+ *     "field_type":"daterange",
+ *     "required":false,
+ *     "field_options":{
+ *         "start_label":"开始日期",
+ *         "end_label":"结束日期",
+ *         "format":"yyyy-MM-dd"
+ *     }
+ * }
+ *         </pre>
+ *
+ */
 public class DateRangeFieldJsonConvert extends DateFieldJsonConvert {
 
 	@Override
@@ -23,19 +45,25 @@ public class DateRangeFieldJsonConvert extends DateFieldJsonConvert {
 
 		super.convertToModel(formField, objectNode);
 
+		formField.setFieldType(FormField.TYPE_DATERANGE);
+	}
+
+	@Override
+	public void convertOptionsToModel(FormField formField, JsonNode optionNode) {
+		super.convertOptionsToModel(formField, optionNode);
+
 		DateRangeField dateRangeField = (DateRangeField) formField;
 
-		String startLable = getValueAsString(EDITOR_PROP_STARTLABLE, objectNode);
-		if (StringUtils.isEmpty(startLable)) {
-			dateRangeField.setStartLable(startLable);
+		String startLabel = getValueAsString(EDITOR_PROP_STARTLABEL, optionNode);
+		if (StringUtils.isNotEmpty(startLabel)) {
+			dateRangeField.setStartLabel(startLabel);
 		}
 
-		String endLable = getValueAsString(EDITOR_PROP_ENDLABLE, objectNode);
-		if (StringUtils.isEmpty(endLable)) {
-			dateRangeField.setEndLable(endLable);
+		String endLabel = getValueAsString(EDITOR_PROP_ENDLABEL, optionNode);
+		if (StringUtils.isNotEmpty(endLabel)) {
+			dateRangeField.setEndLabel(endLabel);
 		}
 
-		dateRangeField.setFieldType(FormField.TYPE_DATERANGE);
 	}
 
 }

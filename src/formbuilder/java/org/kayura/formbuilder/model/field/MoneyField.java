@@ -5,22 +5,8 @@ package org.kayura.formbuilder.model.field;
  * 
  * @author liangxia@live.com
  *
- * <pre>
- * {
- *     "cid":"c68",
- *     "label":"金额",
- *     "required":true,
- *     "name":"money",
- *     "description":"请输入金额",
- *     "field_type":"money",
- *     "field_options":{
- *         "units":"元"
- *     }
- * }
- * </pre>
- * 
  */
-public class MoneyField extends LableField {
+public class MoneyField extends LabelField {
 
 	private String unit;
 

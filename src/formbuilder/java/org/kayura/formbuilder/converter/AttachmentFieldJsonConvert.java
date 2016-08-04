@@ -5,7 +5,13 @@ import org.kayura.formbuilder.model.field.AttachmentField;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class AttachmentFieldJsonConvert extends LableFieldJsonConvert {
+/**
+ * 附件字段JSON转换器
+ * 
+ * @author liangxia@live.com
+ *
+ */
+public class AttachmentFieldJsonConvert extends LabelFieldJsonConvert {
 
 	@Override
 	public FormField makeFormField() {
