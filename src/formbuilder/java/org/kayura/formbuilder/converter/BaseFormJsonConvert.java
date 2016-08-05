@@ -23,6 +23,11 @@ public abstract class BaseFormJsonConvert implements EditorJsonConstants {
 			formField.setName(name);
 		}
 
+		String label = FormJsonConverterUtil.getLable(elementNode);
+		if (StringUtils.isNotEmpty(label)) {
+			formField.setLabel(label);
+		}
+
 		String description = FormJsonConverterUtil.getDescription(elementNode);
 		if (StringUtils.isNotEmpty(description)) {
 			formField.setDescription(description);

@@ -50,9 +50,14 @@ public class FormModelServiceImpl implements FormModelService {
 	}
 
 	@Override
-	public Result<FormModel> selectFormModel(String modelId, String formKey, String code, Integer status) {
+	public Result<FormModel> selectFormModel(String modelId, String tenantId, String formKey, String code,
+			Integer status) {
 
 		Map<String, Object> args = new HashMap<String, Object>();
+
+		if (StringUtils.isNotEmpty(tenantId)) {
+			args.put("tenantId", tenantId);
+		}
 
 		if (StringUtils.isNotEmpty(modelId)) {
 			args.put("modelId", modelId);

@@ -38,16 +38,16 @@ public class SelectField extends InputField {
 
 	public static class Option {
 
-		private String lable;
+		private String label;
 		private String value;
 		private Boolean checked;
 
-		public String getLable() {
-			return lable;
+		public String getLabel() {
+			return label;
 		}
 
-		public void setLable(String lable) {
-			this.lable = lable;
+		public void setLable(String label) {
+			this.label = label;
 		}
 
 		public String getValue() {

@@ -1,7 +1,5 @@
 package org.kayura.formbuilder.service;
 
-import java.util.Map;
-
 import org.kayura.formbuilder.model.FormModel;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
@@ -13,7 +11,7 @@ public interface FormModelService {
 	Result<PageList<FormModel>> selectFormModels(String tenantId, String formKey, String keyword, Integer status,
 			PageParams pageParams);
 
-	Result<FormModel> selectFormModel(String modelId, String formKey, String code, Integer status);
+	Result<FormModel> selectFormModel(String modelId, String tenantId, String formKey, String code, Integer status);
 
 	GeneralResult insertFormModel(FormModel formModel);
 

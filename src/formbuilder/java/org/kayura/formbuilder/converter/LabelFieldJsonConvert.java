@@ -1,6 +1,5 @@
 package org.kayura.formbuilder.converter;
 
-import org.apache.commons.lang.StringUtils;
 import org.kayura.formbuilder.model.FormField;
 import org.kayura.formbuilder.model.field.LabelField;
 
@@ -21,15 +20,7 @@ public class LabelFieldJsonConvert extends BaseFormJsonConvert {
 	public void convertToModel(FormField formField, JsonNode elementNode) {
 
 		super.convertToModel(formField, elementNode);
-
-		LabelField labelField = (LabelField) formField;
-
-		String label = FormJsonConverterUtil.getLable(elementNode);
-		if (StringUtils.isNotEmpty(label)) {
-			labelField.setLabel(label);
-		}
-
-		labelField.setFieldType(FormField.TYPE_LABLE);
+		formField.setFieldType(FormField.TYPE_LABLE);
 	}
 
 	public void convertToJson(JsonNode elementNode, FormField baseField) {

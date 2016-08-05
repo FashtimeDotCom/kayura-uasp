@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -52,20 +53,21 @@ public class FormModelRestResource {
 		return new HashMap<String, Object>();
 	}
 
-	@RequestMapping(value = "/form/model/{modelId}/get", method = RequestMethod.GET, produces = "application/json")
-	public Object getFormModel(String modelId) {
+	@RequestMapping(value = "/form/model/{modelId}/raw", method = RequestMethod.GET)
+	@ResponseBody
+	public String getRawFormModel(@PathVariable String modelId) {
 
-		Result<FormModel> r = formModelService.selectFormModel(modelId, null, null, null);
+		Result<FormModel> r = formModelService.selectFormModel(modelId, null, null, null, null);
 		if (r.isSucceed()) {
 			FormModel formModel = r.getData();
-			return formModel;
+			return formModel.getRaw();
 		}
 
-		return new HashMap<String, Object>();
+		return "";
 	}
 
-	@RequestMapping(value = "/form/model/update", method = RequestMethod.POST)
-	public void updateFormModelForRawModel(String modelId, String rawModel) {
+	@RequestMapping(value = "/form/model/{modelId}/raw", method = RequestMethod.POST)
+	public void updateFormModelForRawModel(@PathVariable String modelId, String rawModel) {
 
 		formModelService.updateFormModelForRawModel(modelId, rawModel);
 	}

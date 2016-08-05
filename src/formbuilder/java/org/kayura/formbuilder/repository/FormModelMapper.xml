@@ -105,6 +105,9 @@
 			t.Status
 		FROM uasp_formmodels AS t
 		<where>
+			<if test="tenantId != null">
+				AND ( t.Tenant_Id = #{tenantId} )
+			</if>
 			<if test="modelId != null">
 				AND ( t.Model_Id = #{modelId} )
 			</if>

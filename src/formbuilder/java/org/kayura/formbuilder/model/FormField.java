@@ -17,6 +17,7 @@ public abstract class FormField {
 
 	private String id;
 	private String name;
+	private String label;
 	private String description;
 	private String fieldType;
 
@@ -34,6 +35,14 @@ public abstract class FormField {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String getFieldType() {
