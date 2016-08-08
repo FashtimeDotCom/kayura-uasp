@@ -5,6 +5,7 @@
 	<resultMap type="org.kayura.formbuilder.model.FormData" id="formDataMap">
 		<result property="dataId" column="Data_Id" />
 		<result property="modelId" column="Model_Id" />
+		<result property="view" column="View" />
 		<result property="title" column="Title" />
 		<result property="content" column="Content" typeHandler="jsonTypeHandler" />
 		<result property="createTime" column="CreateTime" />
@@ -17,6 +18,7 @@
 			t.Data_Id,
 			t.Model_Id,
 			t.Title,
+			t.View,
 			t.CreateTime,
 			t.Creator,
 			t.UpdateTime
@@ -50,6 +52,8 @@
 		SELECT
 			t.Data_Id,
 			t.Model_Id,
+			t.View,
+			t.ProcessKey,
 			t.Title,
 			t.Content,
 			t.CreateTime,
@@ -69,6 +73,8 @@
 		INSERT INTO uasp_formdata (
 			Data_Id,
 			Model_Id,
+			View,
+			ProcessKey,
 			Title,
 			Content,
 			CreateTime,
@@ -77,6 +83,8 @@
 		) VALUES (
 			#{dataId},
 			#{modelId},
+			#{view},
+			#{processKey},
 			#{title},
 			#{content,typeHandler=jsonTypeHandler},
 			#{createTime},

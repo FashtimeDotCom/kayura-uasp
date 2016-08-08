@@ -22,7 +22,11 @@ public class FormViewTempletes {
 	public String get(String key) {
 
 		if (templetes != null && templetes.size() > 0) {
-			return templetes.get(key);
+			if (templetes.containsKey(key)) {
+				return templetes.get(key);
+			} else {
+				return first();
+			}
 		}
 
 		return null;

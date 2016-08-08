@@ -1,7 +1,7 @@
 package org.kayura.formbuilder.service;
 
 import org.kayura.formbuilder.model.FormData;
-import org.kayura.formbuilder.model.FormDataContent;
+import org.kayura.formbuilder.model.MapContent;
 import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
@@ -18,7 +18,7 @@ public interface FormDataService {
 
 	GeneralResult updateFormDataInfo(FormData formData);
 
-	GeneralResult updateFormDataContent(String dataId, FormDataContent content);
+	GeneralResult updateFormDataContent(String dataId, MapContent content);
 
 	GeneralResult deleteFormDataById(String dataId);
 

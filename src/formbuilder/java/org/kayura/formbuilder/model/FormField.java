@@ -1,11 +1,15 @@
 package org.kayura.formbuilder.model;
 
+import org.apache.commons.lang.StringUtils;
+
 public abstract class FormField {
 
 	public static final String TYPE_LABLE = "Lable";
 	public static final String TYPE_TEXT = "Text";
 	public static final String TYPE_TEXTAREA = "TextArea";
+	public static final String TYPE_DATETIME = "DateTime";
 	public static final String TYPE_DATE = "Date";
+	public static final String TYPE_TIME = "Time";
 	public static final String TYPE_DATERANGE = "DateRange";
 	public static final String TYPE_NUMBER = "Number";
 	public static final String TYPE_MONEY = "Money";
@@ -18,6 +22,7 @@ public abstract class FormField {
 	private String id;
 	private String name;
 	private String label;
+	private Object value;
 	private String description;
 	private String fieldType;
 
@@ -30,7 +35,7 @@ public abstract class FormField {
 	}
 
 	public String getName() {
-		return name;
+		return StringUtils.isEmpty(name) ? this.label : this.name;
 	}
 
 	public void setName(String name) {
@@ -59,6 +64,14 @@ public abstract class FormField {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Object getValue() {
+		return value;
+	}
+
+	public void setValue(Object value) {
+		this.value = value;
 	}
 
 }

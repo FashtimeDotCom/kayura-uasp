@@ -6,6 +6,9 @@ public class FormModel {
 	public static final Integer STATUS_RUN = 1;
 	public static final Integer STATUS_INVALID = 2;
 
+	public static final Integer TYPE_PC = 0;
+	public static final Integer TYPE_MOBILE = 1;
+
 	private String modelId;
 	private String tenantId;
 	private String formKey;
@@ -17,6 +20,7 @@ public class FormModel {
 	private String raw;
 	private FormFieldList items;
 	private Integer version;
+	private Integer type;
 	private Integer status;
 
 	public FormModel() {
@@ -121,5 +125,17 @@ public class FormModel {
 
 	public void setVersion(Integer version) {
 		this.version = version;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public String getTypeName() {
+		return type == 1 ? "Phone" : "PC";
 	}
 }

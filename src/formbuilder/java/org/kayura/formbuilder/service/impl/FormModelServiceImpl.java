@@ -86,6 +86,13 @@ public class FormModelServiceImpl implements FormModelService {
 			formModel.setModelId(KeyUtils.newId());
 		}
 
+		if (StringUtils.isEmpty(formModel.getTenantId())) {
+			formModel.setTenantId(null);
+		}
+
+		formModel.setRaw("[]");
+		formModel.setStatus(FormModel.STATUS_DESIGN);
+
 		formModelMapper.insertFormModel(formModel);
 
 		return Result.succeed();

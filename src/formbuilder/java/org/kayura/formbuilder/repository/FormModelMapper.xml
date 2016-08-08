@@ -14,6 +14,7 @@
 		<result property="raw" column="Raw" />
 		<result property="items" column="Items" typeHandler="jsonTypeHandler" />
 		<result property="version" column="Version"/>
+		<result property="type" column="Type" />
 		<result property="status" column="Status" />
 	</resultMap>
 
@@ -28,6 +29,7 @@
 			t.Icon,
 			t.Creator,
 			t.Version,
+			t.Type,
 			t.Status
 		FROM uasp_formmodels AS t
 		<where>
@@ -36,6 +38,9 @@
 			</if>
 			<if test="formKey != null">
 				AND ( t.FormKey = #{formKey} )
+			</if>
+			<if test="type != null">
+				AND ( Type = #{type} )
 			</if>
 			<if test="status != null">
 				AND ( t.Status = #{status} )
@@ -55,6 +60,9 @@
 			<if test="code != null">
 				AND ( t.Code LIKE #{code} )
 			</if>
+			<if test="type != null">
+				AND ( Type = #{type} )
+			</if>
 			<if test="status != null">
 				AND ( t.Status = 1 )
 			</if>
@@ -71,6 +79,7 @@
 			t.Icon,
 			t.Creator,
 			t.Version,
+			t.Type,
 			t.Status
 		FROM uasp_formmodels AS t
 		<where>
@@ -82,6 +91,9 @@
 			</if>
 			<if test="code != null">
 				AND ( t.Code LIKE #{code} )
+			</if>
+			<if test="type != null">
+				AND ( Type = #{type} )
 			</if>
 			<if test="status != null">
 				AND ( t.Status = #{status} )
@@ -102,6 +114,7 @@
 			t.Raw,
 			t.Items,
 			t.Version,
+			t.Type,
 			t.Status
 		FROM uasp_formmodels AS t
 		<where>
@@ -116,6 +129,9 @@
 			</if>
 			<if test="code != null">
 				AND ( t.Code LIKE #{code} )
+			</if>
+			<if test="type != null">
+				AND ( Type = #{type} )
 			</if>
 			<if test="status != null">
 				AND ( t.Status = #{status} )
@@ -134,10 +150,9 @@
 			Title,
 			Description,
 			Icon,
-			Creator,
 			Raw,
-			Items,
-			Version,
+			Creator,
+			Type,
 			Status
 		) VALUES (
 			#{modelId},
@@ -147,10 +162,9 @@
 			#{title},
 			#{description},
 			#{icon},
-			#{creator},
 			#{raw},
-			#{items,typeHandler=jsonTypeHandler},
-			#{version},
+			#{creator},
+			#{type},
 			#{status}
 		)
 	</insert>
@@ -163,8 +177,9 @@
 			<if test="description != null">Description = #{description},</if>
 			<if test="icon != null">Icon = #{icon},</if>
 			<if test="creator != null">Creator = #{creator},</if>
-			<if test="raw != null">raw = #{raw},</if>
+			<if test="raw != null">Raw = #{raw},</if>
 			<if test="items != null">Items = #{items,typeHandler=jsonTypeHandler},</if>
+			<if test="type != null">Type = #{type},</if>
 			<if test="status != null">Status = #{status},</if>
 		</set>
 		WHERE Model_Id = #{modelId}
@@ -181,6 +196,9 @@
 			</if>
 			<if test="startFormKey != null">
 				AND ( FormKey LIKE #{startFormKey} )
+			</if>
+			<if test="type != null">
+				AND ( Type = #{type} )
 			</if>
 			<if test="status != null">
 				AND ( Status = #{status} )

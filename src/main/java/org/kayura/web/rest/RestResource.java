@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -71,6 +72,32 @@ public abstract class RestResource {
 		}
 
 		return map;
+	}
+
+	public ModelAndView errorPage(Result<?> r) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("message", r.getMessage());
+		return errorPage(map);
+	}
+
+	public ModelAndView errorPage(String message, String details) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("message", message);
+		map.put("details", details);
+
+		return errorPage(map);
+	}
+
+	public ModelAndView errorPage(String message) {
+
+		return errorPage(message, "");
+	}
+
+	public ModelAndView errorPage(Map<String, Object> map) {
+
+		return new ModelAndView("shared/error", map);
 	}
 
 	public Map<String, Object> error(String message) {

@@ -1,5 +1,10 @@
 package org.kayura.formbuilder.rest;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.kayura.formbuilder.model.FormModel;
 import org.kayura.formbuilder.service.FormModelService;
@@ -7,15 +12,8 @@ import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.web.ui.UISupport;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,7 +73,7 @@ public class FormModelRestResource {
 	@RequestMapping(value = "/form/model/saveinfo", method = RequestMethod.POST)
 	public void saveOrUpdateFormModel(FormModel formModel) {
 
-		if (StringUtils.isNotEmpty(formModel.getModelId())) {
+		if (StringUtils.isEmpty(formModel.getModelId())) {
 
 			formModelService.insertFormModel(formModel);
 		} else {

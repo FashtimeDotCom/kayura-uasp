@@ -12,7 +12,9 @@ public interface EditorJsonConstants {
 	final String EDITOR_FIELDTYPE_LABEL = "label";
 	final String EDITOR_FIELDTYPE_TEXT = "text";
 	final String EDITOR_FIELDTYPE_TEXTAREA = "textarea";
+	final String EDITOR_FIELDTYPE_DATETIME = "datetime";
 	final String EDITOR_FIELDTYPE_DATE = "date";
+	final String EDITOR_FIELDTYPE_TIME = "time";
 	final String EDITOR_FIELDTYPE_DATERANGE = "daterange";
 	final String EDITOR_FIELDTYPE_NUMBER = "number";
 	final String EDITOR_FIELDTYPE_MONEY = "money";
@@ -41,7 +43,7 @@ public interface EditorJsonConstants {
 	final String EDITOR_PROP_LENGTH_UNITS = "length_units";
 	final String EDITOR_PROP_MINLENGTH = "minlength";
 	final String EDITOR_PROP_MAXLENGTH = "maxlength";
-	
+
 	final String EDITOR_PROP_STARTLABEL = "start_label";
 	final String EDITOR_PROP_ENDLABEL = "end_label";
 	final String EDITOR_PROP_ACTION_NAME = "action_name";

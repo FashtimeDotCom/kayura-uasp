@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  *         </pre>
  *
  */
-public class DateRangeFieldJsonConvert extends DateFieldJsonConvert {
+public class DateRangeFieldJsonConvert extends DateTimeFieldJsonConvert {
 
 	@Override
 	public FormField makeFormField() {
