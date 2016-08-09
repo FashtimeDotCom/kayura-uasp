@@ -1,8 +1,45 @@
 package org.kayura.formbuilder.model;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class FormField {
+import org.apache.commons.lang.StringUtils;
+import org.kayura.formbuilder.model.field.AttachmentField;
+import org.kayura.formbuilder.model.field.DateField;
+import org.kayura.formbuilder.model.field.DateRangeField;
+import org.kayura.formbuilder.model.field.DateTimeField;
+import org.kayura.formbuilder.model.field.LabelField;
+import org.kayura.formbuilder.model.field.MoneyField;
+import org.kayura.formbuilder.model.field.MultiSelectField;
+import org.kayura.formbuilder.model.field.NumberField;
+import org.kayura.formbuilder.model.field.PhotoField;
+import org.kayura.formbuilder.model.field.SelectField;
+import org.kayura.formbuilder.model.field.TableField;
+import org.kayura.formbuilder.model.field.TextAreaField;
+import org.kayura.formbuilder.model.field.TextField;
+import org.kayura.formbuilder.model.field.TimeField;
+
+public class FormField {
+
+	public static Map<String, Class<?>> FIELD_TYPES;
+
+	static {
+		FIELD_TYPES = new HashMap<String, Class<?>>();
+		FIELD_TYPES.put(FormField.TYPE_LABLE, LabelField.class);
+		FIELD_TYPES.put(FormField.TYPE_TEXT, TextField.class);
+		FIELD_TYPES.put(FormField.TYPE_TEXTAREA, TextAreaField.class);
+		FIELD_TYPES.put(FormField.TYPE_DATETIME, DateTimeField.class);
+		FIELD_TYPES.put(FormField.TYPE_DATE, DateField.class);
+		FIELD_TYPES.put(FormField.TYPE_TIME, TimeField.class);
+		FIELD_TYPES.put(FormField.TYPE_DATERANGE, DateRangeField.class);
+		FIELD_TYPES.put(FormField.TYPE_NUMBER, NumberField.class);
+		FIELD_TYPES.put(FormField.TYPE_MONEY, MoneyField.class);
+		FIELD_TYPES.put(FormField.TYPE_SELECT, SelectField.class);
+		FIELD_TYPES.put(FormField.TYPE_MULTISELECT, MultiSelectField.class);
+		FIELD_TYPES.put(FormField.TYPE_TABLE, TableField.class);
+		FIELD_TYPES.put(FormField.TYPE_PHOTO, PhotoField.class);
+		FIELD_TYPES.put(FormField.TYPE_ATTACHMENT, AttachmentField.class);
+	}
 
 	public static final String TYPE_LABLE = "Lable";
 	public static final String TYPE_TEXT = "Text";

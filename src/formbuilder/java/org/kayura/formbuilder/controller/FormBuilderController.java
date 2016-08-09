@@ -96,25 +96,30 @@ public class FormBuilderController extends BaseController {
 		return null;
 	}
 
-	private ModelAndView viewForm(String formKey, String code, String view, boolean preview) {
+	private ModelAndView viewForm(String modelId, String formKey, String code, String view, boolean preview) {
 
-		Result<FormModel> r = formModelService.selectFormModel(null, null, formKey, code, null);
+		LoginUser loginUser = this.getLoginUser();
+
+		Result<FormModel> r = formModelService.selectFormModel(modelId, loginUser.getTenantId(), formKey, code, null);
 		if (r.isSucceed()) {
 
-			LoginUser loginUser = this.getLoginUser();
 			FormModel model = r.getData();
+			if (model.getStatus() == FormModel.STATUS_DESIGN) {
 
-			Result<BizForm> bizForm = bizFormService.getBizFormsByCode(loginUser.getTenantId(), formKey);
-
-			FormJsonConverter jsonConverter = new FormJsonConverter();
-			try {
-				JsonNode jsonNode = objectMapper.readTree(model.getRaw());
-				jsonConverter.convertToModel(model, jsonNode);
-			} catch (Exception e) {
-				e.printStackTrace();
+				FormJsonConverter jsonConverter = new FormJsonConverter();
+				try {
+					JsonNode jsonNode = objectMapper.readTree(model.getRaw());
+					jsonConverter.convertToModel(model, jsonNode);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 
+			Result<BizForm> bizForm = bizFormService.getBizFormsByCode(loginUser.getTenantId(), model.getFormKey());
+			BizForm biz = bizForm.getData();
+
 			FormData formdata = new FormData();
+			formdata.setTitle(biz.getDisplayName() + DateUtils.now("yyyy") + loginUser.getDisplayName());
 			formdata.setFormName(bizForm.getData().getDisplayName());
 			formdata.setProcessKey(bizForm.getData().getProcessKey());
 			formdata.setView(view);
@@ -129,6 +134,7 @@ public class FormBuilderController extends BaseController {
 			String viewName = getViewTemplete(view);
 			ModelAndView mv = this.view(viewName + "-form");
 			mv.addObject("model", formdata);
+			mv.addObject("tenantId", loginUser.getTenantId());
 			mv.addObject("preview", preview);
 			return mv;
 		}
@@ -136,16 +142,27 @@ public class FormBuilderController extends BaseController {
 		return errorPage(r.getMessage());
 	}
 
+	@RequestMapping(value = "/form/preview/{modelId}/{view}", method = RequestMethod.GET)
+	public ModelAndView formPreview(@PathVariable String modelId, @PathVariable String view) {
+		return viewForm(modelId, null, null, view, true);
+	}
+
 	@RequestMapping(value = "/form/preview/{formKey}/{code}/{view}", method = RequestMethod.GET)
 	public ModelAndView formPreview(@PathVariable String formKey, @PathVariable String code,
 			@PathVariable String view) {
-		return viewForm(formKey, code, view, true);
+		return viewForm(null, formKey, code, view, true);
+	}
+
+	@RequestMapping(value = "/form/start/{modelId}/{view}", method = RequestMethod.GET)
+	public ModelAndView startForm(@PathVariable String modelId, @PathVariable String view) {
+
+		return viewForm(modelId, null, null, view, false);
 	}
 
 	@RequestMapping(value = "/form/start/{formKey}/{code}/{view}", method = RequestMethod.GET)
 	public ModelAndView startForm(@PathVariable String formKey, @PathVariable String code, @PathVariable String view) {
 
-		return viewForm(formKey, code, view, false);
+		return viewForm(null, formKey, code, view, false);
 	}
 
 	@RequestMapping(value = "/form/approve/{dataId}", method = RequestMethod.GET)

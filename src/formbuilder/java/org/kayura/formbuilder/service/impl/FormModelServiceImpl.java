@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kayura.formbuilder.converter.FormJsonConverter;
 import org.kayura.formbuilder.model.FormModel;
 import org.kayura.formbuilder.repository.FormModelMapper;
 import org.kayura.formbuilder.service.FormModelService;
@@ -16,11 +17,17 @@ import org.kayura.utils.KeyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class FormModelServiceImpl implements FormModelService {
 
 	@Autowired
 	private FormModelMapper formModelMapper;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Override
 	public Result<PageList<FormModel>> selectFormModels(String tenantId, String formKey, String keyword, Integer status,
@@ -55,23 +62,25 @@ public class FormModelServiceImpl implements FormModelService {
 
 		Map<String, Object> args = new HashMap<String, Object>();
 
-		if (StringUtils.isNotEmpty(tenantId)) {
-			args.put("tenantId", tenantId);
-		}
-
 		if (StringUtils.isNotEmpty(modelId)) {
+
 			args.put("modelId", modelId);
-		}
+		} else {
 
-		if (StringUtils.isNotEmpty(formKey)) {
-			args.put("formKey", formKey);
-		}
+			if (StringUtils.isNotEmpty(tenantId)) {
+				args.put("tenantId", tenantId);
+			}
 
-		if (StringUtils.isNotEmpty(code)) {
-			args.put("code", code);
-		}
-		if (status != null) {
-			args.put("status", status);
+			if (StringUtils.isNotEmpty(formKey)) {
+				args.put("formKey", formKey);
+			}
+
+			if (StringUtils.isNotEmpty(code)) {
+				args.put("code", code);
+			}
+			if (status != null) {
+				args.put("status", status);
+			}
 		}
 
 		FormModel formModel = formModelMapper.selectFormModel(args);
@@ -141,6 +150,15 @@ public class FormModelServiceImpl implements FormModelService {
 		formModel.setStatus(FormModel.STATUS_RUN);
 		formModel.setVersion(maxVersion + 1);
 
+		FormJsonConverter jsonConverter = new FormJsonConverter();
+		try {
+			JsonNode jsonNode = objectMapper.readTree(formModel.getRaw());
+			jsonConverter.convertToModel(formModel, jsonNode);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		formModel.setRaw("[]");
 		formModelMapper.insertFormModel(formModel);
 
 		return Result.succeed();

@@ -1,14 +1,12 @@
 package org.kayura.formbuilder.model.field;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kayura.formbuilder.model.FormField;
+import org.kayura.formbuilder.model.FormFieldList;
 
 public class TableField extends LabelField {
 
 	private String actionName;
-	private List<FormField> children;
+	private FormFieldList children;
 
 	public String getActionName() {
 		return actionName;
@@ -18,19 +16,19 @@ public class TableField extends LabelField {
 		this.actionName = actionName;
 	}
 
-	public List<FormField> getChildren() {
+	public FormFieldList getChildren() {
 		return children;
 	}
 
 	public void addChildren(FormField formField) {
 
 		if (this.children == null) {
-			this.children = new ArrayList<FormField>();
+			this.children = new FormFieldList();
 		}
 		this.children.add(formField);
 	}
 
-	public void setChildren(List<FormField> children) {
+	public void setChildren(FormFieldList children) {
 		this.children = children;
 	}
 

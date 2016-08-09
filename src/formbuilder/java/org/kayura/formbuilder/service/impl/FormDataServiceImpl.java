@@ -13,6 +13,7 @@ import org.kayura.type.GeneralResult;
 import org.kayura.type.PageList;
 import org.kayura.type.PageParams;
 import org.kayura.type.Result;
+import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,9 @@ public class FormDataServiceImpl implements FormDataService {
 		if (StringUtils.isEmpty(formData.getDataId())) {
 			formData.setDataId(KeyUtils.newId());
 		}
+
+		formData.setCreateTime(DateUtils.now());
+		formData.setUpdateTime(formData.getCreateTime());
 
 		formDataMapper.insertFormData(formData);
 		return Result.succeed();

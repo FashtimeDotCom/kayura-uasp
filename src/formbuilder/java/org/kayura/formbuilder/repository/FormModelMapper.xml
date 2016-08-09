@@ -12,7 +12,7 @@
 		<result property="icon" column="Icon" />
 		<result property="creator" column="Creator" />
 		<result property="raw" column="Raw" />
-		<result property="items" column="Items" typeHandler="jsonTypeHandler" />
+		<result property="items" column="Items" typeHandler="formFieldTypeHandler" />
 		<result property="version" column="Version"/>
 		<result property="type" column="Type" />
 		<result property="status" column="Status" />
@@ -40,7 +40,7 @@
 				AND ( t.FormKey = #{formKey} )
 			</if>
 			<if test="type != null">
-				AND ( Type = #{type} )
+				AND ( t.Type = #{type} )
 			</if>
 			<if test="status != null">
 				AND ( t.Status = #{status} )
@@ -49,7 +49,8 @@
 	</select>
 	
 	<select id="selectFormModelByMaxVersion" parameterType="map" resultType="int" >
-		SELECT IFNULL(Max(Version), 0) AS Version FROM uasp_formmodels
+		SELECT IFNULL(Max(Version), 0) AS Version 
+		FROM uasp_formmodels AS t
 		WHERE ( t.Status = 1 )
 			<if test="tenantId != null">
 				AND ( t.Tenant_Id = #{tenantId} )
@@ -58,13 +59,7 @@
 				AND ( t.FormKey = #{formKey} )
 			</if>
 			<if test="code != null">
-				AND ( t.Code LIKE #{code} )
-			</if>
-			<if test="type != null">
-				AND ( Type = #{type} )
-			</if>
-			<if test="status != null">
-				AND ( t.Status = 1 )
+				AND ( t.Code = #{code} )
 			</if>
 	</select>
 	
@@ -93,7 +88,7 @@
 				AND ( t.Code LIKE #{code} )
 			</if>
 			<if test="type != null">
-				AND ( Type = #{type} )
+				AND ( t.Type = #{type} )
 			</if>
 			<if test="status != null">
 				AND ( t.Status = #{status} )
@@ -151,6 +146,7 @@
 			Description,
 			Icon,
 			Raw,
+			Items,
 			Creator,
 			Type,
 			Status
@@ -163,6 +159,7 @@
 			#{description},
 			#{icon},
 			#{raw},
+			#{items,typeHandler=formFieldTypeHandler},
 			#{creator},
 			#{type},
 			#{status}
@@ -178,7 +175,7 @@
 			<if test="icon != null">Icon = #{icon},</if>
 			<if test="creator != null">Creator = #{creator},</if>
 			<if test="raw != null">Raw = #{raw},</if>
-			<if test="items != null">Items = #{items,typeHandler=jsonTypeHandler},</if>
+			<if test="items != null">Items = #{items,typeHandler=formFieldTypeHandler},</if>
 			<if test="type != null">Type = #{type},</if>
 			<if test="status != null">Status = #{status},</if>
 		</set>

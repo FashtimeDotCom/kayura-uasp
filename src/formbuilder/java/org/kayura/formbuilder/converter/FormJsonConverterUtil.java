@@ -34,7 +34,7 @@ public class FormJsonConverterUtil implements EditorJsonConstants {
 		return getValueAsString(EDITOR_PROP_PLACEHOLDER, objectNode);
 	}
 
-	protected static String getValueAsString(String name, JsonNode objectNode) {
+	public static String getValueAsString(String name, JsonNode objectNode) {
 		String propertyValue = null;
 		JsonNode propertyNode = objectNode.get(name);
 		if (propertyNode != null && propertyNode.isNull() == false) {
@@ -43,7 +43,7 @@ public class FormJsonConverterUtil implements EditorJsonConstants {
 		return propertyValue;
 	}
 
-	protected static Boolean getValueAsBoolean(String name, JsonNode objectNode) {
+	public static Boolean getValueAsBoolean(String name, JsonNode objectNode) {
 		Boolean propertyValue = null;
 		JsonNode propertyNode = objectNode.get(name);
 		if (propertyNode != null && propertyNode.isNull() == false) {
@@ -52,7 +52,7 @@ public class FormJsonConverterUtil implements EditorJsonConstants {
 		return propertyValue;
 	}
 
-	protected static Integer getValueAsInteger(String name, JsonNode objectNode) {
+	public static Integer getValueAsInteger(String name, JsonNode objectNode) {
 		Integer propertyValue = null;
 		JsonNode propertyNode = objectNode.get(name);
 		if (propertyNode != null && propertyNode.isNull() == false) {
@@ -61,7 +61,7 @@ public class FormJsonConverterUtil implements EditorJsonConstants {
 		return propertyValue;
 	}
 
-	protected static Double getValueAsDouble(String name, JsonNode objectNode) {
+	public static Double getValueAsDouble(String name, JsonNode objectNode) {
 		Double propertyValue = null;
 		JsonNode propertyNode = objectNode.get(name);
 		if (propertyNode != null && propertyNode.isNull() == false) {

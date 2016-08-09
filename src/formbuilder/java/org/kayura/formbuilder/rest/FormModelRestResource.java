@@ -88,7 +88,7 @@ public class FormModelRestResource {
 		formModelService.deployFormModel(modelId);
 	}
 
-	@RequestMapping(value = "/form/model/{modelId}/delete", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/form/model/{modelId}/remove", method = RequestMethod.DELETE)
 	public void deleteFormModel(@PathVariable String modelId) {
 
 		formModelService.deleteFormModelById(modelId);
