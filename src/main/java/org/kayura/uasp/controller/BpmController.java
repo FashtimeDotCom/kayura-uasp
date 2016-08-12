@@ -74,7 +74,7 @@ public class BpmController extends ActivitiController {
 			BizForm entity = r.getData();
 			mv = view("views/bpm/biz-edit", entity);
 		} else {
-			mv = this.error(r);
+			mv = this.errorPage(r);
 		}
 		return mv;
 	}

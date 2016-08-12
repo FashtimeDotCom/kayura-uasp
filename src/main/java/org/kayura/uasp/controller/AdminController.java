@@ -30,7 +30,7 @@ import org.kayura.uasp.service.DictService;
 import org.kayura.uasp.service.UserService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
@@ -47,7 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
 @SuppressWarnings("deprecation")
 @Controller
 @RequestMapping("/admin")
-public class AdminController extends BaseController {
+public class AdminController extends UaspController {
 
 	@Autowired
 	private UserService writerUserService;
@@ -276,7 +276,7 @@ public class AdminController extends BaseController {
 			mv.addObject("model", di);
 		} else {
 
-			mv = this.error(r.getMessage(), "");
+			mv = this.errorPage(r.getMessage());
 		}
 
 		return mv;
@@ -294,7 +294,7 @@ public class AdminController extends BaseController {
 			mv.addObject("model", item.getData());
 		} else {
 
-			mv = this.error(item.getMessage(), "");
+			mv = this.errorPage(item.getMessage(), "");
 		}
 
 		return mv;

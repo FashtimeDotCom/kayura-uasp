@@ -6,7 +6,7 @@ package org.kayura.uasp.controller;
 
 import org.kayura.core.PostAction;
 import org.kayura.core.PostResult;
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @ControllerAdvice
-public class GlobalController extends BaseController {
+public class GlobalController extends UaspController {
 
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public ModelAndView maxUploadSizeException(Exception ex) {

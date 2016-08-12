@@ -14,7 +14,7 @@ import org.kayura.security.LoginUser;
 import org.kayura.type.Result;
 import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
-public class FormBuilderController extends BaseController {
+public class FormBuilderController extends UaspController {
 
 	@Autowired
 	private FormViewTempletes viewTempletes;

@@ -51,7 +51,7 @@ import org.kayura.utils.DateUtils;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.MapUtils;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.kayura.tags.easyui.types.EuTreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,7 +68,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @Controller
-public class FileController extends BaseController {
+public class FileController extends UaspController {
 
 	@Autowired
 	private FileUploadProvider uploadProvider;
@@ -679,7 +679,7 @@ public class FileController extends BaseController {
 			mv = this.view("views/file/folder-edit");
 			mv.addObject("model", r.getData());
 		} else {
-			mv = this.error(r.getMessage(), "");
+			mv = this.errorPage(r.getMessage(), "");
 		}
 
 		return mv;
@@ -879,8 +879,10 @@ public class FileController extends BaseController {
 	/**
 	 * 对字节进行 AES 加密.
 	 * 
-	 * @param rawBytes 原始字节内容.
-	 * @param encryptKey 私有密钥.
+	 * @param rawBytes
+	 *            原始字节内容.
+	 * @param encryptKey
+	 *            私有密钥.
 	 * @return 返回加密后的字节.
 	 * @throws Exception
 	 */
@@ -900,8 +902,10 @@ public class FileController extends BaseController {
 	/**
 	 * 对节进行 AES 解密.
 	 * 
-	 * @param encBytes 加密后的字节内容.
-	 * @param decryptKey 私有密钥.
+	 * @param encBytes
+	 *            加密后的字节内容.
+	 * @param decryptKey
+	 *            私有密钥.
 	 * @return 返回解密后的字节.
 	 * @throws Exception
 	 */

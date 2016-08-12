@@ -12,7 +12,7 @@ import org.kayura.uasp.po.MockOrder;
 import org.kayura.uasp.service.MockOrderService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.rest.RestResource;
+import org.kayura.web.rest.UaspRestResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MockOrderRestResource extends RestResource {
+public class MockOrderRestResource extends UaspRestResource {
 
 	@Autowired
 	private MockOrderService mockOrderService;

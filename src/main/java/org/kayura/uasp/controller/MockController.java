@@ -4,7 +4,7 @@
  */
 package org.kayura.uasp.controller;
 
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @Controller
-public class MockController extends BaseController {
+public class MockController extends UaspController {
 
 	@RequestMapping(value = "/mock/fileup", method = RequestMethod.GET)
 	public ModelAndView fileUpload() {

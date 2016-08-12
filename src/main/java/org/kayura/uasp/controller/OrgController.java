@@ -30,7 +30,7 @@ import org.kayura.uasp.po.Position;
 import org.kayura.uasp.service.OrganizeService;
 import org.kayura.utils.KeyUtils;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.kayura.tags.easyui.types.EuTreeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -48,7 +48,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @Controller
-public class OrgController extends BaseController {
+public class OrgController extends UaspController {
 
 	static final String NULL = "NULL";
 
@@ -238,7 +238,7 @@ public class OrgController extends BaseController {
 
 			return view("views/org/company-edit", r.getData());
 		} else {
-			return this.error("编辑公司信息时异常。", r.getMessage());
+			return this.errorPage("编辑公司信息时异常。", r.getMessage());
 		}
 	}
 
@@ -326,7 +326,7 @@ public class OrgController extends BaseController {
 			return view("views/org/depart-edit", r.getData());
 
 		} else {
-			return this.error("编辑公司信息时异常。", r.getMessage());
+			return this.errorPage("编辑公司信息时异常。", r.getMessage());
 		}
 	}
 
@@ -394,7 +394,7 @@ public class OrgController extends BaseController {
 		if (r.isSucceed()) {
 			return view("views/org/position-edit", r.getData());
 		} else {
-			return error("编辑岗位信息时异常。", r.getMessage());
+			return errorPage("编辑岗位信息时异常。", r.getMessage());
 		}
 	}
 
@@ -452,7 +452,7 @@ public class OrgController extends BaseController {
 				model.setDepartmentName(department.getName());
 			}
 		} else {
-			return this.error("指定无效的 type 参数。", "");
+			return this.errorPage("指定无效的 type 参数。", "");
 		}
 
 		ModelAndView mv = view("views/org/identity-edit", model);
@@ -470,7 +470,7 @@ public class OrgController extends BaseController {
 			mv.addObject("emp", model.getEmployee());
 			return mv;
 		} else {
-			return error("读取身份信息时异常。", r.getMessage());
+			return errorPage("读取身份信息时异常。", r.getMessage());
 		}
 	}
 
@@ -510,10 +510,8 @@ public class OrgController extends BaseController {
 	}
 
 	@RequestMapping(value = "/org/identity/import", method = RequestMethod.POST)
-	public void importIdentityForEmployee(Map<String, Object> map, 
-			@RequestParam("pid") String parentId,
-			@RequestParam("t") Integer type, 
-			@RequestParam("empid") String employeeId) {
+	public void importIdentityForEmployee(Map<String, Object> map, @RequestParam("pid") String parentId,
+			@RequestParam("t") Integer type, @RequestParam("empid") String employeeId) {
 
 		postExecute(map, new PostAction() {
 
@@ -523,7 +521,7 @@ public class OrgController extends BaseController {
 				Identity identity = new Identity();
 				identity.setIdentityId(KeyUtils.newId());
 				identity.setEmployeeId(employeeId);
-				
+
 				if (type == OrganizeItem.ORGTYPE_POSITION) {
 					Result<Position> rp = readerOrganizeService.getPositionById(parentId);
 					if (rp.isSucceed()) {
@@ -534,7 +532,7 @@ public class OrgController extends BaseController {
 				} else if (type == OrganizeItem.ORGTYPE_DEPART) {
 					identity.setDepartmentId(parentId);
 				}
-				
+
 				GeneralResult r = writerOrganizeService.insertIdentity(identity);
 				ps.setResult(r);
 			}
@@ -580,7 +578,7 @@ public class OrgController extends BaseController {
 			mv.addObject("emp", model);
 			return mv;
 		} else {
-			return error("读取员工信息异常。", r.getMessage());
+			return errorPage("读取员工信息异常。", r.getMessage());
 		}
 	}
 

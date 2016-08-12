@@ -10,14 +10,14 @@ import org.kayura.type.PageParams;
 import org.kayura.type.Result;
 import org.kayura.uasp.po.Role;
 import org.kayura.uasp.service.AuthorityService;
-import org.kayura.web.rest.RestResource;
+import org.kayura.web.rest.UaspRestResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AuthorityRestResource extends RestResource {
+public class AuthorityRestResource extends UaspRestResource {
 
 	@Autowired
 	private AuthorityService authorityService;

@@ -18,7 +18,7 @@ import org.kayura.type.Result;
 import org.kayura.uasp.po.Role;
 import org.kayura.uasp.service.AuthorityService;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @Controller
-public class AuthController extends BaseController {
+public class AuthController extends UaspController {
 
 	@Autowired
 	private AuthorityService readerAuthorityService;
@@ -76,7 +76,7 @@ public class AuthController extends BaseController {
 		if (r.isSucceed()) {
 			return view("views/auth/role-edit", r.getData());
 		} else {
-			return error(r);
+			return errorPage(r);
 		}
 	}
 

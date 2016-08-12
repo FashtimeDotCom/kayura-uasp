@@ -19,7 +19,7 @@ import org.kayura.security.LoginUser;
 import org.kayura.uasp.Urls;
 import org.kayura.uasp.po.Identity;
 import org.kayura.utils.StringUtils;
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.kayura.web.util.VerifyCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @Controller
-public class HomeController extends BaseController {
+public class HomeController extends UaspController {
 
 	@Value("#{sysProperties['runMode']}")
 	private String runMode;

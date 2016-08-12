@@ -4,7 +4,7 @@
  */
 package org.kayura.uasp.controller;
 
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,6 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/gm")
-public class GeneralController extends BaseController {
+public class GeneralController extends UaspController {
 
 }

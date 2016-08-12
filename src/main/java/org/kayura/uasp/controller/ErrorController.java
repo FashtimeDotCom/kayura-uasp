@@ -6,7 +6,7 @@ package org.kayura.uasp.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kayura.web.controllers.BaseController;
+import org.kayura.web.controllers.UaspController;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author liangxia@live.com
  */
 @Controller
-public class ErrorController extends BaseController {
+public class ErrorController extends UaspController {
 
 	@RequestMapping(value = "/error/403", method = RequestMethod.GET)
 	public ModelAndView denied(HttpServletRequest request) {
